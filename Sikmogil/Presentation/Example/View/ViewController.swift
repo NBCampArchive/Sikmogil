@@ -23,6 +23,13 @@ class ViewController: UIViewController {
         $0.trackColor = .lightGray
     }
     
+    let label = UILabel().then {
+        $0.text = "Hello, World!"
+        $0.textColor = .black
+        $0.font = .systemFont(ofSize: 20)
+        $0.textAlignment = .center
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -38,6 +45,7 @@ class ViewController: UIViewController {
     
     private func setupViews() {
         view.addSubviews(circularProgressBar, customCircularProgressBar)
+        view.addSubview(label)
     }
     
     private func setupConstraints() {
@@ -50,6 +58,9 @@ class ViewController: UIViewController {
             $0.top.equalTo(circularProgressBar.snp.bottom).offset(20)
             $0.centerX.equalToSuperview()
             $0.width.height.equalTo(300)
+        }
+        label.snp.makeConstraints {
+            $0.center.equalTo(customCircularProgressBar)
         }
     }
     
