@@ -28,6 +28,8 @@
 		B54ABFCD2C0CB78F002E89DC /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABFCC2C0CB78F002E89DC /* Helpers.swift */; };
 		B54ABFCF2C0CBB59002E89DC /* UIViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABFCE2C0CBB59002E89DC /* UIViewExtensions.swift */; };
 		B54ABFD12C0CBC55002E89DC /* DateHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABFD02C0CBC55002E89DC /* DateHelper.swift */; };
+		B54ABFD52C0CBE86002E89DC /* CircularProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABFD42C0CBE86002E89DC /* CircularProgressBar.swift */; };
+		B54ABFD72C0CC281002E89DC /* CustomCircularProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABFD62C0CC281002E89DC /* CustomCircularProgressBar.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,6 +48,8 @@
 		B54ABFCC2C0CB78F002E89DC /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
 		B54ABFCE2C0CBB59002E89DC /* UIViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewExtensions.swift; sourceTree = "<group>"; };
 		B54ABFD02C0CBC55002E89DC /* DateHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateHelper.swift; sourceTree = "<group>"; };
+		B54ABFD42C0CBE86002E89DC /* CircularProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularProgressBar.swift; sourceTree = "<group>"; };
+		B54ABFD62C0CC281002E89DC /* CustomCircularProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCircularProgressBar.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -92,6 +96,7 @@
 				B54ABFC02C0CB666002E89DC /* Presentation */,
 				B54ABFC62C0CB721002E89DC /* Resources */,
 				B54ABFC72C0CB754002E89DC /* Utills */,
+				B54ABFD22C0CBE4F002E89DC /* Views */,
 				B54ABF902C09BD43002E89DC /* Sikmogil.xcdatamodeld */,
 			);
 			path = Sikmogil;
@@ -208,6 +213,23 @@
 			path = Helpers;
 			sourceTree = "<group>";
 		};
+		B54ABFD22C0CBE4F002E89DC /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				B54ABFD32C0CBE67002E89DC /* CustomViews */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		B54ABFD32C0CBE67002E89DC /* CustomViews */ = {
+			isa = PBXGroup;
+			children = (
+				B54ABFD42C0CBE86002E89DC /* CircularProgressBar.swift */,
+				B54ABFD62C0CC281002E89DC /* CustomCircularProgressBar.swift */,
+			);
+			path = CustomViews;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -302,12 +324,14 @@
 				B54ABF922C09BD43002E89DC /* Sikmogil.xcdatamodeld in Sources */,
 				B54ABFCD2C0CB78F002E89DC /* Helpers.swift in Sources */,
 				B54ABFBD2C0CB60D002E89DC /* Network.swift in Sources */,
+				B54ABFD72C0CC281002E89DC /* CustomCircularProgressBar.swift in Sources */,
 				B54ABF8C2C09BD43002E89DC /* ViewController.swift in Sources */,
 				B54ABF882C09BD43002E89DC /* AppDelegate.swift in Sources */,
 				B54ABF8A2C09BD43002E89DC /* SceneDelegate.swift in Sources */,
 				B54ABFD12C0CBC55002E89DC /* DateHelper.swift in Sources */,
 				B54ABFC52C0CB6AB002E89DC /* ViewModel.swift in Sources */,
 				B54ABFBF2C0CB639002E89DC /* PersistentStorage.swift in Sources */,
+				B54ABFD52C0CBE86002E89DC /* CircularProgressBar.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
