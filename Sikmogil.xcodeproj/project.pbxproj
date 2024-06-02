@@ -12,6 +12,14 @@
 		B54ABF8C2C09BD43002E89DC /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABF8B2C09BD43002E89DC /* ViewController.swift */; };
 		B54ABF922C09BD43002E89DC /* Sikmogil.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B54ABF902C09BD43002E89DC /* Sikmogil.xcdatamodeld */; };
 		B54ABF942C09BD47002E89DC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B54ABF932C09BD47002E89DC /* Assets.xcassets */; };
+		B54ABFA02C0CB41A002E89DC /* DGCharts in Frameworks */ = {isa = PBXBuildFile; productRef = B54ABF9F2C0CB41A002E89DC /* DGCharts */; };
+		B54ABFA32C0CB42B002E89DC /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = B54ABFA22C0CB42B002E89DC /* Kingfisher */; };
+		B54ABFA62C0CB43A002E89DC /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = B54ABFA52C0CB43A002E89DC /* Alamofire */; };
+		B54ABFA92C0CB447002E89DC /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = B54ABFA82C0CB447002E89DC /* Then */; };
+		B54ABFAC2C0CB459002E89DC /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = B54ABFAB2C0CB459002E89DC /* SnapKit */; };
+		B54ABFAF2C0CB476002E89DC /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = B54ABFAE2C0CB476002E89DC /* GoogleSignIn */; };
+		B54ABFB12C0CB476002E89DC /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = B54ABFB02C0CB476002E89DC /* GoogleSignInSwift */; };
+		B54ABFB42C0CB507002E89DC /* FloatingPanel in Frameworks */ = {isa = PBXBuildFile; productRef = B54ABFB32C0CB507002E89DC /* FloatingPanel */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,6 +37,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B54ABFA62C0CB43A002E89DC /* Alamofire in Frameworks */,
+				B54ABFB42C0CB507002E89DC /* FloatingPanel in Frameworks */,
+				B54ABFA32C0CB42B002E89DC /* Kingfisher in Frameworks */,
+				B54ABFB12C0CB476002E89DC /* GoogleSignInSwift in Frameworks */,
+				B54ABFA02C0CB41A002E89DC /* DGCharts in Frameworks */,
+				B54ABFA92C0CB447002E89DC /* Then in Frameworks */,
+				B54ABFAC2C0CB459002E89DC /* SnapKit in Frameworks */,
+				B54ABFAF2C0CB476002E89DC /* GoogleSignIn in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -80,6 +96,16 @@
 			dependencies = (
 			);
 			name = Sikmogil;
+			packageProductDependencies = (
+				B54ABF9F2C0CB41A002E89DC /* DGCharts */,
+				B54ABFA22C0CB42B002E89DC /* Kingfisher */,
+				B54ABFA52C0CB43A002E89DC /* Alamofire */,
+				B54ABFA82C0CB447002E89DC /* Then */,
+				B54ABFAB2C0CB459002E89DC /* SnapKit */,
+				B54ABFAE2C0CB476002E89DC /* GoogleSignIn */,
+				B54ABFB02C0CB476002E89DC /* GoogleSignInSwift */,
+				B54ABFB32C0CB507002E89DC /* FloatingPanel */,
+			);
 			productName = Sikmogil;
 			productReference = B54ABF842C09BD43002E89DC /* Sikmogil.app */;
 			productType = "com.apple.product-type.application";
@@ -108,6 +134,15 @@
 				Base,
 			);
 			mainGroup = B54ABF7B2C09BD43002E89DC;
+			packageReferences = (
+				B54ABF9E2C0CB41A002E89DC /* XCRemoteSwiftPackageReference "Charts" */,
+				B54ABFA12C0CB42B002E89DC /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				B54ABFA42C0CB43A002E89DC /* XCRemoteSwiftPackageReference "Alamofire" */,
+				B54ABFA72C0CB447002E89DC /* XCRemoteSwiftPackageReference "Then" */,
+				B54ABFAA2C0CB459002E89DC /* XCRemoteSwiftPackageReference "SnapKit" */,
+				B54ABFAD2C0CB476002E89DC /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
+				B54ABFB22C0CB506002E89DC /* XCRemoteSwiftPackageReference "FloatingPanel" */,
+			);
 			productRefGroup = B54ABF852C09BD43002E89DC /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -350,6 +385,108 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		B54ABF9E2C0CB41A002E89DC /* XCRemoteSwiftPackageReference "Charts" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ChartsOrg/Charts";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.1.0;
+			};
+		};
+		B54ABFA12C0CB42B002E89DC /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.11.0;
+			};
+		};
+		B54ABFA42C0CB43A002E89DC /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.9.1;
+			};
+		};
+		B54ABFA72C0CB447002E89DC /* XCRemoteSwiftPackageReference "Then" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/devxoul/Then";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.0.0;
+			};
+		};
+		B54ABFAA2C0CB459002E89DC /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.7.1;
+			};
+		};
+		B54ABFAD2C0CB476002E89DC /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/google/GoogleSignIn-iOS";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.1.0;
+			};
+		};
+		B54ABFB22C0CB506002E89DC /* XCRemoteSwiftPackageReference "FloatingPanel" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/scenee/FloatingPanel";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.8.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		B54ABF9F2C0CB41A002E89DC /* DGCharts */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B54ABF9E2C0CB41A002E89DC /* XCRemoteSwiftPackageReference "Charts" */;
+			productName = DGCharts;
+		};
+		B54ABFA22C0CB42B002E89DC /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B54ABFA12C0CB42B002E89DC /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
+		};
+		B54ABFA52C0CB43A002E89DC /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B54ABFA42C0CB43A002E89DC /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+		B54ABFA82C0CB447002E89DC /* Then */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B54ABFA72C0CB447002E89DC /* XCRemoteSwiftPackageReference "Then" */;
+			productName = Then;
+		};
+		B54ABFAB2C0CB459002E89DC /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B54ABFAA2C0CB459002E89DC /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+		B54ABFAE2C0CB476002E89DC /* GoogleSignIn */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B54ABFAD2C0CB476002E89DC /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignIn;
+		};
+		B54ABFB02C0CB476002E89DC /* GoogleSignInSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B54ABFAD2C0CB476002E89DC /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignInSwift;
+		};
+		B54ABFB32C0CB507002E89DC /* FloatingPanel */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B54ABFB22C0CB506002E89DC /* XCRemoteSwiftPackageReference "FloatingPanel" */;
+			productName = FloatingPanel;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		B54ABF902C09BD43002E89DC /* Sikmogil.xcdatamodeld */ = {
