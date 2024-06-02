@@ -16,3 +16,5 @@ class ViewController: UIViewController {
     }
 }
 
+// ViewController나 View 파일은 각 뷰 폴더의 하위 파일에 View라는 파일을 생성해 추가해주세요.
+// Cell 파일 같은경우 View > Cell 폴더를 생성해서 추가해주세요.

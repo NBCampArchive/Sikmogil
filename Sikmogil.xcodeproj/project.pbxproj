@@ -20,6 +20,12 @@
 		B54ABFAF2C0CB476002E89DC /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = B54ABFAE2C0CB476002E89DC /* GoogleSignIn */; };
 		B54ABFB12C0CB476002E89DC /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = B54ABFB02C0CB476002E89DC /* GoogleSignInSwift */; };
 		B54ABFB42C0CB507002E89DC /* FloatingPanel in Frameworks */ = {isa = PBXBuildFile; productRef = B54ABFB32C0CB507002E89DC /* FloatingPanel */; };
+		B54ABFB82C0CB595002E89DC /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABFB72C0CB595002E89DC /* Model.swift */; };
+		B54ABFBD2C0CB60D002E89DC /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABFBC2C0CB60D002E89DC /* Network.swift */; };
+		B54ABFBF2C0CB639002E89DC /* PersistentStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABFBE2C0CB639002E89DC /* PersistentStorage.swift */; };
+		B54ABFC52C0CB6AB002E89DC /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABFC42C0CB6AB002E89DC /* ViewModel.swift */; };
+		B54ABFCB2C0CB770002E89DC /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABFCA2C0CB770002E89DC /* Extension.swift */; };
+		B54ABFCD2C0CB78F002E89DC /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABFCC2C0CB78F002E89DC /* Helpers.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +36,12 @@
 		B54ABF912C09BD43002E89DC /* Sikmogil.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Sikmogil.xcdatamodel; sourceTree = "<group>"; };
 		B54ABF932C09BD47002E89DC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B54ABF982C09BD47002E89DC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B54ABFB72C0CB595002E89DC /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
+		B54ABFBC2C0CB60D002E89DC /* Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
+		B54ABFBE2C0CB639002E89DC /* PersistentStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistentStorage.swift; sourceTree = "<group>"; };
+		B54ABFC42C0CB6AB002E89DC /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
+		B54ABFCA2C0CB770002E89DC /* Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
+		B54ABFCC2C0CB78F002E89DC /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,14 +82,124 @@
 		B54ABF862C09BD43002E89DC /* Sikmogil */ = {
 			isa = PBXGroup;
 			children = (
-				B54ABF872C09BD43002E89DC /* AppDelegate.swift */,
-				B54ABF892C09BD43002E89DC /* SceneDelegate.swift */,
-				B54ABF8B2C09BD43002E89DC /* ViewController.swift */,
-				B54ABF932C09BD47002E89DC /* Assets.xcassets */,
-				B54ABF982C09BD47002E89DC /* Info.plist */,
+				B54ABFB52C0CB57B002E89DC /* Application */,
+				B54ABFB62C0CB587002E89DC /* Model */,
+				B54ABFB92C0CB5AB002E89DC /* Services */,
+				B54ABFC02C0CB666002E89DC /* Presentation */,
+				B54ABFC62C0CB721002E89DC /* Resources */,
+				B54ABFC72C0CB754002E89DC /* Utills */,
 				B54ABF902C09BD43002E89DC /* Sikmogil.xcdatamodeld */,
 			);
 			path = Sikmogil;
+			sourceTree = "<group>";
+		};
+		B54ABFB52C0CB57B002E89DC /* Application */ = {
+			isa = PBXGroup;
+			children = (
+				B54ABF872C09BD43002E89DC /* AppDelegate.swift */,
+				B54ABF892C09BD43002E89DC /* SceneDelegate.swift */,
+			);
+			path = Application;
+			sourceTree = "<group>";
+		};
+		B54ABFB62C0CB587002E89DC /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				B54ABFB72C0CB595002E89DC /* Model.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		B54ABFB92C0CB5AB002E89DC /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				B54ABFBA2C0CB5EF002E89DC /* Network */,
+				B54ABFBB2C0CB5F8002E89DC /* PersistentStorage */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		B54ABFBA2C0CB5EF002E89DC /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				B54ABFBC2C0CB60D002E89DC /* Network.swift */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
+		B54ABFBB2C0CB5F8002E89DC /* PersistentStorage */ = {
+			isa = PBXGroup;
+			children = (
+				B54ABFBE2C0CB639002E89DC /* PersistentStorage.swift */,
+			);
+			path = PersistentStorage;
+			sourceTree = "<group>";
+		};
+		B54ABFC02C0CB666002E89DC /* Presentation */ = {
+			isa = PBXGroup;
+			children = (
+				B54ABFC12C0CB672002E89DC /* Example */,
+			);
+			path = Presentation;
+			sourceTree = "<group>";
+		};
+		B54ABFC12C0CB672002E89DC /* Example */ = {
+			isa = PBXGroup;
+			children = (
+				B54ABFC32C0CB69D002E89DC /* ViewModel */,
+				B54ABFC22C0CB697002E89DC /* View */,
+			);
+			path = Example;
+			sourceTree = "<group>";
+		};
+		B54ABFC22C0CB697002E89DC /* View */ = {
+			isa = PBXGroup;
+			children = (
+				B54ABF8B2C09BD43002E89DC /* ViewController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		B54ABFC32C0CB69D002E89DC /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				B54ABFC42C0CB6AB002E89DC /* ViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		B54ABFC62C0CB721002E89DC /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				B54ABF932C09BD47002E89DC /* Assets.xcassets */,
+				B54ABF982C09BD47002E89DC /* Info.plist */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		B54ABFC72C0CB754002E89DC /* Utills */ = {
+			isa = PBXGroup;
+			children = (
+				B54ABFC82C0CB75A002E89DC /* Extensions */,
+				B54ABFC92C0CB763002E89DC /* Helpers */,
+			);
+			path = Utills;
+			sourceTree = "<group>";
+		};
+		B54ABFC82C0CB75A002E89DC /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				B54ABFCA2C0CB770002E89DC /* Extension.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		B54ABFC92C0CB763002E89DC /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				B54ABFCC2C0CB78F002E89DC /* Helpers.swift */,
+			);
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -168,10 +290,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B54ABFCB2C0CB770002E89DC /* Extension.swift in Sources */,
+				B54ABFB82C0CB595002E89DC /* Model.swift in Sources */,
 				B54ABF922C09BD43002E89DC /* Sikmogil.xcdatamodeld in Sources */,
+				B54ABFCD2C0CB78F002E89DC /* Helpers.swift in Sources */,
+				B54ABFBD2C0CB60D002E89DC /* Network.swift in Sources */,
 				B54ABF8C2C09BD43002E89DC /* ViewController.swift in Sources */,
 				B54ABF882C09BD43002E89DC /* AppDelegate.swift in Sources */,
 				B54ABF8A2C09BD43002E89DC /* SceneDelegate.swift in Sources */,
+				B54ABFC52C0CB6AB002E89DC /* ViewModel.swift in Sources */,
+				B54ABFBF2C0CB639002E89DC /* PersistentStorage.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -306,7 +434,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 8B78U37C85;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Sikmogil/Info.plist;
+				INFOPLIST_FILE = Sikmogil/Resources/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = "";
@@ -339,7 +467,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 8B78U37C85;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Sikmogil/Info.plist;
+				INFOPLIST_FILE = Sikmogil/Resources/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = "";
