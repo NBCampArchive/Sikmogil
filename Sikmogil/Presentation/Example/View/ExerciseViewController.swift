@@ -53,8 +53,31 @@ class ExerciseViewController: UIViewController {
     
     private let progressView: UIView = {
         let view = UIView()
-        view.backgroundColor = .customLightGray
+        view.backgroundColor = .clear
         return view
+    }()
+    
+    private let customCircularProgressBar = CustomCircularProgressBar().then {
+        $0.backgroundColor = .clear
+        $0.progressColor = .appGreen
+        $0.trackColor = .appLightGray
+    }
+    
+    private let exerciseCircleView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .customGreen
+        view.layer.cornerRadius = 40
+        return view
+    }()
+    
+    private let progressLabel: UILabel = {
+        let label = UILabel()
+        label.text = "활동시간 00분\n소모칼로리 0kcal"
+        label.numberOfLines = 2
+        label.textAlignment = .center
+        label.font = Suite.semiBold.of(size: 18)
+        label.textColor = .customDarkGray
+        return label
     }()
     
     private let historyLabel: UILabel = {
@@ -95,12 +118,14 @@ class ExerciseViewController: UIViewController {
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
         setupViews()
         setupConstraints()
     }
     
     private func setupViews() {
+        view.backgroundColor = .white
+        customCircularProgressBar.progress = 0.6
+        
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(ExerciseHistoryCell.self, forCellReuseIdentifier: ExerciseHistoryCell.identifier)
@@ -109,6 +134,7 @@ class ExerciseViewController: UIViewController {
         scrollView.addSubview(contentView)
         contentView.addSubviews(headerStackView, descriptionLabel, progressView, historyLabel, albumButton, tableView)
         headerStackView.addArrangedSubviews(exerciseMenuButton, stepsMenuButton)
+        progressView.addSubviews(customCircularProgressBar, exerciseCircleView, progressLabel)
     }
     
     private func setupConstraints() {
@@ -137,9 +163,24 @@ class ExerciseViewController: UIViewController {
             $0.top.equalTo(descriptionLabel.snp.bottom).offset(30)
         }
         
+        customCircularProgressBar.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+        
+        exerciseCircleView.snp.makeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.width.height.equalTo(80)
+            $0.top.equalToSuperview().inset(60)
+        }
+        
+        progressLabel.snp.makeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.top.equalTo(exerciseCircleView.snp.bottom).offset(16)
+        }
+        
         historyLabel.snp.makeConstraints {
             $0.leading.equalTo(contentView).inset(16)
-            $0.top.equalTo(progressView.snp.bottom).offset(32)
+            $0.top.equalTo(progressView.snp.bottom)
         }
         
         albumButton.snp.makeConstraints {
