@@ -18,7 +18,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     let topBar = UIView()
     let profileLabel = UILabel().then {
         $0.text = "프로필"
-        $0.font = Suite.bold.of(size: 24)
+        $0.font = UIFont.boldSystemFont(ofSize: 24)
     }
     let settingsButton = UIButton().then {
         $0.setImage(UIImage(systemName: "gearshape"), for: .normal)
@@ -31,18 +31,37 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         $0.layer.cornerRadius = 50 // 원형 이미지
         $0.isUserInteractionEnabled = true
     }
-    let levelBadgeLabel = UILabel().then {
-        $0.text = "Lv.10"
-        $0.font = Suite.bold.of(size: 12)
-        $0.textColor = .white
-        $0.textAlignment = .center
-        $0.backgroundColor = UIColor(red: 0.0, green: 0.7, blue: 0.7, alpha: 1.0)
-        $0.layer.cornerRadius = 10
+    
+    let levelBadgeView = UIView().then {
+        $0.backgroundColor = .clear // 배경색을 투명으로 설정
+        $0.layer.borderColor = UIColor(named: "appGreen")?.cgColor // 에셋에서 가져온 색상으로 테두리 색상 설정
+        $0.layer.borderWidth = 2 // 테두리 두께 설정
+        $0.layer.cornerRadius = 12
         $0.layer.masksToBounds = true
     }
+    
+    let levelIconImageView = UIImageView().then {
+        $0.image = UIImage(systemName: "crown.fill")
+        $0.tintColor = UIColor(named: "appGreen")
+        $0.contentMode = .scaleAspectFit
+    }
+    
+    let levelBadgeLabel = UILabel().then {
+        $0.text = "Lv.10"
+        $0.font = UIFont.boldSystemFont(ofSize: 12)
+        $0.textColor = .black
+        $0.textAlignment = .center
+    }
+    
+    let levelStackView = UIStackView().then {
+        $0.axis = .horizontal
+        $0.alignment = .center
+        $0.spacing = 4
+    }
+    
     let nameLabel = UILabel().then {
         $0.text = "Cats Green"
-        $0.font = Suite.bold.of(size: 24)
+        $0.font = UIFont.boldSystemFont(ofSize: 24)
     }
     let infoView = UIView().then {
         $0.backgroundColor = .white
@@ -54,30 +73,30 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     }
     let weightTitleLabel = UILabel().then {
         $0.text = "몸무게"
-        $0.font = Suite.regular.of(size: 14)
+        $0.font = UIFont.systemFont(ofSize: 14, weight: .regular)
         $0.textColor = .darkGray
     }
     let weightLabel = UILabel().then {
         $0.text = "0.0kg"
-        $0.font = Suite.bold.of(size: 16)
+        $0.font = UIFont.boldSystemFont(ofSize: 16)
     }
     let heightTitleLabel = UILabel().then {
         $0.text = "키"
-        $0.font = Suite.regular.of(size: 14)
+        $0.font = UIFont.systemFont(ofSize: 14, weight: .regular)
         $0.textColor = .darkGray
     }
     let heightLabel = UILabel().then {
         $0.text = "000cm"
-        $0.font = Suite.bold.of(size: 16)
+        $0.font = UIFont.boldSystemFont(ofSize: 16)
     }
     let genderTitleLabel = UILabel().then {
         $0.text = "성별"
-        $0.font = Suite.regular.of(size: 14)
+        $0.font = UIFont.systemFont(ofSize: 14, weight: .regular)
         $0.textColor = .darkGray
     }
     let genderLabel = UILabel().then {
         $0.text = "남자"
-        $0.font = Suite.bold.of(size: 16)
+        $0.font = UIFont.boldSystemFont(ofSize: 16)
     }
     let separator1 = UIView().then {
         $0.backgroundColor = UIColor(named: "appDarkGray")
@@ -112,9 +131,13 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         topBar.addSubview(profileLabel)
         topBar.addSubview(settingsButton)
         
-        [profileImageView, levelBadgeLabel, nameLabel, infoView, tableView, logoutButton].forEach {
+        [profileImageView, levelBadgeView, nameLabel, infoView, tableView, logoutButton].forEach {
             contentView.addSubview($0)
         }
+        
+        levelStackView.addArrangedSubview(levelIconImageView)
+        levelStackView.addArrangedSubview(levelBadgeLabel)
+        levelBadgeView.addSubview(levelStackView)
         
         [weightTitleLabel, weightLabel, heightTitleLabel, heightLabel, genderTitleLabel, genderLabel, separator1, separator2].forEach {
             infoView.addSubview($0)
@@ -156,11 +179,22 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
             $0.width.height.equalTo(100)
         }
         
-        levelBadgeLabel.snp.makeConstraints {
+        levelBadgeView.snp.makeConstraints {
             $0.bottom.equalTo(profileImageView.snp.bottom).offset(-5)
             $0.centerX.equalTo(profileImageView.snp.right).offset(-10)
-            $0.height.equalTo(24)
-            $0.width.equalTo(50)
+            $0.height.equalTo(30) // 높이를 더 주어 레이아웃 조정
+        }
+        
+        levelStackView.snp.makeConstraints {
+            $0.edges.equalToSuperview().inset(4)
+        }
+        
+        levelIconImageView.snp.makeConstraints {
+            $0.width.height.equalTo(20) // 아이콘 크기 조정
+        }
+        
+        levelBadgeLabel.snp.makeConstraints {
+            $0.height.equalTo(levelIconImageView)
         }
         
         nameLabel.snp.makeConstraints {
@@ -186,6 +220,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
             $0.left.equalTo(infoView).offset(35)
             $0.bottom.equalTo(infoView).offset(-16)
         }
+        
         heightTitleLabel.snp.makeConstraints {
             $0.top.equalTo(infoView).offset(16)
             $0.centerX.equalTo(infoView)
