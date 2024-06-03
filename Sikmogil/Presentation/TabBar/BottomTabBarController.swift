@@ -41,8 +41,8 @@ class BottomTabBarController: UITabBarController {
     }
     
     private func setupTabBarAppearance() {
-        UITabBar.appearance().tintColor = .black
-        UITabBar.appearance().unselectedItemTintColor = .gray
-        UITabBar.appearance().backgroundColor = .lightGray
+        UITabBar.appearance().tintColor = .customBlack
+        UITabBar.appearance().unselectedItemTintColor = .customDarkGray
+        UITabBar.appearance().backgroundColor = .customLightGray
     }
 }
