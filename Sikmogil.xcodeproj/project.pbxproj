@@ -39,6 +39,7 @@
 		B54ABFE62C0D68CF002E89DC /* SUITE-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B54ABFDF2C0D68CF002E89DC /* SUITE-Medium.ttf */; };
 		B54ABFE92C0D69CD002E89DC /* Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABFE82C0D69CD002E89DC /* Font.swift */; };
 		B54ABFEC2C0D6BA6002E89DC /* BottomTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABFEB2C0D6BA6002E89DC /* BottomTabBarController.swift */; };
+		B54ABFEE2C0D7370002E89DC /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABFED2C0D7370002E89DC /* UIColorExtension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -68,6 +69,7 @@
 		B54ABFDF2C0D68CF002E89DC /* SUITE-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SUITE-Medium.ttf"; sourceTree = "<group>"; };
 		B54ABFE82C0D69CD002E89DC /* Font.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Font.swift; sourceTree = "<group>"; };
 		B54ABFEB2C0D6BA6002E89DC /* BottomTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomTabBarController.swift; sourceTree = "<group>"; };
+		B54ABFED2C0D7370002E89DC /* UIColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -221,6 +223,7 @@
 			children = (
 				B54ABFCA2C0CB770002E89DC /* Extension.swift */,
 				B54ABFCE2C0CBB59002E89DC /* UIViewExtensions.swift */,
+				B54ABFED2C0D7370002E89DC /* UIColorExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -376,6 +379,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B54ABFEE2C0D7370002E89DC /* UIColorExtension.swift in Sources */,
 				B54ABFCF2C0CBB59002E89DC /* UIViewExtensions.swift in Sources */,
 				B54ABFCB2C0CB770002E89DC /* Extension.swift in Sources */,
 				B54ABFE92C0D69CD002E89DC /* Font.swift in Sources */,
