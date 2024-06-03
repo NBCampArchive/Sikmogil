@@ -30,6 +30,14 @@
 		B54ABFD12C0CBC55002E89DC /* DateHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABFD02C0CBC55002E89DC /* DateHelper.swift */; };
 		B54ABFD52C0CBE86002E89DC /* CircularProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABFD42C0CBE86002E89DC /* CircularProgressBar.swift */; };
 		B54ABFD72C0CC281002E89DC /* CustomCircularProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABFD62C0CC281002E89DC /* CustomCircularProgressBar.swift */; };
+		B54ABFE02C0D68CF002E89DC /* SUITE-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B54ABFD92C0D68CF002E89DC /* SUITE-Light.ttf */; };
+		B54ABFE12C0D68CF002E89DC /* SUITE-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B54ABFDA2C0D68CF002E89DC /* SUITE-Bold.ttf */; };
+		B54ABFE22C0D68CF002E89DC /* SUITE-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B54ABFDB2C0D68CF002E89DC /* SUITE-SemiBold.ttf */; };
+		B54ABFE32C0D68CF002E89DC /* SUITE-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B54ABFDC2C0D68CF002E89DC /* SUITE-Regular.ttf */; };
+		B54ABFE42C0D68CF002E89DC /* SUITE-Heavy.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B54ABFDD2C0D68CF002E89DC /* SUITE-Heavy.ttf */; };
+		B54ABFE52C0D68CF002E89DC /* SUITE-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B54ABFDE2C0D68CF002E89DC /* SUITE-ExtraBold.ttf */; };
+		B54ABFE62C0D68CF002E89DC /* SUITE-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B54ABFDF2C0D68CF002E89DC /* SUITE-Medium.ttf */; };
+		B54ABFE92C0D69CD002E89DC /* Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABFE82C0D69CD002E89DC /* Font.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -50,6 +58,14 @@
 		B54ABFD02C0CBC55002E89DC /* DateHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateHelper.swift; sourceTree = "<group>"; };
 		B54ABFD42C0CBE86002E89DC /* CircularProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularProgressBar.swift; sourceTree = "<group>"; };
 		B54ABFD62C0CC281002E89DC /* CustomCircularProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCircularProgressBar.swift; sourceTree = "<group>"; };
+		B54ABFD92C0D68CF002E89DC /* SUITE-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SUITE-Light.ttf"; sourceTree = "<group>"; };
+		B54ABFDA2C0D68CF002E89DC /* SUITE-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SUITE-Bold.ttf"; sourceTree = "<group>"; };
+		B54ABFDB2C0D68CF002E89DC /* SUITE-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SUITE-SemiBold.ttf"; sourceTree = "<group>"; };
+		B54ABFDC2C0D68CF002E89DC /* SUITE-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SUITE-Regular.ttf"; sourceTree = "<group>"; };
+		B54ABFDD2C0D68CF002E89DC /* SUITE-Heavy.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SUITE-Heavy.ttf"; sourceTree = "<group>"; };
+		B54ABFDE2C0D68CF002E89DC /* SUITE-ExtraBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SUITE-ExtraBold.ttf"; sourceTree = "<group>"; };
+		B54ABFDF2C0D68CF002E89DC /* SUITE-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SUITE-Medium.ttf"; sourceTree = "<group>"; };
+		B54ABFE82C0D69CD002E89DC /* Font.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Font.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -180,6 +196,7 @@
 		B54ABFC62C0CB721002E89DC /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				B54ABFD82C0D6892002E89DC /* Fonts */,
 				B54ABF932C09BD47002E89DC /* Assets.xcassets */,
 				B54ABF982C09BD47002E89DC /* Info.plist */,
 			);
@@ -189,6 +206,7 @@
 		B54ABFC72C0CB754002E89DC /* Utills */ = {
 			isa = PBXGroup;
 			children = (
+				B54ABFE72C0D69AF002E89DC /* Fonts */,
 				B54ABFC82C0CB75A002E89DC /* Extensions */,
 				B54ABFC92C0CB763002E89DC /* Helpers */,
 			);
@@ -228,6 +246,28 @@
 				B54ABFD62C0CC281002E89DC /* CustomCircularProgressBar.swift */,
 			);
 			path = CustomViews;
+			sourceTree = "<group>";
+		};
+		B54ABFD82C0D6892002E89DC /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				B54ABFDA2C0D68CF002E89DC /* SUITE-Bold.ttf */,
+				B54ABFDE2C0D68CF002E89DC /* SUITE-ExtraBold.ttf */,
+				B54ABFDD2C0D68CF002E89DC /* SUITE-Heavy.ttf */,
+				B54ABFD92C0D68CF002E89DC /* SUITE-Light.ttf */,
+				B54ABFDF2C0D68CF002E89DC /* SUITE-Medium.ttf */,
+				B54ABFDC2C0D68CF002E89DC /* SUITE-Regular.ttf */,
+				B54ABFDB2C0D68CF002E89DC /* SUITE-SemiBold.ttf */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
+		B54ABFE72C0D69AF002E89DC /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				B54ABFE82C0D69CD002E89DC /* Font.swift */,
+			);
+			path = Fonts;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -307,6 +347,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B54ABFE32C0D68CF002E89DC /* SUITE-Regular.ttf in Resources */,
+				B54ABFE52C0D68CF002E89DC /* SUITE-ExtraBold.ttf in Resources */,
+				B54ABFE42C0D68CF002E89DC /* SUITE-Heavy.ttf in Resources */,
+				B54ABFE22C0D68CF002E89DC /* SUITE-SemiBold.ttf in Resources */,
+				B54ABFE62C0D68CF002E89DC /* SUITE-Medium.ttf in Resources */,
+				B54ABFE12C0D68CF002E89DC /* SUITE-Bold.ttf in Resources */,
+				B54ABFE02C0D68CF002E89DC /* SUITE-Light.ttf in Resources */,
 				B54ABF942C09BD47002E89DC /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -320,6 +367,7 @@
 			files = (
 				B54ABFCF2C0CBB59002E89DC /* UIViewExtensions.swift in Sources */,
 				B54ABFCB2C0CB770002E89DC /* Extension.swift in Sources */,
+				B54ABFE92C0D69CD002E89DC /* Font.swift in Sources */,
 				B54ABFB82C0CB595002E89DC /* Model.swift in Sources */,
 				B54ABF922C09BD43002E89DC /* Sikmogil.xcdatamodeld in Sources */,
 				B54ABFCD2C0CB78F002E89DC /* Helpers.swift in Sources */,
