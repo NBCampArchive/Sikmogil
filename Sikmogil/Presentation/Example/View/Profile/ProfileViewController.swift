@@ -18,7 +18,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     let topBar = UIView()
     let profileLabel = UILabel().then {
         $0.text = "프로필"
-        $0.font = UIFont.boldSystemFont(ofSize: 24)
+        $0.font = Suite.bold.of(size: 24)
     }
     let settingsButton = UIButton().then {
         $0.setImage(UIImage(systemName: "gearshape"), for: .normal)
@@ -33,7 +33,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     }
     let levelBadgeLabel = UILabel().then {
         $0.text = "Lv.10"
-        $0.font = UIFont.systemFont(ofSize: 12, weight: .bold)
+        $0.font = Suite.bold.of(size: 12)
         $0.textColor = .white
         $0.textAlignment = .center
         $0.backgroundColor = UIColor(red: 0.0, green: 0.7, blue: 0.7, alpha: 1.0)
@@ -42,7 +42,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     }
     let nameLabel = UILabel().then {
         $0.text = "Cats Green"
-        $0.font = UIFont.systemFont(ofSize: 24, weight: .bold)
+        $0.font = Suite.bold.of(size: 24)
     }
     let infoView = UIView().then {
         $0.backgroundColor = .white
@@ -54,30 +54,30 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     }
     let weightTitleLabel = UILabel().then {
         $0.text = "몸무게"
-        $0.font = UIFont.systemFont(ofSize: 14, weight: .regular)
+        $0.font = Suite.regular.of(size: 14)
         $0.textColor = .darkGray
     }
     let weightLabel = UILabel().then {
         $0.text = "0.0kg"
-        $0.font = UIFont.systemFont(ofSize: 16, weight: .bold)
+        $0.font = Suite.bold.of(size: 16)
     }
     let heightTitleLabel = UILabel().then {
         $0.text = "키"
-        $0.font = UIFont.systemFont(ofSize: 14, weight: .regular)
+        $0.font = Suite.regular.of(size: 14)
         $0.textColor = .darkGray
     }
     let heightLabel = UILabel().then {
         $0.text = "000cm"
-        $0.font = UIFont.systemFont(ofSize: 16, weight: .bold)
+        $0.font = Suite.bold.of(size: 16)
     }
     let genderTitleLabel = UILabel().then {
         $0.text = "성별"
-        $0.font = UIFont.systemFont(ofSize: 14, weight: .regular)
+        $0.font = Suite.regular.of(size: 14)
         $0.textColor = .darkGray
     }
     let genderLabel = UILabel().then {
         $0.text = "남자"
-        $0.font = UIFont.systemFont(ofSize: 16, weight: .bold)
+        $0.font = Suite.bold.of(size: 16)
     }
     let separator1 = UIView().then {
         $0.backgroundColor = UIColor(named: "appDarkGray")
@@ -88,6 +88,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     let tableView = UITableView().then {
         $0.register(ProfileTableViewCell.self, forCellReuseIdentifier: "ProfileCell")
         $0.separatorStyle = .none
+        $0.rowHeight = 44 // 셀 높이를 명시적으로 설정
     }
     let logoutButton = UIButton().then {
         $0.setTitle("로그아웃", for: .normal)
@@ -185,7 +186,6 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
             $0.left.equalTo(infoView).offset(35)
             $0.bottom.equalTo(infoView).offset(-16)
         }
-        
         heightTitleLabel.snp.makeConstraints {
             $0.top.equalTo(infoView).offset(16)
             $0.centerX.equalTo(infoView)
