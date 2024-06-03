@@ -9,7 +9,7 @@ import UIKit
 import SnapKit
 import Then
 
-class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITableViewDelegate, UITableViewDataSource {
     
     let scrollView = UIScrollView()
     let contentView = UIView()
@@ -85,7 +85,10 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     let separator2 = UIView().then {
         $0.backgroundColor = UIColor(named: "appDarkGray")
     }
-    let tableView = UITableView()
+    let tableView = UITableView().then {
+        $0.register(ProfileTableViewCell.self, forCellReuseIdentifier: "ProfileCell")
+        $0.separatorStyle = .none
+    }
     let logoutButton = UIButton().then {
         $0.setTitle("로그아웃", for: .normal)
         $0.setTitleColor(.red, for: .normal)
@@ -95,6 +98,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         super.viewDidLoad()
         setupUI()
         setupProfileImageTap()
+        setupTableView()
     }
     
     private func setupUI() {
@@ -222,7 +226,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
             $0.top.equalTo(infoView.snp.bottom).offset(20)
             $0.left.equalTo(contentView).offset(16)
             $0.right.equalTo(contentView).offset(-16)
-            $0.height.equalTo(200) // 임의의 높이, 실제 데이터에 따라 조정 필요
+            $0.height.equalTo(150) // 임의의 높이, 실제 데이터에 따라 조정 필요
         }
         
         logoutButton.snp.makeConstraints {
@@ -242,5 +246,41 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         imagePickerController.delegate = self
         imagePickerController.sourceType = .photoLibrary
         present(imagePickerController, animated: true, completion: nil)
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        if let selectedImage = info[.originalImage] as? UIImage {
+            profileImageView.image = selectedImage
+        }
+        dismiss(animated: true, completion: nil)
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        dismiss(animated: true, completion: nil)
+    }
+    
+    private func setupTableView() {
+        tableView.delegate = self
+        tableView.dataSource = self
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 3 // 데이터 개수
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "ProfileCell", for: indexPath) as? ProfileTableViewCell else {
+            return UITableViewCell()
+        }
+        let titles = ["메달 확인", "작성한 게시글", "공감한 게시글"]
+        let icons = ["medalIcon", "postIcon", "likeIcon"] // 아이콘 이름을 설정해주세요
+        cell.configure(with: titles[indexPath.row], iconName: icons[indexPath.row])
+        
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        // 각 항목에 대한 동작 추가
     }
 }
