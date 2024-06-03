@@ -86,6 +86,13 @@ class ExerciseViewController: UIViewController {
         return button
     }()
     
+    private let tableView: UITableView = {
+        let tableView = UITableView()
+        tableView.backgroundColor = .clear
+        return tableView
+    }()
+    
+    // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
@@ -94,6 +101,10 @@ class ExerciseViewController: UIViewController {
     }
     
     private func setupViews() {
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.register(ExerciseHistoryCell.self, forCellReuseIdentifier: ExerciseHistoryCell.identifier)
+        
         view.addSubviews(scrollView, startExerciseButton)
         scrollView.addSubview(contentView)
         contentView.addSubviews(headerStackView, descriptionLabel, progressView, historyLabel, albumButton)
@@ -129,7 +140,7 @@ class ExerciseViewController: UIViewController {
         }
         
         historyLabel.snp.makeConstraints {
-            $0.leading.equalTo(contentView).inset(16)
+            $0.leading.equalTo(contentView).inset(32)
             $0.top.equalTo(progressView.snp.bottom).offset(10)
         }
         
@@ -145,6 +156,20 @@ class ExerciseViewController: UIViewController {
             $0.bottom.equalTo(view.safeAreaLayoutGuide).inset(26)
             $0.height.equalTo(60)
         }
+    }
+}
+// MARK: - UITableView
+extension ExerciseViewController: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 2
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: ExerciseHistoryCell.identifier, for: indexPath) as? ExerciseHistoryCell else {
+            return UITableViewCell()
+        }
+        
+        return cell
     }
 }
 
