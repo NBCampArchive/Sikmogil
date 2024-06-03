@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		62578CD12C0DAB92005035BB /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62578CD02C0DAB92005035BB /* MainViewController.swift */; };
 		B54ABF882C09BD43002E89DC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABF872C09BD43002E89DC /* AppDelegate.swift */; };
 		B54ABF8A2C09BD43002E89DC /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABF892C09BD43002E89DC /* SceneDelegate.swift */; };
 		B54ABF8C2C09BD43002E89DC /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABF8B2C09BD43002E89DC /* ViewController.swift */; };
@@ -43,6 +44,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		62578CD02C0DAB92005035BB /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		B54ABF842C09BD43002E89DC /* Sikmogil.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sikmogil.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B54ABF872C09BD43002E89DC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B54ABF892C09BD43002E89DC /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -91,6 +93,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		62578CD22C0DAC43005035BB /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				62578CD02C0DAB92005035BB /* MainViewController.swift */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
 		B54ABF7B2C09BD43002E89DC = {
 			isa = PBXGroup;
 			children = (
@@ -185,6 +195,7 @@
 		B54ABFC22C0CB697002E89DC /* View */ = {
 			isa = PBXGroup;
 			children = (
+				62578CD22C0DAC43005035BB /* Main */,
 				B54ABF8B2C09BD43002E89DC /* ViewController.swift */,
 			);
 			path = View;
@@ -394,6 +405,7 @@
 				B54ABFD12C0CBC55002E89DC /* DateHelper.swift in Sources */,
 				B54ABFEC2C0D6BA6002E89DC /* BottomTabBarController.swift in Sources */,
 				B54ABFC52C0CB6AB002E89DC /* ViewModel.swift in Sources */,
+				62578CD12C0DAB92005035BB /* MainViewController.swift in Sources */,
 				B54ABFBF2C0CB639002E89DC /* PersistentStorage.swift in Sources */,
 				B54ABFD52C0CBE86002E89DC /* CircularProgressBar.swift in Sources */,
 			);

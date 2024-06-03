@@ -17,7 +17,7 @@ class BottomTabBarController: UITabBarController {
     }
     
     private func setupTabBar() {
-        let homeVC = ViewController()
+        let homeVC = MainViewController()
         homeVC.tabBarItem = UITabBarItem(title: "홈", image: UIImage(named: "home"), tag: 0)
         
         let dietVC = ViewController()
