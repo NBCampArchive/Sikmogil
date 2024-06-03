@@ -13,6 +13,12 @@ class ExerciseHistoryCell: UITableViewCell {
 
     static let identifier = "ExerciseHistoryCell"
     
+    private let cardView: UIView = {
+        let view = UIView()
+        view.layer.cornerRadius = 16
+        return view
+    }()
+    
     private let exerciseImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
@@ -58,11 +64,19 @@ class ExerciseHistoryCell: UITableViewCell {
     }
     
     private func configureUI() {
-        contentView.addSubviews(exerciseImageView, exerciseLabel, caloriesLabel, addButton)
-        contentView.backgroundColor = .customLightGray
+        contentView.addSubview(cardView)
+        cardView.addSubviews(exerciseImageView, exerciseLabel, caloriesLabel, addButton)
+        contentView.backgroundColor = .clear
+        selectionStyle = .none
+        cardView.backgroundColor = .customLightGray
     }
     
     private func setupConstraints() {
+        cardView.snp.makeConstraints {
+            $0.top.bottom.equalToSuperview().inset(8)
+            $0.leading.trailing.equalToSuperview().inset(16)
+        }
+        
         exerciseImageView.snp.makeConstraints {
             $0.leading.equalToSuperview().inset(16)
             $0.centerY.equalToSuperview()
