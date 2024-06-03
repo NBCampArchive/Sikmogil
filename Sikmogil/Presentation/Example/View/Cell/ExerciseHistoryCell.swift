@@ -21,22 +21,25 @@ class ExerciseHistoryCell: UITableViewCell {
     
     private let exerciseLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 16, weight: .bold)
+        label.font = Suite.semiBold.of(size: 16)
         return label
     }()
     
     private let caloriesLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
+        label.font = Suite.bold.of(size: 16)
         return label
     }()
     
     private let addButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("추가", for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .regular)
+        if let plusImage = UIImage(systemName: "plus") {
+            button.setImage(plusImage, for: .normal)
+        }
+        button.tintColor = .customBlack
         return button
     }()
+
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
