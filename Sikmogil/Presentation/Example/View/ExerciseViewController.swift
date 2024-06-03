@@ -113,8 +113,7 @@ class ExerciseViewController: UIViewController {
     
     private func setupConstraints() {
         scrollView.snp.makeConstraints {
-            $0.leading.trailing.top.equalToSuperview()
-            $0.bottom.equalTo(startExerciseButton.snp.top).inset(-16)
+            $0.edges.equalToSuperview()
         }
         
         contentView.snp.makeConstraints {
@@ -156,12 +155,6 @@ class ExerciseViewController: UIViewController {
             $0.height.equalTo(800) // 임시 높이 (셀 10개 x 80)
         }
         
-        startExerciseButton.snp.makeConstraints {
-            $0.leading.trailing.equalToSuperview().inset(16)
-            $0.bottom.equalTo(view.safeAreaLayoutGuide).inset(26)
-            $0.height.equalTo(60)
-        }
-        
         // 테이블 뷰의 높이 설정
         tableView.layoutIfNeeded()
         let tableViewHeight = tableView.contentSize.height
@@ -173,13 +166,19 @@ class ExerciseViewController: UIViewController {
         contentView.snp.makeConstraints {
             $0.bottom.equalTo(tableView.snp.bottom).offset(16)
         }
+        
+        startExerciseButton.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview().inset(16)
+            $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottomMargin).inset(26)
+            $0.height.equalTo(60)
+        }
     }
 }
 
 // MARK: - UITableView
 extension ExerciseViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
+        return 5
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
