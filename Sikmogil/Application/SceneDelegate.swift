@@ -20,8 +20,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         window = UIWindow(windowScene: windowScene)
         
-        // ⚠️ 여기서 ViewController()를 변경하여 window의 rootViewController로 지정해주세요.
-        let viewController = ViewController()
+        let viewController = BottomTabBarController()
         window?.rootViewController = viewController
         window?.makeKeyAndVisible()
     }
