@@ -116,6 +116,7 @@ class ExerciseSelectionViewController: UIViewController {
         return stackView
     }()
     
+    // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
@@ -123,6 +124,7 @@ class ExerciseSelectionViewController: UIViewController {
         setupButtons()
     }
     
+    // MARK: - Setup View
     private func setupViews() {
         view.backgroundColor = .white
         
@@ -204,6 +206,15 @@ class ExerciseSelectionViewController: UIViewController {
         sender.backgroundColor = .customBlack
         sender.tintColor = .white
         sender.layer.borderColor = UIColor.clear.cgColor
+        
+        if sender == measurementButton {
+            navigateToMeasurementScreen()
+        }
+    }
+    
+    private func navigateToMeasurementScreen() {
+        let exerciseTimerVC = ExerciseTimerViewController()
+        navigationController?.pushViewController(exerciseTimerVC, animated: true)
     }
     
 }
