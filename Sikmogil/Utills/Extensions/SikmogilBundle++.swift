@@ -7,7 +7,7 @@
 
 import Foundation
 
-// API KEY 또는 URL을 Plist 로 관리하기 위한 
+// API KEY 또는 URL을 Plist 로 관리하기 위한 Extension
 extension Bundle{
     
     // OpenWeatherMap API Key
@@ -24,4 +24,5 @@ extension Bundle{
         
         return value
     }
+    
 }
