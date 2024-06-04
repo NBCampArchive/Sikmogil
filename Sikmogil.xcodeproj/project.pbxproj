@@ -83,7 +83,6 @@
 		B54ABFED2C0D7370002E89DC /* UIColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
 		B54ABFF02C0DE03D002E89DC /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		B54ABFF42C0DE1CD002E89DC /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
-		B54ABFF62C0F05F7002E89DC /* Sikmogil.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Sikmogil.entitlements; sourceTree = "<group>"; };
 		B54ABFF72C0F0DC7002E89DC /* LoginAPIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginAPIManager.swift; sourceTree = "<group>"; };
 		B54ABFF92C0F0F65002E89DC /* LoginModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginModel.swift; sourceTree = "<group>"; };
 		B54AC0092C0F48A5002E89DC /* SikmogilPlist.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = SikmogilPlist.plist; sourceTree = "<group>"; };
@@ -133,7 +132,6 @@
 		B54ABF862C09BD43002E89DC /* Sikmogil */ = {
 			isa = PBXGroup;
 			children = (
-				B54ABFF62C0F05F7002E89DC /* Sikmogil.entitlements */,
 				B54ABFB52C0CB57B002E89DC /* Application */,
 				B54ABFB62C0CB587002E89DC /* Model */,
 				B54ABFB92C0CB5AB002E89DC /* Services */,
@@ -610,7 +608,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.nbcampArchive.Sikmogil;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Sikmogil.teamSparta;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -644,7 +642,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.nbcampArchive.Sikmogil;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Sikmogil.teamSparta;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
