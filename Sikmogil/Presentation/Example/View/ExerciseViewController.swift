@@ -121,8 +121,10 @@ class ExerciseViewController: UIViewController {
         super.viewDidLoad()
         setupViews()
         setupConstraints()
+        setupButton()
     }
     
+    // MARK: - Setup View
     private func setupViews() {
         view.backgroundColor = .white
         customCircularProgressBar.progress = 0.6
@@ -216,6 +218,16 @@ class ExerciseViewController: UIViewController {
             $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottomMargin).inset(26)
             $0.height.equalTo(60)
         }
+    }
+    
+    // MARK: - Setup Button
+    private func setupButton() {
+        startExerciseButton.addTarget(self, action: #selector(startExerciseButtonTapped), for: .touchUpInside)
+    }
+    
+    @objc private func startExerciseButtonTapped() {
+        let exerciseSelectionVC = ExerciseSelectionViewController()
+        navigationController?.pushViewController(exerciseSelectionVC, animated: true)
     }
 }
 
