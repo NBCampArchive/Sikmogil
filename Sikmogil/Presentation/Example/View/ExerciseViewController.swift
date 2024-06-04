@@ -112,6 +112,7 @@ class ExerciseViewController: UIViewController {
         let tableView = UITableView()
         tableView.backgroundColor = .clear
         tableView.isScrollEnabled = false
+        tableView.separatorStyle = .none
         return tableView
     }()
     
@@ -192,20 +193,22 @@ class ExerciseViewController: UIViewController {
         
         tableView.snp.makeConstraints {
             $0.top.equalTo(historyLabel.snp.bottom).offset(16)
-            $0.leading.trailing.equalTo(contentView).inset(16)
-            $0.height.equalTo(800) // 임시 높이 (셀 10개 x 80)
+            $0.leading.trailing.equalTo(contentView)
+            $0.height.equalTo(tableView.contentSize.height)
         }
         
         // 테이블 뷰의 높이 설정
         tableView.layoutIfNeeded()
-        let tableViewHeight = tableView.contentSize.height
+        let tableViewHeight = 10 * 88
+        // TODO: 데이터 개수 넣어서 높이 설정하기
+        
         tableView.snp.updateConstraints {
             $0.height.equalTo(tableViewHeight)
         }
         
         // contentView의 높이 설정
         contentView.snp.makeConstraints {
-            $0.bottom.equalTo(tableView.snp.bottom).offset(16)
+            $0.bottom.equalTo(tableView.snp.bottom).offset(100)
         }
         
         startExerciseButton.snp.makeConstraints {
@@ -219,7 +222,7 @@ class ExerciseViewController: UIViewController {
 // MARK: - UITableView
 extension ExerciseViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5
+        return 10
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -228,15 +231,11 @@ extension ExerciseViewController: UITableViewDelegate, UITableViewDataSource {
         }
         
         cell.configure(with: UIImage.exercise, exercise: "운동 종목 \(indexPath.row + 1)", calories: "\(100 * (indexPath.row + 1)) kcal")
+        
         return cell
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 80
+        return 88
     }
 }
-
-#Preview{
-    ExerciseViewController()
-}
-
