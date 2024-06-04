@@ -39,28 +39,28 @@ class ProfileTableViewCell: UITableViewCell {
         contentView.addSubview(arrowImageView)
         contentView.addSubview(separator)
 
-        iconImageView.snp.makeConstraints { make in
-            make.centerY.equalToSuperview()
-            make.left.equalToSuperview().offset(16)
-            make.width.height.equalTo(24)
+        iconImageView.snp.makeConstraints {
+            $0.centerY.equalToSuperview()
+            $0.left.equalToSuperview().offset(16)
+            $0.width.height.equalTo(24)
         }
 
-        titleLabel.snp.makeConstraints { make in
-            make.centerY.equalToSuperview()
-            make.left.equalTo(iconImageView.snp.right).offset(16)
+        titleLabel.snp.makeConstraints {
+            $0.centerY.equalToSuperview()
+            $0.left.equalTo(iconImageView.snp.right).offset(16)
         }
 
-        arrowImageView.snp.makeConstraints { make in
-            make.centerY.equalToSuperview()
-            make.right.equalToSuperview().offset(-16)
-            make.width.height.equalTo(16)
+        arrowImageView.snp.makeConstraints {
+            $0.centerY.equalToSuperview()
+            $0.right.equalToSuperview().offset(-16)
+            $0.width.height.equalTo(16)
         }
 
-        separator.snp.makeConstraints { make in
-            make.height.equalTo(1)
-            make.left.equalToSuperview().offset(16)
-            make.right.equalToSuperview().offset(-16)
-            make.bottom.equalToSuperview()
+        separator.snp.makeConstraints {
+            $0.height.equalTo(1)
+            $0.left.equalToSuperview().offset(16)
+            $0.right.equalToSuperview().offset(-16)
+            $0.bottom.equalToSuperview()
         }
     }
 
