@@ -77,12 +77,14 @@ class ExerciseSelectionViewController: UIViewController {
     
     private let expectedLabel: UILabel = {
         let label = UILabel()
-        label.text = "예상 소모 칼로리는 0kcal예요"
-        label.font = Suite.semiBold.of(size: 20)
         label.textAlignment = .center
+        let fullText = "예상 소모 칼로리는 0kcal예요"
+        let font = Suite.semiBold.of(size: 20)
+        let changeText = "0kcal"
+        let color = UIColor.appGreen
+        label.setAttributedText(fullText: fullText, changeText: changeText, color: color, font: font)
         return label
     }()
-    
     
     private let recordButton: UIButton = {
         let button = UIButton(type: .system)
