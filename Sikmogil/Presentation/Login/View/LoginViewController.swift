@@ -111,7 +111,7 @@ class LoginViewController: UIViewController {
     }
     
     @objc private func didTapGoogleSignIn() {
-        viewModel.signInWithGoogle()
+        viewModel.signInWithGoogle(presentingViewController: self)
     }
 }
 
