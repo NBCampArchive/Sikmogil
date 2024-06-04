@@ -40,6 +40,17 @@
 		B54ABFE92C0D69CD002E89DC /* Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABFE82C0D69CD002E89DC /* Font.swift */; };
 		B54ABFEC2C0D6BA6002E89DC /* BottomTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABFEB2C0D6BA6002E89DC /* BottomTabBarController.swift */; };
 		B54ABFEE2C0D7370002E89DC /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABFED2C0D7370002E89DC /* UIColorExtension.swift */; };
+		B54ABFF12C0DE03D002E89DC /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABFF02C0DE03D002E89DC /* LoginViewController.swift */; };
+		B54ABFF52C0DE1CD002E89DC /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABFF42C0DE1CD002E89DC /* LoginViewModel.swift */; };
+		B54ABFF82C0F0DC7002E89DC /* LoginAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABFF72C0F0DC7002E89DC /* LoginAPIManager.swift */; };
+		B54ABFFA2C0F0F65002E89DC /* LoginModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABFF92C0F0F65002E89DC /* LoginModel.swift */; };
+		B54ABFFD2C0F1CA3002E89DC /* RxBlocking in Frameworks */ = {isa = PBXBuildFile; productRef = B54ABFFC2C0F1CA3002E89DC /* RxBlocking */; };
+		B54ABFFF2C0F1CA3002E89DC /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = B54ABFFE2C0F1CA3002E89DC /* RxCocoa */; };
+		B54AC0012C0F1CA3002E89DC /* RxRelay in Frameworks */ = {isa = PBXBuildFile; productRef = B54AC0002C0F1CA3002E89DC /* RxRelay */; };
+		B54AC0032C0F1CA3002E89DC /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = B54AC0022C0F1CA3002E89DC /* RxSwift */; };
+		B54AC0082C0F45DF002E89DC /* KeychainSwift in Frameworks */ = {isa = PBXBuildFile; productRef = B54AC0072C0F45DF002E89DC /* KeychainSwift */; };
+		B54AC00A2C0F48A5002E89DC /* SikmogilPlist.plist in Resources */ = {isa = PBXBuildFile; fileRef = B54AC0092C0F48A5002E89DC /* SikmogilPlist.plist */; };
+		B54AC00C2C0F48D1002E89DC /* SikmogilBundle++.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54AC00B2C0F48D1002E89DC /* SikmogilBundle++.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -70,6 +81,13 @@
 		B54ABFE82C0D69CD002E89DC /* Font.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Font.swift; sourceTree = "<group>"; };
 		B54ABFEB2C0D6BA6002E89DC /* BottomTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomTabBarController.swift; sourceTree = "<group>"; };
 		B54ABFED2C0D7370002E89DC /* UIColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
+		B54ABFF02C0DE03D002E89DC /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		B54ABFF42C0DE1CD002E89DC /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
+		B54ABFF62C0F05F7002E89DC /* Sikmogil.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Sikmogil.entitlements; sourceTree = "<group>"; };
+		B54ABFF72C0F0DC7002E89DC /* LoginAPIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginAPIManager.swift; sourceTree = "<group>"; };
+		B54ABFF92C0F0F65002E89DC /* LoginModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginModel.swift; sourceTree = "<group>"; };
+		B54AC0092C0F48A5002E89DC /* SikmogilPlist.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = SikmogilPlist.plist; sourceTree = "<group>"; };
+		B54AC00B2C0F48D1002E89DC /* SikmogilBundle++.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SikmogilBundle++.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,13 +96,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				B54ABFA62C0CB43A002E89DC /* Alamofire in Frameworks */,
+				B54ABFFD2C0F1CA3002E89DC /* RxBlocking in Frameworks */,
+				B54ABFFF2C0F1CA3002E89DC /* RxCocoa in Frameworks */,
 				B54ABFB42C0CB507002E89DC /* FloatingPanel in Frameworks */,
 				B54ABFA32C0CB42B002E89DC /* Kingfisher in Frameworks */,
+				B54AC0082C0F45DF002E89DC /* KeychainSwift in Frameworks */,
 				B54ABFB12C0CB476002E89DC /* GoogleSignInSwift in Frameworks */,
+				B54AC0032C0F1CA3002E89DC /* RxSwift in Frameworks */,
 				B54ABFA02C0CB41A002E89DC /* DGCharts in Frameworks */,
 				B54ABFA92C0CB447002E89DC /* Then in Frameworks */,
 				B54ABFAC2C0CB459002E89DC /* SnapKit in Frameworks */,
 				B54ABFAF2C0CB476002E89DC /* GoogleSignIn in Frameworks */,
+				B54AC0012C0F1CA3002E89DC /* RxRelay in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -110,6 +133,7 @@
 		B54ABF862C09BD43002E89DC /* Sikmogil */ = {
 			isa = PBXGroup;
 			children = (
+				B54ABFF62C0F05F7002E89DC /* Sikmogil.entitlements */,
 				B54ABFB52C0CB57B002E89DC /* Application */,
 				B54ABFB62C0CB587002E89DC /* Model */,
 				B54ABFB92C0CB5AB002E89DC /* Services */,
@@ -135,6 +159,7 @@
 			isa = PBXGroup;
 			children = (
 				B54ABFB72C0CB595002E89DC /* Model.swift */,
+				B54ABFF92C0F0F65002E89DC /* LoginModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -152,6 +177,7 @@
 			isa = PBXGroup;
 			children = (
 				B54ABFBC2C0CB60D002E89DC /* Network.swift */,
+				B54ABFF72C0F0DC7002E89DC /* LoginAPIManager.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -167,6 +193,7 @@
 		B54ABFC02C0CB666002E89DC /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
+				B54ABFEF2C0DE020002E89DC /* Login */,
 				B54ABFEA2C0D6B8B002E89DC /* TabBar */,
 				B54ABFC12C0CB672002E89DC /* Example */,
 			);
@@ -204,6 +231,7 @@
 				B54ABFD82C0D6892002E89DC /* Fonts */,
 				B54ABF932C09BD47002E89DC /* Assets.xcassets */,
 				B54ABF982C09BD47002E89DC /* Info.plist */,
+				B54AC0092C0F48A5002E89DC /* SikmogilPlist.plist */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -221,6 +249,7 @@
 		B54ABFC82C0CB75A002E89DC /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				B54AC00B2C0F48D1002E89DC /* SikmogilBundle++.swift */,
 				B54ABFCA2C0CB770002E89DC /* Extension.swift */,
 				B54ABFCE2C0CBB59002E89DC /* UIViewExtensions.swift */,
 				B54ABFED2C0D7370002E89DC /* UIColorExtension.swift */,
@@ -284,6 +313,31 @@
 			path = TabBar;
 			sourceTree = "<group>";
 		};
+		B54ABFEF2C0DE020002E89DC /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				B54ABFF32C0DE048002E89DC /* ViewModel */,
+				B54ABFF22C0DE041002E89DC /* View */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		B54ABFF22C0DE041002E89DC /* View */ = {
+			isa = PBXGroup;
+			children = (
+				B54ABFF02C0DE03D002E89DC /* LoginViewController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		B54ABFF32C0DE048002E89DC /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				B54ABFF42C0DE1CD002E89DC /* LoginViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -309,6 +363,11 @@
 				B54ABFAE2C0CB476002E89DC /* GoogleSignIn */,
 				B54ABFB02C0CB476002E89DC /* GoogleSignInSwift */,
 				B54ABFB32C0CB507002E89DC /* FloatingPanel */,
+				B54ABFFC2C0F1CA3002E89DC /* RxBlocking */,
+				B54ABFFE2C0F1CA3002E89DC /* RxCocoa */,
+				B54AC0002C0F1CA3002E89DC /* RxRelay */,
+				B54AC0022C0F1CA3002E89DC /* RxSwift */,
+				B54AC0072C0F45DF002E89DC /* KeychainSwift */,
 			);
 			productName = Sikmogil;
 			productReference = B54ABF842C09BD43002E89DC /* Sikmogil.app */;
@@ -346,6 +405,8 @@
 				B54ABFAA2C0CB459002E89DC /* XCRemoteSwiftPackageReference "SnapKit" */,
 				B54ABFAD2C0CB476002E89DC /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
 				B54ABFB22C0CB506002E89DC /* XCRemoteSwiftPackageReference "FloatingPanel" */,
+				B54ABFFB2C0F1CA3002E89DC /* XCRemoteSwiftPackageReference "RxSwift" */,
+				B54AC0062C0F45DF002E89DC /* XCRemoteSwiftPackageReference "keychain-swift" */,
 			);
 			productRefGroup = B54ABF852C09BD43002E89DC /* Products */;
 			projectDirPath = "";
@@ -369,6 +430,7 @@
 				B54ABFE12C0D68CF002E89DC /* SUITE-Bold.ttf in Resources */,
 				B54ABFE02C0D68CF002E89DC /* SUITE-Light.ttf in Resources */,
 				B54ABF942C09BD47002E89DC /* Assets.xcassets in Resources */,
+				B54AC00A2C0F48A5002E89DC /* SikmogilPlist.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -380,6 +442,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				B54ABFEE2C0D7370002E89DC /* UIColorExtension.swift in Sources */,
+				B54ABFFA2C0F0F65002E89DC /* LoginModel.swift in Sources */,
+				B54AC00C2C0F48D1002E89DC /* SikmogilBundle++.swift in Sources */,
 				B54ABFCF2C0CBB59002E89DC /* UIViewExtensions.swift in Sources */,
 				B54ABFCB2C0CB770002E89DC /* Extension.swift in Sources */,
 				B54ABFE92C0D69CD002E89DC /* Font.swift in Sources */,
@@ -387,14 +451,17 @@
 				B54ABF922C09BD43002E89DC /* Sikmogil.xcdatamodeld in Sources */,
 				B54ABFCD2C0CB78F002E89DC /* Helpers.swift in Sources */,
 				B54ABFBD2C0CB60D002E89DC /* Network.swift in Sources */,
+				B54ABFF12C0DE03D002E89DC /* LoginViewController.swift in Sources */,
 				B54ABFD72C0CC281002E89DC /* CustomCircularProgressBar.swift in Sources */,
 				B54ABF8C2C09BD43002E89DC /* ViewController.swift in Sources */,
 				B54ABF882C09BD43002E89DC /* AppDelegate.swift in Sources */,
 				B54ABF8A2C09BD43002E89DC /* SceneDelegate.swift in Sources */,
 				B54ABFD12C0CBC55002E89DC /* DateHelper.swift in Sources */,
+				B54ABFF82C0F0DC7002E89DC /* LoginAPIManager.swift in Sources */,
 				B54ABFEC2C0D6BA6002E89DC /* BottomTabBarController.swift in Sources */,
 				B54ABFC52C0CB6AB002E89DC /* ViewModel.swift in Sources */,
 				B54ABFBF2C0CB639002E89DC /* PersistentStorage.swift in Sources */,
+				B54ABFF52C0DE1CD002E89DC /* LoginViewModel.swift in Sources */,
 				B54ABFD52C0CBE86002E89DC /* CircularProgressBar.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -526,9 +593,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Sikmogil/Sikmogil.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 8B78U37C85;
+				DEVELOPMENT_TEAM = T7U9UX39U3;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Sikmogil/Resources/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -559,9 +627,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Sikmogil/Sikmogil.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 8B78U37C85;
+				DEVELOPMENT_TEAM = T7U9UX39U3;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Sikmogil/Resources/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -667,6 +736,22 @@
 				minimumVersion = 2.8.2;
 			};
 		};
+		B54ABFFB2C0F1CA3002E89DC /* XCRemoteSwiftPackageReference "RxSwift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ReactiveX/RxSwift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.7.1;
+			};
+		};
+		B54AC0062C0F45DF002E89DC /* XCRemoteSwiftPackageReference "keychain-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/evgenyneu/keychain-swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 24.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -709,6 +794,31 @@
 			isa = XCSwiftPackageProductDependency;
 			package = B54ABFB22C0CB506002E89DC /* XCRemoteSwiftPackageReference "FloatingPanel" */;
 			productName = FloatingPanel;
+		};
+		B54ABFFC2C0F1CA3002E89DC /* RxBlocking */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B54ABFFB2C0F1CA3002E89DC /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxBlocking;
+		};
+		B54ABFFE2C0F1CA3002E89DC /* RxCocoa */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B54ABFFB2C0F1CA3002E89DC /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxCocoa;
+		};
+		B54AC0002C0F1CA3002E89DC /* RxRelay */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B54ABFFB2C0F1CA3002E89DC /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxRelay;
+		};
+		B54AC0022C0F1CA3002E89DC /* RxSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B54ABFFB2C0F1CA3002E89DC /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxSwift;
+		};
+		B54AC0072C0F45DF002E89DC /* KeychainSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B54AC0062C0F45DF002E89DC /* XCRemoteSwiftPackageReference "keychain-swift" */;
+			productName = KeychainSwift;
 		};
 /* End XCSwiftPackageProductDependency section */
 
