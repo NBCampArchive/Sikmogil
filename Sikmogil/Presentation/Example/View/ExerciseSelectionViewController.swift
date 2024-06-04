@@ -6,24 +6,184 @@
 //
 
 import UIKit
+import SnapKit
 
 class ExerciseSelectionViewController: UIViewController {
+    
+    private let exerciseLabel: UILabel = {
+        let label = UILabel()
+        label.text = "운동 종목"
+        label.font = Suite.semiBold.of(size: 20)
+        return label
+    }()
+    
+    private let timeLabel: UILabel = {
+        let label = UILabel()
+        label.text = "운동 시간"
+        label.font = Suite.semiBold.of(size: 20)
+        return label
+    }()
+    
+    private let intensityLabel: UILabel = {
+        let label = UILabel()
+        label.text = "운동 강도"
+        label.font = Suite.semiBold.of(size: 20)
+        return label
+    }()
+    
+    private let lightButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("가볍게", for: .normal)
+        button.titleLabel?.font =  Suite.medium.of(size: 14)
+        button.backgroundColor = .clear
+        button.layer.borderWidth = 1
+        button.tintColor = .customBlack
+        button.layer.borderColor = UIColor.appDarkGray.cgColor
+        button.layer.cornerRadius = 16
+        return button
+    }()
+    
+    private let moderateButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("적당히", for: .normal)
+        button.titleLabel?.font =  Suite.medium.of(size: 14)
+        button.backgroundColor = .clear
+        button.layer.borderWidth = 1
+        button.tintColor = .customBlack
+        button.layer.borderColor = UIColor.appDarkGray.cgColor
+        button.layer.cornerRadius = 16
+        return button
+    }()
+    
+    private let intenseButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("격하게", for: .normal)
+        button.titleLabel?.font =  Suite.medium.of(size: 14)
+        button.backgroundColor = .clear
+        button.layer.borderWidth = 1
+        button.tintColor = .customBlack
+        button.layer.borderColor = UIColor.appDarkGray.cgColor
+        button.layer.cornerRadius = 16
+        return button
+    }()
 
+    private let intensityStackView: UIStackView = {
+       let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.spacing = 10
+        stackView.distribution = .fillEqually
+        return stackView
+    }()
+    
+    private let expectedLabel: UILabel = {
+        let label = UILabel()
+        label.text = "예상 소모 칼로리는 0kcal예요"
+        label.font = Suite.semiBold.of(size: 20)
+        label.textAlignment = .center
+        return label
+    }()
+    
+    
+    private let recordButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("기록하기", for: .normal)
+        button.titleLabel?.font = Suite.bold.of(size: 18)
+        button.backgroundColor = .customBlack
+        button.tintColor = .white
+        button.layer.cornerRadius = 16
+        return button
+    }()
+    
+    private let measurementButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("측정하기", for: .normal)
+        button.titleLabel?.font = Suite.bold.of(size: 18)
+        button.backgroundColor = .clear
+        button.tintColor = .customBlack
+        button.layer.borderWidth = 2
+        button.layer.borderColor = UIColor.appBlack.cgColor
+        button.layer.cornerRadius = 16
+        return button
+    }()
+    
+    private let buttonStackView: UIStackView = {
+       let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.spacing = 8
+        stackView.distribution = .fillEqually
+        return stackView
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        setupViews()
+        setupConstraints()
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    private func setupViews() {
+        view.backgroundColor = .white
+        
+        view.addSubviews(exerciseLabel, timeLabel, intensityLabel, exerciseLabel, intensityStackView, expectedLabel, buttonStackView)
+        intensityStackView.addArrangedSubviews(lightButton, moderateButton, intenseButton)
+        buttonStackView.addArrangedSubviews(recordButton, measurementButton)
     }
-    */
-
+    
+    private func setupConstraints() {
+        exerciseLabel.snp.makeConstraints {
+            $0.top.equalTo(view.safeAreaLayoutGuide).offset(80)
+            $0.leading.trailing.equalToSuperview().inset(32)
+        }
+        
+        timeLabel.snp.makeConstraints {
+            $0.top.equalTo(exerciseLabel.snp.bottom).offset(66)
+            $0.leading.equalToSuperview().inset(32)
+        }
+        
+        intensityLabel.snp.makeConstraints {
+            $0.top.equalTo(timeLabel.snp.bottom).offset(66)
+            $0.leading.equalToSuperview().inset(32)
+        }
+        
+        intensityStackView.snp.makeConstraints {
+            $0.centerY.equalTo(intensityLabel)
+            $0.trailing.equalToSuperview().inset(40)
+        }
+        
+        lightButton.snp.makeConstraints {
+            $0.width.equalTo(62)
+            $0.height.equalTo(32)
+        }
+        
+        expectedLabel.snp.makeConstraints {
+            $0.top.equalTo(intensityLabel.snp.bottom).inset(-88)
+            $0.centerX.equalToSuperview()
+        }
+       
+        buttonStackView.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview().inset(16)
+            $0.height.equalTo(60)
+            $0.bottom.equalTo(view.safeAreaLayoutGuide).inset(32)
+        }
+    }
+    
+    // MARK: - Setup Buttons
+    private func setupButtons() {
+        lightButton.addTarget(self, action: #selector(intensityButtonTapped(_:)), for: .touchUpInside)
+        moderateButton.addTarget(self, action: #selector(intensityButtonTapped(_:)), for: .touchUpInside)
+        intenseButton.addTarget(self, action: #selector(intensityButtonTapped(_:)), for: .touchUpInside)
+    }
+    
+    @objc private func intensityButtonTapped(_ sender: UIButton) {
+        [lightButton, moderateButton, intenseButton].forEach {
+            $0.backgroundColor = .systemGray5
+        }
+        
+        sender.backgroundColor = .customBlack
+    }
+    
+    
 }
+    
+//#Preview {
+//    ExerciseSelectionViewController()
+//}
