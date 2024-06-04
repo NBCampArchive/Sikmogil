@@ -118,6 +118,7 @@ class ExerciseSelectionViewController: UIViewController {
         super.viewDidLoad()
         setupViews()
         setupConstraints()
+        setupButtons()
     }
     
     private func setupViews() {
@@ -171,19 +172,36 @@ class ExerciseSelectionViewController: UIViewController {
         lightButton.addTarget(self, action: #selector(intensityButtonTapped(_:)), for: .touchUpInside)
         moderateButton.addTarget(self, action: #selector(intensityButtonTapped(_:)), for: .touchUpInside)
         intenseButton.addTarget(self, action: #selector(intensityButtonTapped(_:)), for: .touchUpInside)
+       
+        recordButton.addTarget(self, action: #selector(startButtonTapped(_:)), for: .touchUpInside)
+        measurementButton.addTarget(self, action: #selector(startButtonTapped(_:)), for: .touchUpInside)
     }
     
     @objc private func intensityButtonTapped(_ sender: UIButton) {
+        print("\(sender.currentTitle ?? "") Button tapped")
         [lightButton, moderateButton, intenseButton].forEach {
-            $0.backgroundColor = .systemGray5
+            $0.backgroundColor = .clear
+            $0.tintColor = .customBlack
+            $0.layer.borderColor = UIColor.appDarkGray.cgColor
         }
         
         sender.backgroundColor = .customBlack
+        sender.tintColor = .white
+        sender.layer.borderColor = UIColor.clear.cgColor
     }
     
+    @objc private func startButtonTapped(_ sender: UIButton) {
+        print("\(sender.currentTitle ?? "") Button tapped")
+        [recordButton, measurementButton].forEach {
+            $0.backgroundColor = .clear
+            $0.tintColor = .customBlack
+            $0.layer.borderColor = UIColor.appDarkGray.cgColor
+            $0.layer.borderWidth = 2
+        }
+        
+        sender.backgroundColor = .customBlack
+        sender.tintColor = .white
+        sender.layer.borderColor = UIColor.clear.cgColor
+    }
     
 }
-    
-//#Preview {
-//    ExerciseSelectionViewController()
-//}
