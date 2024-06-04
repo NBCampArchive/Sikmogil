@@ -14,12 +14,19 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     let scrollView = UIScrollView()
     let contentView = UIView()
     
-    // Top bar elements
+    // 몸무게, 키, 성별 각각의 스택뷰
+    let weightview = UIStackView() // 몸무게
+    let heightView = UIStackView() // 키
+    let genderView = UIStackView() // 성별
+    
+    // 최상단영역
     let topBar = UIView()
     let profileLabel = UILabel().then {
         $0.text = "프로필"
         $0.font = Suite.bold.of(size: 24)
     }
+    
+    // 톱니바퀴
     let settingsButton = UIButton().then {
         $0.setImage(UIImage(systemName: "gearshape"), for: .normal)
     }
@@ -28,20 +35,21 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         $0.image = UIImage(named: "defaultProfileImage") // 임의의 프로필 이미지
         $0.contentMode = .scaleAspectFill
         $0.clipsToBounds = true
-        $0.layer.cornerRadius = 50 // 원형 이미지
+        $0.layer.cornerRadius = 50
         $0.isUserInteractionEnabled = true
     }
     
+    // 레벨 배경
     let levelBadgeView = UIImageView().then {
-        $0.image = UIImage(named: "levelbar") // 'levelbar' 이미지 사용
-        $0.contentMode = .scaleAspectFit // 콘텐츠 모드 설정
-        $0.clipsToBounds = true // 뷰 경계에 따라 클리핑
+        $0.image = UIImage(named: "levelbar")
     }
 
     let levelIconImageView = UIImageView().then {
         $0.image = UIImage(systemName: "crown.fill")
         $0.tintColor = UIColor(named: "appGreen")
-        $0.contentMode = .scaleAspectFit
+        $0.snp.makeConstraints {
+            $0.width.height.equalTo(12)
+        }
     }
     
     let levelBadgeLabel = UILabel().then {
@@ -69,6 +77,11 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         $0.layer.shadowOffset = CGSize(width: 0, height: 1)
         $0.layer.shadowRadius = 4
     }
+    
+    
+    
+    
+    
     let weightTitleLabel = UILabel().then {
         $0.text = "몸무게"
         $0.font = Suite.regular.of(size: 14)
@@ -140,14 +153,13 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         [weightTitleLabel, weightLabel, heightTitleLabel, heightLabel, genderTitleLabel, genderLabel, separator1, separator2].forEach {
             infoView.addSubview($0)
         }
-        
-        
         setupConstraints()
     }
     
     private func setupConstraints() {
         scrollView.snp.makeConstraints {
             $0.edges.equalTo(view.safeAreaLayoutGuide)
+//            $0.height.equalTo(800)
         }
         
         contentView.snp.makeConstraints {
@@ -181,20 +193,17 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         levelBadgeView.snp.makeConstraints {
             $0.bottom.equalTo(profileImageView.snp.bottom).offset(10)
             $0.centerX.equalTo(profileImageView.snp.right).offset(-50)
-            $0.height.equalTo(40) // 높이를 더 주어 레이아웃 조정
-            $0.width.equalTo(58)
+            $0.height.equalTo(23) // 높이를 더 주어 레이아웃 조정
+            $0.width.equalTo(60)
         }
         
         levelStackView.snp.makeConstraints {
             $0.edges.equalToSuperview().inset(4)
         }
         
-        levelIconImageView.snp.makeConstraints {
-            $0.width.height.equalTo(12) // 아이콘 크기 조정
-        }
-        
         levelBadgeLabel.snp.makeConstraints {
-            $0.height.equalTo(levelIconImageView)
+            $0.height.equalToSuperview()
+//            $0.leading.equalToSuperview()
         }
         
         nameLabel.snp.makeConstraints {
@@ -204,7 +213,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         }
         
         infoView.snp.makeConstraints {
-            $0.top.equalTo(profileImageView.snp.bottom).offset(20)
+            $0.top.equalTo(profileImageView.snp.bottom).offset(30)
             $0.left.equalTo(contentView).offset(16)
             $0.right.equalTo(contentView).offset(-16)
             $0.height.equalTo(80)
@@ -234,38 +243,40 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         
         genderTitleLabel.snp.makeConstraints {
             $0.top.equalTo(infoView).offset(16)
-            $0.right.equalTo(infoView).offset(-43)
+            $0.right.equalTo(infoView).offset(-50)
         }
         
         genderLabel.snp.makeConstraints {
             $0.top.equalTo(genderTitleLabel.snp.bottom).offset(4)
-            $0.right.equalTo(infoView).offset(-35)
+            $0.right.equalTo(infoView).offset(-45)
             $0.bottom.equalTo(infoView).offset(-16)
         }
         
-        separator1.snp.makeConstraints { make in
-            make.centerX.equalTo(infoView.snp.left).offset(119.33)
-            make.top.equalTo(infoView).offset(16)
-            make.bottom.equalTo(infoView).offset(-16)
-            make.width.equalTo(1)
+        // 선
+        separator1.snp.makeConstraints {
+            $0.centerX.equalTo(infoView.snp.left).offset(119.33)
+            $0.top.equalTo(infoView).offset(16)
+            $0.bottom.equalTo(infoView).offset(-16)
+            $0.width.equalTo(1)
         }
         
-        separator2.snp.makeConstraints { make in
-            make.centerX.equalTo(infoView.snp.left).offset(119.33 * 2)
-            make.top.equalTo(infoView).offset(16)
-            make.bottom.equalTo(infoView).offset(-16)
-            make.width.equalTo(1)
+        // 선
+        separator2.snp.makeConstraints {
+            $0.centerX.equalTo(infoView.snp.left).offset(119.33 * 2)
+            $0.top.equalTo(infoView).offset(16)
+            $0.bottom.equalTo(infoView).offset(-16)
+            $0.width.equalTo(1)
         }
         
         tableView.snp.makeConstraints {
-            $0.top.equalTo(infoView.snp.bottom).offset(20)
+            $0.top.equalTo(infoView.snp.bottom).offset(52)
             $0.left.equalTo(contentView).offset(16)
             $0.right.equalTo(contentView).offset(-16)
-            $0.height.equalTo(150) // 임의의 높이, 실제 데이터에 따라 조정 필요
+            $0.height.equalTo(150) // 임의의 높이
         }
         
         logoutButton.snp.makeConstraints {
-            $0.top.equalTo(tableView.snp.bottom).offset(20)
+//            $0.top.equalTo(contentView).offset(20)
             $0.centerX.equalTo(contentView)
             $0.bottom.equalTo(contentView).offset(-20)
         }
