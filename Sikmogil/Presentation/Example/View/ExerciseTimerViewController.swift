@@ -43,13 +43,15 @@ class ExerciseTimerViewController: UIViewController {
         return button
     }()
     
-    
+    // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
         setupConstraints()
+        setupButton()
     }
     
+    // MARK: - Setup View
     private func setupViews() {
         view.backgroundColor = .white
         view.addSubviews(timeLabel, stopPauseButton, statusLabel, recordButton)
@@ -76,10 +78,15 @@ class ExerciseTimerViewController: UIViewController {
             $0.height.equalTo(60)
             $0.leading.trailing.equalToSuperview().inset(16)
         }
-
     }
-}
-
-#Preview {
-    ExerciseTimerViewController()
+    
+    // MARK: - Setup Button
+    private func setupButton() {
+        recordButton.addTarget(self, action: #selector(recordButtonTapped), for: .touchUpInside)
+    }
+    
+    @objc private func recordButtonTapped() {
+        let exerciseResultVC = ExerciseResultViewController()
+        navigationController?.pushViewController(exerciseResultVC, animated: true)
+    }
 }
