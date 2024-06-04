@@ -8,10 +8,13 @@
 import UIKit
 import SnapKit
 import Then
+import RxSwift
+import RxCocoa
 
 class LoginViewController: UIViewController {
     
-    private var viewModel: LoginViewModel!
+    private let viewModel: LoginViewModelIO = LoginViewModel()
+    private let disposeBag = DisposeBag()
     
     private let appleSignInButton = UIButton(type: .system).then {
         var configuration = UIButton.Configuration.plain()
@@ -69,8 +72,6 @@ class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        viewModel = LoginViewModel()
-        
         view.backgroundColor = .white
         
         setupViews()
@@ -81,6 +82,8 @@ class LoginViewController: UIViewController {
     private func setupViews() {
         view.addSubview(buttonStackView)
         buttonStackView.addArrangedSubviews(appleSignInButton, googleSignInButton)
+        appleSignInButton.addTarget(self, action: #selector(didTapAppleSignIn), for: .touchUpInside)
+        googleSignInButton.addTarget(self, action: #selector(didTapGoogleSignIn), for: .touchUpInside)
     }
     
     private func setupConstraints() {
@@ -102,8 +105,20 @@ class LoginViewController: UIViewController {
     }
     
     private func setupBindings() {
-        appleSignInButton.addTarget(self, action: #selector(didTapAppleSignIn), for: .touchUpInside)
-        googleSignInButton.addTarget(self, action: #selector(didTapGoogleSignIn), for: .touchUpInside)
+        // ViewModel Outputs
+        viewModel.loginSuccess
+            .subscribe(onNext: {
+                print("Login succeeded")
+                print("Access Token!!: \(String(describing: LoginAPIManager.shared.keychain.get("accessToken")))")
+                self.navigateToOnboarding()
+            })
+            .disposed(by: disposeBag)
+        
+        viewModel.loginFailure
+            .subscribe(onNext: { error in
+                print("Login failed with error: \(error.localizedDescription)")
+            })
+            .disposed(by: disposeBag)
     }
     
     @objc private func didTapAppleSignIn() {
@@ -113,5 +128,10 @@ class LoginViewController: UIViewController {
     @objc private func didTapGoogleSignIn() {
         viewModel.signInWithGoogle(presentingViewController: self)
     }
+    
+    private func navigateToOnboarding() {
+        print("로그인 성공, 온보딩 화면으로 이동")
+    }
+    
 }
 
