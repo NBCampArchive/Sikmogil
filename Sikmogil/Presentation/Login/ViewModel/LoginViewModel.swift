@@ -92,7 +92,7 @@ extension LoginViewModel: ASAuthorizationControllerDelegate, ASAuthorizationCont
                 return
             }
             print("Apple ID Token: \(idTokenString)")
-            loginWithServer(idToken: idTokenString, provider: "apple")
+            self.loginWithServer(idToken: idTokenString, provider: "apple")
         }
     }
     
