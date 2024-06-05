@@ -71,6 +71,13 @@ class ExerciseViewController: UIViewController {
         return view
     }()
     
+   private let activeImage: UIImageView = {
+        let imageView  = UIImageView()
+        imageView.image = .active
+        imageView.contentMode = .scaleAspectFit
+        return imageView
+    }()
+    
     private let progressLabel: UILabel = {
         let label = UILabel()
         label.text = "활동시간 00분\n소모칼로리 0kcal"
@@ -139,6 +146,7 @@ class ExerciseViewController: UIViewController {
         contentView.addSubviews(headerStackView, descriptionLabel, progressView, historyLabel, albumButton, tableView)
         headerStackView.addArrangedSubviews(exerciseMenuButton, stepsMenuButton)
         progressView.addSubviews(customCircularProgressBar, exerciseCircleView, progressLabel)
+        exerciseCircleView.addSubview(activeImage)
     }
     
     private func setupConstraints() {
@@ -175,6 +183,11 @@ class ExerciseViewController: UIViewController {
             $0.centerX.equalToSuperview()
             $0.width.height.equalTo(80)
             $0.top.equalToSuperview().inset(60)
+        }
+        
+        activeImage.snp.makeConstraints{
+            $0.center.equalToSuperview()
+            $0.width.equalTo(30)
         }
         
         progressLabel.snp.makeConstraints {
