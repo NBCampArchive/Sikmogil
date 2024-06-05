@@ -78,7 +78,8 @@ class ExerciseSelectionViewController: UIViewController {
     
     private let expectedLabel: UILabel = {
         let label = UILabel()
-        label.textAlignment = .center
+        label.textColor = .customDarkGray
+        label.font = Suite.semiBold.of(size: 20)
         let fullText = "예상 소모 칼로리는 0kcal예요"
         let font = Suite.semiBold.of(size: 20)
         let changeText = "0kcal"

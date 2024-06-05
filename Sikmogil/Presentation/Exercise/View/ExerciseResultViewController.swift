@@ -9,6 +9,7 @@ import UIKit
 
 class ExerciseResultViewController: UIViewController {
 
+    // MARK: - Components
     private let scrollView = UIScrollView()
     private let contentView = UIView()
 
@@ -33,6 +34,14 @@ class ExerciseResultViewController: UIViewController {
         return label
     }()
     
+    private let cardStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.spacing = 4
+        stackView.alignment = .center
+        return stackView
+    }()
+    
     private let progressView: UIView = {
         let view = UIView()
         view.backgroundColor = .clear
@@ -47,15 +56,15 @@ class ExerciseResultViewController: UIViewController {
     
     private let progressLabel: UILabel = {
         let label = UILabel()
+        label.textColor = .customDarkGray
+        label.font = Suite.semiBold.of(size: 20)
+        label.numberOfLines = 2
+        label.textAlignment = .center
         let fullText = "예상 소모 칼로리는\n0kcal 예요"
         let font = Suite.semiBold.of(size: 20)
         let changeText = "0kcal"
         let color = UIColor.appGreen
         label.setAttributedText(fullText: fullText, changeText: changeText, color: color, font: font)
-        label.numberOfLines = 2
-        label.textAlignment = .center
-        // TODO: 텍스트 컬러 변경 customDarkGray
-
         return label
     }()
    
@@ -92,7 +101,8 @@ class ExerciseResultViewController: UIViewController {
         scrollView.addSubview(contentView)
         
         contentView.addSubviews(cardView, progressView, resultView)
-        cardView.addSubviews(checkImage, completionLabel)
+        cardStackView.addArrangedSubviews(checkImage, completionLabel)
+        cardView.addSubview(cardStackView)
         progressView.addSubviews(circularProgressBar, progressLabel)
     }
     
@@ -113,14 +123,12 @@ class ExerciseResultViewController: UIViewController {
             $0.height.equalTo(64)
         }
         
-        checkImage.snp.makeConstraints {
-            $0.centerY.equalTo(cardView)
-            $0.trailing.equalTo(completionLabel.snp.leading).inset(-16)
+        cardStackView.snp.makeConstraints {
+            $0.center.equalToSuperview()
         }
         
-        completionLabel.snp.makeConstraints {
-            $0.centerY.equalTo(cardView)
-            $0.centerX.equalTo(cardView)
+        checkImage.snp.makeConstraints {
+            $0.width.height.equalTo(24)
         }
         
         progressView.snp.makeConstraints {
@@ -153,7 +161,4 @@ class ExerciseResultViewController: UIViewController {
             $0.height.equalTo(60)
         }
     }
-}
-#Preview{
-    ExerciseResultViewController()
 }
