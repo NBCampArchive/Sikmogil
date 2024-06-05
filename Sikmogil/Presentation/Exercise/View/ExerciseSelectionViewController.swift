@@ -218,5 +218,4 @@ class ExerciseSelectionViewController: UIViewController {
         let exerciseTimerVC = ExerciseTimerViewController()
         navigationController?.pushViewController(exerciseTimerVC, animated: true)
     }
-    
 }

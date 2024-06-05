@@ -258,6 +258,3 @@ class ExerciseResultViewController: UIViewController {
         }
     }
 }
-#Preview{
-    ExerciseResultViewController()
-}
