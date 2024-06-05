@@ -11,9 +11,7 @@ import Then
 
 class Step3ViewController: UIViewController {
     
-    var viewModel: OnboardingViewModel {
-        return onboardingPageViewController!.viewModel
-    }
+    var viewModel: OnboardingViewModel?
     
     private let scrollView = UIScrollView()
     private let contentView = UIView()
@@ -98,6 +96,7 @@ class Step3ViewController: UIViewController {
     }
     
     @objc private func doneButtonTapped() {
+        guard let viewModel = viewModel else { return }
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "HH:mm"
         let selectedTime = dateFormatter.string(from: timePicker.date)
