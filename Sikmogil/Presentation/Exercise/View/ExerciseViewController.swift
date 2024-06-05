@@ -10,6 +10,7 @@ import SnapKit
 
 class ExerciseViewController: UIViewController {
     
+    // MARK: - Components
     private let scrollView = UIScrollView()
     private let contentView = UIView()
 

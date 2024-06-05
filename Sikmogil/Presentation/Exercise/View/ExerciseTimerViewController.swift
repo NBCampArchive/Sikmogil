@@ -9,6 +9,7 @@ import UIKit
 
 class ExerciseTimerViewController: UIViewController {
     
+    // MARK: - Components
     private var isPaused: Bool = true
     
     // TODO: 프로그레스 바
@@ -103,8 +104,4 @@ class ExerciseTimerViewController: UIViewController {
         let exerciseResultVC = ExerciseResultViewController()
         navigationController?.pushViewController(exerciseResultVC, animated: true)
     }
-
-}
-#Preview{
-    ExerciseTimerViewController()
 }

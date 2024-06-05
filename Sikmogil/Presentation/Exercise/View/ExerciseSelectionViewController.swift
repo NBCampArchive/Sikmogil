@@ -9,7 +9,8 @@ import UIKit
 import SnapKit
 
 class ExerciseSelectionViewController: UIViewController {
-    
+   
+    // MARK: - Components
     private let exerciseLabel: UILabel = {
         let label = UILabel()
         label.text = "운동 종목"
