@@ -117,7 +117,7 @@ class Step2ViewController: UIViewController {
             $0.height.equalTo(200)
             $0.bottom.equalToSuperview().offset(-16)
         }
-    
+        
         nextButton.snp.makeConstraints {
             $0.bottom.equalTo(view.safeAreaLayoutGuide).offset(-16)
             $0.leading.equalToSuperview().offset(16)

@@ -218,10 +218,10 @@ class Step1ViewController: UIViewController {
     
     @objc private func nextButtonTapped() {
         print("Next button tapped")
-            guard let viewModel = viewModel else {
-                print("ViewModel is nil")
-                return
-            }
+        guard let viewModel = viewModel else {
+            print("ViewModel is nil")
+            return
+        }
         viewModel.saveProfileData(nickname: nicknameTextField.text ?? "",
                                   height: heightTextField.text ?? "",
                                   weight: weightTextField.text ?? "",

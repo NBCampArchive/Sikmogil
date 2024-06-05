@@ -86,7 +86,7 @@ class Step3ViewController: UIViewController {
             $0.width.equalToSuperview().offset(-32)
             $0.bottom.equalToSuperview().offset(-32)
         }
-    
+        
         doneButton.snp.makeConstraints {
             $0.bottom.equalTo(view.safeAreaLayoutGuide).offset(-16)
             $0.leading.equalToSuperview().offset(16)
