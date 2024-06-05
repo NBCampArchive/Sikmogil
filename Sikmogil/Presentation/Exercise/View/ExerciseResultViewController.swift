@@ -70,11 +70,77 @@ class ExerciseResultViewController: UIViewController {
    
     private let resultView: UIView = {
         let view = UIView()
-        view.backgroundColor = .customLightGray
         return view
     }()
-    // TODO: resultView 컴포넌트 추가
     
+    private let runningImage: UIImageView = {
+        let imageView  = UIImageView()
+        imageView.image = .running
+        imageView.contentMode = .scaleAspectFit
+        return imageView
+    }()
+    
+    private let periodLable: UILabel = {
+        let label = UILabel()
+        label.text = "0:00 am - 0:00 am"
+        label.font = Suite.regular.of(size: 16)
+        label.textColor = .customDarkGray
+        return label
+    }()
+    
+    private let verticalLine: UIView = {
+        let view = UIView()
+        view.backgroundColor = .customDarkGray
+        return view
+    }()
+    
+    
+    private let timeStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.spacing = 4
+        return stackView
+    }()
+    
+    private let kcalStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.spacing = 4
+        return stackView
+    }()
+
+    private let timeLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Time"
+        label.font = Suite.regular.of(size: 16)
+        label.textColor = .customDarkGray
+        return label
+    }()
+
+    private let kcalLabel: UILabel = {
+        let label = UILabel()
+        label.text = "kcal"
+        label.font = Suite.regular.of(size: 16)
+        label.textColor = .customDarkGray
+        return label
+    }()
+    
+    private let timeValueLabel: UILabel = {
+        let label = UILabel()
+        label.text = "0h.00min"
+        label.font = Suite.medium.of(size: 18)
+        label.textColor = .customBlack
+        return label
+    }()
+
+    private let kcalValueLabel: UILabel = {
+        let label = UILabel()
+        label.text = "0Kcal"
+        label.font = Suite.medium.of(size: 18)
+        label.textColor = .customBlack
+        return label
+    }()
+   
     private let addButton: UIButton = {
         let button = UIButton()
         button.setTitle("추가하기", for: .normal)
@@ -99,11 +165,13 @@ class ExerciseResultViewController: UIViewController {
         
         view.addSubviews(scrollView, addButton)
         scrollView.addSubview(contentView)
-        
         contentView.addSubviews(cardView, progressView, resultView)
         cardStackView.addArrangedSubviews(checkImage, completionLabel)
         cardView.addSubview(cardStackView)
         progressView.addSubviews(circularProgressBar, progressLabel)
+        resultView.addSubviews(runningImage, periodLable, verticalLine, timeStackView, kcalStackView)
+        timeStackView.addArrangedSubviews(timeLabel, timeValueLabel)
+        kcalStackView.addArrangedSubviews(kcalLabel, kcalValueLabel)
     }
     
     private func setupConstraints() {
@@ -119,7 +187,7 @@ class ExerciseResultViewController: UIViewController {
         
         cardView.snp.makeConstraints {
             $0.leading.trailing.equalTo(contentView).inset(16)
-            $0.top.equalTo(view.safeAreaLayoutGuide).inset(16)
+            $0.top.equalToSuperview().inset(16)
             $0.height.equalTo(64)
         }
         
@@ -147,8 +215,36 @@ class ExerciseResultViewController: UIViewController {
         }
         
         resultView.snp.makeConstraints {
-            $0.height.equalTo(300)
-            $0.top.equalTo(progressView.snp.bottom).offset(30)
+            $0.leading.trailing.equalTo(contentView).inset(16)
+            $0.top.equalTo(progressView.snp.bottom).offset(40)
+        }
+        
+        runningImage.snp.makeConstraints {
+            $0.top.leading.equalToSuperview()
+            $0.width.equalTo(32)
+        }
+        
+        periodLable.snp.makeConstraints {
+            $0.centerY.equalTo(runningImage)
+            $0.leading.equalTo(runningImage.snp.trailing).offset(4)
+        }
+        
+        verticalLine.snp.makeConstraints {
+            $0.width.equalTo(1)
+            $0.height.equalTo(76)
+            $0.centerX.equalTo(runningImage)
+            $0.top.equalTo(runningImage.snp.bottom).offset(20)
+            $0.bottom.equalTo(resultView).inset(20)
+        }
+        
+        timeStackView.snp.makeConstraints {
+            $0.leading.equalTo(verticalLine).offset(20)
+            $0.centerY.equalTo(verticalLine)
+        }
+
+        kcalStackView.snp.makeConstraints {
+            $0.trailing.equalTo(resultView).inset(16)
+            $0.centerY.equalTo(verticalLine)
         }
         
         contentView.snp.makeConstraints {
@@ -161,4 +257,7 @@ class ExerciseResultViewController: UIViewController {
             $0.height.equalTo(60)
         }
     }
+}
+#Preview{
+    ExerciseResultViewController()
 }
