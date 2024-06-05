@@ -13,7 +13,7 @@ struct UserProfile {
     var weight: String?
     var gender: String?
     var targetWeight: String?
-    var toDate: Date?
-    var targetDate: Date?
+    var toDate: String?
+    var targetDate: String?
     var reminderTime: String?
 }
