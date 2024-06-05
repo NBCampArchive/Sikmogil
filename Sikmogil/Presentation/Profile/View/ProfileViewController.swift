@@ -24,35 +24,32 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     let settingsButton = UIButton().then {
         $0.setImage(UIImage(systemName: "gearshape"), for: .normal)
         $0.tintColor = .black
-        $0.frame = CGRect(x: 0, y: 0, width: 24, height: 24)
     }
     
     // 프로필 이미지
     let profileImageView = UIImageView().then {
         $0.image = UIImage(named: "profile")
-        $0.clipsToBounds = true
-        $0.layer.cornerRadius = 50
     }
     
     // 레벨배경 이미지
     let levelBadgeView = UIImageView().then {
-        $0.image = UIImage(named: "levelbar")
+        $0.layer.cornerRadius = 12
+        $0.backgroundColor = .white
+        $0.layer.borderColor = UIColor(named: "appGreen")?.cgColor
+        $0.layer.borderWidth = 1.0
     }
     
     // 레벨별 이미지
     let levelIconImageView = UIImageView().then {
         $0.image = UIImage(systemName: "crown.fill")
         $0.tintColor = UIColor(named: "appGreen")
-        $0.snp.makeConstraints {
-            $0.width.height.equalTo(12)
-        }
     }
     
     let levelBadgeLabel = UILabel().then {
         $0.text = "Lv.0"
         $0.font = Suite.regular.of(size: 10)
         $0.textColor = .black
-        $0.textAlignment = .center
+        $0.textAlignment = .right
     }
     
     let levelStackView = UIStackView().then {
@@ -95,7 +92,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     let separator1 = UIView().then {
         $0.backgroundColor = .lightGray
     }
-
+    
     let separator2 = UIView().then {
         $0.backgroundColor = .lightGray
     }
@@ -127,7 +124,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         $0.text = "남자"
         $0.font = Suite.bold.of(size: 16)
     }
-
+    
     let tableView = UITableView().then {
         $0.register(ProfileTableViewCell.self, forCellReuseIdentifier: "ProfileCell")
         $0.separatorStyle = .none
@@ -144,43 +141,44 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         setupUI()
         setupProfileImageTap()
         setupTableView()
+        settingsButton.addTarget(self, action: Selector(#settingsButtonTapped(_:)), for: .touchUpInside)
     }
     
     private func setupUI() {
-           view.backgroundColor = .white
-           view.addSubview(scrollView)
-           scrollView.addSubview(contentView)
-
-           // Add top bar elements
-           contentView.addSubview(topBar)
-           topBar.addSubview(profileLabel)
-           topBar.addSubview(settingsButton)
-
-           [profileImageView, levelBadgeView, nameLabel, infoView, tableView, logoutButton].forEach {
-               contentView.addSubview($0)
-           }
-
-           levelStackView.addArrangedSubview(levelIconImageView)
-           levelStackView.addArrangedSubview(levelBadgeLabel)
-           levelBadgeView.addSubview(levelStackView)
-
-           weightStackView.addArrangedSubview(weightTitleLabel)
-           weightStackView.addArrangedSubview(weightLabel)
-
-           heightStackView.addArrangedSubview(heightTitleLabel)
-           heightStackView.addArrangedSubview(heightLabel)
-
-           genderStackView.addArrangedSubview(genderTitleLabel)
-           genderStackView.addArrangedSubview(genderLabel)
-
-           infoView.addSubview(weightStackView)
-           infoView.addSubview(heightStackView)
-           infoView.addSubview(genderStackView)
+        view.backgroundColor = .white
+        view.addSubview(scrollView)
+        scrollView.addSubview(contentView)
+        
+        // Add top bar elements
+        contentView.addSubview(topBar)
+        topBar.addSubview(profileLabel)
+        topBar.addSubview(settingsButton)
+        
+        [profileImageView, levelBadgeView, nameLabel, infoView, tableView, logoutButton].forEach {
+            contentView.addSubview($0)
+        }
+        
+        levelStackView.addArrangedSubview(levelIconImageView)
+        levelStackView.addArrangedSubview(levelBadgeLabel)
+        levelBadgeView.addSubview(levelStackView)
+        
+        weightStackView.addArrangedSubview(weightTitleLabel)
+        weightStackView.addArrangedSubview(weightLabel)
+        
+        heightStackView.addArrangedSubview(heightTitleLabel)
+        heightStackView.addArrangedSubview(heightLabel)
+        
+        genderStackView.addArrangedSubview(genderTitleLabel)
+        genderStackView.addArrangedSubview(genderLabel)
+        
+        infoView.addSubview(weightStackView)
+        infoView.addSubview(heightStackView)
+        infoView.addSubview(genderStackView)
         infoView.addSubview(separator1)
         infoView.addSubview(separator2)
         
-           setupConstraints()
-       }
+        setupConstraints()
+    }
     
     private func setupConstraints() {
         scrollView.snp.makeConstraints {
@@ -226,6 +224,11 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         
         levelStackView.snp.makeConstraints {
             $0.edges.equalToSuperview().inset(4)
+        }
+        
+        levelIconImageView.snp.makeConstraints {
+            $0.width.height.equalTo(12)
+            //            $0.left.equalTo(levelStackView).offset(2)
         }
         
         levelBadgeLabel.snp.makeConstraints {
@@ -285,11 +288,11 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         weightTitleLabel.snp.makeConstraints {
             $0.height.equalTo(30)
         }
-
+        
         heightTitleLabel.snp.makeConstraints {
             $0.height.equalTo(30)
         }
-
+        
         genderTitleLabel.snp.makeConstraints {
             $0.height.equalTo(30)
         }
@@ -297,11 +300,11 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         weightLabel.snp.makeConstraints {
             $0.height.equalTo(30)
         }
-
+        
         heightLabel.snp.makeConstraints {
             $0.height.equalTo(30)
         }
-
+        
         genderLabel.snp.makeConstraints {
             $0.height.equalTo(30)
         }
@@ -366,5 +369,22 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         // 각 항목에 대한 동작 추가
+    }
+    @objc private func settingsButtonTapped(_ sender: UIButton) {
+        let editProfileAction = UIAction(title: "프로필 수정", image: nil) { _ in
+            self.showEditProfile()
+        }
+        
+        let notificationSettingsAction = UIAction(title: "알림 설정", image: nil) { _ in
+            self.showNotificationSettings()
+        }
+        
+        let goalSettingsAction = UIAction(title: "목표 설정", image: nil) { _ in
+            self.showGoalSettings()
+        }
+        
+        let menu = UIMenu(title: "", children: [editProfileAction, notificationSettingsAction, goalSettingsAction])
+        sender.menu = menu
+        sender.showsMenuAsPrimaryAction = true
     }
 }
