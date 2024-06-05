@@ -13,39 +13,33 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     
     let scrollView = UIScrollView()
     let contentView = UIView()
-    
-    // 몸무게, 키, 성별 각각의 스택뷰
-//    let weightview = UIStackView() // 몸무게
-//    let heightView = UIStackView() // 키
-//    let genderView = UIStackView() // 성별
-    
-    // 최상단영역
     let topBar = UIView()
+    
     let profileLabel = UILabel().then {
         $0.text = "프로필"
         $0.font = Suite.bold.of(size: 28)
     }
     
-    // 톱니바퀴
+    // 설정버튼
     let settingsButton = UIButton().then {
         $0.setImage(UIImage(systemName: "gearshape"), for: .normal)
         $0.tintColor = .black
         $0.frame = CGRect(x: 0, y: 0, width: 24, height: 24)
     }
     
+    // 프로필 이미지
     let profileImageView = UIImageView().then {
-        $0.image = UIImage(named: "defaultProfileImage") // 임의의 프로필 이미지
-        $0.contentMode = .scaleAspectFill
+        $0.image = UIImage(named: "profile")
         $0.clipsToBounds = true
         $0.layer.cornerRadius = 50
-        $0.isUserInteractionEnabled = true
     }
     
-    // 레벨 배경
+    // 레벨배경 이미지
     let levelBadgeView = UIImageView().then {
         $0.image = UIImage(named: "levelbar")
     }
-
+    
+    // 레벨별 이미지
     let levelIconImageView = UIImageView().then {
         $0.image = UIImage(systemName: "crown.fill")
         $0.tintColor = UIColor(named: "appGreen")
@@ -55,7 +49,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     }
     
     let levelBadgeLabel = UILabel().then {
-        $0.text = "Lv.10"
+        $0.text = "Lv.0"
         $0.font = Suite.regular.of(size: 10)
         $0.textColor = .black
         $0.textAlignment = .center
@@ -85,7 +79,6 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     let weightStackView = UIStackView().then {
         $0.axis = .vertical // 세로방향으로 설정
         $0.alignment = .center
-        $0.spacing = 8 // 라벨 간 간격 설정
     }
     
     let heightStackView = UIStackView().then {
@@ -96,6 +89,15 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     let genderStackView = UIStackView().then {
         $0.axis = .vertical
         $0.alignment = .center
+    }
+    
+    // 구분선 뷰 생성
+    let separator1 = UIView().then {
+        $0.backgroundColor = .lightGray
+    }
+
+    let separator2 = UIView().then {
+        $0.backgroundColor = .lightGray
     }
     
     let weightTitleLabel = UILabel().then {
@@ -174,7 +176,9 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
            infoView.addSubview(weightStackView)
            infoView.addSubview(heightStackView)
            infoView.addSubview(genderStackView)
-
+        infoView.addSubview(separator1)
+        infoView.addSubview(separator2)
+        
            setupConstraints()
        }
     
@@ -186,7 +190,6 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         contentView.snp.makeConstraints {
             $0.edges.equalTo(scrollView)
             $0.width.equalTo(scrollView)
-            $0.height.equalTo(scrollView).priority(.low)
             $0.height.equalTo(800) // 임의 스크롤 콘텐츠 뷰 설정
         }
         
@@ -201,6 +204,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
             $0.centerY.equalTo(topBar)
             $0.left.equalTo(topBar).offset(16)
         }
+        
         settingsButton.snp.makeConstraints {
             $0.centerY.equalTo(topBar)
             $0.right.equalTo(topBar).offset(-16)
@@ -234,36 +238,75 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
             $0.right.equalTo(contentView).offset(-16)
         }
         
+        // MARK: - 키, 몸무게, 성별 레이아웃 영역
         infoView.snp.makeConstraints {
             $0.top.equalTo(profileImageView.snp.bottom).offset(30)
             $0.left.equalTo(contentView).offset(16)
             $0.right.equalTo(contentView).offset(-16)
-            $0.height.equalTo(80)
+            $0.height.equalTo(100)
         }
         
         // 키, 몸무게, 성별 스택뷰 영역
-        weightStackView.snp.makeConstraints {
+        weightStackView.snp.makeConstraints { // 몸무게
             $0.left.equalTo(infoView).offset(16)
             $0.centerY.equalTo(infoView)
-            $0.width.equalTo(100)
-            $0.height.equalTo(60)
-//            $0.right.equalTo(infoView).offset(-8) // 오른쪽 선 추가
+            $0.width.equalTo(heightStackView)
         }
         
-        heightStackView.snp.makeConstraints {
+        heightStackView.snp.makeConstraints { // 키
             $0.centerX.equalTo(infoView)
             $0.centerY.equalTo(infoView)
-            $0.width.equalTo(100)
-            $0.height.equalTo(60)
+            $0.width.equalTo(genderStackView)
         }
         
-        genderStackView.snp.makeConstraints {
+        genderStackView.snp.makeConstraints { // 성별
             $0.right.equalTo(infoView).offset(-16)
             $0.centerY.equalTo(infoView)
-            $0.width.equalTo(100)
-            $0.height.equalTo(60)
+            $0.width.equalTo(weightStackView)
         }
         
+        // 구분선 뷰 제약조건 추가
+        separator1.snp.makeConstraints {
+            $0.centerY.equalTo(infoView)
+            $0.left.equalTo(weightStackView.snp.right).offset(8)
+            $0.right.equalTo(heightStackView.snp.left).offset(-8)
+            $0.width.equalTo(1)
+            $0.height.equalTo(30)
+        }
+        
+        separator2.snp.makeConstraints {
+            $0.centerY.equalTo(infoView)
+            $0.left.equalTo(heightStackView.snp.right).offset(8)
+            $0.right.equalTo(genderStackView.snp.left).offset(-8)
+            $0.width.equalTo(1)
+            $0.height.equalTo(30)
+        }
+        
+        weightTitleLabel.snp.makeConstraints {
+            $0.height.equalTo(30)
+        }
+
+        heightTitleLabel.snp.makeConstraints {
+            $0.height.equalTo(30)
+        }
+
+        genderTitleLabel.snp.makeConstraints {
+            $0.height.equalTo(30)
+        }
+        
+        weightLabel.snp.makeConstraints {
+            $0.height.equalTo(30)
+        }
+
+        heightLabel.snp.makeConstraints {
+            $0.height.equalTo(30)
+        }
+
+        genderLabel.snp.makeConstraints {
+            $0.height.equalTo(30)
+        }
+        
+        // MARK: - 테이블 레이아웃 영역
         tableView.snp.makeConstraints {
             $0.top.equalTo(infoView.snp.bottom).offset(52)
             $0.left.equalTo(contentView).offset(16)
