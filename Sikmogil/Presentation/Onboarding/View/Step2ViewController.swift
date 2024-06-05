@@ -128,7 +128,7 @@ class Step2ViewController: UIViewController {
     
     @objc private func nextButtonTapped() {
         guard let viewModel = viewModel else { return }
-        viewModel.saveTargetData(targetWeight: targetWeightTextField.text ?? "", targetDate: targetDatePicker.date)
+        viewModel.saveTargetData(targetWeight: targetWeightTextField.text ?? "", targetDate: DateHelper.shared.formatDateToYearMonthDay(targetDatePicker.date))
         
         viewModel.moveToNextPage()
     }
