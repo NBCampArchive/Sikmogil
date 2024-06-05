@@ -11,9 +11,7 @@ import Then
 
 class Step2ViewController: UIViewController {
     
-    var viewModel: OnboardingViewModel {
-        return onboardingPageViewController!.viewModel
-    }
+    var viewModel: OnboardingViewModel?
     
     private let scrollView = UIScrollView()
     private let contentView = UIView()
@@ -129,8 +127,9 @@ class Step2ViewController: UIViewController {
     }
     
     @objc private func nextButtonTapped() {
+        guard let viewModel = viewModel else { return }
         viewModel.saveTargetData(targetWeight: targetWeightTextField.text ?? "", targetDate: targetDatePicker.date)
         
-        onboardingPageViewController?.moveToNextPage()
+        viewModel.moveToNextPage()
     }
 }
