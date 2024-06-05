@@ -6,10 +6,17 @@
 //
 
 import Foundation
+import RxSwift
+import RxCocoa
 
 class OnboardingViewModel {
     var userProfile = UserProfile()
-    var currentStep = 0
+    var currentIndex = BehaviorRelay<Int>(value: 0)
+    
+    func moveToNextPage() {
+        let nextIndex = currentIndex.value + 1
+        currentIndex.accept(nextIndex)
+    }
     
     func saveProfileData(nickname: String, height: String, weight: String, gender: String) {
         userProfile.nickname = nickname
@@ -18,13 +25,13 @@ class OnboardingViewModel {
         userProfile.gender = gender
     }
     
-    func saveTargetData(targetWeight: String, targetDate: Date) {
+    func saveTargetData(targetWeight: String, targetDate: String) {
         userProfile.targetWeight = targetWeight
         userProfile.targetDate = targetDate
     }
     
     func saveReminderData(reminderTime: String) {
-        userProfile.toDate = Date()
+        userProfile.toDate = DateHelper.shared.formatDateToYearMonthDay(Date())
         userProfile.reminderTime = reminderTime
     }
     
