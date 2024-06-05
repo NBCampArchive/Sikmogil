@@ -13,7 +13,7 @@ class ProfileTableViewCell: UITableViewCell {
 
     let iconImageView = UIImageView()
     let titleLabel = UILabel().then {
-        $0.font = UIFont.systemFont(ofSize: 16)
+        $0.font = Suite.regular.of(size: 16)
         $0.textColor = .black
     }
     let arrowImageView = UIImageView().then {
@@ -57,7 +57,7 @@ class ProfileTableViewCell: UITableViewCell {
         }
 
         separator.snp.makeConstraints {
-            $0.height.equalTo(1)
+            $0.height.equalTo(1) // 선 높이
             $0.left.equalToSuperview().offset(16)
             $0.right.equalToSuperview().offset(-16)
             $0.bottom.equalToSuperview()

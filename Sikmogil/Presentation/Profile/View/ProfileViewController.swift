@@ -15,9 +15,9 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     let contentView = UIView()
     
     // 몸무게, 키, 성별 각각의 스택뷰
-    let weightview = UIStackView() // 몸무게
-    let heightView = UIStackView() // 키
-    let genderView = UIStackView() // 성별
+//    let weightview = UIStackView() // 몸무게
+//    let heightView = UIStackView() // 키
+//    let genderView = UIStackView() // 성별
     
     // 최상단영역
     let topBar = UIView()
@@ -69,6 +69,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         $0.text = "Cats Green"
         $0.font = Suite.bold.of(size: 24)
     }
+    
     let infoView = UIView().then {
         $0.backgroundColor = .white
         $0.layer.cornerRadius = 12
@@ -78,9 +79,22 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         $0.layer.shadowRadius = 4
     }
     
+    // 스택뷰로 나눔
+    let weightStackView = UIStackView().then {
+        $0.axis = .vertical // 세로방향으로 설정
+        $0.alignment = .center
+        $0.spacing = 8 // 라벨 간 간격 설정
+    }
     
+    let heightStackView = UIStackView().then {
+        $0.axis = .vertical
+        $0.alignment = .center
+    }
     
-    
+    let genderStackView = UIStackView().then {
+        $0.axis = .vertical
+        $0.alignment = .center
+    }
     
     let weightTitleLabel = UILabel().then {
         $0.text = "몸무게"
@@ -118,11 +132,12 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     let tableView = UITableView().then {
         $0.register(ProfileTableViewCell.self, forCellReuseIdentifier: "ProfileCell")
         $0.separatorStyle = .none
-        $0.rowHeight = 44 // 셀 높이를 명시적으로 설정
+        $0.rowHeight = 60 // 각 셀 높이
     }
     let logoutButton = UIButton().then {
         $0.setTitle("로그아웃", for: .normal)
-        $0.setTitleColor(.red, for: .normal)
+        $0.setTitleColor(UIColor(named: "appDarkGray"), for: .normal)
+        $0.titleLabel?.font = UIFont.systemFont(ofSize: 14)
     }
     
     override func viewDidLoad() {
@@ -159,13 +174,13 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     private func setupConstraints() {
         scrollView.snp.makeConstraints {
             $0.edges.equalTo(view.safeAreaLayoutGuide)
-//            $0.height.equalTo(800)
         }
         
         contentView.snp.makeConstraints {
             $0.edges.equalTo(scrollView)
             $0.width.equalTo(scrollView)
             $0.height.equalTo(scrollView).priority(.low)
+            $0.height.equalTo(800) // 임의 스크롤 콘텐츠 뷰 설정
         }
         
         // Top bar constraints
@@ -174,6 +189,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
             $0.left.right.equalTo(contentView)
             $0.height.equalTo(44)
         }
+        
         profileLabel.snp.makeConstraints {
             $0.centerY.equalTo(topBar)
             $0.left.equalTo(topBar).offset(16)
@@ -219,6 +235,12 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
             $0.height.equalTo(80)
         }
         
+//        weightStackView.snp.makeConstraints {
+//            $0.width.equalTo(200) // 원하는 너비 설정
+//            $0.height.greaterThanOrEqualTo(40) // 최소 높이 설정
+//            $0.center.equalToSuperview()
+//        }
+        
         weightTitleLabel.snp.makeConstraints {
             $0.top.equalTo(infoView).offset(16)
             $0.left.equalTo(infoView).offset(43)
@@ -226,7 +248,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         
         weightLabel.snp.makeConstraints {
             $0.top.equalTo(weightTitleLabel.snp.bottom).offset(4)
-            $0.left.equalTo(infoView).offset(35)
+            $0.left.equalTo(infoView).offset(40)
             $0.bottom.equalTo(infoView).offset(-16)
         }
         
@@ -248,23 +270,23 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         
         genderLabel.snp.makeConstraints {
             $0.top.equalTo(genderTitleLabel.snp.bottom).offset(4)
-            $0.right.equalTo(infoView).offset(-45)
+            $0.right.equalTo(infoView).offset(-48)
             $0.bottom.equalTo(infoView).offset(-16)
         }
         
         // 선
         separator1.snp.makeConstraints {
             $0.centerX.equalTo(infoView.snp.left).offset(119.33)
-            $0.top.equalTo(infoView).offset(16)
-            $0.bottom.equalTo(infoView).offset(-16)
+            $0.top.equalTo(infoView).offset(26)
+            $0.bottom.equalTo(infoView).offset(-26)
             $0.width.equalTo(1)
         }
         
         // 선
         separator2.snp.makeConstraints {
             $0.centerX.equalTo(infoView.snp.left).offset(119.33 * 2)
-            $0.top.equalTo(infoView).offset(16)
-            $0.bottom.equalTo(infoView).offset(-16)
+            $0.top.equalTo(infoView).offset(26)
+            $0.bottom.equalTo(infoView).offset(-26)
             $0.width.equalTo(1)
         }
         
@@ -272,7 +294,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
             $0.top.equalTo(infoView.snp.bottom).offset(52)
             $0.left.equalTo(contentView).offset(16)
             $0.right.equalTo(contentView).offset(-16)
-            $0.height.equalTo(150) // 임의의 높이
+            $0.height.equalTo(200) // 임의의 높이
         }
         
         logoutButton.snp.makeConstraints {
@@ -319,7 +341,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
             return UITableViewCell()
         }
         let titles = ["메달 확인", "작성한 게시글", "공감한 게시글"]
-        let icons = ["cup", "pencilline", "heart"] // 아이콘 이름을 설정해주세요
+        let icons = ["cup", "pencilline", "heart"]
         cell.configure(with: titles[indexPath.row], iconName: icons[indexPath.row])
         
         return cell
