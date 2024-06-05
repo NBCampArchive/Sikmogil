@@ -10,76 +10,76 @@ import SnapKit
 import Then
 
 class GoalSettingsViewController: UIViewController {
-    
-    // UI Elements
-    let goalLabel = UILabel().then {
-        $0.text = "목표 설정"
-        $0.font = UIFont.boldSystemFont(ofSize: 24)
+
+    let goalWeightLabel = UILabel().then {
+        $0.text = "목표 체중"
+        $0.font = UIFont.boldSystemFont(ofSize: 16)
     }
     
-    let descriptionLabel = UILabel().then {
-        $0.text = "목표로 하는 체중과 기간을 설정해주세요"
-        $0.font = UIFont.systemFont(ofSize: 16)
-        $0.textColor = .gray
-    }
-    
-    let weightTextField = UITextField().then {
-        $0.placeholder = "목표 체중"
+    let goalWeightTextField = UITextField().then {
         $0.borderStyle = .roundedRect
     }
     
-    let datePicker = UIDatePicker().then {
-        $0.datePickerMode = .date
-        $0.locale = Locale(identifier: "ko_KR")
-        $0.minimumDate = Date()
+    let goalDateLabel = UILabel().then {
+        $0.text = "목표 날짜"
+        $0.font = UIFont.boldSystemFont(ofSize: 16)
     }
     
-    let saveButton = UIButton(type: .system).then {
+    let goalDatePicker = UIDatePicker().then {
+        $0.datePickerMode = .date
+        $0.preferredDatePickerStyle = .wheels
+        $0.locale = Locale(identifier: "ko_KR")
+    }
+    
+    let saveButton = UIButton().then {
         $0.setTitle("저장하기", for: .normal)
+        $0.backgroundColor = .darkGray
         $0.setTitleColor(.white, for: .normal)
-        $0.backgroundColor = .black
         $0.layer.cornerRadius = 8
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        setupUI()
+        setupViews()
+        setupConstraints()
     }
     
-    func setupUI() {
-        // Add subviews
-        view.addSubview(goalLabel)
-        view.addSubview(descriptionLabel)
-        view.addSubview(weightTextField)
-        view.addSubview(datePicker)
+    func setupViews() {
+        view.addSubview(goalWeightLabel)
+        view.addSubview(goalWeightTextField)
+        view.addSubview(goalDateLabel)
+        view.addSubview(goalDatePicker)
         view.addSubview(saveButton)
-        
-        // Set constraints using SnapKit
-        goalLabel.snp.makeConstraints {
+    }
+    
+    func setupConstraints() {
+        goalWeightLabel.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide).offset(16)
-            $0.centerX.equalToSuperview()
+            $0.leading.equalToSuperview().offset(16)
         }
         
-        descriptionLabel.snp.makeConstraints {
-            $0.top.equalTo(goalLabel.snp.bottom).offset(8)
-            $0.centerX.equalToSuperview()
+        goalWeightTextField.snp.makeConstraints {
+            $0.top.equalTo(goalWeightLabel.snp.bottom).offset(8)
+            $0.leading.equalToSuperview().offset(16)
+            $0.trailing.equalToSuperview().offset(-16)
         }
         
-        weightTextField.snp.makeConstraints {
-            $0.top.equalTo(descriptionLabel.snp.bottom).offset(16)
-            $0.left.right.equalTo(view).inset(16)
-            $0.height.equalTo(44)
+        goalDateLabel.snp.makeConstraints {
+            $0.top.equalTo(goalWeightTextField.snp.bottom).offset(16)
+            $0.leading.equalToSuperview().offset(16)
         }
         
-        datePicker.snp.makeConstraints {
-            $0.top.equalTo(weightTextField.snp.bottom).offset(16)
-            $0.left.right.equalTo(view).inset(16)
+        goalDatePicker.snp.makeConstraints {
+            $0.top.equalTo(goalDateLabel.snp.bottom).offset(8)
+            $0.leading.equalToSuperview().offset(16)
+            $0.trailing.equalToSuperview().offset(-16)
         }
         
         saveButton.snp.makeConstraints {
-            $0.top.equalTo(datePicker.snp.bottom).offset(16)
-            $0.left.right.equalTo(view).inset(16)
+            $0.top.equalTo(goalDatePicker.snp.bottom).offset(32)
+            $0.leading.equalToSuperview().offset(16)
+            $0.trailing.equalToSuperview().offset(-16)
             $0.height.equalTo(50)
         }
     }
