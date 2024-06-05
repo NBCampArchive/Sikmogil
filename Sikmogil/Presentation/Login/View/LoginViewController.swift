@@ -132,7 +132,8 @@ class LoginViewController: UIViewController {
     private func navigateToOnboarding() {
         print("로그인 성공, 온보딩 화면으로 이동")
 //        self.navigationController?.pushViewController(OnboardingViewController(), animated: true)
-        present(OnboardingPageViewController(), animated: true, completion: nil)
+        modalPresentationStyle = .fullScreen
+        present(OnboardingViewController(), animated: true, completion: nil)
     }
     
 }
