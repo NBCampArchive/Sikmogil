@@ -141,7 +141,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         setupUI()
         setupProfileImageTap()
         setupTableView()
-        settingsButton.addTarget(self, action: Selector(#settingsButtonTapped(_:)), for: .touchUpInside)
+        settingsButton.addTarget(self, action: #selector(settingsButtonTapped(_:)), for: .touchUpInside)
     }
     
     private func setupUI() {
@@ -371,20 +371,35 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         // 각 항목에 대한 동작 추가
     }
     @objc private func settingsButtonTapped(_ sender: UIButton) {
-        let editProfileAction = UIAction(title: "프로필 수정", image: nil) { _ in
-            self.showEditProfile()
+            let editProfileAction = UIAction(title: "프로필 수정", image: nil) { _ in
+                self.showEditProfile()
+            }
+            
+            let notificationSettingsAction = UIAction(title: "알림 설정", image: nil) { _ in
+                self.showNotificationSettings()
+            }
+            
+            let goalSettingsAction = UIAction(title: "목표 설정", image: nil) { _ in
+                self.showGoalSettings()
+            }
+            
+            let menu = UIMenu(title: "", children: [editProfileAction, notificationSettingsAction, goalSettingsAction])
+            sender.menu = menu
+            sender.showsMenuAsPrimaryAction = true
         }
-        
-        let notificationSettingsAction = UIAction(title: "알림 설정", image: nil) { _ in
-            self.showNotificationSettings()
+
+        private func showEditProfile() {
+            let editProfileVC = EditProfileViewController()
+            navigationController?.pushViewController(editProfileVC, animated: true)
         }
-        
-        let goalSettingsAction = UIAction(title: "목표 설정", image: nil) { _ in
-            self.showGoalSettings()
+
+        private func showNotificationSettings() {
+            let notificationSettingsVC = NotificationSettingsViewController()
+            navigationController?.pushViewController(notificationSettingsVC, animated: true)
         }
-        
-        let menu = UIMenu(title: "", children: [editProfileAction, notificationSettingsAction, goalSettingsAction])
-        sender.menu = menu
-        sender.showsMenuAsPrimaryAction = true
-    }
+
+        private func showGoalSettings() {
+            let goalSettingsVC = GoalSettingsViewController()
+            navigationController?.pushViewController(goalSettingsVC, animated: true)
+        }
 }
