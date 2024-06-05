@@ -23,12 +23,14 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     let topBar = UIView()
     let profileLabel = UILabel().then {
         $0.text = "프로필"
-        $0.font = Suite.bold.of(size: 24)
+        $0.font = Suite.bold.of(size: 28)
     }
     
     // 톱니바퀴
     let settingsButton = UIButton().then {
         $0.setImage(UIImage(systemName: "gearshape"), for: .normal)
+        $0.tintColor = .black
+        $0.frame = CGRect(x: 0, y: 0, width: 24, height: 24)
     }
     
     let profileImageView = UIImageView().then {
@@ -123,12 +125,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         $0.text = "남자"
         $0.font = Suite.bold.of(size: 16)
     }
-    let separator1 = UIView().then {
-        $0.backgroundColor = UIColor(named: "appDarkGray")
-    }
-    let separator2 = UIView().then {
-        $0.backgroundColor = UIColor(named: "appDarkGray")
-    }
+
     let tableView = UITableView().then {
         $0.register(ProfileTableViewCell.self, forCellReuseIdentifier: "ProfileCell")
         $0.separatorStyle = .none
@@ -148,28 +145,38 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     }
     
     private func setupUI() {
-        view.backgroundColor = .white
-        view.addSubview(scrollView)
-        scrollView.addSubview(contentView)
-        
-        // Add top bar elements
-        contentView.addSubview(topBar)
-        topBar.addSubview(profileLabel)
-        topBar.addSubview(settingsButton)
-        
-        [profileImageView, levelBadgeView, nameLabel, infoView, tableView, logoutButton].forEach {
-            contentView.addSubview($0)
-        }
-        
-        levelStackView.addArrangedSubview(levelIconImageView)
-        levelStackView.addArrangedSubview(levelBadgeLabel)
-        levelBadgeView.addSubview(levelStackView)
-        
-        [weightTitleLabel, weightLabel, heightTitleLabel, heightLabel, genderTitleLabel, genderLabel, separator1, separator2].forEach {
-            infoView.addSubview($0)
-        }
-        setupConstraints()
-    }
+           view.backgroundColor = .white
+           view.addSubview(scrollView)
+           scrollView.addSubview(contentView)
+
+           // Add top bar elements
+           contentView.addSubview(topBar)
+           topBar.addSubview(profileLabel)
+           topBar.addSubview(settingsButton)
+
+           [profileImageView, levelBadgeView, nameLabel, infoView, tableView, logoutButton].forEach {
+               contentView.addSubview($0)
+           }
+
+           levelStackView.addArrangedSubview(levelIconImageView)
+           levelStackView.addArrangedSubview(levelBadgeLabel)
+           levelBadgeView.addSubview(levelStackView)
+
+           weightStackView.addArrangedSubview(weightTitleLabel)
+           weightStackView.addArrangedSubview(weightLabel)
+
+           heightStackView.addArrangedSubview(heightTitleLabel)
+           heightStackView.addArrangedSubview(heightLabel)
+
+           genderStackView.addArrangedSubview(genderTitleLabel)
+           genderStackView.addArrangedSubview(genderLabel)
+
+           infoView.addSubview(weightStackView)
+           infoView.addSubview(heightStackView)
+           infoView.addSubview(genderStackView)
+
+           setupConstraints()
+       }
     
     private func setupConstraints() {
         scrollView.snp.makeConstraints {
@@ -183,7 +190,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
             $0.height.equalTo(800) // 임의 스크롤 콘텐츠 뷰 설정
         }
         
-        // Top bar constraints
+        // 상단영역
         topBar.snp.makeConstraints {
             $0.top.equalTo(contentView).offset(20)
             $0.left.right.equalTo(contentView)
@@ -219,7 +226,6 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         
         levelBadgeLabel.snp.makeConstraints {
             $0.height.equalToSuperview()
-//            $0.leading.equalToSuperview()
         }
         
         nameLabel.snp.makeConstraints {
@@ -235,59 +241,27 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
             $0.height.equalTo(80)
         }
         
-//        weightStackView.snp.makeConstraints {
-//            $0.width.equalTo(200) // 원하는 너비 설정
-//            $0.height.greaterThanOrEqualTo(40) // 최소 높이 설정
-//            $0.center.equalToSuperview()
-//        }
-        
-        weightTitleLabel.snp.makeConstraints {
-            $0.top.equalTo(infoView).offset(16)
-            $0.left.equalTo(infoView).offset(43)
+        // 키, 몸무게, 성별 스택뷰 영역
+        weightStackView.snp.makeConstraints {
+            $0.left.equalTo(infoView).offset(16)
+            $0.centerY.equalTo(infoView)
+            $0.width.equalTo(100)
+            $0.height.equalTo(60)
+//            $0.right.equalTo(infoView).offset(-8) // 오른쪽 선 추가
         }
         
-        weightLabel.snp.makeConstraints {
-            $0.top.equalTo(weightTitleLabel.snp.bottom).offset(4)
-            $0.left.equalTo(infoView).offset(40)
-            $0.bottom.equalTo(infoView).offset(-16)
-        }
-        
-        heightTitleLabel.snp.makeConstraints {
-            $0.top.equalTo(infoView).offset(16)
+        heightStackView.snp.makeConstraints {
             $0.centerX.equalTo(infoView)
+            $0.centerY.equalTo(infoView)
+            $0.width.equalTo(100)
+            $0.height.equalTo(60)
         }
         
-        heightLabel.snp.makeConstraints {
-            $0.top.equalTo(heightTitleLabel.snp.bottom).offset(4)
-            $0.centerX.equalTo(infoView)
-            $0.bottom.equalTo(infoView).offset(-16)
-        }
-        
-        genderTitleLabel.snp.makeConstraints {
-            $0.top.equalTo(infoView).offset(16)
-            $0.right.equalTo(infoView).offset(-50)
-        }
-        
-        genderLabel.snp.makeConstraints {
-            $0.top.equalTo(genderTitleLabel.snp.bottom).offset(4)
-            $0.right.equalTo(infoView).offset(-48)
-            $0.bottom.equalTo(infoView).offset(-16)
-        }
-        
-        // 선
-        separator1.snp.makeConstraints {
-            $0.centerX.equalTo(infoView.snp.left).offset(119.33)
-            $0.top.equalTo(infoView).offset(26)
-            $0.bottom.equalTo(infoView).offset(-26)
-            $0.width.equalTo(1)
-        }
-        
-        // 선
-        separator2.snp.makeConstraints {
-            $0.centerX.equalTo(infoView.snp.left).offset(119.33 * 2)
-            $0.top.equalTo(infoView).offset(26)
-            $0.bottom.equalTo(infoView).offset(-26)
-            $0.width.equalTo(1)
+        genderStackView.snp.makeConstraints {
+            $0.right.equalTo(infoView).offset(-16)
+            $0.centerY.equalTo(infoView)
+            $0.width.equalTo(100)
+            $0.height.equalTo(60)
         }
         
         tableView.snp.makeConstraints {
@@ -298,7 +272,6 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         }
         
         logoutButton.snp.makeConstraints {
-//            $0.top.equalTo(contentView).offset(20)
             $0.centerX.equalTo(contentView)
             $0.bottom.equalTo(contentView).offset(-20)
         }
