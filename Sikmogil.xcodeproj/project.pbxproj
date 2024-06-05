@@ -51,6 +51,13 @@
 		B54AC0082C0F45DF002E89DC /* KeychainSwift in Frameworks */ = {isa = PBXBuildFile; productRef = B54AC0072C0F45DF002E89DC /* KeychainSwift */; };
 		B54AC00A2C0F48A5002E89DC /* SikmogilPlist.plist in Resources */ = {isa = PBXBuildFile; fileRef = B54AC0092C0F48A5002E89DC /* SikmogilPlist.plist */; };
 		B54AC00C2C0F48D1002E89DC /* SikmogilBundle++.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54AC00B2C0F48D1002E89DC /* SikmogilBundle++.swift */; };
+		B54AC00E2C105475002E89DC /* UserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54AC00D2C105475002E89DC /* UserProfile.swift */; };
+		B54AC0122C1054B1002E89DC /* OnboardingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54AC0112C1054B0002E89DC /* OnboardingViewModel.swift */; };
+		B54AC0152C1055DA002E89DC /* OnboardingProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54AC0142C1055DA002E89DC /* OnboardingProgressBar.swift */; };
+		B54AC0172C10560A002E89DC /* OnboardingPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54AC0162C10560A002E89DC /* OnboardingPageViewController.swift */; };
+		B54AC01A2C105646002E89DC /* Step1ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54AC0192C105646002E89DC /* Step1ViewController.swift */; };
+		B54AC01C2C1056A4002E89DC /* Step2ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54AC01B2C1056A4002E89DC /* Step2ViewController.swift */; };
+		B54AC01E2C1056C3002E89DC /* Step3ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54AC01D2C1056C3002E89DC /* Step3ViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -87,6 +94,13 @@
 		B54ABFF92C0F0F65002E89DC /* LoginModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginModel.swift; sourceTree = "<group>"; };
 		B54AC0092C0F48A5002E89DC /* SikmogilPlist.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = SikmogilPlist.plist; sourceTree = "<group>"; };
 		B54AC00B2C0F48D1002E89DC /* SikmogilBundle++.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SikmogilBundle++.swift"; sourceTree = "<group>"; };
+		B54AC00D2C105475002E89DC /* UserProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfile.swift; sourceTree = "<group>"; };
+		B54AC0112C1054B0002E89DC /* OnboardingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewModel.swift; sourceTree = "<group>"; };
+		B54AC0142C1055DA002E89DC /* OnboardingProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingProgressBar.swift; sourceTree = "<group>"; };
+		B54AC0162C10560A002E89DC /* OnboardingPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPageViewController.swift; sourceTree = "<group>"; };
+		B54AC0192C105646002E89DC /* Step1ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Step1ViewController.swift; sourceTree = "<group>"; };
+		B54AC01B2C1056A4002E89DC /* Step2ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Step2ViewController.swift; sourceTree = "<group>"; };
+		B54AC01D2C1056C3002E89DC /* Step3ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Step3ViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -158,6 +172,7 @@
 			children = (
 				B54ABFB72C0CB595002E89DC /* Model.swift */,
 				B54ABFF92C0F0F65002E89DC /* LoginModel.swift */,
+				B54AC00D2C105475002E89DC /* UserProfile.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -191,6 +206,7 @@
 		B54ABFC02C0CB666002E89DC /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
+				B54AC00F2C10549A002E89DC /* Onboarding */,
 				B54ABFEF2C0DE020002E89DC /* Login */,
 				B54ABFEA2C0D6B8B002E89DC /* TabBar */,
 				B54ABFC12C0CB672002E89DC /* Example */,
@@ -336,6 +352,35 @@
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
+		B54AC00F2C10549A002E89DC /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				B54AC0132C1055C4002E89DC /* View */,
+				B54AC0102C1054A2002E89DC /* ViewModel */,
+			);
+			path = Onboarding;
+			sourceTree = "<group>";
+		};
+		B54AC0102C1054A2002E89DC /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				B54AC0112C1054B0002E89DC /* OnboardingViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		B54AC0132C1055C4002E89DC /* View */ = {
+			isa = PBXGroup;
+			children = (
+				B54AC0142C1055DA002E89DC /* OnboardingProgressBar.swift */,
+				B54AC0162C10560A002E89DC /* OnboardingPageViewController.swift */,
+				B54AC0192C105646002E89DC /* Step1ViewController.swift */,
+				B54AC01B2C1056A4002E89DC /* Step2ViewController.swift */,
+				B54AC01D2C1056C3002E89DC /* Step3ViewController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -443,20 +488,27 @@
 				B54ABFFA2C0F0F65002E89DC /* LoginModel.swift in Sources */,
 				B54AC00C2C0F48D1002E89DC /* SikmogilBundle++.swift in Sources */,
 				B54ABFCF2C0CBB59002E89DC /* UIViewExtensions.swift in Sources */,
+				B54AC01A2C105646002E89DC /* Step1ViewController.swift in Sources */,
 				B54ABFCB2C0CB770002E89DC /* Extension.swift in Sources */,
 				B54ABFE92C0D69CD002E89DC /* Font.swift in Sources */,
+				B54AC00E2C105475002E89DC /* UserProfile.swift in Sources */,
 				B54ABFB82C0CB595002E89DC /* Model.swift in Sources */,
 				B54ABF922C09BD43002E89DC /* Sikmogil.xcdatamodeld in Sources */,
 				B54ABFCD2C0CB78F002E89DC /* Helpers.swift in Sources */,
 				B54ABFBD2C0CB60D002E89DC /* Network.swift in Sources */,
 				B54ABFF12C0DE03D002E89DC /* LoginViewController.swift in Sources */,
 				B54ABFD72C0CC281002E89DC /* CustomCircularProgressBar.swift in Sources */,
+				B54AC0172C10560A002E89DC /* OnboardingPageViewController.swift in Sources */,
 				B54ABF8C2C09BD43002E89DC /* ViewController.swift in Sources */,
 				B54ABF882C09BD43002E89DC /* AppDelegate.swift in Sources */,
 				B54ABF8A2C09BD43002E89DC /* SceneDelegate.swift in Sources */,
 				B54ABFD12C0CBC55002E89DC /* DateHelper.swift in Sources */,
+				B54AC0152C1055DA002E89DC /* OnboardingProgressBar.swift in Sources */,
 				B54ABFF82C0F0DC7002E89DC /* LoginAPIManager.swift in Sources */,
+				B54AC01E2C1056C3002E89DC /* Step3ViewController.swift in Sources */,
+				B54AC01C2C1056A4002E89DC /* Step2ViewController.swift in Sources */,
 				B54ABFEC2C0D6BA6002E89DC /* BottomTabBarController.swift in Sources */,
+				B54AC0122C1054B1002E89DC /* OnboardingViewModel.swift in Sources */,
 				B54ABFC52C0CB6AB002E89DC /* ViewModel.swift in Sources */,
 				B54ABFBF2C0CB639002E89DC /* PersistentStorage.swift in Sources */,
 				B54ABFF52C0DE1CD002E89DC /* LoginViewModel.swift in Sources */,
