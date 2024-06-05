@@ -60,7 +60,7 @@ class OnboardingViewController: UIViewController {
         }
         
         pageViewController.view.snp.makeConstraints {
-            $0.top.equalTo(progressBar.snp.bottom).offset(16)
+            $0.top.equalTo(progressBar.snp.bottom)
             $0.leading.trailing.bottom.equalTo(view.safeAreaLayoutGuide)
         }
     }
