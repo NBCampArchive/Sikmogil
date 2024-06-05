@@ -11,9 +11,7 @@ import Then
 
 class Step1ViewController: UIViewController {
     
-    var viewModel: OnboardingViewModel {
-        return onboardingPageViewController!.viewModel
-    }
+    var viewModel: OnboardingViewModel?
     
     private let scrollView = UIScrollView()
     private let contentView = UIView()
@@ -182,7 +180,7 @@ class Step1ViewController: UIViewController {
             $0.height.equalTo(50)
             $0.bottom.equalToSuperview().offset(-16)
         }
-    
+        
         nextButton.snp.makeConstraints {
             $0.bottom.equalTo(view.safeAreaLayoutGuide).offset(-16)
             $0.leading.equalToSuperview().offset(16)
@@ -219,11 +217,17 @@ class Step1ViewController: UIViewController {
     
     
     @objc private func nextButtonTapped() {
+        print("Next button tapped")
+            guard let viewModel = viewModel else {
+                print("ViewModel is nil")
+                return
+            }
         viewModel.saveProfileData(nickname: nicknameTextField.text ?? "",
                                   height: heightTextField.text ?? "",
                                   weight: weightTextField.text ?? "",
                                   gender: maleButton.isSelected ? "남자" : "여자")
         
-        onboardingPageViewController?.moveToNextPage()
+        viewModel.moveToNextPage()
     }
+    
 }
