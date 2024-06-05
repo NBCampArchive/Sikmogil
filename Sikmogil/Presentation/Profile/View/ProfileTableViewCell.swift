@@ -18,7 +18,7 @@ class ProfileTableViewCell: UITableViewCell {
     }
     let arrowImageView = UIImageView().then {
         $0.image = UIImage(systemName: "chevron.right")
-        $0.tintColor = .gray
+        $0.tintColor = .black
     }
     let separator = UIView().then {
         $0.backgroundColor = UIColor(named: "appDarkGray")
@@ -53,7 +53,8 @@ class ProfileTableViewCell: UITableViewCell {
         arrowImageView.snp.makeConstraints {
             $0.centerY.equalToSuperview()
             $0.right.equalToSuperview().offset(-16)
-            $0.width.height.equalTo(16)
+            $0.width.equalTo(12.5)
+            $0.height.equalTo(18)
         }
 
         separator.snp.makeConstraints {
