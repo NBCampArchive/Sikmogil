@@ -9,6 +9,8 @@ import UIKit
 
 class ExerciseTimerViewController: UIViewController {
     
+    private var isPaused: Bool = true
+    
     // TODO: 프로그레스 바
     private let timeLabel: UILabel = {
         let label = UILabel()
@@ -17,8 +19,6 @@ class ExerciseTimerViewController: UIViewController {
         return label
     }()
     
-    
-    // TODO: 버튼 상태 변화 -> 이미지 변경, Timer
     private let stopPauseButton: UIButton = {
         let button = UIButton()
         button.setImage(.pause, for: .normal)
@@ -48,7 +48,7 @@ class ExerciseTimerViewController: UIViewController {
         super.viewDidLoad()
         setupViews()
         setupConstraints()
-        setupButton()
+        setupButtons()
     }
     
     // MARK: - Setup View
@@ -65,11 +65,12 @@ class ExerciseTimerViewController: UIViewController {
         
         stopPauseButton.snp.makeConstraints {
             $0.top.equalTo(timeLabel.snp.bottom).offset(34)
+            $0.width.height.equalTo(80)
             $0.centerX.equalToSuperview()
         }
         
         statusLabel.snp.makeConstraints {
-            $0.top.equalTo(stopPauseButton.snp.bottom).offset(8)
+            $0.top.equalTo(stopPauseButton.snp.bottom).offset(16)
             $0.centerX.equalToSuperview()
         }
         
@@ -81,12 +82,29 @@ class ExerciseTimerViewController: UIViewController {
     }
     
     // MARK: - Setup Button
-    private func setupButton() {
+    private func setupButtons() {
+        stopPauseButton.addTarget(self, action: #selector(stopPauseButtonTapped), for: .touchUpInside)
         recordButton.addTarget(self, action: #selector(recordButtonTapped), for: .touchUpInside)
+    }
+    
+    @objc private func stopPauseButtonTapped() {
+        isPaused.toggle()
+        
+        if isPaused {
+            stopPauseButton.setImage(.pause, for: .normal)
+            statusLabel.text = "PAUSE"
+        } else {
+            stopPauseButton.setImage(.stop, for: .normal)
+            statusLabel.text = "STOP"
+        }
     }
     
     @objc private func recordButtonTapped() {
         let exerciseResultVC = ExerciseResultViewController()
         navigationController?.pushViewController(exerciseResultVC, animated: true)
     }
+
+}
+#Preview{
+    ExerciseTimerViewController()
 }
