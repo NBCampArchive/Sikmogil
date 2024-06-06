@@ -8,10 +8,13 @@
 import UIKit
 import SnapKit
 import Then
+import RxSwift
+import RxCocoa
 
 class Step1ViewController: UIViewController {
     
     var viewModel: OnboardingViewModel?
+    private let disposeBag = DisposeBag()
     
     private let scrollView = UIScrollView()
     private let contentView = UIView()
@@ -36,6 +39,13 @@ class Step1ViewController: UIViewController {
         $0.borderStyle = .roundedRect
     }
     
+    private let nicknameWarningLabel = UILabel().then {
+        $0.text = "닉네임을 입력해주세요"
+        $0.font = Suite.regular.of(size: 12)
+        $0.textColor = .red
+        $0.isHidden = true
+    }
+    
     private let heightLabel = UILabel().then {
         $0.text = "키"
         $0.font = Suite.medium.of(size: 20)
@@ -43,6 +53,14 @@ class Step1ViewController: UIViewController {
     
     private let heightTextField = UITextField().then {
         $0.borderStyle = .roundedRect
+        $0.keyboardType = .numberPad
+    }
+    
+    private let heightWarningLabel = UILabel().then {
+        $0.text = "키를 입력해주세요"
+        $0.font = Suite.regular.of(size: 12)
+        $0.textColor = .red
+        $0.isHidden = true
     }
     
     private let weightLabel = UILabel().then {
@@ -52,11 +70,26 @@ class Step1ViewController: UIViewController {
     
     private let weightTextField = UITextField().then {
         $0.borderStyle = .roundedRect
+        $0.keyboardType = .numberPad
+    }
+    
+    private let weightWarningLabel = UILabel().then {
+        $0.text = "몸무게를 입력해주세요"
+        $0.font = Suite.regular.of(size: 12)
+        $0.textColor = .red
+        $0.isHidden = true
     }
     
     private let genderLabel = UILabel().then {
         $0.text = "성별"
         $0.font = Suite.medium.of(size: 20)
+    }
+    
+    private let genderWarningLabel = UILabel().then {
+        $0.text = "성별을 선택해주세요"
+        $0.font = Suite.regular.of(size: 12)
+        $0.textColor = .red
+        $0.isHidden = true
     }
     
     private let genderButtonStackView = UIStackView().then {
@@ -96,6 +129,13 @@ class Step1ViewController: UIViewController {
         view.backgroundColor = .white
         setupConstraints()
         setupAddTarget()
+        hideKeyboardWhenTappedAround()
+        setKeyboardObserver()
+        bindViewModel()
+        
+        // 텍스트 필드 델리게이트 설정
+        heightTextField.delegate = self
+        weightTextField.delegate = self
     }
     
     private func setupAddTarget() {
@@ -104,10 +144,33 @@ class Step1ViewController: UIViewController {
         nextButton.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
     }
     
+    private func bindViewModel() {
+        guard let viewModel = viewModel else { return }
+        
+        nicknameTextField.rx.text.orEmpty
+            .bind(to: viewModel.nickname)
+            .disposed(by: disposeBag)
+        
+        heightTextField.rx.text.orEmpty
+            .bind(to: viewModel.height)
+            .disposed(by: disposeBag)
+        
+        weightTextField.rx.text.orEmpty
+            .bind(to: viewModel.weight)
+            .disposed(by: disposeBag)
+        
+        Observable.merge(
+            maleButton.rx.tap.map { "남자" },
+            femaleButton.rx.tap.map { "여자" }
+        )
+        .bind(to: viewModel.gender)
+        .disposed(by: disposeBag)
+    }
+    
     private func setupConstraints() {
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
-        contentView.addSubviews(titleLabel, descriptionLabel, nicknameLabel, nicknameTextField, heightLabel, heightTextField, weightLabel, weightTextField, genderLabel, genderButtonStackView)
+        contentView.addSubviews(titleLabel, descriptionLabel, nicknameLabel, nicknameTextField, nicknameWarningLabel, heightLabel, heightTextField, heightWarningLabel, weightLabel, weightTextField, weightWarningLabel, genderLabel, genderButtonStackView, genderWarningLabel)
         genderButtonStackView.addArrangedSubviews(maleButton, femaleButton)
         view.addSubview(nextButton)
         
@@ -144,8 +207,13 @@ class Step1ViewController: UIViewController {
             $0.height.equalTo(50)
         }
         
+        nicknameWarningLabel.snp.makeConstraints {
+            $0.top.equalTo(nicknameTextField.snp.bottom).offset(4)
+            $0.leading.equalToSuperview().offset(16)
+        }
+        
         heightLabel.snp.makeConstraints {
-            $0.top.equalTo(nicknameTextField.snp.bottom).offset(32)
+            $0.top.equalTo(nicknameWarningLabel.snp.bottom).offset(16)
             $0.leading.equalToSuperview().offset(16)
         }
         
@@ -156,8 +224,13 @@ class Step1ViewController: UIViewController {
             $0.height.equalTo(50)
         }
         
+        heightWarningLabel.snp.makeConstraints {
+            $0.top.equalTo(heightTextField.snp.bottom).offset(4)
+            $0.leading.equalToSuperview().offset(16)
+        }
+        
         weightLabel.snp.makeConstraints {
-            $0.top.equalTo(heightTextField.snp.bottom).offset(32)
+            $0.top.equalTo(heightWarningLabel.snp.bottom).offset(16)
             $0.leading.equalToSuperview().offset(16)
         }
         
@@ -168,8 +241,13 @@ class Step1ViewController: UIViewController {
             $0.height.equalTo(50)
         }
         
+        weightWarningLabel.snp.makeConstraints {
+            $0.top.equalTo(weightTextField.snp.bottom).offset(4)
+            $0.leading.equalToSuperview().offset(16)
+        }
+        
         genderLabel.snp.makeConstraints {
-            $0.top.equalTo(weightTextField.snp.bottom).offset(32)
+            $0.top.equalTo(weightWarningLabel.snp.bottom).offset(16)
             $0.leading.equalToSuperview().offset(16)
         }
         
@@ -178,6 +256,11 @@ class Step1ViewController: UIViewController {
             $0.leading.equalToSuperview().offset(16)
             $0.trailing.equalToSuperview().offset(-16)
             $0.height.equalTo(50)
+        }
+        
+        genderWarningLabel.snp.makeConstraints {
+            $0.top.equalTo(genderButtonStackView.snp.bottom).offset(4)
+            $0.leading.equalToSuperview().offset(16)
             $0.bottom.equalToSuperview().offset(-16)
         }
         
@@ -222,12 +305,27 @@ class Step1ViewController: UIViewController {
             print("ViewModel is nil")
             return
         }
-        viewModel.saveProfileData(nickname: nicknameTextField.text ?? "",
-                                  height: heightTextField.text ?? "",
-                                  weight: weightTextField.text ?? "",
-                                  gender: maleButton.isSelected ? "남자" : "여자")
         
-        viewModel.moveToNextPage()
+        if viewModel.profileValidateForm() {
+            viewModel.saveProfileData()
+            viewModel.moveToNextPage()
+        } else {
+            nicknameWarningLabel.isHidden = !(nicknameTextField.text ?? "").isEmpty
+            heightWarningLabel.isHidden = !(heightTextField.text ?? "").isEmpty
+            weightWarningLabel.isHidden = !(weightTextField.text ?? "").isEmpty
+            genderWarningLabel.isHidden = !viewModel.gender.value.isEmpty
+            
+            view.shake()
+        }
+        
     }
     
+}
+
+extension Step1ViewController: UITextFieldDelegate {
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+            let allowedCharacters = CharacterSet.decimalDigits
+            let characterSet = CharacterSet(charactersIn: string)
+            return allowedCharacters.isSuperset(of: characterSet)
+        }
 }
