@@ -147,6 +147,7 @@ class Step3ViewController: UIViewController {
             }
 
         } else {
+            view.shake()
             timeTextFieldWarningLabel.isHidden = false
         }
     }
