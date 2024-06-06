@@ -129,7 +129,7 @@ class ExerciseViewController: UIViewController {
         super.viewDidLoad()
         setupViews()
         setupConstraints()
-        setupButton()
+        setupButtons()
     }
     
     // MARK: - Setup View
@@ -235,13 +235,19 @@ class ExerciseViewController: UIViewController {
     }
     
     // MARK: - Setup Button
-    private func setupButton() {
+    private func setupButtons() {
         startExerciseButton.addTarget(self, action: #selector(startExerciseButtonTapped), for: .touchUpInside)
+        stepsMenuButton.addTarget(self, action: #selector(stepsMenuButtonTapped), for: .touchUpInside)
     }
     
     @objc private func startExerciseButtonTapped() {
         let exerciseSelectionVC = ExerciseSelectionViewController()
         navigationController?.pushViewController(exerciseSelectionVC, animated: true)
+    }
+    
+    @objc private func stepsMenuButtonTapped() {
+        let stepsVC = StepsViewController()
+        navigationController?.pushViewController(stepsVC, animated: true)
     }
 }
 
