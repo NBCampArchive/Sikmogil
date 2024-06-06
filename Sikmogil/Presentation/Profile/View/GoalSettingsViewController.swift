@@ -10,10 +10,27 @@ import SnapKit
 import Then
 
 class GoalSettingsViewController: UIViewController {
-
+    
+    let scrollView = UIScrollView().then {
+        $0.backgroundColor = .white
+    }
+    
+    let contentView = UIView()
+    
+    let goalSettingLabel = UILabel().then {
+        $0.text = "목표 설정"
+        $0.font = Suite.bold.of(size: 24)
+    }
+    
+    let descriptionLabel = UILabel().then {
+        $0.text = "목표로 하는 체중과 기간을 설정해주세요."
+        $0.font = Suite.regular.of(size: 14)
+        $0.textColor = UIColor(named: "appDarkGray")
+    }
+    
     let goalWeightLabel = UILabel().then {
         $0.text = "목표 체중"
-        $0.font = UIFont.boldSystemFont(ofSize: 16)
+        $0.font = Suite.bold.of(size: 16)
     }
     
     let goalWeightTextField = UITextField().then {
@@ -22,7 +39,7 @@ class GoalSettingsViewController: UIViewController {
     
     let goalDateLabel = UILabel().then {
         $0.text = "목표 날짜"
-        $0.font = UIFont.boldSystemFont(ofSize: 16)
+        $0.font = Suite.bold.of(size: 16)
     }
     
     let goalDatePicker = UIDatePicker().then {
@@ -33,7 +50,7 @@ class GoalSettingsViewController: UIViewController {
     
     let saveButton = UIButton().then {
         $0.setTitle("저장하기", for: .normal)
-        $0.backgroundColor = .darkGray
+        $0.backgroundColor = UIColor(named: "appBlack")
         $0.setTitleColor(.white, for: .normal)
         $0.layer.cornerRadius = 8
     }
@@ -46,16 +63,40 @@ class GoalSettingsViewController: UIViewController {
     }
     
     func setupViews() {
-        view.addSubview(goalWeightLabel)
-        view.addSubview(goalWeightTextField)
-        view.addSubview(goalDateLabel)
-        view.addSubview(goalDatePicker)
+        view.addSubview(scrollView)
+        scrollView.addSubview(contentView)
+        contentView.addSubview(goalSettingLabel)
+        contentView.addSubview(descriptionLabel)
+        contentView.addSubview(goalWeightLabel)
+        contentView.addSubview(goalWeightTextField)
+        contentView.addSubview(goalDateLabel)
+        contentView.addSubview(goalDatePicker)
         view.addSubview(saveButton)
     }
     
     func setupConstraints() {
+        scrollView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+        
+        contentView.snp.makeConstraints {
+            $0.edges.equalTo(scrollView)
+            $0.width.equalTo(scrollView)
+            $0.height.equalTo(800)
+        }
+        
+        goalSettingLabel.snp.makeConstraints {
+            $0.top.equalTo(contentView.safeAreaLayoutGuide).offset(16)
+            $0.leading.equalToSuperview().offset(16)
+        }
+        
+        descriptionLabel.snp.makeConstraints {
+            $0.top.equalTo(goalSettingLabel.snp.bottom).offset(8)
+            $0.leading.equalToSuperview().offset(16)
+        }
+        
         goalWeightLabel.snp.makeConstraints {
-            $0.top.equalTo(view.safeAreaLayoutGuide).offset(16)
+            $0.top.equalTo(descriptionLabel.snp.bottom).offset(16)
             $0.leading.equalToSuperview().offset(16)
         }
         
@@ -77,7 +118,7 @@ class GoalSettingsViewController: UIViewController {
         }
         
         saveButton.snp.makeConstraints {
-            $0.top.equalTo(goalDatePicker.snp.bottom).offset(32)
+            $0.bottom.equalTo(view.safeAreaLayoutGuide).offset(-16)
             $0.leading.equalToSuperview().offset(16)
             $0.trailing.equalToSuperview().offset(-16)
             $0.height.equalTo(50)
