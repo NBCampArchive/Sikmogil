@@ -8,10 +8,14 @@
 import UIKit
 import SnapKit
 import Then
+import RxSwift
+import RxCocoa
 
 class Step2ViewController: UIViewController {
     
     var viewModel: OnboardingViewModel?
+    
+    private let disposeBag = DisposeBag()
     
     private let scrollView = UIScrollView()
     private let contentView = UIView()
@@ -34,6 +38,14 @@ class Step2ViewController: UIViewController {
     
     private let targetWeightTextField = UITextField().then {
         $0.borderStyle = .roundedRect
+        $0.keyboardType = .numberPad
+    }
+    
+    private let targetWeightWarningLabel = UILabel().then {
+        $0.text = "목표 체중을 입력해주세요"
+        $0.font = Suite.regular.of(size: 12)
+        $0.textColor = .red
+        $0.isHidden = true
     }
     
     private let targetDateLabel = UILabel().then {
@@ -60,16 +72,36 @@ class Step2ViewController: UIViewController {
         view.backgroundColor = .white
         setupConstraints()
         setupAddTargets()
+        hideKeyboardWhenTappedAround()
+        setKeyboardObserver()
+        bindeViewModel()
     }
     
     private func setupAddTargets() {
         nextButton.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
     }
     
+    private func bindeViewModel() {
+        guard let viewModel = viewModel else { return }
+        
+        viewModel.targetWeight
+            .bind(to: targetWeightTextField.rx.text)
+            .disposed(by: disposeBag)
+        
+        targetWeightTextField.rx.text
+            .orEmpty
+            .bind(to: viewModel.targetWeight)
+            .disposed(by: disposeBag)
+        
+        targetDatePicker.rx.date
+            .bind(to: viewModel.targetDate)
+            .disposed(by: disposeBag)
+    }
+    
     private func setupConstraints() {
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
-        contentView.addSubviews(titleLabel, descriptionLabel, targetWeightLabel, targetWeightTextField, targetDateLabel, targetDatePicker)
+        contentView.addSubviews(titleLabel, descriptionLabel, targetWeightLabel, targetWeightTextField, targetWeightWarningLabel, targetDateLabel, targetDatePicker)
         view.addSubview(nextButton)
         
         scrollView.snp.makeConstraints {
@@ -89,12 +121,12 @@ class Step2ViewController: UIViewController {
         }
         
         descriptionLabel.snp.makeConstraints {
-            $0.top.equalTo(titleLabel.snp.bottom).offset(8)
+            $0.top.equalTo(titleLabel.snp.bottom).offset(4)
             $0.leading.equalToSuperview().offset(16)
         }
         
         targetWeightLabel.snp.makeConstraints {
-            $0.top.equalTo(descriptionLabel.snp.bottom).offset(32)
+            $0.top.equalTo(descriptionLabel.snp.bottom).offset(16)
             $0.leading.equalToSuperview().offset(16)
         }
         
@@ -103,6 +135,11 @@ class Step2ViewController: UIViewController {
             $0.leading.equalToSuperview().offset(16)
             $0.trailing.equalToSuperview().offset(-16)
             $0.height.equalTo(50)
+        }
+        
+        targetWeightWarningLabel.snp.makeConstraints {
+            $0.top.equalTo(targetWeightTextField.snp.bottom).offset(8)
+            $0.leading.equalToSuperview().offset(16)
         }
         
         targetDateLabel.snp.makeConstraints {
@@ -128,8 +165,15 @@ class Step2ViewController: UIViewController {
     
     @objc private func nextButtonTapped() {
         guard let viewModel = viewModel else { return }
-        viewModel.saveTargetData(targetWeight: targetWeightTextField.text ?? "", targetDate: DateHelper.shared.formatDateToYearMonthDay(targetDatePicker.date))
         
-        viewModel.moveToNextPage()
+        if viewModel.targetValidateForm() {
+            viewModel.saveTargetData()
+            viewModel.moveToNextPage()
+        } else {
+            targetWeightWarningLabel.isHidden = !(targetWeightTextField.text ?? "").isEmpty
+            
+            view.shake()
+        }
     }
+    
 }
