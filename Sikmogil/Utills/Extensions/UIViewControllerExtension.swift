@@ -9,6 +9,8 @@ import Foundation
 import UIKit
 
 extension UIViewController {
+    
+    //MARK: - 텍스트필드 키보드 관련 확장
     func hideKeyboardWhenTappedAround() {
         let tap = UITapGestureRecognizer(target: self, action: #selector(UIViewController.dismissKeyboard))
         tap.cancelsTouchesInView = false

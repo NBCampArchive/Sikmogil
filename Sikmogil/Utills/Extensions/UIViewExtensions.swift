@@ -15,7 +15,7 @@ extension UIView {
         views.forEach { self.addSubview($0) }
     }
     
-    // UI 흔들림 에니메이션 확장
+    //MARK: - UI 흔들림 에니메이션 확장
     func shake() {
         let shake = CABasicAnimation(keyPath: "position")
         shake.duration = 0.1
