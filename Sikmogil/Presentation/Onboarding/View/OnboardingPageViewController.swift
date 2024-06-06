@@ -53,7 +53,7 @@ class OnboardingViewController: UIViewController {
         view.addSubviews(progressBar, pageViewController.view)
         
         progressBar.snp.makeConstraints {
-            $0.top.equalTo(view.safeAreaLayoutGuide).offset(16)
+            $0.top.equalTo(view.safeAreaLayoutGuide).offset(32)
             $0.leading.equalToSuperview().offset(16)
             $0.trailing.equalToSuperview().offset(-16)
             $0.height.equalTo(15)
