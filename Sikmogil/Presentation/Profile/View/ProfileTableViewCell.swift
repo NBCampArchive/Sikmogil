@@ -14,11 +14,11 @@ class ProfileTableViewCell: UITableViewCell {
     let iconImageView = UIImageView()
     let titleLabel = UILabel().then {
         $0.font = Suite.regular.of(size: 16)
-        $0.textColor = .black
+        $0.textColor = UIColor(named: "appBlack")
     }
     let arrowImageView = UIImageView().then {
         $0.image = UIImage(systemName: "chevron.right")
-        $0.tintColor = .black
+        $0.tintColor = UIColor(named: "appBlack")
     }
     let separator = UIView().then {
         $0.backgroundColor = UIColor(named: "appDarkGray")
