@@ -8,12 +8,12 @@
 import Foundation
 
 struct UserProfile {
-    var nickname: String?
-    var height: String?
-    var weight: String?
-    var gender: String?
-    var targetWeight: String?
-    var toDate: String?
-    var targetDate: String?
-    var reminderTime: String?
+    var nickname: String
+    var height: String
+    var weight: String
+    var gender: String
+    var targetWeight: String
+    var toDate: String
+    var targetDate: String
+    var reminderTime: String
 }
