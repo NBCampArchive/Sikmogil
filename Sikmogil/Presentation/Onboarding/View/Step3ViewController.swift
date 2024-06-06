@@ -140,17 +140,31 @@ class Step3ViewController: UIViewController {
                 case .success:
                     print("Profile submitted successfully\(viewModel.debugPrint())")
                     // 완료 후의 동작 (예: 다음 화면으로 이동)
+                    self.navigationBottomTabBarController()
                 case .failure(let error):
                     print("Failed to submit profile: \(error)")
                     // 에러 처리
                 }
             }
-
         } else {
             view.shake()
             timeTextFieldWarningLabel.isHidden = false
         }
+        
     }
+    
+    func navigationBottomTabBarController() {
+        let bottomTabBarController = BottomTabBarController()
+        
+        let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as! SceneDelegate
+        sceneDelegate.window?.rootViewController = bottomTabBarController
+        sceneDelegate.window?.rootViewController?.view.alpha = 0
+        UIView.animate(withDuration: 1.5, animations: {
+            sceneDelegate.window?.rootViewController?.view.alpha = 1
+        })
+        
+    }
+    
 }
 
 extension Step3ViewController: UITextFieldDelegate {
