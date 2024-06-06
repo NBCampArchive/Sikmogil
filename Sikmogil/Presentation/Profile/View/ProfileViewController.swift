@@ -23,7 +23,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     // 설정버튼
     let settingsButton = UIButton().then {
         $0.setImage(UIImage(systemName: "gearshape"), for: .normal)
-        $0.tintColor = .black
+        $0.tintColor = UIColor(named: "appBlack")
     }
     
     // 프로필 이미지
@@ -48,7 +48,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     let levelBadgeLabel = UILabel().then {
         $0.text = "Lv.0"
         $0.font = Suite.regular.of(size: 10)
-        $0.textColor = .black
+        $0.textColor = UIColor(named: "appBlack")
         $0.textAlignment = .right
     }
     
@@ -142,6 +142,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         setupProfileImageTap()
         setupTableView()
         settingsButton.addTarget(self, action: #selector(settingsButtonTapped(_:)), for: .touchUpInside)
+        logoutButton.addTarget(self, action: #selector(logoutButtonTapped(_:)), for: .touchUpInside) // TODO: 로그아웃 버튼 액션 추가
     }
     
     private func setupUI() {
@@ -256,12 +257,11 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
             $0.width.equalTo(heightStackView)
         }
         
-        heightStackView.snp.makeConstraints { // 키
+        heightStackView.snp.makeConstraints {// 키
             $0.centerX.equalTo(infoView)
             $0.centerY.equalTo(infoView)
             $0.width.equalTo(genderStackView)
         }
-        
         genderStackView.snp.makeConstraints { // 성별
             $0.right.equalTo(infoView).offset(-16)
             $0.centerY.equalTo(infoView)
@@ -370,36 +370,41 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         tableView.deselectRow(at: indexPath, animated: true)
         // 각 항목에 대한 동작 추가
     }
+    
     @objc private func settingsButtonTapped(_ sender: UIButton) {
-            let editProfileAction = UIAction(title: "프로필 수정", image: nil) { _ in
-                self.showEditProfile()
-            }
-            
-            let notificationSettingsAction = UIAction(title: "알림 설정", image: nil) { _ in
-                self.showNotificationSettings()
-            }
-            
-            let goalSettingsAction = UIAction(title: "목표 설정", image: nil) { _ in
-                self.showGoalSettings()
-            }
-            
-            let menu = UIMenu(title: "", children: [editProfileAction, notificationSettingsAction, goalSettingsAction])
-            sender.menu = menu
-            sender.showsMenuAsPrimaryAction = true
+        let editProfileAction = UIAction(title: "프로필 수정", image: nil) { _ in
+            self.showEditProfile()
         }
-
-        private func showEditProfile() {
-            let editProfileVC = EditProfileViewController()
-            navigationController?.pushViewController(editProfileVC, animated: true)
+        
+        let notificationSettingsAction = UIAction(title: "알림 설정", image: nil) { _ in
+            self.showNotificationSettings()
         }
-
-        private func showNotificationSettings() {
-            let notificationSettingsVC = NotificationSettingsViewController()
-            navigationController?.pushViewController(notificationSettingsVC, animated: true)
+        
+        let goalSettingsAction = UIAction(title: "목표 설정", image: nil) { _ in
+            self.showGoalSettings()
         }
-
-        private func showGoalSettings() {
-            let goalSettingsVC = GoalSettingsViewController()
-            navigationController?.pushViewController(goalSettingsVC, animated: true)
-        }
+        
+        let menu = UIMenu(title: "", children: [editProfileAction, notificationSettingsAction, goalSettingsAction])
+        sender.menu = menu
+        sender.showsMenuAsPrimaryAction = true
+    }
+    
+    private func showEditProfile() {
+        let editProfileVC = EditProfileViewController()
+        navigationController?.pushViewController(editProfileVC, animated: true)
+    }
+    
+    private func showNotificationSettings() {
+        let notificationSettingsVC = NotificationSettingsViewController()
+        navigationController?.pushViewController(notificationSettingsVC, animated: true)
+    }
+    
+    private func showGoalSettings() {
+        let goalSettingsVC = GoalSettingsViewController()
+        navigationController?.pushViewController(goalSettingsVC, animated: true)
+    }
+    
+    @objc private func logoutButtonTapped(_ sender: UIButton) {
+        // TODO: 로그인 화면으로 루트뷰 바꾸기
+    }
 }
