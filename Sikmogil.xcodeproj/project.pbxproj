@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B52001AE2C11B99E0083CBDF /* UIViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001AD2C11B99E0083CBDF /* UIViewControllerExtension.swift */; };
+		B52001B02C11D7FA0083CBDF /* UserAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001AF2C11D7FA0083CBDF /* UserAPIManager.swift */; };
 		B54ABF882C09BD43002E89DC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABF872C09BD43002E89DC /* AppDelegate.swift */; };
 		B54ABF8A2C09BD43002E89DC /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABF892C09BD43002E89DC /* SceneDelegate.swift */; };
 		B54ABF8C2C09BD43002E89DC /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABF8B2C09BD43002E89DC /* ViewController.swift */; };
@@ -61,6 +63,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		B52001AD2C11B99E0083CBDF /* UIViewControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtension.swift; sourceTree = "<group>"; };
+		B52001AF2C11D7FA0083CBDF /* UserAPIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAPIManager.swift; sourceTree = "<group>"; };
 		B54ABF842C09BD43002E89DC /* Sikmogil.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sikmogil.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B54ABF872C09BD43002E89DC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B54ABF892C09BD43002E89DC /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -191,6 +195,7 @@
 			children = (
 				B54ABFBC2C0CB60D002E89DC /* Network.swift */,
 				B54ABFF72C0F0DC7002E89DC /* LoginAPIManager.swift */,
+				B52001AF2C11D7FA0083CBDF /* UserAPIManager.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -267,6 +272,7 @@
 				B54ABFCA2C0CB770002E89DC /* Extension.swift */,
 				B54ABFCE2C0CBB59002E89DC /* UIViewExtensions.swift */,
 				B54ABFED2C0D7370002E89DC /* UIColorExtension.swift */,
+				B52001AD2C11B99E0083CBDF /* UIViewControllerExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -486,6 +492,7 @@
 			files = (
 				B54ABFEE2C0D7370002E89DC /* UIColorExtension.swift in Sources */,
 				B54ABFFA2C0F0F65002E89DC /* LoginModel.swift in Sources */,
+				B52001AE2C11B99E0083CBDF /* UIViewControllerExtension.swift in Sources */,
 				B54AC00C2C0F48D1002E89DC /* SikmogilBundle++.swift in Sources */,
 				B54ABFCF2C0CBB59002E89DC /* UIViewExtensions.swift in Sources */,
 				B54AC01A2C105646002E89DC /* Step1ViewController.swift in Sources */,
@@ -509,6 +516,7 @@
 				B54AC01C2C1056A4002E89DC /* Step2ViewController.swift in Sources */,
 				B54ABFEC2C0D6BA6002E89DC /* BottomTabBarController.swift in Sources */,
 				B54AC0122C1054B1002E89DC /* OnboardingViewModel.swift in Sources */,
+				B52001B02C11D7FA0083CBDF /* UserAPIManager.swift in Sources */,
 				B54ABFC52C0CB6AB002E89DC /* ViewModel.swift in Sources */,
 				B54ABFBF2C0CB639002E89DC /* PersistentStorage.swift in Sources */,
 				B54ABFF52C0DE1CD002E89DC /* LoginViewModel.swift in Sources */,
