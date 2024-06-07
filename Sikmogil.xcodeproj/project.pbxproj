@@ -7,6 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		540768862C12EAB200543A72 /* ProfileInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 540768852C12EAB200543A72 /* ProfileInfoView.swift */; };
+		540768882C12EAD900543A72 /* ProfileTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 540768872C12EAD900543A72 /* ProfileTableView.swift */; };
+		545AA5162C11E6540083D893 /* AlarmTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 545AA5152C11E6540083D893 /* AlarmTableViewCell.swift */; };
+		545AA5182C11F4760083D893 /* ReminderSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 545AA5172C11F4760083D893 /* ReminderSettingsViewController.swift */; };
+		546E32312C1078D100E94C2A /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546E32302C1078D100E94C2A /* EditProfileViewController.swift */; };
+		546E32332C1078E600E94C2A /* NotificationSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546E32322C1078E600E94C2A /* NotificationSettingsViewController.swift */; };
+		546E32352C1078FA00E94C2A /* GoalSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546E32342C1078FA00E94C2A /* GoalSettingsViewController.swift */; };
+		547A1BAC2C0DAA78000A16BF /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 547A1BAB2C0DAA78000A16BF /* ProfileViewController.swift */; };
+		5485F0882C0DFE2D00A2A71E /* ProfileTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5485F0872C0DFE2D00A2A71E /* ProfileTableViewCell.swift */; };
 		B54ABF882C09BD43002E89DC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABF872C09BD43002E89DC /* AppDelegate.swift */; };
 		B54ABF8A2C09BD43002E89DC /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABF892C09BD43002E89DC /* SceneDelegate.swift */; };
 		B54ABF8C2C09BD43002E89DC /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABF8B2C09BD43002E89DC /* ViewController.swift */; };
@@ -43,6 +52,15 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		540768852C12EAB200543A72 /* ProfileInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileInfoView.swift; sourceTree = "<group>"; };
+		540768872C12EAD900543A72 /* ProfileTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTableView.swift; sourceTree = "<group>"; };
+		545AA5152C11E6540083D893 /* AlarmTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmTableViewCell.swift; sourceTree = "<group>"; };
+		545AA5172C11F4760083D893 /* ReminderSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderSettingsViewController.swift; sourceTree = "<group>"; };
+		546E32302C1078D100E94C2A /* EditProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewController.swift; sourceTree = "<group>"; };
+		546E32322C1078E600E94C2A /* NotificationSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSettingsViewController.swift; sourceTree = "<group>"; };
+		546E32342C1078FA00E94C2A /* GoalSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalSettingsViewController.swift; sourceTree = "<group>"; };
+		547A1BAB2C0DAA78000A16BF /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		5485F0872C0DFE2D00A2A71E /* ProfileTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTableViewCell.swift; sourceTree = "<group>"; };
 		B54ABF842C09BD43002E89DC /* Sikmogil.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sikmogil.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B54ABF872C09BD43002E89DC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B54ABF892C09BD43002E89DC /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -91,6 +109,38 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		540768822C12A53500543A72 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				545AA5152C11E6540083D893 /* AlarmTableViewCell.swift */,
+				5485F0872C0DFE2D00A2A71E /* ProfileTableViewCell.swift */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		546E322E2C102E3A00E94C2A /* View */ = {
+			isa = PBXGroup;
+			children = (
+				540768822C12A53500543A72 /* Cell */,
+				547A1BAB2C0DAA78000A16BF /* ProfileViewController.swift */,
+				540768852C12EAB200543A72 /* ProfileInfoView.swift */,
+				540768872C12EAD900543A72 /* ProfileTableView.swift */,
+				546E32302C1078D100E94C2A /* EditProfileViewController.swift */,
+				546E32322C1078E600E94C2A /* NotificationSettingsViewController.swift */,
+				546E32342C1078FA00E94C2A /* GoalSettingsViewController.swift */,
+				545AA5172C11F4760083D893 /* ReminderSettingsViewController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		547A1BAA2C0DA9E8000A16BF /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				546E322E2C102E3A00E94C2A /* View */,
+			);
+			path = Profile;
+			sourceTree = "<group>";
+		};
 		B54ABF7B2C09BD43002E89DC = {
 			isa = PBXGroup;
 			children = (
@@ -167,6 +217,7 @@
 		B54ABFC02C0CB666002E89DC /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
+				547A1BAA2C0DA9E8000A16BF /* Profile */,
 				B54ABFEA2C0D6B8B002E89DC /* TabBar */,
 				B54ABFC12C0CB672002E89DC /* Example */,
 			);
@@ -382,15 +433,24 @@
 				B54ABFEE2C0D7370002E89DC /* UIColorExtension.swift in Sources */,
 				B54ABFCF2C0CBB59002E89DC /* UIViewExtensions.swift in Sources */,
 				B54ABFCB2C0CB770002E89DC /* Extension.swift in Sources */,
+				540768882C12EAD900543A72 /* ProfileTableView.swift in Sources */,
+				546E32332C1078E600E94C2A /* NotificationSettingsViewController.swift in Sources */,
+				540768862C12EAB200543A72 /* ProfileInfoView.swift in Sources */,
 				B54ABFE92C0D69CD002E89DC /* Font.swift in Sources */,
 				B54ABFB82C0CB595002E89DC /* Model.swift in Sources */,
+				547A1BAC2C0DAA78000A16BF /* ProfileViewController.swift in Sources */,
+				545AA5162C11E6540083D893 /* AlarmTableViewCell.swift in Sources */,
 				B54ABF922C09BD43002E89DC /* Sikmogil.xcdatamodeld in Sources */,
+				5485F0882C0DFE2D00A2A71E /* ProfileTableViewCell.swift in Sources */,
+				546E32312C1078D100E94C2A /* EditProfileViewController.swift in Sources */,
 				B54ABFCD2C0CB78F002E89DC /* Helpers.swift in Sources */,
 				B54ABFBD2C0CB60D002E89DC /* Network.swift in Sources */,
+				545AA5182C11F4760083D893 /* ReminderSettingsViewController.swift in Sources */,
 				B54ABFD72C0CC281002E89DC /* CustomCircularProgressBar.swift in Sources */,
 				B54ABF8C2C09BD43002E89DC /* ViewController.swift in Sources */,
 				B54ABF882C09BD43002E89DC /* AppDelegate.swift in Sources */,
 				B54ABF8A2C09BD43002E89DC /* SceneDelegate.swift in Sources */,
+				546E32352C1078FA00E94C2A /* GoalSettingsViewController.swift in Sources */,
 				B54ABFD12C0CBC55002E89DC /* DateHelper.swift in Sources */,
 				B54ABFEC2C0D6BA6002E89DC /* BottomTabBarController.swift in Sources */,
 				B54ABFC52C0CB6AB002E89DC /* ViewModel.swift in Sources */,
