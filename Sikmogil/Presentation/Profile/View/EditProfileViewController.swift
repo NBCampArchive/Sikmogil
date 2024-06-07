@@ -9,9 +9,8 @@ import UIKit
 import SnapKit
 import Then
 
-class EditProfileViewController: UIViewController, UIImagePickerControllerDelegate & UINavigationControllerDelegate {
-    
-    // UI Elements
+class EditProfileViewController: UIViewController, UIImagePickerControllerDelegate & UINavigationControllerDelegate { // 프로필 수정영역 컨트롤러
+    // MARK: - UI 요소 설정
     let scrollView = UIScrollView().then {
         $0.backgroundColor = .white
     }
@@ -24,7 +23,6 @@ class EditProfileViewController: UIViewController, UIImagePickerControllerDelega
         $0.image = UIImage(named: "default_profile")
         $0.layer.cornerRadius = 75
         $0.layer.masksToBounds = true
-        $0.contentMode = .scaleAspectFill
         $0.backgroundColor = .gray
         $0.isUserInteractionEnabled = true
     }
@@ -32,86 +30,87 @@ class EditProfileViewController: UIViewController, UIImagePickerControllerDelega
     let profileLabel = UILabel().then {
         $0.text = "프로필 수정"
         $0.font = Suite.bold.of(size: 24)
-        $0.textColor = UIColor(named: "appBlack")
+        $0.textColor = .appBlack
     }
     
     let profileSubLabel = UILabel().then {
         $0.text = "프로필을 새롭게 수정해보세요."
         $0.font = Suite.regular.of(size: 14)
-        $0.textColor = UIColor(named: "appDarkGray")
+        $0.textColor = .appDarkGray
     }
     
     let nicknameView = UIView().then {
-        $0.backgroundColor = UIColor(named: "appLightGray")
+        $0.backgroundColor = .appLightGray
         $0.layer.cornerRadius = 12
     }
     
     let nicknameLabel = UILabel().then {
         $0.text = "닉네임"
         $0.font = Suite.regular.of(size: 14)
-        $0.textColor = UIColor(named: "appDarkGray")
+        $0.textColor = .appDarkGray
     }
     
     let nicknameTextField = UITextField().then {
         $0.text = "우주최강고양이"
         $0.font = Suite.regular.of(size: 16)
-        $0.textColor = UIColor(named: "appBlack")
+        $0.textColor = .appBlack
     }
     
     let heightView = UIView().then {
-        $0.backgroundColor = UIColor(named: "appLightGray")
+        $0.backgroundColor = .appLightGray
         $0.layer.cornerRadius = 12
     }
     
     let heightLabel = UILabel().then {
         $0.text = "키"
         $0.font = Suite.regular.of(size: 14)
-        $0.textColor = UIColor(named: "appDarkGray")
+        $0.textColor = .appDarkGray
     }
     
     let heightTextField = UITextField().then {
         $0.text = "000"
         $0.font = Suite.regular.of(size: 16)
-        $0.textColor = UIColor(named: "appBlack")
+        $0.textColor = .appBlack
     }
     
     let heightUnitLabel = UILabel().then {
         $0.text = "cm"
         $0.font = Suite.regular.of(size: 16)
-        $0.textColor = UIColor(named: "appDarkGray")
+        $0.textColor = .appDarkGray
     }
     
     let weightView = UIView().then {
-        $0.backgroundColor = UIColor(named: "appLightGray")
+        $0.backgroundColor = .appLightGray
         $0.layer.cornerRadius = 12
     }
     
     let weightLabel = UILabel().then {
         $0.text = "몸무게"
         $0.font = Suite.regular.of(size: 14)
-        $0.textColor = UIColor(named: "appDarkGray")
+        $0.textColor = .appDarkGray
     }
     
     let weightTextField = UITextField().then {
         $0.text = "0.0"
         $0.font = Suite.regular.of(size: 16)
-        $0.textColor = UIColor(named: "appBlack")
+        $0.textColor = .appBlack
     }
     
     let weightUnitLabel = UILabel().then {
         $0.text = "Kg"
         $0.font = Suite.regular.of(size: 16)
-        $0.textColor = UIColor(named: "appDarkGray")
+        $0.textColor = .appDarkGray
     }
     
     let saveButton = UIButton(type: .system).then {
         $0.setTitle("저장하기", for: .normal)
-        $0.backgroundColor = .black
+        $0.backgroundColor = .appBlack
         $0.setTitleColor(.white, for: .normal)
         $0.layer.cornerRadius = 5
-        $0.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
+        $0.addTarget(EditProfileViewController.self, action: #selector(saveButtonTapped), for: .touchUpInside)
     }
     
+    // MARK: - 생명주기 설정
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -124,6 +123,7 @@ class EditProfileViewController: UIViewController, UIImagePickerControllerDelega
         profileImageView.addGestureRecognizer(tapGestureRecognizer)
     }
     
+    // MARK: - 설정 메서드
     func setupViews() {
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
@@ -146,7 +146,6 @@ class EditProfileViewController: UIViewController, UIImagePickerControllerDelega
         weightView.addSubview(weightTextField)
         weightView.addSubview(weightUnitLabel)
         
-        // Save button should be added to the main view, not the contentView
         view.addSubview(saveButton)
     }
     
@@ -158,7 +157,7 @@ class EditProfileViewController: UIViewController, UIImagePickerControllerDelega
         contentView.snp.makeConstraints {
             $0.edges.equalToSuperview()
             $0.width.equalToSuperview()
-            $0.height.equalTo(800) // Set this as needed
+            $0.height.equalTo(800) // 임의 스크롤 높이
         }
         
         profileImageView.snp.makeConstraints {
@@ -249,24 +248,26 @@ class EditProfileViewController: UIViewController, UIImagePickerControllerDelega
         }
     }
     
-    @objc func profileImageTapped() {
+    // MARK: - 사용자 액션
+    @objc func profileImageTapped() { // 이미지 피커
         let imagePickerController = UIImagePickerController()
         imagePickerController.delegate = self
         imagePickerController.sourceType = .photoLibrary
         present(imagePickerController, animated: true, completion: nil)
     }
     
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+    func imagePickerController(_ picker:UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let pickedImage = info[.originalImage] as? UIImage {
             profileImageView.image = pickedImage
         }
         dismiss(animated: true, completion: nil)
     }
+    
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         dismiss(animated: true, completion: nil)
     }
     
     @objc func saveButtonTapped() {
-        print("Save button tapped")
+        // TODO: 변경사항 저장 후 로그인 화면으로 이동
     }
 }
