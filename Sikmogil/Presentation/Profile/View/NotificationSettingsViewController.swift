@@ -22,12 +22,13 @@ class NotificationSettingsViewController: UIViewController, UITableViewDelegate,
     private let titleLabel = UILabel().then {
         $0.text = "알림 설정"
         $0.font = Suite.bold.of(size: 24)
+        $0.textColor = .appBlack
     }
     
     private let subtitleLabel = UILabel().then {
         $0.text = "알림/소리를 설정해보세요."
         $0.font = Suite.regular.of(size: 14)
-        $0.textColor = .gray
+        $0.textColor = .appDarkGray
     }
     
     private let tableView = UITableView(frame: .zero, style: .grouped).then {
@@ -42,6 +43,7 @@ class NotificationSettingsViewController: UIViewController, UITableViewDelegate,
         setupConstraints()
     }
     
+    // MARK: - UI 설정
     private func setupUI() {
         view.backgroundColor = .white
         view.addSubview(scrollView)
@@ -54,6 +56,7 @@ class NotificationSettingsViewController: UIViewController, UITableViewDelegate,
         tableView.dataSource = self
     }
     
+    // MARK: - 제약 조건 설정
     private func setupConstraints() {
         scrollView.snp.makeConstraints {
             $0.edges.equalToSuperview()
@@ -62,7 +65,7 @@ class NotificationSettingsViewController: UIViewController, UITableViewDelegate,
         contentView.snp.makeConstraints {
             $0.edges.equalToSuperview()
             $0.width.equalToSuperview()
-            $0.height.equalTo(800) // Set arbitrary height for scrolling
+            $0.height.equalTo(800) // 임의 스크롤 높이
         }
         
         titleLabel.snp.makeConstraints {
@@ -82,7 +85,6 @@ class NotificationSettingsViewController: UIViewController, UITableViewDelegate,
     }
     
     // MARK: - UITableViewDataSource
-    
     func numberOfSections(in tableView: UITableView) -> Int {
         return 2
     }
@@ -107,7 +109,7 @@ class NotificationSettingsViewController: UIViewController, UITableViewDelegate,
         default:
             break
         }
-        cell.selectionStyle = .none
+        cell.selectionStyle = .none // 버튼 누를 때 색상 제거
         return cell
     }
     
@@ -121,6 +123,7 @@ class NotificationSettingsViewController: UIViewController, UITableViewDelegate,
         }
     }
     
+    // 테이블 뷰 푸터 설정 (간격설정)
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 80
     }
@@ -141,7 +144,7 @@ class NotificationSettingsViewController: UIViewController, UITableViewDelegate,
         return UIView(frame: .zero)
     }
     
-    // Disable selection for the second cell
+    // MARK: - 셀 선택 불가 설정
     func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
         return indexPath.section != 1
     }
