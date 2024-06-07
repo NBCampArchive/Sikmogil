@@ -10,6 +10,7 @@
 		B52001AE2C11B99E0083CBDF /* UIViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001AD2C11B99E0083CBDF /* UIViewControllerExtension.swift */; };
 		B52001B02C11D7FA0083CBDF /* UserAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001AF2C11D7FA0083CBDF /* UserAPIManager.swift */; };
 		B52001B22C1217DA0083CBDF /* WaveProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001B12C1217DA0083CBDF /* WaveProgressView.swift */; };
+		B52001B62C12F4570083CBDF /* StepsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001B52C12F4570083CBDF /* StepsViewController.swift */; };
 		B54ABF882C09BD43002E89DC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABF872C09BD43002E89DC /* AppDelegate.swift */; };
 		B54ABF8A2C09BD43002E89DC /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABF892C09BD43002E89DC /* SceneDelegate.swift */; };
 		B54ABF8C2C09BD43002E89DC /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABF8B2C09BD43002E89DC /* ViewController.swift */; };
@@ -43,11 +44,6 @@
 		B54ABFE92C0D69CD002E89DC /* Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABFE82C0D69CD002E89DC /* Font.swift */; };
 		B54ABFEC2C0D6BA6002E89DC /* BottomTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABFEB2C0D6BA6002E89DC /* BottomTabBarController.swift */; };
 		B54ABFEE2C0D7370002E89DC /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABFED2C0D7370002E89DC /* UIColorExtension.swift */; };
-		F3094EC12C0D91310099DE2C /* ExerciseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3094EC02C0D91310099DE2C /* ExerciseViewController.swift */; };
-		F3094EC42C0DB1940099DE2C /* ExerciseHistoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3094EC32C0DB1940099DE2C /* ExerciseHistoryCell.swift */; };
-		F3094EC62C0E40040099DE2C /* ExerciseSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3094EC52C0E40040099DE2C /* ExerciseSelectionViewController.swift */; };
-		F3094EEF2C0EEDA40099DE2C /* ExerciseTimerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3094EEE2C0EEDA40099DE2C /* ExerciseTimerViewController.swift */; };
-		F3094EF12C0EEDBA0099DE2C /* ExerciseResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3094EF02C0EEDBA0099DE2C /* ExerciseResultViewController.swift */; };
 		B54ABFF12C0DE03D002E89DC /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABFF02C0DE03D002E89DC /* LoginViewController.swift */; };
 		B54ABFF52C0DE1CD002E89DC /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABFF42C0DE1CD002E89DC /* LoginViewModel.swift */; };
 		B54ABFF82C0F0DC7002E89DC /* LoginAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABFF72C0F0DC7002E89DC /* LoginAPIManager.swift */; };
@@ -66,12 +62,18 @@
 		B54AC01A2C105646002E89DC /* Step1ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54AC0192C105646002E89DC /* Step1ViewController.swift */; };
 		B54AC01C2C1056A4002E89DC /* Step2ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54AC01B2C1056A4002E89DC /* Step2ViewController.swift */; };
 		B54AC01E2C1056C3002E89DC /* Step3ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54AC01D2C1056C3002E89DC /* Step3ViewController.swift */; };
+		F3094EC12C0D91310099DE2C /* ExerciseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3094EC02C0D91310099DE2C /* ExerciseViewController.swift */; };
+		F3094EC42C0DB1940099DE2C /* ExerciseHistoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3094EC32C0DB1940099DE2C /* ExerciseHistoryCell.swift */; };
+		F3094EC62C0E40040099DE2C /* ExerciseSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3094EC52C0E40040099DE2C /* ExerciseSelectionViewController.swift */; };
+		F3094EEF2C0EEDA40099DE2C /* ExerciseTimerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3094EEE2C0EEDA40099DE2C /* ExerciseTimerViewController.swift */; };
+		F3094EF12C0EEDBA0099DE2C /* ExerciseResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3094EF02C0EEDBA0099DE2C /* ExerciseResultViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		B52001AD2C11B99E0083CBDF /* UIViewControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtension.swift; sourceTree = "<group>"; };
 		B52001AF2C11D7FA0083CBDF /* UserAPIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAPIManager.swift; sourceTree = "<group>"; };
 		B52001B12C1217DA0083CBDF /* WaveProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaveProgressView.swift; sourceTree = "<group>"; };
+		B52001B52C12F4570083CBDF /* StepsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StepsViewController.swift; sourceTree = "<group>"; };
 		B54ABF842C09BD43002E89DC /* Sikmogil.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sikmogil.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B54ABF872C09BD43002E89DC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B54ABF892C09BD43002E89DC /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -99,11 +101,6 @@
 		B54ABFE82C0D69CD002E89DC /* Font.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Font.swift; sourceTree = "<group>"; };
 		B54ABFEB2C0D6BA6002E89DC /* BottomTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomTabBarController.swift; sourceTree = "<group>"; };
 		B54ABFED2C0D7370002E89DC /* UIColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
-		F3094EC02C0D91310099DE2C /* ExerciseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseViewController.swift; sourceTree = "<group>"; };
-		F3094EC32C0DB1940099DE2C /* ExerciseHistoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseHistoryCell.swift; sourceTree = "<group>"; };
-		F3094EC52C0E40040099DE2C /* ExerciseSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseSelectionViewController.swift; sourceTree = "<group>"; };
-		F3094EEE2C0EEDA40099DE2C /* ExerciseTimerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseTimerViewController.swift; sourceTree = "<group>"; };
-		F3094EF02C0EEDBA0099DE2C /* ExerciseResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseResultViewController.swift; sourceTree = "<group>"; };
 		B54ABFF02C0DE03D002E89DC /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		B54ABFF42C0DE1CD002E89DC /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		B54ABFF72C0F0DC7002E89DC /* LoginAPIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginAPIManager.swift; sourceTree = "<group>"; };
@@ -117,6 +114,11 @@
 		B54AC0192C105646002E89DC /* Step1ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Step1ViewController.swift; sourceTree = "<group>"; };
 		B54AC01B2C1056A4002E89DC /* Step2ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Step2ViewController.swift; sourceTree = "<group>"; };
 		B54AC01D2C1056C3002E89DC /* Step3ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Step3ViewController.swift; sourceTree = "<group>"; };
+		F3094EC02C0D91310099DE2C /* ExerciseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseViewController.swift; sourceTree = "<group>"; };
+		F3094EC32C0DB1940099DE2C /* ExerciseHistoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseHistoryCell.swift; sourceTree = "<group>"; };
+		F3094EC52C0E40040099DE2C /* ExerciseSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseSelectionViewController.swift; sourceTree = "<group>"; };
+		F3094EEE2C0EEDA40099DE2C /* ExerciseTimerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseTimerViewController.swift; sourceTree = "<group>"; };
+		F3094EF02C0EEDBA0099DE2C /* ExerciseResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseResultViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -347,23 +349,6 @@
 			path = TabBar;
 			sourceTree = "<group>";
 		};
-		F3094EC22C0DB1730099DE2C /* Cell */ = {
-			isa = PBXGroup;
-			children = (
-				F3094EC32C0DB1940099DE2C /* ExerciseHistoryCell.swift */,
-			);
-			path = Cell;
-			sourceTree = "<group>";
-		};
-		F3094EF22C1033970099DE2C /* Exercise */ = {
-			isa = PBXGroup;
-			children = (
-				F3094EF32C1033EB0099DE2C /* ViewModel */,
-				F3094EF42C1033FA0099DE2C /* View */,
-			);
-			path = Exercise;
-			sourceTree = "<group>";
-		};
 		B54ABFEF2C0DE020002E89DC /* Login */ = {
 			isa = PBXGroup;
 			children = (
@@ -406,18 +391,6 @@
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
-		F3094EF42C1033FA0099DE2C /* View */ = {
-			isa = PBXGroup;
-			children = (
-				F3094EC02C0D91310099DE2C /* ExerciseViewController.swift */,
-				F3094EC52C0E40040099DE2C /* ExerciseSelectionViewController.swift */,
-				F3094EEE2C0EEDA40099DE2C /* ExerciseTimerViewController.swift */,
-				F3094EF02C0EEDBA0099DE2C /* ExerciseResultViewController.swift */,
-				F3094EC22C0DB1730099DE2C /* Cell */,
-        );
-			path = View;
-			sourceTree = "<group>";
-		};
 		B54AC0132C1055C4002E89DC /* View */ = {
 			isa = PBXGroup;
 			children = (
@@ -426,7 +399,35 @@
 				B54AC0192C105646002E89DC /* Step1ViewController.swift */,
 				B54AC01B2C1056A4002E89DC /* Step2ViewController.swift */,
 				B54AC01D2C1056C3002E89DC /* Step3ViewController.swift */,
-
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		F3094EC22C0DB1730099DE2C /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				F3094EC32C0DB1940099DE2C /* ExerciseHistoryCell.swift */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		F3094EF22C1033970099DE2C /* Exercise */ = {
+			isa = PBXGroup;
+			children = (
+				F3094EF42C1033FA0099DE2C /* View */,
+			);
+			path = Exercise;
+			sourceTree = "<group>";
+		};
+		F3094EF42C1033FA0099DE2C /* View */ = {
+			isa = PBXGroup;
+			children = (
+				B52001B52C12F4570083CBDF /* StepsViewController.swift */,
+				F3094EC02C0D91310099DE2C /* ExerciseViewController.swift */,
+				F3094EC52C0E40040099DE2C /* ExerciseSelectionViewController.swift */,
+				F3094EEE2C0EEDA40099DE2C /* ExerciseTimerViewController.swift */,
+				F3094EF02C0EEDBA0099DE2C /* ExerciseResultViewController.swift */,
+				F3094EC22C0DB1730099DE2C /* Cell */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -568,6 +569,7 @@
 				B54ABFC52C0CB6AB002E89DC /* ViewModel.swift in Sources */,
 				B54ABFBF2C0CB639002E89DC /* PersistentStorage.swift in Sources */,
 				F3094EC12C0D91310099DE2C /* ExerciseViewController.swift in Sources */,
+				B52001B62C12F4570083CBDF /* StepsViewController.swift in Sources */,
 				B54ABFF52C0DE1CD002E89DC /* LoginViewModel.swift in Sources */,
 				B54ABFD52C0CBE86002E89DC /* CircularProgressBar.swift in Sources */,
 				F3094EEF2C0EEDA40099DE2C /* ExerciseTimerViewController.swift in Sources */,
