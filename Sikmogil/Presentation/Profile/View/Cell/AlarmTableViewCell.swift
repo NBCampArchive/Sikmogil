@@ -11,10 +11,11 @@ import Then
 
 class AlarmTableViewCell: UITableViewCell {
     
+    // MARK: - 속성정의
     static let identifier = "AlarmTableViewCell"
     
     let containerView = UIView().then {
-        $0.backgroundColor = UIColor(named: "appLightGray")
+        $0.backgroundColor = .appLightGray
         $0.layer.cornerRadius = 12
         $0.layer.masksToBounds = true
     }
@@ -24,12 +25,12 @@ class AlarmTableViewCell: UITableViewCell {
     }
     
     let customSwitch = UISwitch().then {
-        $0.onTintColor = UIColor(named: "appSkyBlue")
+        $0.onTintColor = .appSkyBlue
     }
     
     let accessoryButton = UIButton(type: .system).then {
         $0.setImage(UIImage(systemName: "chevron.right"), for: .normal)
-        $0.tintColor = UIColor(named: "appBlack")
+        $0.tintColor = .appBlack
     }
     
     var showsAccessoryButton: Bool = true {
@@ -38,6 +39,7 @@ class AlarmTableViewCell: UITableViewCell {
         }
     }
     
+    // MARK: - 초기화 메서드
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
