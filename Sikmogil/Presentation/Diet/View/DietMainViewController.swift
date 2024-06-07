@@ -144,8 +144,8 @@ class DietMainViewController: UIViewController {
         
         view.backgroundColor = .white
         
-        dietAddTabButton.addTarget(self, action: #selector(didTapDietAddTabButton), for: .touchUpInside)
-        waterAddTabButton.addTarget(self, action: #selector(didTapWaterAddTabButton), for: .touchUpInside)
+        dietAddTabButton.addTarget(self, action: #selector(showDietBottomSheet), for: .touchUpInside)
+        waterAddTabButton.addTarget(self, action: #selector(showWaterBottomSheet), for: .touchUpInside)
         
         viewModel = DietViewModel()
     }
@@ -285,13 +285,34 @@ class DietMainViewController: UIViewController {
     }
     
     // MARK: - BottomSheet
-    @objc private func didTapDietAddTabButton() {
-        viewModel?.showDietBottomSheet(from: self)
+    
+    @objc func showDietBottomSheet() {
+        let floatingPanelController = FloatingPanelController()
+        floatingPanelController.delegate = self
+        
+        floatingPanelController.changePanelStyle()
+
+        // ContentViewController 설정
+        let contentVC = DietBottomSheetViewController()
+        floatingPanelController.set(contentViewController: contentVC)
+
+        // 패널 추가
+        floatingPanelController.addPanel(toParent: self)
     }
     
-    @objc private func didTapWaterAddTabButton() {
-        viewModel?.showWaterBottomSheet(from: self)
-    }
+    @objc private func showWaterBottomSheet() {
+        let floatingPanelController = FloatingPanelController()
+        floatingPanelController.delegate = self
+        
+        floatingPanelController.changePanelStyle()
 
-}
+        // ContentViewController 설정
+        let contentVC = WaterBottomSheetViewController()
+        floatingPanelController.set(contentViewController: contentVC)
+
+        // 패널 추가
+        floatingPanelController.addPanel(toParent: self)
+    }
+    
+    }
 
