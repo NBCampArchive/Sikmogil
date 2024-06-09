@@ -12,6 +12,7 @@
 		B52001B22C1217DA0083CBDF /* WaveProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001B12C1217DA0083CBDF /* WaveProgressView.swift */; };
 		B52001B62C12F4570083CBDF /* StepsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001B52C12F4570083CBDF /* StepsViewController.swift */; };
 		B52001BF2C15AC1E0083CBDF /* ExerciseAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001BE2C15AC1E0083CBDF /* ExerciseAPIManager.swift */; };
+		B52001C12C15ADA50083CBDF /* ExerciseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001C02C15ADA50083CBDF /* ExerciseModel.swift */; };
 		B54ABF882C09BD43002E89DC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABF872C09BD43002E89DC /* AppDelegate.swift */; };
 		B54ABF8A2C09BD43002E89DC /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABF892C09BD43002E89DC /* SceneDelegate.swift */; };
 		B54ABF8C2C09BD43002E89DC /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABF8B2C09BD43002E89DC /* ViewController.swift */; };
@@ -76,6 +77,7 @@
 		B52001B12C1217DA0083CBDF /* WaveProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaveProgressView.swift; sourceTree = "<group>"; };
 		B52001B52C12F4570083CBDF /* StepsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StepsViewController.swift; sourceTree = "<group>"; };
 		B52001BE2C15AC1E0083CBDF /* ExerciseAPIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseAPIManager.swift; sourceTree = "<group>"; };
+		B52001C02C15ADA50083CBDF /* ExerciseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseModel.swift; sourceTree = "<group>"; };
 		B54ABF842C09BD43002E89DC /* Sikmogil.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sikmogil.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B54ABF872C09BD43002E89DC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B54ABF892C09BD43002E89DC /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -193,6 +195,7 @@
 				B54ABFB72C0CB595002E89DC /* Model.swift */,
 				B54ABFF92C0F0F65002E89DC /* LoginModel.swift */,
 				B54AC00D2C105475002E89DC /* UserProfile.swift */,
+				B52001C02C15ADA50083CBDF /* ExerciseModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -577,6 +580,7 @@
 				B54ABFF52C0DE1CD002E89DC /* LoginViewModel.swift in Sources */,
 				B54ABFD52C0CBE86002E89DC /* CircularProgressBar.swift in Sources */,
 				F3094EEF2C0EEDA40099DE2C /* ExerciseTimerViewController.swift in Sources */,
+				B52001C12C15ADA50083CBDF /* ExerciseModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
