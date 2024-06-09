@@ -8,6 +8,16 @@
 
 /* Begin PBXBuildFile section */
 		62578CD12C0DAB92005035BB /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62578CD02C0DAB92005035BB /* MainViewController.swift */; };
+		62578CD42C0ED558005035BB /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62578CD32C0ED558005035BB /* CalendarViewController.swift */; };
+		62578CD72C0ED5F1005035BB /* FSCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = 62578CD62C0ED5F1005035BB /* FSCalendar */; };
+		62578CE02C106715005035BB /* WeightRecordFloatingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62578CDF2C106715005035BB /* WeightRecordFloatingViewController.swift */; };
+		62578CE92C107C7A005035BB /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62578CE82C107C7A005035BB /* MainViewModel.swift */; };
+		62578CEC2C117181005035BB /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 62578CEB2C117181005035BB /* Lottie */; };
+		62578CEE2C117333005035BB /* The_Scale.json in Resources */ = {isa = PBXBuildFile; fileRef = 62578CED2C117333005035BB /* The_Scale.json */; };
+		62578CF02C11793C005035BB /* DayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62578CEF2C11793C005035BB /* DayViewController.swift */; };
+		62578CFE2C15A395005035BB /* PhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62578CFD2C15A395005035BB /* PhotoCell.swift */; };
+		62578D002C15A487005035BB /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62578CFF2C15A487005035BB /* HeaderView.swift */; };
+		62578D022C15E476005035BB /* DiaryRecordFloatingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62578D012C15E476005035BB /* DiaryRecordFloatingViewController.swift */; };
 		B54ABF882C09BD43002E89DC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABF872C09BD43002E89DC /* AppDelegate.swift */; };
 		B54ABF8A2C09BD43002E89DC /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABF892C09BD43002E89DC /* SceneDelegate.swift */; };
 		B54ABF8C2C09BD43002E89DC /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABF8B2C09BD43002E89DC /* ViewController.swift */; };
@@ -45,6 +55,14 @@
 
 /* Begin PBXFileReference section */
 		62578CD02C0DAB92005035BB /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		62578CD32C0ED558005035BB /* CalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
+		62578CDF2C106715005035BB /* WeightRecordFloatingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeightRecordFloatingViewController.swift; sourceTree = "<group>"; };
+		62578CE82C107C7A005035BB /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
+		62578CED2C117333005035BB /* The_Scale.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = The_Scale.json; sourceTree = "<group>"; };
+		62578CEF2C11793C005035BB /* DayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayViewController.swift; sourceTree = "<group>"; };
+		62578CFD2C15A395005035BB /* PhotoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCell.swift; sourceTree = "<group>"; };
+		62578CFF2C15A487005035BB /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
+		62578D012C15E476005035BB /* DiaryRecordFloatingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryRecordFloatingViewController.swift; sourceTree = "<group>"; };
 		B54ABF842C09BD43002E89DC /* Sikmogil.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sikmogil.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B54ABF872C09BD43002E89DC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B54ABF892C09BD43002E89DC /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -83,6 +101,8 @@
 				B54ABFB42C0CB507002E89DC /* FloatingPanel in Frameworks */,
 				B54ABFA32C0CB42B002E89DC /* Kingfisher in Frameworks */,
 				B54ABFB12C0CB476002E89DC /* GoogleSignInSwift in Frameworks */,
+				62578CD72C0ED5F1005035BB /* FSCalendar in Frameworks */,
+				62578CEC2C117181005035BB /* Lottie in Frameworks */,
 				B54ABFA02C0CB41A002E89DC /* DGCharts in Frameworks */,
 				B54ABFA92C0CB447002E89DC /* Then in Frameworks */,
 				B54ABFAC2C0CB459002E89DC /* SnapKit in Frameworks */,
@@ -96,9 +116,39 @@
 		62578CD22C0DAC43005035BB /* Main */ = {
 			isa = PBXGroup;
 			children = (
-				62578CD02C0DAB92005035BB /* MainViewController.swift */,
 			);
 			path = Main;
+			sourceTree = "<group>";
+		};
+		62578CD82C0F3B16005035BB /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				62578CDA2C0F3B30005035BB /* ViewModel */,
+				62578CD92C0F3B28005035BB /* View */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
+		62578CD92C0F3B28005035BB /* View */ = {
+			isa = PBXGroup;
+			children = (
+				62578CD02C0DAB92005035BB /* MainViewController.swift */,
+				62578CDF2C106715005035BB /* WeightRecordFloatingViewController.swift */,
+				62578CD32C0ED558005035BB /* CalendarViewController.swift */,
+				62578D012C15E476005035BB /* DiaryRecordFloatingViewController.swift */,
+				62578CEF2C11793C005035BB /* DayViewController.swift */,
+				62578CFD2C15A395005035BB /* PhotoCell.swift */,
+				62578CFF2C15A487005035BB /* HeaderView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		62578CDA2C0F3B30005035BB /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				62578CE82C107C7A005035BB /* MainViewModel.swift */,
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 		B54ABF7B2C09BD43002E89DC = {
@@ -177,6 +227,7 @@
 		B54ABFC02C0CB666002E89DC /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
+				62578CD82C0F3B16005035BB /* Main */,
 				B54ABFEA2C0D6B8B002E89DC /* TabBar */,
 				B54ABFC12C0CB672002E89DC /* Example */,
 			);
@@ -214,6 +265,7 @@
 			children = (
 				B54ABFD82C0D6892002E89DC /* Fonts */,
 				B54ABF932C09BD47002E89DC /* Assets.xcassets */,
+				62578CED2C117333005035BB /* The_Scale.json */,
 				B54ABF982C09BD47002E89DC /* Info.plist */,
 			);
 			path = Resources;
@@ -320,6 +372,8 @@
 				B54ABFAE2C0CB476002E89DC /* GoogleSignIn */,
 				B54ABFB02C0CB476002E89DC /* GoogleSignInSwift */,
 				B54ABFB32C0CB507002E89DC /* FloatingPanel */,
+				62578CD62C0ED5F1005035BB /* FSCalendar */,
+				62578CEB2C117181005035BB /* Lottie */,
 			);
 			productName = Sikmogil;
 			productReference = B54ABF842C09BD43002E89DC /* Sikmogil.app */;
@@ -357,6 +411,8 @@
 				B54ABFAA2C0CB459002E89DC /* XCRemoteSwiftPackageReference "SnapKit" */,
 				B54ABFAD2C0CB476002E89DC /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
 				B54ABFB22C0CB506002E89DC /* XCRemoteSwiftPackageReference "FloatingPanel" */,
+				62578CD52C0ED5F1005035BB /* XCRemoteSwiftPackageReference "FSCalendar" */,
+				62578CEA2C117181005035BB /* XCRemoteSwiftPackageReference "lottie-ios" */,
 			);
 			productRefGroup = B54ABF852C09BD43002E89DC /* Products */;
 			projectDirPath = "";
@@ -378,6 +434,7 @@
 				B54ABFE22C0D68CF002E89DC /* SUITE-SemiBold.ttf in Resources */,
 				B54ABFE62C0D68CF002E89DC /* SUITE-Medium.ttf in Resources */,
 				B54ABFE12C0D68CF002E89DC /* SUITE-Bold.ttf in Resources */,
+				62578CEE2C117333005035BB /* The_Scale.json in Resources */,
 				B54ABFE02C0D68CF002E89DC /* SUITE-Light.ttf in Resources */,
 				B54ABF942C09BD47002E89DC /* Assets.xcassets in Resources */,
 			);
@@ -390,24 +447,31 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				62578CF02C11793C005035BB /* DayViewController.swift in Sources */,
 				B54ABFEE2C0D7370002E89DC /* UIColorExtension.swift in Sources */,
 				B54ABFCF2C0CBB59002E89DC /* UIViewExtensions.swift in Sources */,
 				B54ABFCB2C0CB770002E89DC /* Extension.swift in Sources */,
+				62578CFE2C15A395005035BB /* PhotoCell.swift in Sources */,
 				B54ABFE92C0D69CD002E89DC /* Font.swift in Sources */,
 				B54ABFB82C0CB595002E89DC /* Model.swift in Sources */,
+				62578CE02C106715005035BB /* WeightRecordFloatingViewController.swift in Sources */,
 				B54ABF922C09BD43002E89DC /* Sikmogil.xcdatamodeld in Sources */,
 				B54ABFCD2C0CB78F002E89DC /* Helpers.swift in Sources */,
 				B54ABFBD2C0CB60D002E89DC /* Network.swift in Sources */,
 				B54ABFD72C0CC281002E89DC /* CustomCircularProgressBar.swift in Sources */,
 				B54ABF8C2C09BD43002E89DC /* ViewController.swift in Sources */,
+				62578CD42C0ED558005035BB /* CalendarViewController.swift in Sources */,
+				62578D002C15A487005035BB /* HeaderView.swift in Sources */,
 				B54ABF882C09BD43002E89DC /* AppDelegate.swift in Sources */,
 				B54ABF8A2C09BD43002E89DC /* SceneDelegate.swift in Sources */,
 				B54ABFD12C0CBC55002E89DC /* DateHelper.swift in Sources */,
 				B54ABFEC2C0D6BA6002E89DC /* BottomTabBarController.swift in Sources */,
 				B54ABFC52C0CB6AB002E89DC /* ViewModel.swift in Sources */,
 				62578CD12C0DAB92005035BB /* MainViewController.swift in Sources */,
+				62578D022C15E476005035BB /* DiaryRecordFloatingViewController.swift in Sources */,
 				B54ABFBF2C0CB639002E89DC /* PersistentStorage.swift in Sources */,
 				B54ABFD52C0CBE86002E89DC /* CircularProgressBar.swift in Sources */,
+				62578CE92C107C7A005035BB /* MainViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -623,6 +687,22 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		62578CD52C0ED5F1005035BB /* XCRemoteSwiftPackageReference "FSCalendar" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/WenchaoD/FSCalendar.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.8.4;
+			};
+		};
+		62578CEA2C117181005035BB /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/airbnb/lottie-ios.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.4.3;
+			};
+		};
 		B54ABF9E2C0CB41A002E89DC /* XCRemoteSwiftPackageReference "Charts" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ChartsOrg/Charts";
@@ -682,6 +762,16 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		62578CD62C0ED5F1005035BB /* FSCalendar */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 62578CD52C0ED5F1005035BB /* XCRemoteSwiftPackageReference "FSCalendar" */;
+			productName = FSCalendar;
+		};
+		62578CEB2C117181005035BB /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 62578CEA2C117181005035BB /* XCRemoteSwiftPackageReference "lottie-ios" */;
+			productName = Lottie;
+		};
 		B54ABF9F2C0CB41A002E89DC /* DGCharts */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = B54ABF9E2C0CB41A002E89DC /* XCRemoteSwiftPackageReference "Charts" */;

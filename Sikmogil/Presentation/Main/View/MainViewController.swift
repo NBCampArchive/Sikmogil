@@ -7,8 +7,13 @@
 
 import UIKit
 import DGCharts
+import FloatingPanel
+import Lottie
 
 class MainViewController: UIViewController {
+    
+    var floatingPanelController: FloatingPanelController!
+    var dimmingView: UIView!
     
     private let scrollView = UIScrollView().then {
         $0.backgroundColor = .clear
@@ -28,7 +33,7 @@ class MainViewController: UIViewController {
         $0.font = Suite.bold.of(size: 28)
     }
     
-    private let calendarButton = UIButton().then {
+    private lazy var calendarButton = UIButton().then {
         $0.setImage(.calendar, for: .normal)
     }
     
@@ -45,24 +50,26 @@ class MainViewController: UIViewController {
     }
     
     private let dateProgressView = UIProgressView().then {
-        $0.progress = 0.5
+        $0.progress = 0.7
         $0.trackTintColor = .appLightGray
         $0.progressTintColor = .appYellow
         $0.progressViewStyle = .bar
         $0.clipsToBounds = true
-        $0.layer.cornerRadius = 8
+        $0.layer.cornerRadius = 20
+        $0.subviews[1].clipsToBounds = true
+        $0.subviews[1].layer.cornerRadius = 20
     }
     
     private let percentView = UIView().then {
         $0.backgroundColor = .white
-        $0.layer.borderWidth = 6
-        $0.layer.cornerRadius = 25
-        $0.layer.borderColor = UIColor.appYellow.cgColor
+        $0.layer.borderWidth = 4
+        $0.layer.cornerRadius = 20
+        $0.layer.borderColor = UIColor(red: 1, green: 0.749, blue: 0, alpha: 1.0).cgColor
     }
     
     private let percentLabel = UILabel().then {
-        $0.text = "50%"
-        $0.font = Suite.semiBold.of(size: 16)
+        $0.text = "100%"
+        $0.font = Suite.semiBold.of(size: 12)
     }
     
     private let weightLogLabel = UILabel().then {
@@ -82,8 +89,10 @@ class MainViewController: UIViewController {
         $0.textColor = .appDarkGray
     }
     
-    private let scaleImage = UIImageView().then {
-        $0.backgroundColor = .appLightGray
+    private let animationView: LottieAnimationView = .init(name: "The_Scale").then {
+        $0.contentMode = .scaleAspectFit
+        $0.loopMode = .loop
+        $0.play()
     }
     
     private let recordButton = UIButton().then {
@@ -110,8 +119,10 @@ class MainViewController: UIViewController {
         
         setupViews()
         setupConstraints()
+        setupFloatingPanel()
+        calendarButton.addTarget(self, action: #selector(tapCalendarButton), for: .touchUpInside)
+        recordButton.addTarget(self, action: #selector(tapRecordButton), for: .touchUpInside)
     }
-    
     
     private func setupViews() {
         view.addSubview(scrollView)
@@ -121,14 +132,15 @@ class MainViewController: UIViewController {
         scrollSubView.addSubviews(goalStackView,
                                   calendarButton,
                                   dateProgressView,
-                                  percentView,
                                   weightLogLabel,
                                   weightNowLabel,
                                   weightToGoalLabel,
-                                  scaleImage,
+                                  animationView,
                                   recordButton,
                                   graphLabel,
                                   graph)
+        
+        dateProgressView.subviews[1].addSubview(percentView)
         
         goalStackView.addArrangedSubviews(goalLabel, weightLabel, progressLabel)
         goalStackView.setCustomSpacing(16, after: weightLabel)
@@ -138,11 +150,12 @@ class MainViewController: UIViewController {
     
     private func setupConstraints() {
         scrollView.snp.makeConstraints {
-            $0.edges.equalTo(view.safeAreaLayoutGuide)
+            $0.edges.equalToSuperview()
         }
         
         scrollSubView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+            $0.edges.equalTo(scrollView.contentLayoutGuide)
+            $0.width.equalTo(scrollView.frameLayoutGuide)
             $0.height.equalTo(950)
         }
         
@@ -162,15 +175,14 @@ class MainViewController: UIViewController {
             $0.top.equalTo(goalStackView.snp.bottom).offset(20)
             $0.centerX.equalTo(view.safeAreaLayoutGuide)
             $0.leading.equalToSuperview().offset(16)
-            $0.height.equalTo(16)
+            $0.height.equalTo(40)
         }
         
         percentView.snp.makeConstraints {
-            $0.height.equalTo(50)
-            $0.width.equalTo(50)
+            $0.height.equalTo(40)
+            $0.width.equalTo(40)
             $0.centerY.equalTo(dateProgressView.snp.centerY)
-            // 퍼센트에따라 위치변경 필요
-            $0.centerX.equalTo(dateProgressView.frame.size.width * CGFloat(dateProgressView.progress))
+            $0.trailing.equalToSuperview()
         }
         
         percentLabel.snp.makeConstraints {
@@ -193,7 +205,7 @@ class MainViewController: UIViewController {
             $0.centerX.equalTo(view.safeAreaLayoutGuide)
         }
         
-        scaleImage.snp.makeConstraints {
+        animationView.snp.makeConstraints {
             $0.top.equalTo(weightToGoalLabel.snp.bottom).offset(8)
             $0.centerX.equalTo(view.safeAreaLayoutGuide)
             $0.width.equalTo(200)
@@ -201,7 +213,7 @@ class MainViewController: UIViewController {
         }
         
         recordButton.snp.makeConstraints {
-            $0.top.equalTo(scaleImage.snp.bottom).offset(8)
+            $0.top.equalTo(animationView.snp.bottom).offset(8)
             $0.leading.equalTo(view.safeAreaLayoutGuide).offset(18)
             $0.trailing.equalTo(view.safeAreaLayoutGuide).offset(-18)
             $0.height.equalTo(48)
@@ -220,4 +232,67 @@ class MainViewController: UIViewController {
         }
     }
     
+    @objc func tapCalendarButton() {
+        let nextView = CalendarViewController()
+        
+        navigationController?.pushViewController(nextView, animated: true)
+    }
+    
+    @objc func tapRecordButton() {
+        floatingPanelController.show(animated: true, completion: nil)
+        dimmingView.isHidden = false
+        UIView.animate(withDuration: 0.3) {
+            self.dimmingView.alpha = 1.0
+        }
+    }
+}
+
+extension MainViewController: FloatingPanelControllerDelegate {
+    
+    func setupFloatingPanel() {
+        floatingPanelController = FloatingPanelController()
+        
+        let contentVC = WeightRecordFloatingViewController()
+        floatingPanelController.set(contentViewController: contentVC)
+        
+        floatingPanelController.surfaceView.appearance.cornerRadius = 20
+        floatingPanelController.delegate = self
+        
+        dimmingView = UIView(frame: view.bounds)
+        dimmingView.backgroundColor = UIColor.appBlack.withAlphaComponent(0.5)
+        dimmingView.isHidden = true
+        dimmingView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dismissFloatingPanel)))
+        
+        view.addSubview(dimmingView)
+        
+        floatingPanelController.addPanel(toParent: self)
+        floatingPanelController.hide(animated: false, completion: nil)
+    }
+    
+    @objc private func dismissFloatingPanel() {
+        floatingPanelController.hide(animated: true) {
+            self.dimmingView.isHidden = true
+            self.dimmingView.alpha = 0.0
+        }
+    }
+    
+    func floatingPanelDidMove(_ fpc: FloatingPanelController) {
+        if fpc.state != .hidden {
+            tabBarController?.tabBar.isHidden = true
+        }
+        
+        let loc = fpc.surfaceLocation
+        let minY = fpc.surfaceLocation(for: .half).y
+        let maxY = fpc.surfaceLocation(for: .tip).y
+        
+        if loc.y > maxY {
+            fpc.move(to: .hidden, animated: true)
+            self.dimmingView.isHidden = true
+            tabBarController?.tabBar.isHidden = false
+        }
+        
+        if loc.y < minY {
+            fpc.surfaceLocation = CGPoint(x: loc.x, y: minY)
+        }
+    }
 }
