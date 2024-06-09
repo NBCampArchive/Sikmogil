@@ -11,6 +11,7 @@
 		B52001B02C11D7FA0083CBDF /* UserAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001AF2C11D7FA0083CBDF /* UserAPIManager.swift */; };
 		B52001B22C1217DA0083CBDF /* WaveProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001B12C1217DA0083CBDF /* WaveProgressView.swift */; };
 		B52001B62C12F4570083CBDF /* StepsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001B52C12F4570083CBDF /* StepsViewController.swift */; };
+		B52001BF2C15AC1E0083CBDF /* ExerciseAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001BE2C15AC1E0083CBDF /* ExerciseAPIManager.swift */; };
 		B54ABF882C09BD43002E89DC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABF872C09BD43002E89DC /* AppDelegate.swift */; };
 		B54ABF8A2C09BD43002E89DC /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABF892C09BD43002E89DC /* SceneDelegate.swift */; };
 		B54ABF8C2C09BD43002E89DC /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABF8B2C09BD43002E89DC /* ViewController.swift */; };
@@ -74,6 +75,7 @@
 		B52001AF2C11D7FA0083CBDF /* UserAPIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAPIManager.swift; sourceTree = "<group>"; };
 		B52001B12C1217DA0083CBDF /* WaveProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaveProgressView.swift; sourceTree = "<group>"; };
 		B52001B52C12F4570083CBDF /* StepsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StepsViewController.swift; sourceTree = "<group>"; };
+		B52001BE2C15AC1E0083CBDF /* ExerciseAPIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseAPIManager.swift; sourceTree = "<group>"; };
 		B54ABF842C09BD43002E89DC /* Sikmogil.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sikmogil.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B54ABF872C09BD43002E89DC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B54ABF892C09BD43002E89DC /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -210,6 +212,7 @@
 				B54ABFBC2C0CB60D002E89DC /* Network.swift */,
 				B54ABFF72C0F0DC7002E89DC /* LoginAPIManager.swift */,
 				B52001AF2C11D7FA0083CBDF /* UserAPIManager.swift */,
+				B52001BE2C15AC1E0083CBDF /* ExerciseAPIManager.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -552,6 +555,7 @@
 				B54ABFBD2C0CB60D002E89DC /* Network.swift in Sources */,
 				B54ABFF12C0DE03D002E89DC /* LoginViewController.swift in Sources */,
 				B54ABFD72C0CC281002E89DC /* CustomCircularProgressBar.swift in Sources */,
+				B52001BF2C15AC1E0083CBDF /* ExerciseAPIManager.swift in Sources */,
 				F3094EC42C0DB1940099DE2C /* ExerciseHistoryCell.swift in Sources */,
 				B54AC0172C10560A002E89DC /* OnboardingPageViewController.swift in Sources */,
 				B54ABF8C2C09BD43002E89DC /* ViewController.swift in Sources */,
