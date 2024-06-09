@@ -40,4 +40,18 @@ class LoginAPIManager{
                 }
             }
     }
+    
+    func getAccessTokenFromKeychain() -> String {
+        guard let accessToken = keychain.get("accessToken") else {
+            return ""
+        }
+        return accessToken
+    }
+    
+    func getRefreshTokenFromKeychain() -> String {
+        guard let refreshToken = keychain.get("refreshToken") else {
+            return ""
+        }
+        return refreshToken
+    }
 }
