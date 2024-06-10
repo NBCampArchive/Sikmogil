@@ -9,7 +9,7 @@ import UIKit
 import SnapKit
 import Then
 
-class NotificationSettingsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class NotificationSettingsViewController: UIViewController {
     
     private let scrollView = UIScrollView().then {
         $0.backgroundColor = .clear
@@ -83,8 +83,11 @@ class NotificationSettingsViewController: UIViewController, UITableViewDelegate,
             $0.leading.trailing.bottom.equalToSuperview()
         }
     }
+}
+
+// MARK: - UITableViewDataSource & UITableViewDelegate
+extension NotificationSettingsViewController: UITableViewDelegate, UITableViewDataSource {
     
-    // MARK: - UITableViewDataSource
     func numberOfSections(in tableView: UITableView) -> Int {
         return 2
     }
@@ -113,7 +116,6 @@ class NotificationSettingsViewController: UIViewController, UITableViewDelegate,
         return cell
     }
     
-    // MARK: - UITableViewDelegate
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
