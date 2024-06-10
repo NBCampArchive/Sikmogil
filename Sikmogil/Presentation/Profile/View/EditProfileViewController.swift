@@ -9,7 +9,7 @@ import UIKit
 import SnapKit
 import Then
 
-class EditProfileViewController: UIViewController, UIImagePickerControllerDelegate & UINavigationControllerDelegate { // 프로필 수정영역 컨트롤러
+class EditProfileViewController: UIViewController {
     // MARK: - UI 요소 설정
     let scrollView = UIScrollView().then {
         $0.backgroundColor = .white
@@ -107,7 +107,7 @@ class EditProfileViewController: UIViewController, UIImagePickerControllerDelega
         $0.backgroundColor = .appBlack
         $0.setTitleColor(.white, for: .normal)
         $0.layer.cornerRadius = 5
-        $0.addTarget(EditProfileViewController.self, action: #selector(saveButtonTapped), for: .touchUpInside)
+        $0.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
     }
     
     // MARK: - 생명주기 설정
@@ -122,8 +122,10 @@ class EditProfileViewController: UIViewController, UIImagePickerControllerDelega
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(profileImageTapped))
         profileImageView.addGestureRecognizer(tapGestureRecognizer)
     }
-    
-    // MARK: - 설정 메서드
+}
+
+// MARK: - 설정 메서드
+extension EditProfileViewController {
     func setupViews() {
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
@@ -247,8 +249,10 @@ class EditProfileViewController: UIViewController, UIImagePickerControllerDelega
             $0.height.equalTo(50)
         }
     }
-    
-    // MARK: - 사용자 액션
+}
+
+// MARK: - 사용자 액션
+extension EditProfileViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     @objc func profileImageTapped() { // 이미지 피커
         let imagePickerController = UIImagePickerController()
         imagePickerController.delegate = self
