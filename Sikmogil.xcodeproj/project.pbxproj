@@ -7,6 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		540768862C12EAB200543A72 /* ProfileInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 540768852C12EAB200543A72 /* ProfileInfoView.swift */; };
+		540768882C12EAD900543A72 /* ProfileTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 540768872C12EAD900543A72 /* ProfileTableView.swift */; };
+		545AA5162C11E6540083D893 /* AlarmTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 545AA5152C11E6540083D893 /* AlarmTableViewCell.swift */; };
+		545AA5182C11F4760083D893 /* ReminderSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 545AA5172C11F4760083D893 /* ReminderSettingsViewController.swift */; };
+		546E32312C1078D100E94C2A /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546E32302C1078D100E94C2A /* EditProfileViewController.swift */; };
+		546E32332C1078E600E94C2A /* NotificationSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546E32322C1078E600E94C2A /* NotificationSettingsViewController.swift */; };
+		546E32352C1078FA00E94C2A /* GoalSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546E32342C1078FA00E94C2A /* GoalSettingsViewController.swift */; };
+		547A1BAC2C0DAA78000A16BF /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 547A1BAB2C0DAA78000A16BF /* ProfileViewController.swift */; };
+		5485F0882C0DFE2D00A2A71E /* ProfileTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5485F0872C0DFE2D00A2A71E /* ProfileTableViewCell.swift */; };
+		B52001AE2C11B99E0083CBDF /* UIViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001AD2C11B99E0083CBDF /* UIViewControllerExtension.swift */; };
+		B52001B02C11D7FA0083CBDF /* UserAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001AF2C11D7FA0083CBDF /* UserAPIManager.swift */; };
+		B52001B22C1217DA0083CBDF /* WaveProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001B12C1217DA0083CBDF /* WaveProgressView.swift */; };
+		B52001B62C12F4570083CBDF /* StepsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001B52C12F4570083CBDF /* StepsViewController.swift */; };
 		B54ABF882C09BD43002E89DC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABF872C09BD43002E89DC /* AppDelegate.swift */; };
 		B54ABF8A2C09BD43002E89DC /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABF892C09BD43002E89DC /* SceneDelegate.swift */; };
 		B54ABF8C2C09BD43002E89DC /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABF8B2C09BD43002E89DC /* ViewController.swift */; };
@@ -51,9 +64,45 @@
 		CAA50FAB2C103812008FE220 /* DietAlbumViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA50FAA2C103812008FE220 /* DietAlbumViewController.swift */; };
 		CAA50FAD2C103C85008FE220 /* DietAlbumCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA50FAC2C103C85008FE220 /* DietAlbumCollectionViewCell.swift */; };
 		CAA50FB02C1074E2008FE220 /* FloatingPanelControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA50FAF2C1074E2008FE220 /* FloatingPanelControllerDelegate.swift */; };
+		B54ABFF12C0DE03D002E89DC /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABFF02C0DE03D002E89DC /* LoginViewController.swift */; };
+		B54ABFF52C0DE1CD002E89DC /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABFF42C0DE1CD002E89DC /* LoginViewModel.swift */; };
+		B54ABFF82C0F0DC7002E89DC /* LoginAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABFF72C0F0DC7002E89DC /* LoginAPIManager.swift */; };
+		B54ABFFA2C0F0F65002E89DC /* LoginModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABFF92C0F0F65002E89DC /* LoginModel.swift */; };
+		B54ABFFD2C0F1CA3002E89DC /* RxBlocking in Frameworks */ = {isa = PBXBuildFile; productRef = B54ABFFC2C0F1CA3002E89DC /* RxBlocking */; };
+		B54ABFFF2C0F1CA3002E89DC /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = B54ABFFE2C0F1CA3002E89DC /* RxCocoa */; };
+		B54AC0012C0F1CA3002E89DC /* RxRelay in Frameworks */ = {isa = PBXBuildFile; productRef = B54AC0002C0F1CA3002E89DC /* RxRelay */; };
+		B54AC0032C0F1CA3002E89DC /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = B54AC0022C0F1CA3002E89DC /* RxSwift */; };
+		B54AC0082C0F45DF002E89DC /* KeychainSwift in Frameworks */ = {isa = PBXBuildFile; productRef = B54AC0072C0F45DF002E89DC /* KeychainSwift */; };
+		B54AC00A2C0F48A5002E89DC /* SikmogilPlist.plist in Resources */ = {isa = PBXBuildFile; fileRef = B54AC0092C0F48A5002E89DC /* SikmogilPlist.plist */; };
+		B54AC00C2C0F48D1002E89DC /* SikmogilBundle++.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54AC00B2C0F48D1002E89DC /* SikmogilBundle++.swift */; };
+		B54AC00E2C105475002E89DC /* UserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54AC00D2C105475002E89DC /* UserProfile.swift */; };
+		B54AC0122C1054B1002E89DC /* OnboardingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54AC0112C1054B0002E89DC /* OnboardingViewModel.swift */; };
+		B54AC0152C1055DA002E89DC /* OnboardingProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54AC0142C1055DA002E89DC /* OnboardingProgressBar.swift */; };
+		B54AC0172C10560A002E89DC /* OnboardingPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54AC0162C10560A002E89DC /* OnboardingPageViewController.swift */; };
+		B54AC01A2C105646002E89DC /* Step1ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54AC0192C105646002E89DC /* Step1ViewController.swift */; };
+		B54AC01C2C1056A4002E89DC /* Step2ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54AC01B2C1056A4002E89DC /* Step2ViewController.swift */; };
+		B54AC01E2C1056C3002E89DC /* Step3ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54AC01D2C1056C3002E89DC /* Step3ViewController.swift */; };
+		F3094EC12C0D91310099DE2C /* ExerciseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3094EC02C0D91310099DE2C /* ExerciseViewController.swift */; };
+		F3094EC42C0DB1940099DE2C /* ExerciseHistoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3094EC32C0DB1940099DE2C /* ExerciseHistoryCell.swift */; };
+		F3094EC62C0E40040099DE2C /* ExerciseSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3094EC52C0E40040099DE2C /* ExerciseSelectionViewController.swift */; };
+		F3094EEF2C0EEDA40099DE2C /* ExerciseTimerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3094EEE2C0EEDA40099DE2C /* ExerciseTimerViewController.swift */; };
+		F3094EF12C0EEDBA0099DE2C /* ExerciseResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3094EF02C0EEDBA0099DE2C /* ExerciseResultViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		540768852C12EAB200543A72 /* ProfileInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileInfoView.swift; sourceTree = "<group>"; };
+		540768872C12EAD900543A72 /* ProfileTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTableView.swift; sourceTree = "<group>"; };
+		545AA5152C11E6540083D893 /* AlarmTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmTableViewCell.swift; sourceTree = "<group>"; };
+		545AA5172C11F4760083D893 /* ReminderSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderSettingsViewController.swift; sourceTree = "<group>"; };
+		546E32302C1078D100E94C2A /* EditProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewController.swift; sourceTree = "<group>"; };
+		546E32322C1078E600E94C2A /* NotificationSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSettingsViewController.swift; sourceTree = "<group>"; };
+		546E32342C1078FA00E94C2A /* GoalSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalSettingsViewController.swift; sourceTree = "<group>"; };
+		547A1BAB2C0DAA78000A16BF /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		5485F0872C0DFE2D00A2A71E /* ProfileTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTableViewCell.swift; sourceTree = "<group>"; };
+		B52001AD2C11B99E0083CBDF /* UIViewControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtension.swift; sourceTree = "<group>"; };
+		B52001AF2C11D7FA0083CBDF /* UserAPIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAPIManager.swift; sourceTree = "<group>"; };
+		B52001B12C1217DA0083CBDF /* WaveProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaveProgressView.swift; sourceTree = "<group>"; };
+		B52001B52C12F4570083CBDF /* StepsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StepsViewController.swift; sourceTree = "<group>"; };
 		B54ABF842C09BD43002E89DC /* Sikmogil.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sikmogil.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B54ABF872C09BD43002E89DC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B54ABF892C09BD43002E89DC /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -92,6 +141,24 @@
 		CAA50FAA2C103812008FE220 /* DietAlbumViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DietAlbumViewController.swift; sourceTree = "<group>"; };
 		CAA50FAC2C103C85008FE220 /* DietAlbumCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DietAlbumCollectionViewCell.swift; sourceTree = "<group>"; };
 		CAA50FAF2C1074E2008FE220 /* FloatingPanelControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingPanelControllerDelegate.swift; sourceTree = "<group>"; };
+		B54ABFF02C0DE03D002E89DC /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		B54ABFF42C0DE1CD002E89DC /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
+		B54ABFF72C0F0DC7002E89DC /* LoginAPIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginAPIManager.swift; sourceTree = "<group>"; };
+		B54ABFF92C0F0F65002E89DC /* LoginModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginModel.swift; sourceTree = "<group>"; };
+		B54AC0092C0F48A5002E89DC /* SikmogilPlist.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = SikmogilPlist.plist; sourceTree = "<group>"; };
+		B54AC00B2C0F48D1002E89DC /* SikmogilBundle++.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SikmogilBundle++.swift"; sourceTree = "<group>"; };
+		B54AC00D2C105475002E89DC /* UserProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfile.swift; sourceTree = "<group>"; };
+		B54AC0112C1054B0002E89DC /* OnboardingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewModel.swift; sourceTree = "<group>"; };
+		B54AC0142C1055DA002E89DC /* OnboardingProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingProgressBar.swift; sourceTree = "<group>"; };
+		B54AC0162C10560A002E89DC /* OnboardingPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPageViewController.swift; sourceTree = "<group>"; };
+		B54AC0192C105646002E89DC /* Step1ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Step1ViewController.swift; sourceTree = "<group>"; };
+		B54AC01B2C1056A4002E89DC /* Step2ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Step2ViewController.swift; sourceTree = "<group>"; };
+		B54AC01D2C1056C3002E89DC /* Step3ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Step3ViewController.swift; sourceTree = "<group>"; };
+		F3094EC02C0D91310099DE2C /* ExerciseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseViewController.swift; sourceTree = "<group>"; };
+		F3094EC32C0DB1940099DE2C /* ExerciseHistoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseHistoryCell.swift; sourceTree = "<group>"; };
+		F3094EC52C0E40040099DE2C /* ExerciseSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseSelectionViewController.swift; sourceTree = "<group>"; };
+		F3094EEE2C0EEDA40099DE2C /* ExerciseTimerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseTimerViewController.swift; sourceTree = "<group>"; };
+		F3094EF02C0EEDBA0099DE2C /* ExerciseResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseResultViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,19 +167,56 @@
 			buildActionMask = 2147483647;
 			files = (
 				B54ABFA62C0CB43A002E89DC /* Alamofire in Frameworks */,
+				B54ABFFD2C0F1CA3002E89DC /* RxBlocking in Frameworks */,
+				B54ABFFF2C0F1CA3002E89DC /* RxCocoa in Frameworks */,
 				B54ABFB42C0CB507002E89DC /* FloatingPanel in Frameworks */,
 				B54ABFA32C0CB42B002E89DC /* Kingfisher in Frameworks */,
+				B54AC0082C0F45DF002E89DC /* KeychainSwift in Frameworks */,
 				B54ABFB12C0CB476002E89DC /* GoogleSignInSwift in Frameworks */,
+				B54AC0032C0F1CA3002E89DC /* RxSwift in Frameworks */,
 				B54ABFA02C0CB41A002E89DC /* DGCharts in Frameworks */,
 				B54ABFA92C0CB447002E89DC /* Then in Frameworks */,
 				B54ABFAC2C0CB459002E89DC /* SnapKit in Frameworks */,
 				B54ABFAF2C0CB476002E89DC /* GoogleSignIn in Frameworks */,
+				B54AC0012C0F1CA3002E89DC /* RxRelay in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		540768822C12A53500543A72 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				545AA5152C11E6540083D893 /* AlarmTableViewCell.swift */,
+				5485F0872C0DFE2D00A2A71E /* ProfileTableViewCell.swift */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		546E322E2C102E3A00E94C2A /* View */ = {
+			isa = PBXGroup;
+			children = (
+				540768822C12A53500543A72 /* Cell */,
+				547A1BAB2C0DAA78000A16BF /* ProfileViewController.swift */,
+				540768852C12EAB200543A72 /* ProfileInfoView.swift */,
+				540768872C12EAD900543A72 /* ProfileTableView.swift */,
+				546E32302C1078D100E94C2A /* EditProfileViewController.swift */,
+				546E32322C1078E600E94C2A /* NotificationSettingsViewController.swift */,
+				546E32342C1078FA00E94C2A /* GoalSettingsViewController.swift */,
+				545AA5172C11F4760083D893 /* ReminderSettingsViewController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		547A1BAA2C0DA9E8000A16BF /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				546E322E2C102E3A00E94C2A /* View */,
+			);
+			path = Profile;
+			sourceTree = "<group>";
+		};
 		B54ABF7B2C09BD43002E89DC = {
 			isa = PBXGroup;
 			children = (
@@ -157,6 +261,8 @@
 			isa = PBXGroup;
 			children = (
 				B54ABFB72C0CB595002E89DC /* Model.swift */,
+				B54ABFF92C0F0F65002E89DC /* LoginModel.swift */,
+				B54AC00D2C105475002E89DC /* UserProfile.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -174,6 +280,8 @@
 			isa = PBXGroup;
 			children = (
 				B54ABFBC2C0CB60D002E89DC /* Network.swift */,
+				B54ABFF72C0F0DC7002E89DC /* LoginAPIManager.swift */,
+				B52001AF2C11D7FA0083CBDF /* UserAPIManager.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -190,8 +298,12 @@
 			isa = PBXGroup;
 			children = (
 				CAA50F9D2C0FEDE9008FE220 /* Diet */,
+				547A1BAA2C0DA9E8000A16BF /* Profile */,
+				B54AC00F2C10549A002E89DC /* Onboarding */,
+				B54ABFEF2C0DE020002E89DC /* Login */,
 				B54ABFEA2C0D6B8B002E89DC /* TabBar */,
 				B54ABFC12C0CB672002E89DC /* Example */,
+				F3094EF22C1033970099DE2C /* Exercise */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";
@@ -227,6 +339,7 @@
 				B54ABFD82C0D6892002E89DC /* Fonts */,
 				B54ABF932C09BD47002E89DC /* Assets.xcassets */,
 				B54ABF982C09BD47002E89DC /* Info.plist */,
+				B54AC0092C0F48A5002E89DC /* SikmogilPlist.plist */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -246,9 +359,11 @@
 			children = (
 				CAA50FA42C0FEE3B008FE220 /* FloatingPanelControllerStyle.swift */,
 				CAA50FA32C0FEE3B008FE220 /* UIApplication.swift */,
+				B54AC00B2C0F48D1002E89DC /* SikmogilBundle++.swift */,
 				B54ABFCA2C0CB770002E89DC /* Extension.swift */,
 				B54ABFCE2C0CBB59002E89DC /* UIViewExtensions.swift */,
 				B54ABFED2C0D7370002E89DC /* UIColorExtension.swift */,
+				B52001AD2C11B99E0083CBDF /* UIViewControllerExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -275,6 +390,7 @@
 			children = (
 				B54ABFD42C0CBE86002E89DC /* CircularProgressBar.swift */,
 				B54ABFD62C0CC281002E89DC /* CustomCircularProgressBar.swift */,
+				B52001B12C1217DA0083CBDF /* WaveProgressView.swift */,
 			);
 			path = CustomViews;
 			sourceTree = "<group>";
@@ -309,6 +425,7 @@
 			path = TabBar;
 			sourceTree = "<group>";
 		};
+
 		CAA50F9A2C0FEDE9008FE220 /* View */ = {
 			isa = PBXGroup;
 			children = (
@@ -318,14 +435,32 @@
 				CAA50F962C0FEDE9008FE220 /* AddDietMenuViewController.swift */,
 				CAA50FAA2C103812008FE220 /* DietAlbumViewController.swift */,
 				CAA50FA72C0FF507008FE220 /* Cell */,
+		B54ABFEF2C0DE020002E89DC /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				B54ABFF32C0DE048002E89DC /* ViewModel */,
+				B54ABFF22C0DE041002E89DC /* View */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		B54ABFF22C0DE041002E89DC /* View */ = {
+			isa = PBXGroup;
+			children = (
+				B54ABFF02C0DE03D002E89DC /* LoginViewController.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
 		};
+<
 		CAA50F9C2C0FEDE9008FE220 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
 				CAA50F9B2C0FEDE9008FE220 /* DietViewModel.swift */,
+		B54ABFF32C0DE048002E89DC /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				B54ABFF42C0DE1CD002E89DC /* LoginViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -345,6 +480,39 @@
 			children = (
 				CAA50FA82C0FF7DA008FE220 /* AddDietMenuTableViewCell.swift */,
 				CAA50FAC2C103C85008FE220 /* DietAlbumCollectionViewCell.swift */,
+		B54AC00F2C10549A002E89DC /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				B54AC0132C1055C4002E89DC /* View */,
+				B54AC0102C1054A2002E89DC /* ViewModel */,
+			);
+			path = Onboarding;
+			sourceTree = "<group>";
+		};
+		B54AC0102C1054A2002E89DC /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				B54AC0112C1054B0002E89DC /* OnboardingViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		B54AC0132C1055C4002E89DC /* View */ = {
+			isa = PBXGroup;
+			children = (
+				B54AC0142C1055DA002E89DC /* OnboardingProgressBar.swift */,
+				B54AC0162C10560A002E89DC /* OnboardingPageViewController.swift */,
+				B54AC0192C105646002E89DC /* Step1ViewController.swift */,
+				B54AC01B2C1056A4002E89DC /* Step2ViewController.swift */,
+				B54AC01D2C1056C3002E89DC /* Step3ViewController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		F3094EC22C0DB1730099DE2C /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				F3094EC32C0DB1940099DE2C /* ExerciseHistoryCell.swift */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -355,6 +523,25 @@
 				CAA50FAF2C1074E2008FE220 /* FloatingPanelControllerDelegate.swift */,
 			);
 			path = Extensions;
+		F3094EF22C1033970099DE2C /* Exercise */ = {
+			isa = PBXGroup;
+			children = (
+				F3094EF42C1033FA0099DE2C /* View */,
+			);
+			path = Exercise;
+			sourceTree = "<group>";
+		};
+		F3094EF42C1033FA0099DE2C /* View */ = {
+			isa = PBXGroup;
+			children = (
+				B52001B52C12F4570083CBDF /* StepsViewController.swift */,
+				F3094EC02C0D91310099DE2C /* ExerciseViewController.swift */,
+				F3094EC52C0E40040099DE2C /* ExerciseSelectionViewController.swift */,
+				F3094EEE2C0EEDA40099DE2C /* ExerciseTimerViewController.swift */,
+				F3094EF02C0EEDBA0099DE2C /* ExerciseResultViewController.swift */,
+				F3094EC22C0DB1730099DE2C /* Cell */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -382,6 +569,11 @@
 				B54ABFAE2C0CB476002E89DC /* GoogleSignIn */,
 				B54ABFB02C0CB476002E89DC /* GoogleSignInSwift */,
 				B54ABFB32C0CB507002E89DC /* FloatingPanel */,
+				B54ABFFC2C0F1CA3002E89DC /* RxBlocking */,
+				B54ABFFE2C0F1CA3002E89DC /* RxCocoa */,
+				B54AC0002C0F1CA3002E89DC /* RxRelay */,
+				B54AC0022C0F1CA3002E89DC /* RxSwift */,
+				B54AC0072C0F45DF002E89DC /* KeychainSwift */,
 			);
 			productName = Sikmogil;
 			productReference = B54ABF842C09BD43002E89DC /* Sikmogil.app */;
@@ -419,6 +611,8 @@
 				B54ABFAA2C0CB459002E89DC /* XCRemoteSwiftPackageReference "SnapKit" */,
 				B54ABFAD2C0CB476002E89DC /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
 				B54ABFB22C0CB506002E89DC /* XCRemoteSwiftPackageReference "FloatingPanel" */,
+				B54ABFFB2C0F1CA3002E89DC /* XCRemoteSwiftPackageReference "RxSwift" */,
+				B54AC0062C0F45DF002E89DC /* XCRemoteSwiftPackageReference "keychain-swift" */,
 			);
 			productRefGroup = B54ABF852C09BD43002E89DC /* Products */;
 			projectDirPath = "";
@@ -442,6 +636,7 @@
 				B54ABFE12C0D68CF002E89DC /* SUITE-Bold.ttf in Resources */,
 				B54ABFE02C0D68CF002E89DC /* SUITE-Light.ttf in Resources */,
 				B54ABF942C09BD47002E89DC /* Assets.xcassets in Resources */,
+				B54AC00A2C0F48A5002E89DC /* SikmogilPlist.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -455,8 +650,16 @@
 				CAA50FA52C0FEE3B008FE220 /* UIApplication.swift in Sources */,
 				B54ABFEE2C0D7370002E89DC /* UIColorExtension.swift in Sources */,
 				CAA50FA12C0FEDE9008FE220 /* WaterBottomSheetViewController.swift in Sources */,
+				F3094EC62C0E40040099DE2C /* ExerciseSelectionViewController.swift in Sources */,
+				B54ABFFA2C0F0F65002E89DC /* LoginModel.swift in Sources */,
+				B52001AE2C11B99E0083CBDF /* UIViewControllerExtension.swift in Sources */,
+				B54AC00C2C0F48D1002E89DC /* SikmogilBundle++.swift in Sources */,
 				B54ABFCF2C0CBB59002E89DC /* UIViewExtensions.swift in Sources */,
+				B54AC01A2C105646002E89DC /* Step1ViewController.swift in Sources */,
 				B54ABFCB2C0CB770002E89DC /* Extension.swift in Sources */,
+				540768882C12EAD900543A72 /* ProfileTableView.swift in Sources */,
+				546E32332C1078E600E94C2A /* NotificationSettingsViewController.swift in Sources */,
+				540768862C12EAB200543A72 /* ProfileInfoView.swift in Sources */,
 				B54ABFE92C0D69CD002E89DC /* Font.swift in Sources */,
 				CAA50FA62C0FEE3B008FE220 /* FloatingPanelControllerStyle.swift in Sources */,
 				CAA50F9F2C0FEDE9008FE220 /* DietBottomSheetViewController.swift in Sources */,
@@ -465,21 +668,47 @@
 				CAA50F9E2C0FEDE9008FE220 /* AddDietMenuViewController.swift in Sources */,
 				B54ABF922C09BD43002E89DC /* Sikmogil.xcdatamodeld in Sources */,
 				CAA50FAD2C103C85008FE220 /* DietAlbumCollectionViewCell.swift in Sources */,
+				B54AC00E2C105475002E89DC /* UserProfile.swift in Sources */,
+				B54ABFB82C0CB595002E89DC /* Model.swift in Sources */,
+				547A1BAC2C0DAA78000A16BF /* ProfileViewController.swift in Sources */,
+				545AA5162C11E6540083D893 /* AlarmTableViewCell.swift in Sources */,
+				B54ABF922C09BD43002E89DC /* Sikmogil.xcdatamodeld in Sources */,
+				5485F0882C0DFE2D00A2A71E /* ProfileTableViewCell.swift in Sources */,
+				546E32312C1078D100E94C2A /* EditProfileViewController.swift in Sources */,
 				B54ABFCD2C0CB78F002E89DC /* Helpers.swift in Sources */,
 				B54ABFBD2C0CB60D002E89DC /* Network.swift in Sources */,
+				545AA5182C11F4760083D893 /* ReminderSettingsViewController.swift in Sources */,
+				F3094EF12C0EEDBA0099DE2C /* ExerciseResultViewController.swift in Sources */,
+				B54ABFCD2C0CB78F002E89DC /* Helpers.swift in Sources */,
+				B54ABFBD2C0CB60D002E89DC /* Network.swift in Sources */,
+				B54ABFF12C0DE03D002E89DC /* LoginViewController.swift in Sources */,
 				B54ABFD72C0CC281002E89DC /* CustomCircularProgressBar.swift in Sources */,
+				F3094EC42C0DB1940099DE2C /* ExerciseHistoryCell.swift in Sources */,
+				B54AC0172C10560A002E89DC /* OnboardingPageViewController.swift in Sources */,
 				B54ABF8C2C09BD43002E89DC /* ViewController.swift in Sources */,
 				B54ABF882C09BD43002E89DC /* AppDelegate.swift in Sources */,
 				CAA50FA02C0FEDE9008FE220 /* DietMainViewController.swift in Sources */,
 				B54ABF8A2C09BD43002E89DC /* SceneDelegate.swift in Sources */,
 				CAA50FAB2C103812008FE220 /* DietAlbumViewController.swift in Sources */,
+				546E32352C1078FA00E94C2A /* GoalSettingsViewController.swift in Sources */,
 				B54ABFD12C0CBC55002E89DC /* DateHelper.swift in Sources */,
+				B52001B22C1217DA0083CBDF /* WaveProgressView.swift in Sources */,
+				B54AC0152C1055DA002E89DC /* OnboardingProgressBar.swift in Sources */,
+				B54ABFF82C0F0DC7002E89DC /* LoginAPIManager.swift in Sources */,
+				B54AC01E2C1056C3002E89DC /* Step3ViewController.swift in Sources */,
+				B54AC01C2C1056A4002E89DC /* Step2ViewController.swift in Sources */,
 				B54ABFEC2C0D6BA6002E89DC /* BottomTabBarController.swift in Sources */,
+				B54AC0122C1054B1002E89DC /* OnboardingViewModel.swift in Sources */,
+				B52001B02C11D7FA0083CBDF /* UserAPIManager.swift in Sources */,
 				B54ABFC52C0CB6AB002E89DC /* ViewModel.swift in Sources */,
 				B54ABFBF2C0CB639002E89DC /* PersistentStorage.swift in Sources */,
 				CAA50FA92C0FF7DA008FE220 /* AddDietMenuTableViewCell.swift in Sources */,
 				CAA50FA22C0FEDE9008FE220 /* DietViewModel.swift in Sources */,
+				F3094EC12C0D91310099DE2C /* ExerciseViewController.swift in Sources */,
+				B52001B62C12F4570083CBDF /* StepsViewController.swift in Sources */,
+				B54ABFF52C0DE1CD002E89DC /* LoginViewModel.swift in Sources */,
 				B54ABFD52C0CBE86002E89DC /* CircularProgressBar.swift in Sources */,
+				F3094EEF2C0EEDA40099DE2C /* ExerciseTimerViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -538,7 +767,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -595,7 +824,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -610,9 +839,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Sikmogil/Sikmogil.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 8B78U37C85;
+				DEVELOPMENT_TEAM = T7U9UX39U3;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Sikmogil/Resources/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -626,7 +856,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.nbcampArchive.Sikmogil;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Sikmogil.teamSparta;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -643,9 +873,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Sikmogil/Sikmogil.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 8B78U37C85;
+				DEVELOPMENT_TEAM = T7U9UX39U3;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Sikmogil/Resources/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -659,7 +890,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.nbcampArchive.Sikmogil;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Sikmogil.teamSparta;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -751,6 +982,22 @@
 				minimumVersion = 2.8.2;
 			};
 		};
+		B54ABFFB2C0F1CA3002E89DC /* XCRemoteSwiftPackageReference "RxSwift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ReactiveX/RxSwift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.7.1;
+			};
+		};
+		B54AC0062C0F45DF002E89DC /* XCRemoteSwiftPackageReference "keychain-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/evgenyneu/keychain-swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 24.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -793,6 +1040,31 @@
 			isa = XCSwiftPackageProductDependency;
 			package = B54ABFB22C0CB506002E89DC /* XCRemoteSwiftPackageReference "FloatingPanel" */;
 			productName = FloatingPanel;
+		};
+		B54ABFFC2C0F1CA3002E89DC /* RxBlocking */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B54ABFFB2C0F1CA3002E89DC /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxBlocking;
+		};
+		B54ABFFE2C0F1CA3002E89DC /* RxCocoa */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B54ABFFB2C0F1CA3002E89DC /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxCocoa;
+		};
+		B54AC0002C0F1CA3002E89DC /* RxRelay */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B54ABFFB2C0F1CA3002E89DC /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxRelay;
+		};
+		B54AC0022C0F1CA3002E89DC /* RxSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B54ABFFB2C0F1CA3002E89DC /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxSwift;
+		};
+		B54AC0072C0F45DF002E89DC /* KeychainSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B54AC0062C0F45DF002E89DC /* XCRemoteSwiftPackageReference "keychain-swift" */;
+			productName = KeychainSwift;
 		};
 /* End XCSwiftPackageProductDependency section */
 
