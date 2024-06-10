@@ -9,7 +9,7 @@ import UIKit
 import SnapKit
 import Then
 
-class ProfileTableView: UIView, UITableViewDelegate, UITableViewDataSource {
+class ProfileTableView: UIView {
     
     // MARK: - 테이블 속성정의
     let tableView = UITableView().then {
@@ -42,8 +42,10 @@ class ProfileTableView: UIView, UITableViewDelegate, UITableViewDataSource {
         tableView.delegate = self
         tableView.dataSource = self
     }
-    
-    // MARK: - UITableViewDataSource
+}
+
+// MARK: - UITableViewDataSource
+extension ProfileTableView: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 3
     }
@@ -58,8 +60,10 @@ class ProfileTableView: UIView, UITableViewDelegate, UITableViewDataSource {
         
         return cell
     }
-    
-    // MARK: - UITableViewDelegate
+}
+
+// MARK: - UITableViewDelegate
+extension ProfileTableView: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
     }
