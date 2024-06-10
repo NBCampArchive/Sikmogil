@@ -9,7 +9,7 @@ import UIKit
 import SnapKit
 import Then
 
-class DietAlbumViewController: UIViewController {
+class DietAlbumViewController: UIViewController, UINavigationControllerDelegate {
 
     let AlbumTitleLabel = UILabel().then {
         $0.text = "식단 앨범"
@@ -25,7 +25,7 @@ class DietAlbumViewController: UIViewController {
     }
     let albumAddPhotoButton = UIButton().then {
         $0.setTitle("사진 기록하기", for: .normal)
-        $0.backgroundColor = .black
+        $0.backgroundColor = .appBlack
         $0.setTitleColor(.white, for: .normal)
         $0.titleLabel?.font = Suite.bold.of(size: 22)
 
@@ -84,6 +84,13 @@ class DietAlbumViewController: UIViewController {
             $0.height.equalTo(60)
         }
     }
+    
+    @objc func albumAddPhotoButtonTapped() {
+        let imagePicker = UIImagePickerController()
+        imagePicker.sourceType = .camera // 카메라를 사용하도록 설정
+        imagePicker.delegate = self
+        present(imagePicker, animated: true, completion: nil)
+    }
 }
 
 
@@ -105,4 +112,8 @@ extension DietAlbumViewController: UICollectionViewDelegate, UICollectionViewDat
         let widthPerItem = availableWidth / itemsPerRow
         return CGSize(width: widthPerItem, height: widthPerItem)
     }
+}
+
+extension DietAlbumViewController: UIImagePickerControllerDelegate {
+    // 클래스 내용...
 }

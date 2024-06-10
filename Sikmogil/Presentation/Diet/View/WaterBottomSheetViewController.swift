@@ -14,11 +14,11 @@ import Then
 class WaterBottomSheetViewController: UIViewController {
     
     let contentView = UIView().then {
-        $0.backgroundColor = .white
+        $0.backgroundColor = .clear
     }
     let titleLabel = UILabel().then {
         $0.text = "마신 물을 기록해보세요!"
-        $0.textColor = .black
+        $0.textColor = .appBlack
         $0.font = Suite.medium.of(size: 16)
         $0.textAlignment = .center
     }
@@ -32,7 +32,7 @@ class WaterBottomSheetViewController: UIViewController {
     
     let doneButton = UIButton().then{
         $0.setTitle("완료", for: .normal)
-        $0.backgroundColor = .black
+        $0.backgroundColor = .appBlack
         $0.setTitleColor(.white, for: .normal)
         $0.titleLabel?.font = Suite.bold.of(size: 22)
 
@@ -42,7 +42,7 @@ class WaterBottomSheetViewController: UIViewController {
     
     override func viewDidLoad() {
         
-        view.backgroundColor = .yellow
+        view.backgroundColor = .white
         
         super.viewDidLoad()
         setupViews()

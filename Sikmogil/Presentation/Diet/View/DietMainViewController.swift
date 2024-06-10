@@ -20,7 +20,7 @@ class DietMainViewController: UIViewController {
     
     // 🍳🍳🍳 Diet
     let dietTitleView = UIView().then {
-        $0.backgroundColor = .clear
+        $0.backgroundColor = .white
     }
     let dietTitleLabel = UILabel().then {
         $0.text = "식단"
@@ -40,7 +40,7 @@ class DietMainViewController: UIViewController {
     let dietCircularProgressBar = CustomCircularProgressBar().then {
         $0.backgroundColor = .clear
         $0.progressColor = .appYellow
-        $0.trackColor = .lightGray
+        $0.trackColor = .appLightGray
     }
     let dietProgressBarIcon = UIImageView().then {
         $0.image = UIImage(named: "dietIconFill")
@@ -107,7 +107,7 @@ class DietMainViewController: UIViewController {
     let fastingTimerCircularProgressBar = CircularProgressBar().then {
         $0.backgroundColor = .clear
         $0.progressColor = .appPurple
-        $0.trackColor = .lightGray
+        $0.trackColor = .appLightGray
     }
     let fastingTimerProgressBarIcon = UIImageView().then {
         $0.image = UIImage(named: "fastingTimerIconFill")

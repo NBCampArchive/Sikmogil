@@ -12,7 +12,7 @@ class AddDietMenuViewController: UIViewController {
     
     let TitleLabel = UILabel().then {
         $0.text = "식사 추가"
-        $0.textColor = .black
+        $0.textColor = .appBlack
         $0.font = Suite.bold.of(size: 28)
         $0.textAlignment = .left
     }
@@ -26,7 +26,7 @@ class AddDietMenuViewController: UIViewController {
     }
     
     let searchResultTableView = UITableView().then {
-        $0.backgroundColor = .systemGray6
+        $0.backgroundColor = .appLightGray
         $0.register(AddDietMenuTableViewCell.self, forCellReuseIdentifier: "AddDietMenuTableViewCell")
         $0.separatorStyle = .none
     }

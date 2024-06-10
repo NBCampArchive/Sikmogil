@@ -18,13 +18,13 @@ class DietBottomSheetViewController: UIViewController {
     }
     let titleLabel = UILabel().then {
         $0.text = "식사"
-        $0.textColor = .black
+        $0.textColor = .appBlack
         $0.font = Suite.bold.of(size: 28)
         $0.textAlignment = .left
     }
     let albumButton = UIButton().then {
         $0.setTitle("앨범", for: .normal)
-        $0.backgroundColor = .black
+        $0.backgroundColor = .appBlack
         $0.setTitleColor(.white, for: .normal)
         $0.titleLabel?.font = Suite.semiBold.of(size: 16)
 
@@ -42,13 +42,13 @@ class DietBottomSheetViewController: UIViewController {
     }
     let breakfastTitleLabel = UILabel().then {
         $0.text = "아침"
-        $0.textColor = .black
+        $0.textColor = .appBlack
         $0.font = Suite.semiBold.of(size: 20)
         $0.textAlignment = .left
     }
     let breakfastKcalLabel = UILabel().then {
         $0.text = "300kcal"
-        $0.textColor = .black
+        $0.textColor = .appBlack
         $0.font = Suite.bold.of(size: 16)
         $0.textAlignment = .left
     }
@@ -66,13 +66,13 @@ class DietBottomSheetViewController: UIViewController {
     }
     let lunchTitleLabel = UILabel().then {
         $0.text = "점심"
-        $0.textColor = .black
+        $0.textColor = .appBlack
         $0.font = Suite.semiBold.of(size: 20)
         $0.textAlignment = .left
     }
     let lunchKcalLabel = UILabel().then {
         $0.text = "000kcal"
-        $0.textColor = .black
+        $0.textColor = .appBlack
         $0.font = Suite.bold.of(size: 16)
         $0.textAlignment = .left
     }
@@ -90,13 +90,13 @@ class DietBottomSheetViewController: UIViewController {
     }
     let dinnerTitleLabel = UILabel().then {
         $0.text = "저녁"
-        $0.textColor = .black
+        $0.textColor = .appBlack
         $0.font = Suite.semiBold.of(size: 20)
         $0.textAlignment = .left
     }
     let dinnerKcalLabel = UILabel().then {
         $0.text = "000kcal"
-        $0.textColor = .black
+        $0.textColor = .appBlack
         $0.font = Suite.bold.of(size: 16)
         $0.textAlignment = .left
     }
