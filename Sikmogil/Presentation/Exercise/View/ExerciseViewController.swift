@@ -31,7 +31,7 @@ class ExerciseViewController: UIViewController {
     private let descriptionLabel: UILabel = {
         let label = UILabel()
         label.text = "오늘의 활동을 기록해보세요!"
-        label.font = Suite.semiBold.of(size: 16)
+        label.font = Suite.semiBold.of(size: 14)
         label.textColor = .customDarkGray
         return label
     }()
@@ -151,7 +151,7 @@ class ExerciseViewController: UIViewController {
     
     private func setupConstraints() {
         scrollView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+            $0.edges.equalTo(view.safeAreaLayoutGuide)
         }
         
         contentView.snp.makeConstraints {
@@ -161,7 +161,8 @@ class ExerciseViewController: UIViewController {
         
         headerStackView.snp.makeConstraints {
             $0.leading.equalTo(contentView).inset(16)
-            $0.top.equalToSuperview().inset(16)
+            $0.top.equalToSuperview()
+            $0.height.equalTo(28)
         }
         
         descriptionLabel.snp.makeConstraints {
