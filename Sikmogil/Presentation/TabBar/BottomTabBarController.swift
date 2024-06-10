@@ -20,10 +20,10 @@ class BottomTabBarController: UITabBarController {
         let homeVC = ViewController()
         homeVC.tabBarItem = UITabBarItem(title: "홈", image: UIImage(named: "home"), tag: 0)
         
-        let dietVC = ViewController()
+        let dietVC = DietMainViewController()
         dietVC.tabBarItem = UITabBarItem(title: "식단", image: UIImage(named: "diet"), tag: 1)
         
-        let exerciseVC = ViewController()
+        let exerciseVC = ExerciseViewController()
         exerciseVC.tabBarItem = UITabBarItem(title: "운동", image: UIImage(named: "exercise"), tag: 2)
         
         let communicationVC = ViewController()
