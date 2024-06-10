@@ -8,7 +8,7 @@ import UIKit
 import SnapKit
 import Then
 
-class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class ProfileViewController: UIViewController {
     
     let spacerView = UIView()
     let scrollView = UIScrollView()
@@ -169,8 +169,11 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
             $0.bottom.equalTo(contentView).offset(-20)
         }
     }
+}
+
+// MARK: - UIImagePickerControllerDelegate & UINavigationControllerDelegate
+extension ProfileViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
-    // MARK: - 사용자 상호작용 처리 메서드 정의
     private func setupProfileImageTap() {
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(profileImageTapped))
         profileImageView.addGestureRecognizer(tapGestureRecognizer)
@@ -183,7 +186,6 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         present(imagePickerController, animated: true, completion: nil)
     }
     
-    // MARK: - 이미지피커 컨트롤러 델리게이트 메서드 정의
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let selectedImage = info[.originalImage] as? UIImage {
             profileImageView.image = selectedImage
@@ -194,8 +196,10 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         dismiss(animated: true, completion: nil)
     }
-    
-    // MARK: - 설정버튼 동작 처리
+}
+
+// MARK: - 설정버튼 동작 처리
+extension ProfileViewController {
     @objc private func settingsButtonTapped(_ sender: UIButton) {
         let editProfileAction = UIAction(title: "프로필 수정", image: nil) { _ in
             self.showEditProfile()
@@ -228,8 +232,10 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         let goalSettingsVC = GoalSettingsViewController()
         navigationController?.pushViewController(goalSettingsVC, animated: true)
     }
-    
-    // MARK: - 로그아웃 버튼 액션 정의
+}
+
+// MARK: - 로그아웃 버튼 액션 정의
+extension ProfileViewController {
     @objc private func logoutButtonTapped(_ sender: UIButton) {
         // TODO: 로그인 화면으로 루트뷰 바꾸기
     }
