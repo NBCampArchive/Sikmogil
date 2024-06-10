@@ -18,7 +18,7 @@ class ExerciseAPIManager {
     
     let token = "Bearer \(LoginAPIManager.shared.getAccessTokenFromKeychain())"
     
-    // MARK: - 특정 날짜의 운동 데이터 업데이트(셀에 추가되는 데이터는 로컬에서 처리, 서버에 업데이트는 총량으로 처리)
+    // MARK: - 특정 날짜의 운동 데이터 업데이트
     func updateExerciseData(exerciseDay: String, steps: Int, totalCaloriesBurned: Int, completion: @escaping (Result<Void, Error>) -> Void) {
         let url = "\(baseURL)/api/workoutLog/updateWorkoutLog"
         
@@ -76,7 +76,7 @@ class ExerciseAPIManager {
             "Accept": "application/json"
         ]
         
-        AF.request(url, method: .get, headers: headers).validate(statusCode: 200..<300).responseDecodable(of: [ExerciseModel].self) { response in
+        AF.request(url, method: .get, headers: headers).validate(statusCode: 200..<300).responseDecodable(of: [ExerciseModel].self,  emptyResponseCodes: [200]) { response in
             switch response.result {
             case .success(let data):
                 completion(.success(data))
