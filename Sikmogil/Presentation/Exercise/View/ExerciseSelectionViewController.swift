@@ -32,13 +32,33 @@ class ExerciseSelectionViewController: UIViewController {
         return label
     }()
     
+    private let exerciseSelectionButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.backgroundColor = .appLightGray
+        button.layer.cornerRadius = 16
+        button.titleLabel?.font =  Suite.medium.of(size: 16)
+        button.setTitle("-종목을 선택해 주세요-", for: .normal)
+        button.setTitleColor(.customDarkGray, for: .normal)
+        return button
+    }()
+    
+    private let timeSelectionButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.backgroundColor = .appLightGray
+        button.layer.cornerRadius = 16
+        button.titleLabel?.font =  Suite.medium.of(size: 16)
+        button.setTitle("-시간을 선택해 주세요-", for: .normal)
+        button.setTitleColor(.customDarkGray, for: .normal)
+        return button
+    }()
+    
     private let lightButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("가볍게", for: .normal)
         button.titleLabel?.font =  Suite.medium.of(size: 14)
         button.backgroundColor = .clear
         button.layer.borderWidth = 1
-        button.tintColor = .appBlack
+        button.tintColor = .appDarkGray
         button.layer.borderColor = UIColor.appDarkGray.cgColor
         button.layer.cornerRadius = 16
         return button
@@ -50,7 +70,7 @@ class ExerciseSelectionViewController: UIViewController {
         button.titleLabel?.font =  Suite.medium.of(size: 14)
         button.backgroundColor = .clear
         button.layer.borderWidth = 1
-        button.tintColor = .appBlack
+        button.tintColor = .appDarkGray
         button.layer.borderColor = UIColor.appDarkGray.cgColor
         button.layer.cornerRadius = 16
         return button
@@ -62,7 +82,7 @@ class ExerciseSelectionViewController: UIViewController {
         button.titleLabel?.font =  Suite.medium.of(size: 14)
         button.backgroundColor = .clear
         button.layer.borderWidth = 1
-        button.tintColor = .appBlack
+        button.tintColor = .appDarkGray
         button.layer.borderColor = UIColor.appDarkGray.cgColor
         button.layer.cornerRadius = 16
         return button
@@ -124,13 +144,14 @@ class ExerciseSelectionViewController: UIViewController {
         setupViews()
         setupConstraints()
         setupButtons()
+        setupMenus()
     }
     
     // MARK: - Setup View
     private func setupViews() {
         view.backgroundColor = .white
         
-        view.addSubviews(exerciseLabel, timeLabel, intensityLabel, exerciseLabel, intensityStackView, expectedLabel, buttonStackView)
+        view.addSubviews(exerciseLabel, exerciseSelectionButton, timeLabel, timeSelectionButton, intensityLabel, exerciseLabel, intensityStackView, expectedLabel, buttonStackView)
         intensityStackView.addArrangedSubviews(lightButton, moderateButton, intenseButton)
         buttonStackView.addArrangedSubviews(recordButton, measurementButton)
     }
@@ -141,10 +162,25 @@ class ExerciseSelectionViewController: UIViewController {
             $0.leading.trailing.equalToSuperview().inset(32)
         }
         
+        exerciseSelectionButton.snp.makeConstraints {
+            $0.centerY.equalTo(exerciseLabel)
+            $0.trailing.equalToSuperview().inset(40)
+            $0.height.equalTo(42)
+            $0.width.equalTo(intensityStackView)
+        }
+        
         timeLabel.snp.makeConstraints {
             $0.top.equalTo(exerciseLabel.snp.bottom).offset(66)
             $0.leading.equalToSuperview().inset(32)
         }
+        
+        timeSelectionButton.snp.makeConstraints {
+            $0.centerY.equalTo(timeLabel)
+            $0.trailing.equalToSuperview().inset(40)
+            $0.height.equalTo(42)
+            $0.width.equalTo(intensityStackView)
+        }
+        
         
         intensityLabel.snp.makeConstraints {
             $0.top.equalTo(timeLabel.snp.bottom).offset(66)
@@ -183,11 +219,53 @@ class ExerciseSelectionViewController: UIViewController {
         measurementButton.addTarget(self, action: #selector(startButtonTapped(_:)), for: .touchUpInside)
     }
     
+    private func setupMenus() {
+        let exerciseActions = [
+            UIAction(title: "런닝", handler: { [weak self] _ in
+                self?.exerciseSelectionButton.setTitle("런닝", for: .normal)
+                self?.exerciseSelectionButton.setTitleColor(.appBlack, for: .normal)
+            }),
+            UIAction(title: "수영", handler: { [weak self] _ in
+                self?.exerciseSelectionButton.setTitle("수영", for: .normal)
+                self?.exerciseSelectionButton.setTitleColor(.appBlack, for: .normal)
+            }),
+            UIAction(title: "자전거", handler: { [weak self] _ in
+                self?.exerciseSelectionButton.setTitle("자전거", for: .normal)
+                self?.exerciseSelectionButton.setTitleColor(.appBlack, for: .normal)
+            })
+        ]
+        
+        let exerciseMenu = UIMenu(title: "", children: exerciseActions)
+        
+        let timeActions = [
+            UIAction(title: "30분", handler: { [weak self] _ in
+                self?.timeSelectionButton.setTitle("30분", for: .normal)
+                self?.timeSelectionButton.setTitleColor(.appBlack, for: .normal)
+            }),
+            UIAction(title: "60분", handler: { [weak self] _ in
+                self?.timeSelectionButton.setTitle("60분", for: .normal)
+                self?.timeSelectionButton.setTitleColor(.appBlack, for: .normal)
+            }),
+            UIAction(title: "90분", handler: { [weak self] _ in
+                self?.timeSelectionButton.setTitle("90분", for: .normal)
+                self?.timeSelectionButton.setTitleColor(.appBlack, for: .normal)
+            })
+        ]
+        
+        let timeMenu = UIMenu(title: "", children: timeActions)
+        
+        exerciseSelectionButton.menu = exerciseMenu
+        exerciseSelectionButton.showsMenuAsPrimaryAction = true
+        
+        timeSelectionButton.menu = timeMenu
+        timeSelectionButton.showsMenuAsPrimaryAction = true
+    }
+
     @objc private func intensityButtonTapped(_ sender: UIButton) {
         print("\(sender.currentTitle ?? "") Button tapped")
         [lightButton, moderateButton, intenseButton].forEach {
             $0.backgroundColor = .clear
-            $0.tintColor = .appBlack
+            $0.tintColor = .appDarkGray
             $0.layer.borderColor = UIColor.appDarkGray.cgColor
         }
         
@@ -200,7 +278,7 @@ class ExerciseSelectionViewController: UIViewController {
         print("\(sender.currentTitle ?? "") Button tapped")
         [recordButton, measurementButton].forEach {
             $0.backgroundColor = .clear
-            $0.tintColor = .appBlack
+            $0.tintColor = .appDarkGray
             $0.layer.borderColor = UIColor.appDarkGray.cgColor
             $0.layer.borderWidth = 2
         }
