@@ -65,4 +65,30 @@ class LoginAPIManager{
                 }
             }
     }
+    
+    // MARK: - 첫 로그인 여부 확인 API
+    func checkFirstLogin(completion: @escaping (Result<FirstLoginResponse, Error>) -> Void) {
+        let url = "\(baseURL)/api/members/success"
+        
+        guard let accessToken = keychain.get("accessToken") else {
+            return
+        }
+        
+        let headers: HTTPHeaders = [
+            "Authorization": "Bearer \(accessToken)",
+            "Accept": "application/json"
+        ]
+        
+        AF.request(url, method: .get, headers: headers)
+            .validate()
+            .responseDecodable(of: FirstLoginResponse.self) { response in
+                switch response.result {
+                case .success(let loginResponse):
+                    completion(.success(loginResponse))
+                case .failure(let error):
+                    completion(.failure(error))
+                }
+            }
+    }
+
 }
