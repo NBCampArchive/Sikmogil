@@ -4,7 +4,6 @@
 //
 //  Created by Developer_P on 6/3/24.
 //
-
 import UIKit
 import SnapKit
 import Then
@@ -106,25 +105,23 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         }
         
         topBar.snp.makeConstraints {
-            $0.top.equalTo(contentView).offset(20)
+            $0.top.equalTo(contentView).offset(0)
             $0.left.right.equalTo(contentView)
-            $0.height.equalTo(44)
+            $0.height.equalTo(60)
         }
         
         profileLabel.snp.makeConstraints {
-            $0.centerY.equalTo(topBar)
             $0.left.equalTo(topBar).offset(16)
         }
         
         settingsButton.snp.makeConstraints {
-            $0.centerY.equalTo(topBar)
             $0.right.equalTo(topBar).offset(-16)
             $0.width.height.equalTo(24)
         }
         
         profileImageView.snp.makeConstraints {
             $0.top.equalTo(topBar.snp.bottom).offset(20)
-            $0.left.equalTo(contentView).offset(16)
+            $0.left.equalTo(contentView).offset(25)
             $0.width.height.equalTo(100)
         }
         
