@@ -42,7 +42,7 @@ class ExerciseHistoryCell: UITableViewCell {
         if let plusImage = UIImage(systemName: "plus") {
             button.setImage(plusImage, for: .normal)
         }
-        button.tintColor = .customBlack
+        button.tintColor = .appBlack
         return button
     }()
 
@@ -68,7 +68,7 @@ class ExerciseHistoryCell: UITableViewCell {
         cardView.addSubviews(exerciseImageView, exerciseLabel, caloriesLabel, addButton)
         contentView.backgroundColor = .clear
         selectionStyle = .none
-        cardView.backgroundColor = .customLightGray
+        cardView.backgroundColor = .appLightGray
     }
     
     private func setupConstraints() {

@@ -30,7 +30,7 @@ class ExerciseTimerViewController: UIViewController {
         let label = UILabel()
         label.text = "START"
         label.font = Suite.semiBold.of(size: 24)
-        label.textColor = .customGreen
+        label.textColor = .appGreen
         return label
     }()
     
@@ -38,7 +38,7 @@ class ExerciseTimerViewController: UIViewController {
         let button = UIButton(type: .system)
         button.setTitle("기록하기", for: .normal)
         button.titleLabel?.font = Suite.bold.of(size: 18)
-        button.backgroundColor = .customBlack
+        button.backgroundColor = .appBlack
         button.tintColor = .white
         button.layer.cornerRadius = 16
         return button

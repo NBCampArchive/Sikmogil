@@ -38,7 +38,7 @@ class ExerciseSelectionViewController: UIViewController {
         button.titleLabel?.font =  Suite.medium.of(size: 14)
         button.backgroundColor = .clear
         button.layer.borderWidth = 1
-        button.tintColor = .customBlack
+        button.tintColor = .appBlack
         button.layer.borderColor = UIColor.appDarkGray.cgColor
         button.layer.cornerRadius = 16
         return button
@@ -50,7 +50,7 @@ class ExerciseSelectionViewController: UIViewController {
         button.titleLabel?.font =  Suite.medium.of(size: 14)
         button.backgroundColor = .clear
         button.layer.borderWidth = 1
-        button.tintColor = .customBlack
+        button.tintColor = .appBlack
         button.layer.borderColor = UIColor.appDarkGray.cgColor
         button.layer.cornerRadius = 16
         return button
@@ -62,7 +62,7 @@ class ExerciseSelectionViewController: UIViewController {
         button.titleLabel?.font =  Suite.medium.of(size: 14)
         button.backgroundColor = .clear
         button.layer.borderWidth = 1
-        button.tintColor = .customBlack
+        button.tintColor = .appBlack
         button.layer.borderColor = UIColor.appDarkGray.cgColor
         button.layer.cornerRadius = 16
         return button
@@ -78,7 +78,7 @@ class ExerciseSelectionViewController: UIViewController {
     
     private let expectedLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .customDarkGray
+        label.textColor = .appDarkGray
         label.font = Suite.semiBold.of(size: 20)
         let fullText = "예상 소모 칼로리는 0kcal예요"
         let font = Suite.semiBold.of(size: 20)
@@ -92,7 +92,7 @@ class ExerciseSelectionViewController: UIViewController {
         let button = UIButton(type: .system)
         button.setTitle("기록하기", for: .normal)
         button.titleLabel?.font = Suite.bold.of(size: 18)
-        button.backgroundColor = .customBlack
+        button.backgroundColor = .appBlack
         button.tintColor = .white
         button.layer.cornerRadius = 16
         return button
@@ -103,7 +103,7 @@ class ExerciseSelectionViewController: UIViewController {
         button.setTitle("측정하기", for: .normal)
         button.titleLabel?.font = Suite.bold.of(size: 18)
         button.backgroundColor = .clear
-        button.tintColor = .customBlack
+        button.tintColor = .appBlack
         button.layer.borderWidth = 2
         button.layer.borderColor = UIColor.appBlack.cgColor
         button.layer.cornerRadius = 16
@@ -187,11 +187,11 @@ class ExerciseSelectionViewController: UIViewController {
         print("\(sender.currentTitle ?? "") Button tapped")
         [lightButton, moderateButton, intenseButton].forEach {
             $0.backgroundColor = .clear
-            $0.tintColor = .customBlack
+            $0.tintColor = .appBlack
             $0.layer.borderColor = UIColor.appDarkGray.cgColor
         }
         
-        sender.backgroundColor = .customBlack
+        sender.backgroundColor = .appBlack
         sender.tintColor = .white
         sender.layer.borderColor = UIColor.clear.cgColor
     }
@@ -200,12 +200,12 @@ class ExerciseSelectionViewController: UIViewController {
         print("\(sender.currentTitle ?? "") Button tapped")
         [recordButton, measurementButton].forEach {
             $0.backgroundColor = .clear
-            $0.tintColor = .customBlack
+            $0.tintColor = .appBlack
             $0.layer.borderColor = UIColor.appDarkGray.cgColor
             $0.layer.borderWidth = 2
         }
         
-        sender.backgroundColor = .customBlack
+        sender.backgroundColor = .appBlack
         sender.tintColor = .white
         sender.layer.borderColor = UIColor.clear.cgColor
         

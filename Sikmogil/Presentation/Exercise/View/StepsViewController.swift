@@ -24,7 +24,7 @@ class StepsViewController: UIViewController {
         let button = UIButton(type: .system)
         button.setTitle("운동", for: .normal)
         button.titleLabel?.font = Suite.bold.of(size: 28)
-        button.tintColor = .customDarkGray
+        button.tintColor = .appDarkGray
         return button
     }()
     
@@ -32,13 +32,13 @@ class StepsViewController: UIViewController {
         let button = UIButton(type: .system)
         button.setTitle("걸음 수", for: .normal)
         button.titleLabel?.font = Suite.bold.of(size: 28)
-        button.tintColor = .customBlack
+        button.tintColor = .appBlack
         return button
     }()
     
     private let circleView: UIView = {
         let view = UIView()
-        view.backgroundColor = .customLightGray
+        view.backgroundColor = .appLightGray
         view.layer.cornerRadius = 100
         return view
     }()
@@ -54,7 +54,7 @@ class StepsViewController: UIViewController {
         let label = UILabel()
         label.text = "오늘 걸음 수"
         label.font = Suite.medium.of(size: 18)
-        label.textColor = .customBlack
+        label.textColor = .appBlack
         return label
     }()
     
@@ -62,7 +62,7 @@ class StepsViewController: UIViewController {
         let label = UILabel()
         label.text = "15,000"
         label.font = Suite.bold.of(size: 50)
-        label.textColor = .customBlack
+        label.textColor = .appBlack
         return label
     }()
     
@@ -81,7 +81,7 @@ class StepsViewController: UIViewController {
         let label = UILabel()
         label.text = "오늘의 만보 걷기"
         label.font = Suite.semiBold.of(size: 18)
-        label.textColor = .customBlack
+        label.textColor = .appBlack
         return label
     }()
     
@@ -89,7 +89,7 @@ class StepsViewController: UIViewController {
         let label = UILabel()
         label.text = "0% 달성"
         label.font = Suite.regular.of(size: 12)
-        label.textColor = .customBlack
+        label.textColor = .appBlack
         return label
     }()
     
@@ -103,7 +103,7 @@ class StepsViewController: UIViewController {
 
     private let goalProgressView: UIView = {
         let view = UIView()
-        view.backgroundColor = .customGreen
+        view.backgroundColor = .appGreen
         view.layer.cornerRadius = 10
         return view
     }()
@@ -111,7 +111,7 @@ class StepsViewController: UIViewController {
     
     private let subCardView: UIView = {
         let view = UIView()
-        view.backgroundColor = .customLightGray
+        view.backgroundColor = .appLightGray
         view.layer.cornerRadius = 16
         return view
     }()
@@ -120,7 +120,7 @@ class StepsViewController: UIViewController {
         let label = UILabel()
         label.text = "소모량 30kcal"
         label.font = Suite.semiBold.of(size: 20)
-        label.textColor = .customBlack
+        label.textColor = .appBlack
         return label
     }()
     

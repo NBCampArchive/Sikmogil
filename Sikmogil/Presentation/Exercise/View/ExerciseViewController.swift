@@ -32,7 +32,7 @@ class ExerciseViewController: UIViewController {
         let label = UILabel()
         label.text = "오늘의 활동을 기록해보세요!"
         label.font = Suite.semiBold.of(size: 14)
-        label.textColor = .customDarkGray
+        label.textColor = .appDarkGray
         return label
     }()
     
@@ -40,7 +40,7 @@ class ExerciseViewController: UIViewController {
         let button = UIButton(type: .system)
         button.setTitle("운동", for: .normal)
         button.titleLabel?.font = Suite.bold.of(size: 28)
-        button.tintColor = .customBlack
+        button.tintColor = .appBlack
         return button
     }()
     
@@ -48,7 +48,7 @@ class ExerciseViewController: UIViewController {
         let button = UIButton(type: .system)
         button.setTitle("걸음 수", for: .normal)
         button.titleLabel?.font = Suite.bold.of(size: 28)
-        button.tintColor = .customDarkGray
+        button.tintColor = .appDarkGray
         return button
     }()
     
@@ -66,7 +66,7 @@ class ExerciseViewController: UIViewController {
     
     private let exerciseCircleView: UIView = {
         let view = UIView()
-        view.backgroundColor = .customGreen
+        view.backgroundColor = .appGreen
         view.layer.cornerRadius = 40
         return view
     }()
@@ -84,7 +84,7 @@ class ExerciseViewController: UIViewController {
         label.numberOfLines = 2
         label.textAlignment = .center
         label.font = Suite.semiBold.of(size: 18)
-        label.textColor = .customDarkGray
+        label.textColor = .appDarkGray
         return label
     }()
     
@@ -92,7 +92,7 @@ class ExerciseViewController: UIViewController {
         let label = UILabel()
         label.text = "운동 기록"
         label.font = Suite.bold.of(size: 28)
-        label.textColor = .customBlack
+        label.textColor = .appBlack
         return label
     }()
     
@@ -101,7 +101,7 @@ class ExerciseViewController: UIViewController {
         button.setTitle("앨범", for: .normal)
         button.titleLabel?.font = Suite.semiBold.of(size: 16)
         button.tintColor = .white
-        button.backgroundColor = .customBlack
+        button.backgroundColor = .appBlack
         button.layer.cornerRadius = 16
         return button
     }()
@@ -111,7 +111,7 @@ class ExerciseViewController: UIViewController {
         button.setTitle("운동하기", for: .normal)
         button.titleLabel?.font = Suite.bold.of(size: 20)
         button.tintColor = .white
-        button.backgroundColor = .customBlack
+        button.backgroundColor = .appBlack
         button.layer.cornerRadius = 16
         return button
     }()

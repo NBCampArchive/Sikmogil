@@ -15,7 +15,7 @@ class ExerciseResultViewController: UIViewController {
 
     private let cardView: UIView = {
         let view = UIView()
-        view.backgroundColor = .customLightGray
+        view.backgroundColor = .appLightGray
         return view
     }()
     
@@ -30,7 +30,7 @@ class ExerciseResultViewController: UIViewController {
         let label = UILabel()
         label.text = "운동을 끝마쳤습니다!"
         label.font = Suite.semiBold.of(size: 20)
-        label.textColor = .customBlack
+        label.textColor = .appBlack
         return label
     }()
     
@@ -56,7 +56,7 @@ class ExerciseResultViewController: UIViewController {
     
     private let progressLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .customDarkGray
+        label.textColor = .appDarkGray
         label.font = Suite.semiBold.of(size: 20)
         label.numberOfLines = 2
         label.textAlignment = .center
@@ -84,13 +84,13 @@ class ExerciseResultViewController: UIViewController {
         let label = UILabel()
         label.text = "0:00 am - 0:00 am"
         label.font = Suite.regular.of(size: 16)
-        label.textColor = .customDarkGray
+        label.textColor = .appDarkGray
         return label
     }()
     
     private let verticalLine: UIView = {
         let view = UIView()
-        view.backgroundColor = .customDarkGray
+        view.backgroundColor = .appDarkGray
         return view
     }()
     
@@ -113,7 +113,7 @@ class ExerciseResultViewController: UIViewController {
         let label = UILabel()
         label.text = "Time"
         label.font = Suite.regular.of(size: 16)
-        label.textColor = .customDarkGray
+        label.textColor = .appDarkGray
         return label
     }()
 
@@ -121,7 +121,7 @@ class ExerciseResultViewController: UIViewController {
         let label = UILabel()
         label.text = "kcal"
         label.font = Suite.regular.of(size: 16)
-        label.textColor = .customDarkGray
+        label.textColor = .appDarkGray
         return label
     }()
     
@@ -129,7 +129,7 @@ class ExerciseResultViewController: UIViewController {
         let label = UILabel()
         label.text = "0h.00min"
         label.font = Suite.medium.of(size: 18)
-        label.textColor = .customBlack
+        label.textColor = .appBlack
         return label
     }()
 
@@ -137,7 +137,7 @@ class ExerciseResultViewController: UIViewController {
         let label = UILabel()
         label.text = "0Kcal"
         label.font = Suite.medium.of(size: 18)
-        label.textColor = .customBlack
+        label.textColor = .appBlack
         return label
     }()
    
@@ -146,7 +146,7 @@ class ExerciseResultViewController: UIViewController {
         button.setTitle("추가하기", for: .normal)
         button.titleLabel?.font = Suite.bold.of(size: 20)
         button.tintColor = .white
-        button.backgroundColor = .customBlack
+        button.backgroundColor = .appBlack
         button.layer.cornerRadius = 16
         return button
     }()
