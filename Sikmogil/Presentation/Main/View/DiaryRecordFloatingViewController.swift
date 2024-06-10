@@ -17,7 +17,7 @@ class DiaryRecordFloatingViewController: UIViewController {
     
     private let diaryTextView = UITextView().then {
         $0.layer.cornerRadius = 12
-        $0.backgroundColor = .appDarkGray
+        $0.backgroundColor = .appLightGray
         $0.font = Suite.bold.of(size: 24)
         $0.textAlignment = .left
         $0.keyboardType = .default
@@ -30,7 +30,7 @@ class DiaryRecordFloatingViewController: UIViewController {
         $0.backgroundColor = .appBlack
         $0.layer.cornerRadius = 16
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -56,11 +56,11 @@ class DiaryRecordFloatingViewController: UIViewController {
             $0.top.equalTo(label.snp.bottom).offset(24)
             $0.leading.equalToSuperview().offset(16)
             $0.trailing.equalToSuperview().offset(-16)
-            $0.height.equalTo(150)
+            $0.height.equalTo(100)
         }
         
         doneButton.snp.makeConstraints {
-            $0.top.equalTo(diaryTextView.snp.bottom).offset(60)
+            $0.top.equalTo(diaryTextView.snp.bottom).offset(32)
             $0.leading.equalToSuperview().offset(16)
             $0.trailing.equalToSuperview().offset(-16)
             $0.height.equalTo(60)
