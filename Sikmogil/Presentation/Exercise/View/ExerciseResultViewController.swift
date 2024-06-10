@@ -175,9 +175,8 @@ class ExerciseResultViewController: UIViewController {
     }
     
     private func setupConstraints() {
-        // TODO: 스크롤뷰 레이아웃 조정
         scrollView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+            $0.edges.equalTo(view.safeAreaLayoutGuide)
         }
         
         contentView.snp.makeConstraints {
