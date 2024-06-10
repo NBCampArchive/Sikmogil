@@ -53,6 +53,17 @@
 		B54ABFE92C0D69CD002E89DC /* Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABFE82C0D69CD002E89DC /* Font.swift */; };
 		B54ABFEC2C0D6BA6002E89DC /* BottomTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABFEB2C0D6BA6002E89DC /* BottomTabBarController.swift */; };
 		B54ABFEE2C0D7370002E89DC /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABFED2C0D7370002E89DC /* UIColorExtension.swift */; };
+		CAA50F9E2C0FEDE9008FE220 /* AddDietMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA50F962C0FEDE9008FE220 /* AddDietMenuViewController.swift */; };
+		CAA50F9F2C0FEDE9008FE220 /* DietBottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA50F972C0FEDE9008FE220 /* DietBottomSheetViewController.swift */; };
+		CAA50FA02C0FEDE9008FE220 /* DietMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA50F982C0FEDE9008FE220 /* DietMainViewController.swift */; };
+		CAA50FA12C0FEDE9008FE220 /* WaterBottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA50F992C0FEDE9008FE220 /* WaterBottomSheetViewController.swift */; };
+		CAA50FA22C0FEDE9008FE220 /* DietViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA50F9B2C0FEDE9008FE220 /* DietViewModel.swift */; };
+		CAA50FA52C0FEE3B008FE220 /* UIApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA50FA32C0FEE3B008FE220 /* UIApplication.swift */; };
+		CAA50FA62C0FEE3B008FE220 /* FloatingPanelControllerStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA50FA42C0FEE3B008FE220 /* FloatingPanelControllerStyle.swift */; };
+		CAA50FA92C0FF7DA008FE220 /* AddDietMenuTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA50FA82C0FF7DA008FE220 /* AddDietMenuTableViewCell.swift */; };
+		CAA50FAB2C103812008FE220 /* DietAlbumViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA50FAA2C103812008FE220 /* DietAlbumViewController.swift */; };
+		CAA50FAD2C103C85008FE220 /* DietAlbumCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA50FAC2C103C85008FE220 /* DietAlbumCollectionViewCell.swift */; };
+		CAA50FB02C1074E2008FE220 /* FloatingPanelControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA50FAF2C1074E2008FE220 /* FloatingPanelControllerDelegate.swift */; };
 		B54ABFF12C0DE03D002E89DC /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABFF02C0DE03D002E89DC /* LoginViewController.swift */; };
 		B54ABFF52C0DE1CD002E89DC /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABFF42C0DE1CD002E89DC /* LoginViewModel.swift */; };
 		B54ABFF82C0F0DC7002E89DC /* LoginAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABFF72C0F0DC7002E89DC /* LoginAPIManager.swift */; };
@@ -119,6 +130,17 @@
 		B54ABFE82C0D69CD002E89DC /* Font.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Font.swift; sourceTree = "<group>"; };
 		B54ABFEB2C0D6BA6002E89DC /* BottomTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomTabBarController.swift; sourceTree = "<group>"; };
 		B54ABFED2C0D7370002E89DC /* UIColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
+		CAA50F962C0FEDE9008FE220 /* AddDietMenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddDietMenuViewController.swift; sourceTree = "<group>"; };
+		CAA50F972C0FEDE9008FE220 /* DietBottomSheetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DietBottomSheetViewController.swift; sourceTree = "<group>"; };
+		CAA50F982C0FEDE9008FE220 /* DietMainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DietMainViewController.swift; sourceTree = "<group>"; };
+		CAA50F992C0FEDE9008FE220 /* WaterBottomSheetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WaterBottomSheetViewController.swift; sourceTree = "<group>"; };
+		CAA50F9B2C0FEDE9008FE220 /* DietViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DietViewModel.swift; sourceTree = "<group>"; };
+		CAA50FA32C0FEE3B008FE220 /* UIApplication.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIApplication.swift; sourceTree = "<group>"; };
+		CAA50FA42C0FEE3B008FE220 /* FloatingPanelControllerStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatingPanelControllerStyle.swift; sourceTree = "<group>"; };
+		CAA50FA82C0FF7DA008FE220 /* AddDietMenuTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddDietMenuTableViewCell.swift; sourceTree = "<group>"; };
+		CAA50FAA2C103812008FE220 /* DietAlbumViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DietAlbumViewController.swift; sourceTree = "<group>"; };
+		CAA50FAC2C103C85008FE220 /* DietAlbumCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DietAlbumCollectionViewCell.swift; sourceTree = "<group>"; };
+		CAA50FAF2C1074E2008FE220 /* FloatingPanelControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingPanelControllerDelegate.swift; sourceTree = "<group>"; };
 		B54ABFF02C0DE03D002E89DC /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		B54ABFF42C0DE1CD002E89DC /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		B54ABFF72C0F0DC7002E89DC /* LoginAPIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginAPIManager.swift; sourceTree = "<group>"; };
@@ -275,6 +297,7 @@
 		B54ABFC02C0CB666002E89DC /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
+				CAA50F9D2C0FEDE9008FE220 /* Diet */,
 				547A1BAA2C0DA9E8000A16BF /* Profile */,
 				B54AC00F2C10549A002E89DC /* Onboarding */,
 				B54ABFEF2C0DE020002E89DC /* Login */,
@@ -334,6 +357,8 @@
 		B54ABFC82C0CB75A002E89DC /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				CAA50FA42C0FEE3B008FE220 /* FloatingPanelControllerStyle.swift */,
+				CAA50FA32C0FEE3B008FE220 /* UIApplication.swift */,
 				B54AC00B2C0F48D1002E89DC /* SikmogilBundle++.swift */,
 				B54ABFCA2C0CB770002E89DC /* Extension.swift */,
 				B54ABFCE2C0CBB59002E89DC /* UIViewExtensions.swift */,
@@ -400,6 +425,16 @@
 			path = TabBar;
 			sourceTree = "<group>";
 		};
+
+		CAA50F9A2C0FEDE9008FE220 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				CAA50F982C0FEDE9008FE220 /* DietMainViewController.swift */,
+				CAA50F972C0FEDE9008FE220 /* DietBottomSheetViewController.swift */,
+				CAA50F992C0FEDE9008FE220 /* WaterBottomSheetViewController.swift */,
+				CAA50F962C0FEDE9008FE220 /* AddDietMenuViewController.swift */,
+				CAA50FAA2C103812008FE220 /* DietAlbumViewController.swift */,
+				CAA50FA72C0FF507008FE220 /* Cell */,
 		B54ABFEF2C0DE020002E89DC /* Login */ = {
 			isa = PBXGroup;
 			children = (
@@ -417,6 +452,11 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+<
+		CAA50F9C2C0FEDE9008FE220 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				CAA50F9B2C0FEDE9008FE220 /* DietViewModel.swift */,
 		B54ABFF32C0DE048002E89DC /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
@@ -425,6 +465,21 @@
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
+		CAA50F9D2C0FEDE9008FE220 /* Diet */ = {
+			isa = PBXGroup;
+			children = (
+				CAA50F9C2C0FEDE9008FE220 /* ViewModel */,
+				CAA50F9A2C0FEDE9008FE220 /* View */,
+				CAA50FAE2C1074C1008FE220 /* Extensions */,
+			);
+			path = Diet;
+			sourceTree = "<group>";
+		};
+		CAA50FA72C0FF507008FE220 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				CAA50FA82C0FF7DA008FE220 /* AddDietMenuTableViewCell.swift */,
+				CAA50FAC2C103C85008FE220 /* DietAlbumCollectionViewCell.swift */,
 		B54AC00F2C10549A002E89DC /* Onboarding */ = {
 			isa = PBXGroup;
 			children = (
@@ -462,6 +517,12 @@
 			path = Cell;
 			sourceTree = "<group>";
 		};
+		CAA50FAE2C1074C1008FE220 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				CAA50FAF2C1074E2008FE220 /* FloatingPanelControllerDelegate.swift */,
+			);
+			path = Extensions;
 		F3094EF22C1033970099DE2C /* Exercise */ = {
 			isa = PBXGroup;
 			children = (
@@ -586,7 +647,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CAA50FA52C0FEE3B008FE220 /* UIApplication.swift in Sources */,
 				B54ABFEE2C0D7370002E89DC /* UIColorExtension.swift in Sources */,
+				CAA50FA12C0FEDE9008FE220 /* WaterBottomSheetViewController.swift in Sources */,
 				F3094EC62C0E40040099DE2C /* ExerciseSelectionViewController.swift in Sources */,
 				B54ABFFA2C0F0F65002E89DC /* LoginModel.swift in Sources */,
 				B52001AE2C11B99E0083CBDF /* UIViewControllerExtension.swift in Sources */,
@@ -598,6 +661,13 @@
 				546E32332C1078E600E94C2A /* NotificationSettingsViewController.swift in Sources */,
 				540768862C12EAB200543A72 /* ProfileInfoView.swift in Sources */,
 				B54ABFE92C0D69CD002E89DC /* Font.swift in Sources */,
+				CAA50FA62C0FEE3B008FE220 /* FloatingPanelControllerStyle.swift in Sources */,
+				CAA50F9F2C0FEDE9008FE220 /* DietBottomSheetViewController.swift in Sources */,
+				B54ABFB82C0CB595002E89DC /* Model.swift in Sources */,
+				CAA50FB02C1074E2008FE220 /* FloatingPanelControllerDelegate.swift in Sources */,
+				CAA50F9E2C0FEDE9008FE220 /* AddDietMenuViewController.swift in Sources */,
+				B54ABF922C09BD43002E89DC /* Sikmogil.xcdatamodeld in Sources */,
+				CAA50FAD2C103C85008FE220 /* DietAlbumCollectionViewCell.swift in Sources */,
 				B54AC00E2C105475002E89DC /* UserProfile.swift in Sources */,
 				B54ABFB82C0CB595002E89DC /* Model.swift in Sources */,
 				547A1BAC2C0DAA78000A16BF /* ProfileViewController.swift in Sources */,
@@ -617,7 +687,9 @@
 				B54AC0172C10560A002E89DC /* OnboardingPageViewController.swift in Sources */,
 				B54ABF8C2C09BD43002E89DC /* ViewController.swift in Sources */,
 				B54ABF882C09BD43002E89DC /* AppDelegate.swift in Sources */,
+				CAA50FA02C0FEDE9008FE220 /* DietMainViewController.swift in Sources */,
 				B54ABF8A2C09BD43002E89DC /* SceneDelegate.swift in Sources */,
+				CAA50FAB2C103812008FE220 /* DietAlbumViewController.swift in Sources */,
 				546E32352C1078FA00E94C2A /* GoalSettingsViewController.swift in Sources */,
 				B54ABFD12C0CBC55002E89DC /* DateHelper.swift in Sources */,
 				B52001B22C1217DA0083CBDF /* WaveProgressView.swift in Sources */,
@@ -630,6 +702,8 @@
 				B52001B02C11D7FA0083CBDF /* UserAPIManager.swift in Sources */,
 				B54ABFC52C0CB6AB002E89DC /* ViewModel.swift in Sources */,
 				B54ABFBF2C0CB639002E89DC /* PersistentStorage.swift in Sources */,
+				CAA50FA92C0FF7DA008FE220 /* AddDietMenuTableViewCell.swift in Sources */,
+				CAA50FA22C0FEDE9008FE220 /* DietViewModel.swift in Sources */,
 				F3094EC12C0D91310099DE2C /* ExerciseViewController.swift in Sources */,
 				B52001B62C12F4570083CBDF /* StepsViewController.swift in Sources */,
 				B54ABFF52C0DE1CD002E89DC /* LoginViewModel.swift in Sources */,
