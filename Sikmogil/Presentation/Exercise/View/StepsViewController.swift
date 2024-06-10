@@ -13,29 +13,6 @@ class StepsViewController: UIViewController {
     private let scrollView = UIScrollView()
     private let contentView = UIView()
     
-    private let headerStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.axis = .horizontal
-        stackView.spacing = 10
-        return stackView
-    }()
-    
-    let exerciseMenuButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("운동", for: .normal)
-        button.titleLabel?.font = Suite.bold.of(size: 28)
-        button.tintColor = .appDarkGray
-        return button
-    }()
-    
-    let stepsMenuButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("걸음 수", for: .normal)
-        button.titleLabel?.font = Suite.bold.of(size: 28)
-        button.tintColor = .appBlack
-        return button
-    }()
-    
     private let circleView: UIView = {
         let view = UIView()
         view.backgroundColor = .appLightGray
@@ -135,8 +112,7 @@ class StepsViewController: UIViewController {
         view.backgroundColor = .white
         view.addSubviews(scrollView)
         scrollView.addSubview(contentView)
-        contentView.addSubviews(headerStackView, circleView, stepsLabel, stepsValueLabel, cardView)
-        headerStackView.addArrangedSubviews(exerciseMenuButton, stepsMenuButton)
+        contentView.addSubviews(circleView, stepsLabel, stepsValueLabel, cardView)
         circleView.addSubview(stepsImage)
         cardView.addSubviews(goalLabel, goalValueView, goalProgressView, subCardView)
         goalValueView.addSubview(goalValueLabel)
@@ -145,7 +121,7 @@ class StepsViewController: UIViewController {
     
     private func setupConstraints() {
         scrollView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+            $0.edges.equalTo(view.safeAreaLayoutGuide)
         }
         
         contentView.snp.makeConstraints {
@@ -153,15 +129,10 @@ class StepsViewController: UIViewController {
             $0.width.equalTo(scrollView)
         }
         
-        headerStackView.snp.makeConstraints {
-            $0.leading.equalTo(contentView).inset(16)
-            $0.top.equalToSuperview().inset(16)
-        }
-        
         circleView.snp.makeConstraints {
             $0.width.height.equalTo(200)
             $0.centerX.equalToSuperview()
-            $0.top.equalTo(headerStackView.snp.bottom).offset(60)
+            $0.top.equalToSuperview().offset(60)
         }
         
         stepsImage.snp.makeConstraints {

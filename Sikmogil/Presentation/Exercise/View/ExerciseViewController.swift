@@ -13,20 +13,6 @@ class ExerciseViewController: UIViewController {
     // MARK: - Components
     private let scrollView = UIScrollView()
     private let contentView = UIView()
-
-    private let stackView: UIStackView = {
-       let stackView = UIStackView()
-        stackView.axis = .vertical
-        stackView.spacing = 22
-        return stackView
-    }()
-    
-    private let headerStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.axis = .horizontal
-        stackView.spacing = 10
-        return stackView
-    }()
     
     private let descriptionLabel: UILabel = {
         let label = UILabel()
@@ -143,8 +129,7 @@ class ExerciseViewController: UIViewController {
         
         view.addSubviews(scrollView, startExerciseButton)
         scrollView.addSubview(contentView)
-        contentView.addSubviews(headerStackView, descriptionLabel, progressView, historyLabel, albumButton, tableView)
-        headerStackView.addArrangedSubviews(exerciseMenuButton, stepsMenuButton)
+        contentView.addSubviews(descriptionLabel, progressView, historyLabel, albumButton, tableView)
         progressView.addSubviews(customCircularProgressBar, exerciseCircleView, progressLabel)
         exerciseCircleView.addSubview(activeImage)
     }
@@ -159,14 +144,8 @@ class ExerciseViewController: UIViewController {
             $0.width.equalTo(scrollView)
         }
         
-        headerStackView.snp.makeConstraints {
-            $0.leading.equalTo(contentView).inset(16)
-            $0.top.equalToSuperview()
-            $0.height.equalTo(28)
-        }
-        
         descriptionLabel.snp.makeConstraints {
-            $0.top.equalTo(headerStackView.snp.bottom).offset(8)
+            $0.top.equalToSuperview().offset(8)
             $0.leading.equalToSuperview().inset(16)
         }
         

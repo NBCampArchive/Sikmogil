@@ -9,7 +9,7 @@ import UIKit
 import Then
 
 class ExerciseMenuViewController: UIViewController {
-
+    
     private let containerView = UIView().then {
         $0.backgroundColor = .clear
     }
@@ -53,7 +53,7 @@ class ExerciseMenuViewController: UIViewController {
 
     private func setupConstraints() {
         containerView.snp.makeConstraints {
-            $0.top.equalTo(view.safeAreaLayoutGuide).offset(100)
+            $0.top.equalTo(headerStackView.snp.bottom)
             $0.leading.trailing.bottom.equalToSuperview()
         }
 
@@ -62,7 +62,7 @@ class ExerciseMenuViewController: UIViewController {
             $0.height.equalTo(28)
             $0.leading.equalToSuperview().offset(16)
         }
-
+        // TODO: headerStackView 스크롤 되도록 수정
     }
 
     private func add(asChildViewController viewController: UIViewController) {
@@ -88,11 +88,13 @@ class ExerciseMenuViewController: UIViewController {
     @objc private func showFirstView() {
         let exerciseVC = ExerciseViewController()
         transition(to: exerciseVC)
+        updateButtonColors(selectedButton: exerciseMenuButton)
     }
 
     @objc private func showSecondView() {
         let stepsVC = StepsViewController()
         transition(to: stepsVC)
+        updateButtonColors(selectedButton: stepsMenuButton)
     }
 
     private func transition(to viewController: UIViewController) {
@@ -100,5 +102,16 @@ class ExerciseMenuViewController: UIViewController {
             remove(asChildViewController: currentVC)
         }
         add(asChildViewController: viewController)
+    }
+
+    private func updateButtonColors(selectedButton: UIButton) {
+        let buttons = [exerciseMenuButton, stepsMenuButton]
+        buttons.forEach { button in
+            if button == selectedButton {
+                button.tintColor = .appBlack
+            } else {
+                button.tintColor = .appDarkGray
+            }
+        }
     }
 }
