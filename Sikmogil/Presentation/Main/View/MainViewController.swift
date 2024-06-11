@@ -156,7 +156,7 @@ class MainViewController: UIViewController {
         scrollSubView.snp.makeConstraints {
             $0.edges.equalTo(scrollView.contentLayoutGuide)
             $0.width.equalTo(scrollView.frameLayoutGuide)
-            $0.height.equalTo(950)
+            $0.bottom.equalTo(graph.snp.bottom).offset(32)
         }
         
         goalStackView.snp.makeConstraints {

@@ -80,11 +80,11 @@ class DayViewController: UIViewController {
         self.collectionView.dataSource = self
         self.collectionView.delegate = self
         
-        setupUI()
+        setupViews()
         setupConstraints()
     }
     
-    private func setupUI() {
+    private func setupViews() {
         view.addSubview(scrollView)
         
         scrollView.addSubview(scrollSubView)
@@ -100,7 +100,7 @@ class DayViewController: UIViewController {
         scrollSubView.snp.makeConstraints {
             $0.edges.equalTo(scrollView.contentLayoutGuide)
             $0.width.equalTo(scrollView.frameLayoutGuide)
-            $0.height.equalTo(800)
+            $0.bottom.equalTo(collectionView.snp.top).offset(550)
         }
         
         dateLabel.snp.makeConstraints {

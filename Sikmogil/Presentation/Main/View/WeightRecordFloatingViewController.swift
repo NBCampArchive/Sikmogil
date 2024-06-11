@@ -22,10 +22,17 @@ class WeightRecordFloatingViewController: UIViewController {
     }
     
     private let weightTextField = UITextField().then {
-        $0.placeholder = "00.0KG"
+        $0.placeholder = "00.0"
         $0.font = Suite.bold.of(size: 48)
-        $0.textAlignment = .center
-        $0.keyboardType = .numbersAndPunctuation
+        $0.textAlignment = .right
+        $0.keyboardType = .decimalPad
+    }
+    
+    private let gramLabel = UILabel().then {
+        $0.text = "KG"
+        $0.font = Suite.bold.of(size: 48)
+        $0.textAlignment = .left
+        $0.textColor = .appDarkGray
     }
     
     private let doneButton = UIButton().then {
@@ -38,15 +45,15 @@ class WeightRecordFloatingViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setupUI()
+        setupViews()
         setupConstraints()
         
         doneButton.addTarget(self, action: #selector(tapDoneButton), for: .touchUpInside)
         print(#function)
     }
     
-    private func setupUI() {
-        view.addSubviews(label, weightTextField, doneButton)
+    private func setupViews() {
+        view.addSubviews(label, weightTextField, gramLabel, doneButton)
     }
     
     private func setupConstraints() {
@@ -57,8 +64,13 @@ class WeightRecordFloatingViewController: UIViewController {
         
         weightTextField.snp.makeConstraints {
             $0.top.equalTo(label.snp.bottom).offset(44)
-            $0.centerX.equalToSuperview()
+            $0.leading.equalToSuperview().offset(130)
             $0.height.equalTo(50)
+        }
+        
+        gramLabel.snp.makeConstraints {
+            $0.centerY.equalTo(weightTextField.snp.centerY)
+            $0.leading.equalTo(weightTextField.snp.trailing)
         }
         
         doneButton.snp.makeConstraints {

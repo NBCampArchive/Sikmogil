@@ -62,6 +62,8 @@ class CalendarViewController: UIViewController {
     }
     
     private let writeButton = UIButton().then {
+        $0.layer.cornerRadius = 28
+        $0.backgroundColor = .appBlack
         $0.setImage(.addDiary, for: .normal)
     }
     
@@ -96,7 +98,7 @@ class CalendarViewController: UIViewController {
         scrollSubView.snp.makeConstraints {
             $0.edges.equalTo(scrollView.contentLayoutGuide)
             $0.width.equalTo(scrollView.frameLayoutGuide)
-            $0.height.equalTo(750)
+            $0.bottom.equalTo(detailButton.snp.bottom).offset(100)
         }
         
         calendar.snp.makeConstraints {
@@ -134,6 +136,8 @@ class CalendarViewController: UIViewController {
         }
         
         writeButton.snp.makeConstraints {
+            $0.width.equalTo(56)
+            $0.height.equalTo(56)
             $0.trailing.equalTo(view.safeAreaLayoutGuide).offset(-20)
             $0.bottom.equalTo(view.safeAreaLayoutGuide).offset(-20)
         }

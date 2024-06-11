@@ -42,13 +42,13 @@ class DiaryRecordFloatingViewController: UIViewController {
         
         view.backgroundColor = .systemBackground
         
-        setupUI()
+        setupViews()
         setupConstraints()
         
         doneButton.addTarget(self, action: #selector(tapDoneButton), for: .touchUpInside)
     }
     
-    private func setupUI() {
+    private func setupViews() {
         view.addSubviews(label, diaryTextView, doneButton)
     }
     
