@@ -141,11 +141,25 @@ class ExerciseTimerViewController: UIViewController {
     @objc private func updateTimerLabel() {
         guard selectedTime > 0 else {
             timer?.invalidate() // 타이머가 종료되면 중지
+            handleTimerEnd()
             return
         }
         
         selectedTime -= 1
         updateTimeLabel() // 라벨 텍스트 업데이트
+    }
+    
+    private func handleTimerEnd() {
+        // 타이머 종료 시 처리
+        let alertController = UIAlertController(title: "타이머 종료", message: "설정된 시간이 종료되었습니다.", preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "확인", style: .default, handler: nil)
+        alertController.addAction(okAction)
+        present(alertController, animated: true, completion: nil)
+        
+        // 버튼 상태와 라벨 업데이트
+        isPaused = true
+        stopPauseButton.setImage(.pause, for: .normal)
+        statusLabel.text = "START"
     }
     
     @objc private func recordButtonTapped() {
