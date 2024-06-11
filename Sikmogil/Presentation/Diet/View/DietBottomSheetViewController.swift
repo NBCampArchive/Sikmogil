@@ -9,10 +9,9 @@ import UIKit
 import SnapKit
 import Then
 
-
-
 class DietBottomSheetViewController: UIViewController {
     
+    // MARK: - UI components
     let contentView = UIView().then {
         $0.backgroundColor = .appLightGray
     }
@@ -27,11 +26,10 @@ class DietBottomSheetViewController: UIViewController {
         $0.backgroundColor = .appBlack
         $0.setTitleColor(.white, for: .normal)
         $0.titleLabel?.font = Suite.semiBold.of(size: 16)
-
+        
         $0.layer.cornerRadius = 14
         $0.clipsToBounds = true
     }
-    
     // 🍎 breakfastView
     let breakfastView = UIView().then {
         $0.backgroundColor = .white
@@ -55,7 +53,6 @@ class DietBottomSheetViewController: UIViewController {
     let breakfastAddTabButton = UIButton().then {
         $0.setImage(UIImage(named: "addIconRound"), for: .normal)
     }
-    
     // 🍎 lunchView
     let lunchView = UIView().then {
         $0.backgroundColor = .white
@@ -79,7 +76,6 @@ class DietBottomSheetViewController: UIViewController {
     let lunchAddTabButton = UIButton().then {
         $0.setImage(UIImage(named: "addIconRound"), for: .normal)
     }
-    
     // 🍎 dinnerView
     let dinnerView = UIView().then {
         $0.backgroundColor = .white
@@ -104,8 +100,7 @@ class DietBottomSheetViewController: UIViewController {
         $0.setImage(UIImage(named: "addIconRound"), for: .normal)
     }
     
-    // MARK: - lifeCycle
-    
+    // MARK: - View Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
@@ -115,7 +110,6 @@ class DietBottomSheetViewController: UIViewController {
         lunchAddTabButton.addTarget(self, action: #selector(lunchAddTabButtonTapped), for: .touchUpInside)
         dinnerAddTabButton.addTarget(self, action: #selector(dinnerAddTabButtonTapped), for: .touchUpInside)
         albumButton.addTarget(self, action: #selector(albumButtonTapped), for: .touchUpInside)
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -123,9 +117,7 @@ class DietBottomSheetViewController: UIViewController {
         tabBarController?.tabBar.isHidden = true
     }
     
-
-    // MARK: - setupViews
-    
+    // MARK: - Setup Methods
     private func setupViews() {
         view.addSubview(contentView)
         contentView.addSubviews(titleLabel,albumButton,breakfastView,lunchView,dinnerView)
@@ -133,8 +125,7 @@ class DietBottomSheetViewController: UIViewController {
         lunchView.addSubviews(lunchIcon,lunchTitleLabel,lunchKcalLabel,lunchAddTabButton)
         dinnerView.addSubviews(dinnerIcon,dinnerTitleLabel,dinnerKcalLabel,dinnerAddTabButton)
     }
-
-    // MARK: - setupConstraints
+    
     private func setupConstraints() {
         contentView.snp.makeConstraints{
             $0.edges.equalTo(view.safeAreaLayoutGuide)
@@ -149,6 +140,7 @@ class DietBottomSheetViewController: UIViewController {
             $0.height.equalTo(30)
             $0.width.equalTo(91)
         }
+        // 🍎 breakfastView
         breakfastView.snp.makeConstraints{
             $0.top.equalTo(titleLabel.snp.bottom).offset(24)
             $0.leading.equalToSuperview().offset(16)
@@ -171,7 +163,7 @@ class DietBottomSheetViewController: UIViewController {
             $0.centerY.equalTo(breakfastView)
             $0.trailing.equalTo(breakfastView).inset(56)
         }
-        
+        // 🍎 lunchView
         lunchView.snp.makeConstraints{
             $0.top.equalTo(breakfastView.snp.bottom).offset(16)
             $0.leading.equalToSuperview().offset(16)
@@ -194,7 +186,7 @@ class DietBottomSheetViewController: UIViewController {
             $0.centerY.equalTo(lunchView)
             $0.trailing.equalTo(lunchView).inset(56)
         }
-        
+        // 🍎 dinnerView
         dinnerView.snp.makeConstraints{
             $0.top.equalTo(lunchView.snp.bottom).offset(16)
             $0.leading.equalToSuperview().offset(16)
@@ -217,29 +209,24 @@ class DietBottomSheetViewController: UIViewController {
             $0.centerY.equalTo(dinnerView)
             $0.trailing.equalTo(dinnerView).inset(56)
         }
-        
     }
     
-    
-    
+    // MARK: - Actions
     @objc func breakfastAddTabButtonTapped() {
         let addDietMenuViewController = AddDietMenuViewController()
         addDietMenuViewController.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(addDietMenuViewController, animated: true)
     }
-    
     @objc func lunchAddTabButtonTapped() {
         let addDietMenuViewController = AddDietMenuViewController()
         addDietMenuViewController.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(addDietMenuViewController, animated: true)
     }
-    
     @objc func dinnerAddTabButtonTapped() {
         let addDietMenuViewController = AddDietMenuViewController()
         addDietMenuViewController.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(addDietMenuViewController, animated: true)
     }
-    
     @objc func albumButtonTapped() {
         let dietAlbumViewController = DietAlbumViewController()
         dietAlbumViewController.hidesBottomBarWhenPushed = true

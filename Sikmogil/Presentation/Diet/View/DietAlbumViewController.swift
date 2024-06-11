@@ -89,7 +89,7 @@ class DietAlbumViewController: UIViewController, UINavigationControllerDelegate 
     
     // MARK: - Actions
     
-    /*카메라만 바로 연결
+    /*앨범없이 카메라만 바로 연결
     @objc func albumAddPhotoButtonTapped() {
         print("시도 imagePicker")
         let imagePicker = UIImagePickerController()
@@ -134,15 +134,15 @@ class DietAlbumViewController: UIViewController, UINavigationControllerDelegate 
     }
     
     private func loadImages() {
-        if let imageDataArray = UserDefaults.standard.array(forKey: "selectedImages") as? [Data] {
+        if let imageDataArray = UserDefaults.standard.array(forKey: "dietImages") as? [Data] {
             images = imageDataArray.compactMap { UIImage(data: $0) }
         }
     }
     private func saveImage(_ image: UIImage) {
         if let imageData = image.pngData() {
-            var imageDataArray = UserDefaults.standard.array(forKey: "selectedImages") as? [Data] ?? []
+            var imageDataArray = UserDefaults.standard.array(forKey: "dietImages") as? [Data] ?? []
             imageDataArray.append(imageData)
-            UserDefaults.standard.set(imageDataArray, forKey: "selectedImages")
+            UserDefaults.standard.set(imageDataArray, forKey: "dietImages")
         }
     }
     
@@ -162,9 +162,9 @@ class DietAlbumViewController: UIViewController, UINavigationControllerDelegate 
         let reversedIndex = images.count - 1 - indexPath.item
         images.remove(at: reversedIndex)
         
-        var imageDataArray = UserDefaults.standard.array(forKey: "selectedImages") as? [Data] ?? []
+        var imageDataArray = UserDefaults.standard.array(forKey: "dietImages") as? [Data] ?? []
         imageDataArray.remove(at: indexPath.item)
-        UserDefaults.standard.set(imageDataArray, forKey: "selectedImages")
+        UserDefaults.standard.set(imageDataArray, forKey: "dietImages")
 
         albumCollectionView.reloadData()
     }
