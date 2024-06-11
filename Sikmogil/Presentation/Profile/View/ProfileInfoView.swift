@@ -20,9 +20,11 @@ class ProfileInfoView: UIView { // 키 | 몸무게 | 성별
     let separator2 = createSeparator()
     
     let weightTitleLabel = createTitleLabel(text: "몸무게")
-    let weightLabel = createDetailLabel(text: "0.0kg")
+    let weightValueLabel = createDetailLabel(text: "0.0")
+    let weightUnitLabel = createUnitLabel(text: "kg")
     let heightTitleLabel = createTitleLabel(text: "키")
-    let heightLabel = createDetailLabel(text: "000cm")
+    let heightValueLabel = createDetailLabel(text: "000")
+    let heightUnitLabel = createUnitLabel(text: "cm")
     let genderTitleLabel = createTitleLabel(text: "성별")
     let genderLabel = createDetailLabel(text: "남자")
     
@@ -46,11 +48,19 @@ class ProfileInfoView: UIView { // 키 | 몸무게 | 성별
         self.layer.shadowOffset = CGSize(width: 0, height: 1)
         self.layer.shadowRadius = 4
         
+        let weightStack = createHorizontalStackView()
+        weightStack.addArrangedSubview(weightValueLabel)
+        weightStack.addArrangedSubview(weightUnitLabel)
+        
+        let heightStack = createHorizontalStackView()
+        heightStack.addArrangedSubview(heightValueLabel)
+        heightStack.addArrangedSubview(heightUnitLabel)
+        
         weightStackView.addArrangedSubview(weightTitleLabel)
-        weightStackView.addArrangedSubview(weightLabel)
+        weightStackView.addArrangedSubview(weightStack)
         
         heightStackView.addArrangedSubview(heightTitleLabel)
-        heightStackView.addArrangedSubview(heightLabel)
+        heightStackView.addArrangedSubview(heightStack)
         
         genderStackView.addArrangedSubview(genderTitleLabel)
         genderStackView.addArrangedSubview(genderLabel)
@@ -110,13 +120,22 @@ class ProfileInfoView: UIView { // 키 | 몸무게 | 성별
             $0.height.equalTo(30)
         }
         
-        weightLabel.snp.makeConstraints {
+        weightValueLabel.snp.makeConstraints {
             $0.height.equalTo(30)
         }
         
-        heightLabel.snp.makeConstraints {
+        weightUnitLabel.snp.makeConstraints {
             $0.height.equalTo(30)
         }
+        
+        heightValueLabel.snp.makeConstraints {
+            $0.height.equalTo(30)
+        }
+        
+        heightUnitLabel.snp.makeConstraints {
+            $0.height.equalTo(30)
+        }
+        
         genderLabel.snp.makeConstraints {
             $0.height.equalTo(30)
         }
@@ -128,6 +147,14 @@ private func createVerticalStackView() -> UIStackView {
     return UIStackView().then {
         $0.axis = .vertical
         $0.alignment = .center
+    }
+}
+
+private func createHorizontalStackView() -> UIStackView {
+    return UIStackView().then {
+        $0.axis = .horizontal
+        $0.alignment = .center
+        $0.spacing = 4
     }
 }
 
@@ -149,5 +176,13 @@ private func createDetailLabel(text: String) -> UILabel {
     return UILabel().then {
         $0.text = text
         $0.font = Suite.bold.of(size: 16)
+    }
+}
+
+private func createUnitLabel(text: String) -> UILabel {
+    return UILabel().then {
+        $0.text = text
+        $0.font = Suite.regular.of(size: 14)
+        $0.textColor = .appBlack
     }
 }
