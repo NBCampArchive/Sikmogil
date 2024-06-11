@@ -33,6 +33,7 @@
 		B52001D82C171B8C0083CBDF /* DietViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001CD2C171B8C0083CBDF /* DietViewModel.swift */; };
 		B52001DB2C171F9D0083CBDF /* UIApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001D92C171F9C0083CBDF /* UIApplication.swift */; };
 		B52001DC2C171F9D0083CBDF /* FloatingPanelControllerStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001DA2C171F9C0083CBDF /* FloatingPanelControllerStyle.swift */; };
+		B52001E02C18922D0083CBDF /* DietAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001DF2C18922D0083CBDF /* DietAPIManager.swift */; };
 		B54ABF882C09BD43002E89DC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABF872C09BD43002E89DC /* AppDelegate.swift */; };
 		B54ABF8A2C09BD43002E89DC /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABF892C09BD43002E89DC /* SceneDelegate.swift */; };
 		B54ABF8C2C09BD43002E89DC /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABF8B2C09BD43002E89DC /* ViewController.swift */; };
@@ -118,6 +119,7 @@
 		B52001CD2C171B8C0083CBDF /* DietViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DietViewModel.swift; sourceTree = "<group>"; };
 		B52001D92C171F9C0083CBDF /* UIApplication.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIApplication.swift; sourceTree = "<group>"; };
 		B52001DA2C171F9C0083CBDF /* FloatingPanelControllerStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatingPanelControllerStyle.swift; sourceTree = "<group>"; };
+		B52001DF2C18922D0083CBDF /* DietAPIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DietAPIManager.swift; sourceTree = "<group>"; };
 		B54ABF842C09BD43002E89DC /* Sikmogil.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sikmogil.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B54ABF872C09BD43002E89DC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B54ABF892C09BD43002E89DC /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -337,6 +339,7 @@
 				B54ABFF72C0F0DC7002E89DC /* LoginAPIManager.swift */,
 				B52001AF2C11D7FA0083CBDF /* UserAPIManager.swift */,
 				B52001BE2C15AC1E0083CBDF /* ExerciseAPIManager.swift */,
+				B52001DF2C18922D0083CBDF /* DietAPIManager.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -685,6 +688,7 @@
 				B54ABFB82C0CB595002E89DC /* Model.swift in Sources */,
 				547A1BAC2C0DAA78000A16BF /* ProfileViewController.swift in Sources */,
 				B52001DC2C171F9D0083CBDF /* FloatingPanelControllerStyle.swift in Sources */,
+				B52001E02C18922D0083CBDF /* DietAPIManager.swift in Sources */,
 				545AA5162C11E6540083D893 /* AlarmTableViewCell.swift in Sources */,
 				B52001D62C171B8C0083CBDF /* DietMainViewController.swift in Sources */,
 				B54ABF922C09BD43002E89DC /* Sikmogil.xcdatamodeld in Sources */,
