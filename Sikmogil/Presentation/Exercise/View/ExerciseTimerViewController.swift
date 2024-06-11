@@ -11,10 +11,13 @@ class ExerciseTimerViewController: UIViewController {
     
     // MARK: - Components
     private var isPaused: Bool = true
+    private var selectedTime: TimeInterval = 30 // 선택한 시간을 저장할 변수: 30분(30 * 60 = 1800)
+    private var timer: Timer?
     
     private let timeLabel: UILabel = {
         let label = UILabel()
         label.text = "00 : 00"
+
         label.font = Suite.semiBold.of(size: 60)
         return label
     }()
@@ -49,6 +52,10 @@ class ExerciseTimerViewController: UIViewController {
         setupViews()
         setupConstraints()
         setupButtons()
+        updateTimeLabel()
+        
+        // NotificationCenter에 구독
+        NotificationCenter.default.addObserver(self, selector: #selector(handleSelectedTime(_:)), name: Notification.Name("SelectedTimeNotification"), object: nil)
     }
     
     // MARK: - Setup View
@@ -94,10 +101,51 @@ class ExerciseTimerViewController: UIViewController {
         if isPaused {
             stopPauseButton.setImage(.pause, for: .normal)
             statusLabel.text = "PAUSE"
+            timer?.invalidate() // 타이머 중지
         } else {
             stopPauseButton.setImage(.stop, for: .normal)
             statusLabel.text = "STOP"
+            startTimer() // 타이머 시작
         }
+    }
+    
+    // 선택한 시간을 사용하여 라벨 초기 텍스트 업데이트
+    private func updateTimeLabel() {
+        let minutes = Int(selectedTime) / 60
+        let seconds = Int(selectedTime) % 60
+        
+        let minutesString = String(format: "%02d", minutes)
+        let secondsString = String(format: "%02d", seconds)
+        
+        timeLabel.text = "\(minutesString) : \(secondsString)"
+    }
+    
+    // 선택한 시간을 처리
+    @objc private func handleSelectedTime(_ notification: Notification) {
+        guard let userInfo = notification.userInfo,
+              let selectedTime = userInfo["selectedTime"] as? TimeInterval else {
+            return
+        }
+        self.selectedTime = selectedTime
+        // 타이머 시작
+        startTimer()
+    }
+    
+    // 타이머 시작
+    private func startTimer() {
+        timer?.invalidate() // 이전에 실행중인 타이머가 있으면 중지시킴
+        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateTimerLabel), userInfo: nil, repeats: true)
+    }
+    
+    // 타이머 라벨 업데이트
+    @objc private func updateTimerLabel() {
+        guard selectedTime > 0 else {
+            timer?.invalidate() // 타이머가 종료되면 중지
+            return
+        }
+        
+        selectedTime -= 1
+        updateTimeLabel() // 라벨 텍스트 업데이트
     }
     
     @objc private func recordButtonTapped() {
