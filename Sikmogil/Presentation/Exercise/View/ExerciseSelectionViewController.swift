@@ -164,7 +164,7 @@ class ExerciseSelectionViewController: UIViewController {
         
         exerciseSelectionButton.snp.makeConstraints {
             $0.centerY.equalTo(exerciseLabel)
-            $0.trailing.equalToSuperview().inset(40)
+            $0.centerX.equalTo(intensityStackView)
             $0.height.equalTo(42)
             $0.width.equalTo(intensityStackView)
         }
@@ -176,11 +176,10 @@ class ExerciseSelectionViewController: UIViewController {
         
         timeSelectionButton.snp.makeConstraints {
             $0.centerY.equalTo(timeLabel)
-            $0.trailing.equalToSuperview().inset(40)
+            $0.centerX.equalTo(intensityStackView)
             $0.height.equalTo(42)
             $0.width.equalTo(intensityStackView)
         }
-        
         
         intensityLabel.snp.makeConstraints {
             $0.top.equalTo(timeLabel.snp.bottom).offset(66)

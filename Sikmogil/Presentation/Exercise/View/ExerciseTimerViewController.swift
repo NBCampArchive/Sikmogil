@@ -12,7 +12,6 @@ class ExerciseTimerViewController: UIViewController {
     // MARK: - Components
     private var isPaused: Bool = true
     
-    // TODO: 프로그레스 바
     private let timeLabel: UILabel = {
         let label = UILabel()
         label.text = "00 : 00"
@@ -59,8 +58,9 @@ class ExerciseTimerViewController: UIViewController {
     }
     
     private func setupConstraints() {
+        
         timeLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(240)
+            $0.top.equalTo(view.safeAreaLayoutGuide).offset(200)
             $0.centerX.equalToSuperview()
         }
         
