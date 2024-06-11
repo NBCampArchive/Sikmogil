@@ -20,6 +20,8 @@
 		B52001B02C11D7FA0083CBDF /* UserAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001AF2C11D7FA0083CBDF /* UserAPIManager.swift */; };
 		B52001B22C1217DA0083CBDF /* WaveProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001B12C1217DA0083CBDF /* WaveProgressView.swift */; };
 		B52001B62C12F4570083CBDF /* StepsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001B52C12F4570083CBDF /* StepsViewController.swift */; };
+		B52001BF2C15AC1E0083CBDF /* ExerciseAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001BE2C15AC1E0083CBDF /* ExerciseAPIManager.swift */; };
+		B52001C12C15ADA50083CBDF /* ExerciseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001C02C15ADA50083CBDF /* ExerciseModel.swift */; };
 		B52001D02C171B8C0083CBDF /* FloatingPanelControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001C22C171B8C0083CBDF /* FloatingPanelControllerDelegate.swift */; };
 		B52001D12C171B8C0083CBDF /* AddDietMenuTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001C42C171B8C0083CBDF /* AddDietMenuTableViewCell.swift */; };
 		B52001D22C171B8C0083CBDF /* DietAlbumCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001C52C171B8C0083CBDF /* DietAlbumCollectionViewCell.swift */; };
@@ -103,6 +105,8 @@
 		B52001AF2C11D7FA0083CBDF /* UserAPIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAPIManager.swift; sourceTree = "<group>"; };
 		B52001B12C1217DA0083CBDF /* WaveProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaveProgressView.swift; sourceTree = "<group>"; };
 		B52001B52C12F4570083CBDF /* StepsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StepsViewController.swift; sourceTree = "<group>"; };
+		B52001BE2C15AC1E0083CBDF /* ExerciseAPIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseAPIManager.swift; sourceTree = "<group>"; };
+		B52001C02C15ADA50083CBDF /* ExerciseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseModel.swift; sourceTree = "<group>"; };
 		B52001C22C171B8C0083CBDF /* FloatingPanelControllerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatingPanelControllerDelegate.swift; sourceTree = "<group>"; };
 		B52001C42C171B8C0083CBDF /* AddDietMenuTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddDietMenuTableViewCell.swift; sourceTree = "<group>"; };
 		B52001C52C171B8C0083CBDF /* DietAlbumCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DietAlbumCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -312,6 +316,7 @@
 				B54ABFB72C0CB595002E89DC /* Model.swift */,
 				B54ABFF92C0F0F65002E89DC /* LoginModel.swift */,
 				B54AC00D2C105475002E89DC /* UserProfile.swift */,
+				B52001C02C15ADA50083CBDF /* ExerciseModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -331,6 +336,7 @@
 				B54ABFBC2C0CB60D002E89DC /* Network.swift */,
 				B54ABFF72C0F0DC7002E89DC /* LoginAPIManager.swift */,
 				B52001AF2C11D7FA0083CBDF /* UserAPIManager.swift */,
+				B52001BE2C15AC1E0083CBDF /* ExerciseAPIManager.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -695,6 +701,7 @@
 				B52001D02C171B8C0083CBDF /* FloatingPanelControllerDelegate.swift in Sources */,
 				B54ABFF12C0DE03D002E89DC /* LoginViewController.swift in Sources */,
 				B54ABFD72C0CC281002E89DC /* CustomCircularProgressBar.swift in Sources */,
+				B52001BF2C15AC1E0083CBDF /* ExerciseAPIManager.swift in Sources */,
 				F3094EC42C0DB1940099DE2C /* ExerciseHistoryCell.swift in Sources */,
 				B54AC0172C10560A002E89DC /* OnboardingPageViewController.swift in Sources */,
 				B54ABF8C2C09BD43002E89DC /* ViewController.swift in Sources */,
@@ -720,6 +727,7 @@
 				B54ABFF52C0DE1CD002E89DC /* LoginViewModel.swift in Sources */,
 				B54ABFD52C0CBE86002E89DC /* CircularProgressBar.swift in Sources */,
 				F3094EEF2C0EEDA40099DE2C /* ExerciseTimerViewController.swift in Sources */,
+				B52001C12C15ADA50083CBDF /* ExerciseModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
