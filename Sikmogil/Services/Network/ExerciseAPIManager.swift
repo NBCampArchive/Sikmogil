@@ -44,9 +44,43 @@ class ExerciseAPIManager {
         }
     }
     
-    // MARK: - 특정 날짜의 운동 데이터 가저오기
-    func getExerciseData(exerciseDay: String, completion: @escaping (Result<ExerciseModel, Error>) -> Void) {
-        let url = "\(baseURL)/api/workoutLog/getWorkoutLogDate"
+    // MARK: - 특정 날짜의 운동 리스트 추가
+    func addExerciseListData(exerciseDay: String, exerciseList: ExerciseListModel, completion: @escaping (Result<Void, Error>) -> Void) {
+        let url = "\(baseURL)/api/workoutLog/workoutList/addWorkoutList"
+        
+        let headers: HTTPHeaders = [
+            "Authorization": token,
+            "Accept": "application/json"
+        ]
+        
+        
+        let parameters: [String: Any] = [
+            "date": exerciseDay,
+            "workoutList": [
+                "performedWorkout": exerciseList.performedWorkout,
+                "workoutTime": exerciseList.workoutTime,
+                "workoutIntensity": exerciseList.workoutIntensity,
+//                "workoutPicture": exerciseList.workoutPicture,(사진 추가시 사용할 예정)
+                "calorieBurned": exerciseList.calorieBurned
+            ]
+        ]
+        
+        
+        AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).response { response in
+            switch response.result {
+            case .success:
+                print("addExerciseListData success")
+                completion(.success(()))
+            case .failure(let error):
+                print("addExerciseListData failure")
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    // MARK: - 특정 날짜의 운동 리스트 삭제
+    func deleteExerciseListData(exerciseDay: String, exerciseListId: Int, completion: @escaping (Result<Void, Error>) -> Void) {
+        let url = "\(baseURL)/api/workoutLog/workoutList/deleteWorkoutList"
         
         let headers: HTTPHeaders = [
             "Authorization": token,
@@ -54,14 +88,17 @@ class ExerciseAPIManager {
         ]
         
         let parameters: [String: Any] = [
-            "workoutDate": exerciseDay
+            "date": exerciseDay,
+            "workoutListId": exerciseListId
         ]
         
-        AF.request(url, method: .get, parameters: parameters, headers: headers).validate(statusCode: 200..<300).responseDecodable(of: ExerciseModel.self, emptyResponseCodes: [200]) { response in
+        AF.request(url, method: .delete, parameters: parameters, encoding: JSONEncoding.default, headers: headers).response { response in
             switch response.result {
-            case .success(let data):
-                completion(.success(data))
+            case .success:
+                print("deleteExerciseListData success")
+                completion(.success(()))
             case .failure(let error):
+                print("deleteExerciseListData failure")
                 completion(.failure(error))
             }
         }
@@ -79,34 +116,63 @@ class ExerciseAPIManager {
         AF.request(url, method: .get, headers: headers).validate(statusCode: 200..<300).responseDecodable(of: [ExerciseModel].self,  emptyResponseCodes: [200]) { response in
             switch response.result {
             case .success(let data):
+                print("getAllExerciseData success")
                 completion(.success(data))
             case .failure(let error):
+                print("getAllExerciseData failure")
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    // MARK: - 특정 날짜의 운동 데이터 출력
+    func getExerciseData(exerciseDay: String, completion: @escaping (Result<ExerciseModel, Error>) -> Void) {
+        let url = "\(baseURL)/api/workoutLog/getWorkoutLogDate"
+        
+        let headers: HTTPHeaders = [
+            "Authorization": token,
+            "Accept": "application/json"
+        ]
+        
+        let parameters: [String: Any] = [
+            "workoutDate": exerciseDay
+        ]
+        
+        AF.request(url, method: .get, parameters: parameters, headers: headers).validate(statusCode: 200..<300).responseDecodable(of: ExerciseModel.self, emptyResponseCodes: [200]) { response in
+            switch response.result {
+            case .success(let data):
+                print("getExerciseData success")
+                completion(.success(data))
+            case .failure(let error):
+                print("getExerciseData failure")
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    // MARK: - 특정 날짜의 운동 리스트 출력
+    func getExerciseList(exerciseDay: String, completion: @escaping (Result<[ExerciseListModel], Error>) -> Void) {
+        let url = "\(baseURL)/api/workoutLog/workoutList/getWorkoutListByDate"
+        
+        let headers: HTTPHeaders = [
+            "Authorization": token,
+            "Accept": "application/json"
+        ]
+        
+        let parameters: [String: Any] = [
+            "date": exerciseDay
+        ]
+        
+        AF.request(url, method: .get, parameters: parameters, headers: headers).validate(statusCode: 200..<300).responseDecodable(of: [ExerciseListModel].self, emptyResponseCodes: [200]) { response in
+            switch response.result {
+            case .success(let data):
+                print("getExerciseList success")
+                completion(.success(data))
+            case .failure(let error):
+                print("getExerciseList failure")
                 completion(.failure(error))
             }
         }
     }
 }
-//ExerciseAPIManager.shared.updateExerciseData(exerciseDay: DateHelper.shared.formatDateToYearMonthDay(Date()), steps: 10, totalCaloriesBurned: 50) { result in
-//    switch result {
-//    case .success:
-//        ExerciseAPIManager.shared.getExerciseData(exerciseDay: DateHelper.shared.formatDateToYearMonthDay(Date())) { result in
-//            switch result {
-//            case .success(let data):
-//                print("getExerciseData \(data)")
-//            case .failure(let error):
-//                print("getExerciseData \(error)")
-//            }
-//        }
-//    case .failure(let error):
-//        print("updateExerciseData \(error)")
-//    }
-//}
-//
-//ExerciseAPIManager.shared.getAllExerciseData { result in
-//    switch result {
-//    case .success(let data):
-//        print("getAllExerciseData \(data)")
-//    case .failure(let error):
-//        print("getAllExerciseData \(error)")
-//    }
-//}
+
