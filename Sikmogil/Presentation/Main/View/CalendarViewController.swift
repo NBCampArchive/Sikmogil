@@ -9,6 +9,7 @@ import UIKit
 import FSCalendar
 import FloatingPanel
 
+
 class CalendarViewController: UIViewController {
     
     var secondFloatingPanelController: FloatingPanelController!
@@ -153,12 +154,19 @@ class CalendarViewController: UIViewController {
     }
 }
 
+extension CalendarViewController: DiaryRecordFloatingViewControllerDelegate {
+    func didTapDoneButton() {
+        dismissFloatingPanel()
+    }
+}
+
 extension CalendarViewController: FloatingPanelControllerDelegate {
     
     func setupFloatingPanel() {
         secondFloatingPanelController = FloatingPanelController()
         
         let contentVC = DiaryRecordFloatingViewController()
+        contentVC.delegate = self
         secondFloatingPanelController.set(contentViewController: contentVC)
         
         secondFloatingPanelController.surfaceView.appearance.cornerRadius = 20
@@ -175,7 +183,7 @@ extension CalendarViewController: FloatingPanelControllerDelegate {
         secondFloatingPanelController.hide(animated: false, completion: nil)
     }
     
-    @objc private func dismissFloatingPanel() {
+    @objc func dismissFloatingPanel() {
         secondFloatingPanelController.hide(animated: true) {
             self.secondDimmingView.isHidden = true
             self.secondDimmingView.alpha = 0.0

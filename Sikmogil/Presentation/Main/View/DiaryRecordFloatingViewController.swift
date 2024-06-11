@@ -7,7 +7,13 @@
 
 import UIKit
 
+protocol DiaryRecordFloatingViewControllerDelegate {
+    func didTapDoneButton()
+}
+
 class DiaryRecordFloatingViewController: UIViewController {
+    
+    var delegate: DiaryRecordFloatingViewControllerDelegate?
     
     private let label = UILabel().then {
         $0.text = "오늘의 한 줄 일기를 작성해보세요!"
@@ -24,7 +30,7 @@ class DiaryRecordFloatingViewController: UIViewController {
         $0.textContainerInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
     }
     
-    private let doneButton = UIButton().then {
+    let doneButton = UIButton().then {
         $0.setTitle("작성 완료", for: .normal)
         $0.titleLabel?.font = Suite.bold.of(size: 22)
         $0.backgroundColor = .appBlack
@@ -35,7 +41,7 @@ class DiaryRecordFloatingViewController: UIViewController {
         super.viewDidLoad()
         
         view.backgroundColor = .systemBackground
-                
+        
         setupUI()
         setupConstraints()
         
@@ -68,6 +74,6 @@ class DiaryRecordFloatingViewController: UIViewController {
     }
     
     @objc func tapDoneButton() {
-        dismiss(animated: true)
+        delegate?.didTapDoneButton()
     }
 }

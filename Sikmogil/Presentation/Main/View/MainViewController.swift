@@ -247,6 +247,12 @@ class MainViewController: UIViewController {
     }
 }
 
+extension MainViewController: WeightRecordFloatingViewControllerDelegate {
+    func didTapDoneButton() {
+        dismissFloatingPanel()
+    }
+}
+
 extension MainViewController: FloatingPanelControllerDelegate {
     
     func setupFloatingPanel() {
@@ -254,6 +260,7 @@ extension MainViewController: FloatingPanelControllerDelegate {
         
         let contentVC = WeightRecordFloatingViewController()
         floatingPanelController.set(contentViewController: contentVC)
+        contentVC.delegate = self
         
         floatingPanelController.surfaceView.appearance.cornerRadius = 20
         floatingPanelController.delegate = self
@@ -269,7 +276,7 @@ extension MainViewController: FloatingPanelControllerDelegate {
         floatingPanelController.hide(animated: false, completion: nil)
     }
     
-    @objc private func dismissFloatingPanel() {
+    @objc func dismissFloatingPanel() {
         floatingPanelController.hide(animated: true) {
             self.dimmingView.isHidden = true
             self.dimmingView.alpha = 0.0

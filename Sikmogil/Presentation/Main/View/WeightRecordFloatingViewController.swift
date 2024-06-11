@@ -7,7 +7,13 @@
 
 import UIKit
 
+protocol WeightRecordFloatingViewControllerDelegate {
+    func didTapDoneButton()
+}
+
 class WeightRecordFloatingViewController: UIViewController {
+    
+    var delegate: WeightRecordFloatingViewControllerDelegate?
     
     private let label = UILabel().then {
         $0.text = "몸무게 기록하기"
@@ -36,6 +42,7 @@ class WeightRecordFloatingViewController: UIViewController {
         setupConstraints()
         
         doneButton.addTarget(self, action: #selector(tapDoneButton), for: .touchUpInside)
+        print(#function)
     }
     
     private func setupUI() {
@@ -63,6 +70,6 @@ class WeightRecordFloatingViewController: UIViewController {
     }
     
     @objc func tapDoneButton() {
-        self.dismiss(animated: true)
+        delegate?.didTapDoneButton()
     }
 }

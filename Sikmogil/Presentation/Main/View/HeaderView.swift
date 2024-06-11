@@ -8,6 +8,7 @@
 import UIKit
 
 class HeaderView: UICollectionReusableView {
+    
     static let reuseIdentifier = "HeaderView"
     
     let dot = UIView().then {
