@@ -17,3 +17,8 @@ struct UserProfile {
     var targetDate: String
     var reminderTime: String
 }
+
+struct SavedDietImage {
+    let imageData: Data
+    let dateSaved: Date
+}
