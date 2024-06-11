@@ -41,7 +41,8 @@ class DietAlbumViewController: UIViewController, UINavigationControllerDelegate 
         layout.minimumInteritemSpacing = 8
         return UICollectionView(frame: .zero, collectionViewLayout: layout)
     }()
-    var images: [UIImage] = []
+    
+    var viewModel: DietAlbumViewModel!
     
     // MARK: - View Lifecycle
     override func viewDidLoad() {
@@ -50,12 +51,14 @@ class DietAlbumViewController: UIViewController, UINavigationControllerDelegate 
         setupViews()
         setupConstraints()
         
+        viewModel = DietAlbumViewModel()
+        
         albumCollectionView.delegate = self
         albumCollectionView.dataSource = self
         
         albumCollectionView.register(DietAlbumCollectionViewCell.self, forCellWithReuseIdentifier: DietAlbumCollectionViewCell.identifier)
         
-        loadImages()
+        viewModel.loadImages()
     }
     
     // MARK: - Setup Methods
@@ -132,53 +135,19 @@ class DietAlbumViewController: UIViewController, UINavigationControllerDelegate 
             present(alertController, animated: true, completion: nil)
         }
     }
-    
-    private func loadImages() {
-        if let imageDataArray = UserDefaults.standard.array(forKey: "dietImages") as? [Data] {
-            images = imageDataArray.compactMap { UIImage(data: $0) }
-        }
-    }
-    private func saveImage(_ image: UIImage) {
-        if let imageData = image.pngData() {
-            var imageDataArray = UserDefaults.standard.array(forKey: "dietImages") as? [Data] ?? []
-            imageDataArray.append(imageData)
-            UserDefaults.standard.set(imageDataArray, forKey: "dietImages")
-        }
-    }
-    
-    // 컬렉션뷰 셀 삭제 메서드
-    private func confirmDeleteImage(at indexPath: IndexPath) {
-        let alert = UIAlertController(title: "사진 삭제", message: "이 사진을 삭제하시겠습니까?", preferredStyle: .alert)
-        let deleteAction = UIAlertAction(title: "삭제", style: .destructive) { _ in
-            self.deleteImage(at: indexPath)
-        }
-        let cancelAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
-        alert.addAction(deleteAction)
-        alert.addAction(cancelAction)
-        present(alert, animated: true, completion: nil)
-    }
-
-    private func deleteImage(at indexPath: IndexPath) {
-        let reversedIndex = images.count - 1 - indexPath.item
-        images.remove(at: reversedIndex)
-        
-        var imageDataArray = UserDefaults.standard.array(forKey: "dietImages") as? [Data] ?? []
-        imageDataArray.remove(at: indexPath.item)
-        UserDefaults.standard.set(imageDataArray, forKey: "dietImages")
-
-        albumCollectionView.reloadData()
-    }
 }
 
 // MARK: - UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
 extension DietAlbumViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return images.count
+        return viewModel.savedDietImages.count
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DietAlbumCollectionViewCell.identifier, for: indexPath) as! DietAlbumCollectionViewCell
-        let reversedIndex = images.count - 1 - indexPath.item
-        cell.imageView.image = images[reversedIndex]
+        let reversedIndex = viewModel.savedDietImages.count - 1 - indexPath.item
+        let dietImage = viewModel.savedDietImages[reversedIndex]
+        cell.imageView.image = UIImage(data: dietImage.imageData)
+        cell.dataLabel.text = "\(dietImage.dateSaved)"
         
         return cell
     }
@@ -194,14 +163,26 @@ extension DietAlbumViewController: UICollectionViewDelegate, UICollectionViewDat
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         confirmDeleteImage(at: indexPath)
     }
+    
+    func confirmDeleteImage(at indexPath: IndexPath) {
+        let alert = UIAlertController(title: "사진 삭제", message: "이 사진을 삭제하시겠습니까?", preferredStyle: .alert)
+        let deleteAction = UIAlertAction(title: "삭제", style: .destructive) { _ in
+            let index = self.viewModel.savedDietImages.count - 1 - indexPath.item
+            self.viewModel.deleteImage(at: index)
+            self.albumCollectionView.reloadData()
+        }
+        let cancelAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
+        alert.addAction(deleteAction)
+        alert.addAction(cancelAction)
+        present(alert, animated: true, completion: nil)
+    }
 }
 
 // MARK: - UIImagePickerControllerDelegate
 extension DietAlbumViewController: UIImagePickerControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let image = info[.originalImage] as? UIImage {
-            saveImage(image)
-            images.append(image)
+            viewModel.saveImage(image)
             albumCollectionView.reloadData()
         }
         picker.dismiss(animated: true, completion: nil)

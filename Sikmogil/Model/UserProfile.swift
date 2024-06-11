@@ -18,7 +18,7 @@ struct UserProfile {
     var reminderTime: String
 }
 
-struct SavedDietImage {
+struct SavedDietImage: Codable {
     let imageData: Data
     let dateSaved: Date
 }

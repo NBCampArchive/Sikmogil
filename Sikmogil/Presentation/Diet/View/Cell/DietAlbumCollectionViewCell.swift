@@ -19,6 +19,13 @@ class DietAlbumCollectionViewCell: UICollectionViewCell {
         return imageView
     }()
     
+    let dataLabel = UILabel().then {
+        $0.text = "날짜"
+        $0.textColor = .white
+        $0.font = Suite.bold.of(size: 12)
+        $0.textAlignment = .left
+    }
+    
     // MARK: - View Lifecycle
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -32,12 +39,16 @@ class DietAlbumCollectionViewCell: UICollectionViewCell {
     
     // MARK: - Setup Methods
     private func setupViews() {
-        contentView.addSubview(imageView)
+        contentView.addSubviews(imageView,dataLabel)
     }
     
     private func setupConstraints() {
         imageView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
+        }
+        dataLabel.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.bottom.equalTo(imageView.snp.bottom)
         }
     }
 }
