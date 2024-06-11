@@ -7,12 +7,32 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		540768862C12EAB200543A72 /* ProfileInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 540768852C12EAB200543A72 /* ProfileInfoView.swift */; };
+		540768882C12EAD900543A72 /* ProfileTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 540768872C12EAD900543A72 /* ProfileTableView.swift */; };
+		545AA5162C11E6540083D893 /* AlarmTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 545AA5152C11E6540083D893 /* AlarmTableViewCell.swift */; };
+		545AA5182C11F4760083D893 /* ReminderSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 545AA5172C11F4760083D893 /* ReminderSettingsViewController.swift */; };
+		546E32312C1078D100E94C2A /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546E32302C1078D100E94C2A /* EditProfileViewController.swift */; };
+		546E32332C1078E600E94C2A /* NotificationSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546E32322C1078E600E94C2A /* NotificationSettingsViewController.swift */; };
+		546E32352C1078FA00E94C2A /* GoalSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546E32342C1078FA00E94C2A /* GoalSettingsViewController.swift */; };
+		547A1BAC2C0DAA78000A16BF /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 547A1BAB2C0DAA78000A16BF /* ProfileViewController.swift */; };
+		5485F0882C0DFE2D00A2A71E /* ProfileTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5485F0872C0DFE2D00A2A71E /* ProfileTableViewCell.swift */; };
 		B52001AE2C11B99E0083CBDF /* UIViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001AD2C11B99E0083CBDF /* UIViewControllerExtension.swift */; };
 		B52001B02C11D7FA0083CBDF /* UserAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001AF2C11D7FA0083CBDF /* UserAPIManager.swift */; };
 		B52001B22C1217DA0083CBDF /* WaveProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001B12C1217DA0083CBDF /* WaveProgressView.swift */; };
 		B52001B62C12F4570083CBDF /* StepsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001B52C12F4570083CBDF /* StepsViewController.swift */; };
 		B52001BF2C15AC1E0083CBDF /* ExerciseAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001BE2C15AC1E0083CBDF /* ExerciseAPIManager.swift */; };
 		B52001C12C15ADA50083CBDF /* ExerciseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001C02C15ADA50083CBDF /* ExerciseModel.swift */; };
+		B52001D02C171B8C0083CBDF /* FloatingPanelControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001C22C171B8C0083CBDF /* FloatingPanelControllerDelegate.swift */; };
+		B52001D12C171B8C0083CBDF /* AddDietMenuTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001C42C171B8C0083CBDF /* AddDietMenuTableViewCell.swift */; };
+		B52001D22C171B8C0083CBDF /* DietAlbumCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001C52C171B8C0083CBDF /* DietAlbumCollectionViewCell.swift */; };
+		B52001D32C171B8C0083CBDF /* AddDietMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001C72C171B8C0083CBDF /* AddDietMenuViewController.swift */; };
+		B52001D42C171B8C0083CBDF /* DietAlbumViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001C82C171B8C0083CBDF /* DietAlbumViewController.swift */; };
+		B52001D52C171B8C0083CBDF /* DietBottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001C92C171B8C0083CBDF /* DietBottomSheetViewController.swift */; };
+		B52001D62C171B8C0083CBDF /* DietMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001CA2C171B8C0083CBDF /* DietMainViewController.swift */; };
+		B52001D72C171B8C0083CBDF /* WaterBottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001CB2C171B8C0083CBDF /* WaterBottomSheetViewController.swift */; };
+		B52001D82C171B8C0083CBDF /* DietViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001CD2C171B8C0083CBDF /* DietViewModel.swift */; };
+		B52001DB2C171F9D0083CBDF /* UIApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001D92C171F9C0083CBDF /* UIApplication.swift */; };
+		B52001DC2C171F9D0083CBDF /* FloatingPanelControllerStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001DA2C171F9C0083CBDF /* FloatingPanelControllerStyle.swift */; };
 		B54ABF882C09BD43002E89DC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABF872C09BD43002E89DC /* AppDelegate.swift */; };
 		B54ABF8A2C09BD43002E89DC /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABF892C09BD43002E89DC /* SceneDelegate.swift */; };
 		B54ABF8C2C09BD43002E89DC /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABF8B2C09BD43002E89DC /* ViewController.swift */; };
@@ -72,12 +92,32 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		540768852C12EAB200543A72 /* ProfileInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileInfoView.swift; sourceTree = "<group>"; };
+		540768872C12EAD900543A72 /* ProfileTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTableView.swift; sourceTree = "<group>"; };
+		545AA5152C11E6540083D893 /* AlarmTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmTableViewCell.swift; sourceTree = "<group>"; };
+		545AA5172C11F4760083D893 /* ReminderSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderSettingsViewController.swift; sourceTree = "<group>"; };
+		546E32302C1078D100E94C2A /* EditProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewController.swift; sourceTree = "<group>"; };
+		546E32322C1078E600E94C2A /* NotificationSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSettingsViewController.swift; sourceTree = "<group>"; };
+		546E32342C1078FA00E94C2A /* GoalSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalSettingsViewController.swift; sourceTree = "<group>"; };
+		547A1BAB2C0DAA78000A16BF /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		5485F0872C0DFE2D00A2A71E /* ProfileTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTableViewCell.swift; sourceTree = "<group>"; };
 		B52001AD2C11B99E0083CBDF /* UIViewControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtension.swift; sourceTree = "<group>"; };
 		B52001AF2C11D7FA0083CBDF /* UserAPIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAPIManager.swift; sourceTree = "<group>"; };
 		B52001B12C1217DA0083CBDF /* WaveProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaveProgressView.swift; sourceTree = "<group>"; };
 		B52001B52C12F4570083CBDF /* StepsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StepsViewController.swift; sourceTree = "<group>"; };
 		B52001BE2C15AC1E0083CBDF /* ExerciseAPIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseAPIManager.swift; sourceTree = "<group>"; };
 		B52001C02C15ADA50083CBDF /* ExerciseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseModel.swift; sourceTree = "<group>"; };
+		B52001C22C171B8C0083CBDF /* FloatingPanelControllerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatingPanelControllerDelegate.swift; sourceTree = "<group>"; };
+		B52001C42C171B8C0083CBDF /* AddDietMenuTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddDietMenuTableViewCell.swift; sourceTree = "<group>"; };
+		B52001C52C171B8C0083CBDF /* DietAlbumCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DietAlbumCollectionViewCell.swift; sourceTree = "<group>"; };
+		B52001C72C171B8C0083CBDF /* AddDietMenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddDietMenuViewController.swift; sourceTree = "<group>"; };
+		B52001C82C171B8C0083CBDF /* DietAlbumViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DietAlbumViewController.swift; sourceTree = "<group>"; };
+		B52001C92C171B8C0083CBDF /* DietBottomSheetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DietBottomSheetViewController.swift; sourceTree = "<group>"; };
+		B52001CA2C171B8C0083CBDF /* DietMainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DietMainViewController.swift; sourceTree = "<group>"; };
+		B52001CB2C171B8C0083CBDF /* WaterBottomSheetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WaterBottomSheetViewController.swift; sourceTree = "<group>"; };
+		B52001CD2C171B8C0083CBDF /* DietViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DietViewModel.swift; sourceTree = "<group>"; };
+		B52001D92C171F9C0083CBDF /* UIApplication.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIApplication.swift; sourceTree = "<group>"; };
+		B52001DA2C171F9C0083CBDF /* FloatingPanelControllerStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatingPanelControllerStyle.swift; sourceTree = "<group>"; };
 		B54ABF842C09BD43002E89DC /* Sikmogil.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sikmogil.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B54ABF872C09BD43002E89DC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B54ABF892C09BD43002E89DC /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -149,6 +189,87 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		540768822C12A53500543A72 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				545AA5152C11E6540083D893 /* AlarmTableViewCell.swift */,
+				5485F0872C0DFE2D00A2A71E /* ProfileTableViewCell.swift */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		546E322E2C102E3A00E94C2A /* View */ = {
+			isa = PBXGroup;
+			children = (
+				540768822C12A53500543A72 /* Cell */,
+				547A1BAB2C0DAA78000A16BF /* ProfileViewController.swift */,
+				540768852C12EAB200543A72 /* ProfileInfoView.swift */,
+				540768872C12EAD900543A72 /* ProfileTableView.swift */,
+				546E32302C1078D100E94C2A /* EditProfileViewController.swift */,
+				546E32322C1078E600E94C2A /* NotificationSettingsViewController.swift */,
+				546E32342C1078FA00E94C2A /* GoalSettingsViewController.swift */,
+				545AA5172C11F4760083D893 /* ReminderSettingsViewController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		547A1BAA2C0DA9E8000A16BF /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				546E322E2C102E3A00E94C2A /* View */,
+			);
+			path = Profile;
+			sourceTree = "<group>";
+		};
+		B52001C32C171B8C0083CBDF /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				B52001C22C171B8C0083CBDF /* FloatingPanelControllerDelegate.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		B52001C62C171B8C0083CBDF /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				B52001C42C171B8C0083CBDF /* AddDietMenuTableViewCell.swift */,
+				B52001C52C171B8C0083CBDF /* DietAlbumCollectionViewCell.swift */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		B52001CC2C171B8C0083CBDF /* View */ = {
+			isa = PBXGroup;
+			children = (
+				B52001C62C171B8C0083CBDF /* Cell */,
+				B52001C72C171B8C0083CBDF /* AddDietMenuViewController.swift */,
+				B52001C82C171B8C0083CBDF /* DietAlbumViewController.swift */,
+				B52001C92C171B8C0083CBDF /* DietBottomSheetViewController.swift */,
+				B52001CA2C171B8C0083CBDF /* DietMainViewController.swift */,
+				B52001CB2C171B8C0083CBDF /* WaterBottomSheetViewController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		B52001CE2C171B8C0083CBDF /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				B52001CD2C171B8C0083CBDF /* DietViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		B52001CF2C171B8C0083CBDF /* Diet */ = {
+			isa = PBXGroup;
+			children = (
+				B52001C32C171B8C0083CBDF /* Extensions */,
+				B52001CC2C171B8C0083CBDF /* View */,
+				B52001CE2C171B8C0083CBDF /* ViewModel */,
+			);
+			name = Diet;
+			path = Sikmogil/Presentation/Diet;
+			sourceTree = SOURCE_ROOT;
+		};
 		B54ABF7B2C09BD43002E89DC = {
 			isa = PBXGroup;
 			children = (
@@ -231,6 +352,8 @@
 		B54ABFC02C0CB666002E89DC /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
+				B52001CF2C171B8C0083CBDF /* Diet */,
+				547A1BAA2C0DA9E8000A16BF /* Profile */,
 				B54AC00F2C10549A002E89DC /* Onboarding */,
 				B54ABFEF2C0DE020002E89DC /* Login */,
 				B54ABFEA2C0D6B8B002E89DC /* TabBar */,
@@ -289,6 +412,8 @@
 		B54ABFC82C0CB75A002E89DC /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				B52001DA2C171F9C0083CBDF /* FloatingPanelControllerStyle.swift */,
+				B52001D92C171F9C0083CBDF /* UIApplication.swift */,
 				B54AC00B2C0F48D1002E89DC /* SikmogilBundle++.swift */,
 				B54ABFCA2C0CB770002E89DC /* Extension.swift */,
 				B54ABFCE2C0CBB59002E89DC /* UIViewExtensions.swift */,
@@ -543,19 +668,37 @@
 			files = (
 				B54ABFEE2C0D7370002E89DC /* UIColorExtension.swift in Sources */,
 				F3094EC62C0E40040099DE2C /* ExerciseSelectionViewController.swift in Sources */,
+				B52001D82C171B8C0083CBDF /* DietViewModel.swift in Sources */,
+				B52001DB2C171F9D0083CBDF /* UIApplication.swift in Sources */,
 				B54ABFFA2C0F0F65002E89DC /* LoginModel.swift in Sources */,
 				B52001AE2C11B99E0083CBDF /* UIViewControllerExtension.swift in Sources */,
+				B52001D12C171B8C0083CBDF /* AddDietMenuTableViewCell.swift in Sources */,
 				B54AC00C2C0F48D1002E89DC /* SikmogilBundle++.swift in Sources */,
 				B54ABFCF2C0CBB59002E89DC /* UIViewExtensions.swift in Sources */,
 				B54AC01A2C105646002E89DC /* Step1ViewController.swift in Sources */,
 				B54ABFCB2C0CB770002E89DC /* Extension.swift in Sources */,
+				540768882C12EAD900543A72 /* ProfileTableView.swift in Sources */,
+				546E32332C1078E600E94C2A /* NotificationSettingsViewController.swift in Sources */,
+				540768862C12EAB200543A72 /* ProfileInfoView.swift in Sources */,
 				B54ABFE92C0D69CD002E89DC /* Font.swift in Sources */,
 				B54AC00E2C105475002E89DC /* UserProfile.swift in Sources */,
 				B54ABFB82C0CB595002E89DC /* Model.swift in Sources */,
+				547A1BAC2C0DAA78000A16BF /* ProfileViewController.swift in Sources */,
+				B52001DC2C171F9D0083CBDF /* FloatingPanelControllerStyle.swift in Sources */,
+				545AA5162C11E6540083D893 /* AlarmTableViewCell.swift in Sources */,
+				B52001D62C171B8C0083CBDF /* DietMainViewController.swift in Sources */,
 				B54ABF922C09BD43002E89DC /* Sikmogil.xcdatamodeld in Sources */,
-				F3094EF12C0EEDBA0099DE2C /* ExerciseResultViewController.swift in Sources */,
+				5485F0882C0DFE2D00A2A71E /* ProfileTableViewCell.swift in Sources */,
+				546E32312C1078D100E94C2A /* EditProfileViewController.swift in Sources */,
 				B54ABFCD2C0CB78F002E89DC /* Helpers.swift in Sources */,
 				B54ABFBD2C0CB60D002E89DC /* Network.swift in Sources */,
+				545AA5182C11F4760083D893 /* ReminderSettingsViewController.swift in Sources */,
+				F3094EF12C0EEDBA0099DE2C /* ExerciseResultViewController.swift in Sources */,
+				B54ABFCD2C0CB78F002E89DC /* Helpers.swift in Sources */,
+				B52001D52C171B8C0083CBDF /* DietBottomSheetViewController.swift in Sources */,
+				B54ABFBD2C0CB60D002E89DC /* Network.swift in Sources */,
+				B52001D72C171B8C0083CBDF /* WaterBottomSheetViewController.swift in Sources */,
+				B52001D02C171B8C0083CBDF /* FloatingPanelControllerDelegate.swift in Sources */,
 				B54ABFF12C0DE03D002E89DC /* LoginViewController.swift in Sources */,
 				B54ABFD72C0CC281002E89DC /* CustomCircularProgressBar.swift in Sources */,
 				B52001BF2C15AC1E0083CBDF /* ExerciseAPIManager.swift in Sources */,
@@ -564,6 +707,8 @@
 				B54ABF8C2C09BD43002E89DC /* ViewController.swift in Sources */,
 				B54ABF882C09BD43002E89DC /* AppDelegate.swift in Sources */,
 				B54ABF8A2C09BD43002E89DC /* SceneDelegate.swift in Sources */,
+				B52001D22C171B8C0083CBDF /* DietAlbumCollectionViewCell.swift in Sources */,
+				546E32352C1078FA00E94C2A /* GoalSettingsViewController.swift in Sources */,
 				B54ABFD12C0CBC55002E89DC /* DateHelper.swift in Sources */,
 				B52001B22C1217DA0083CBDF /* WaveProgressView.swift in Sources */,
 				B54AC0152C1055DA002E89DC /* OnboardingProgressBar.swift in Sources */,
@@ -574,7 +719,9 @@
 				B54AC0122C1054B1002E89DC /* OnboardingViewModel.swift in Sources */,
 				B52001B02C11D7FA0083CBDF /* UserAPIManager.swift in Sources */,
 				B54ABFC52C0CB6AB002E89DC /* ViewModel.swift in Sources */,
+				B52001D32C171B8C0083CBDF /* AddDietMenuViewController.swift in Sources */,
 				B54ABFBF2C0CB639002E89DC /* PersistentStorage.swift in Sources */,
+				B52001D42C171B8C0083CBDF /* DietAlbumViewController.swift in Sources */,
 				F3094EC12C0D91310099DE2C /* ExerciseViewController.swift in Sources */,
 				B52001B62C12F4570083CBDF /* StepsViewController.swift in Sources */,
 				B54ABFF52C0DE1CD002E89DC /* LoginViewModel.swift in Sources */,

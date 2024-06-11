@@ -20,7 +20,7 @@ class BottomTabBarController: UITabBarController {
         let homeVC = ViewController()
         homeVC.tabBarItem = UITabBarItem(title: "홈", image: UIImage(named: "home"), tag: 0)
         
-        let dietVC = ViewController()
+        let dietVC = DietMainViewController()
         dietVC.tabBarItem = UITabBarItem(title: "식단", image: UIImage(named: "diet"), tag: 1)
         
         let exerciseVC = ExerciseViewController()
@@ -29,7 +29,7 @@ class BottomTabBarController: UITabBarController {
         let communicationVC = ViewController()
         communicationVC.tabBarItem = UITabBarItem(title: "소통", image: UIImage(named: "communication"), tag: 3)
         
-        let profileVC = ViewController()
+        let profileVC = ProfileViewController()
         profileVC.tabBarItem = UITabBarItem(title: "프로필", image: UIImage(named: "profile"), tag: 4)
         
         let controllers = [homeVC, dietVC, exerciseVC, communicationVC, profileVC]

@@ -19,12 +19,14 @@ protocol LoginViewModelInput {
 
 protocol LoginViewModelOutput {
     var loginSuccess: PublishSubject<Void> { get }
+    var firstLoginSuccess: PublishSubject<Void> { get }
     var loginFailure: PublishSubject<Error> { get }
 }
 
 protocol LoginViewModelIO: LoginViewModelInput & LoginViewModelOutput { }
 
 class LoginViewModel: NSObject, LoginViewModelIO {
+    var firstLoginSuccess = PublishSubject<Void>()
     let loginSuccess = PublishSubject<Void>()
     let loginFailure = PublishSubject<Error>()
     
@@ -70,9 +72,26 @@ class LoginViewModel: NSObject, LoginViewModelIO {
             switch result {
             case .success(let tokenResponse):
                 print("서버 로그인 성공: \(tokenResponse)")
-                self.loginSuccess.onNext(())
+                self.checkFirstLogin()
             case .failure(let error):
                 print("서버 로그인 실패: \(error)")
+                self.loginFailure.onNext(error)
+            }
+        }
+    }
+    
+    private func checkFirstLogin() {
+        LoginAPIManager.shared.checkFirstLogin { result in
+            switch result {
+            case .success(let firstLoginResponse):
+                print("첫 로그인 여부 확인 성공: \(firstLoginResponse)")
+                if firstLoginResponse.data {
+                    self.firstLoginSuccess.onNext(())
+                } else {
+                    self.loginSuccess.onNext(())
+                }
+            case .failure(let error):
+                print("첫 로그인 여부 확인 실패: \(error)")
                 self.loginFailure.onNext(error)
             }
         }
