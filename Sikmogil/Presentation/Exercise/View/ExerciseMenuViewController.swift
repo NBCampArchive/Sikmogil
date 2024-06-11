@@ -10,14 +10,14 @@ import Then
 
 class ExerciseMenuViewController: UIViewController {
     
-    private let containerView = UIView().then {
-        $0.backgroundColor = .clear
-    }
+    private let scrollView = UIScrollView()
+    private let contentView = UIView()
     
     private let headerStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
-        stackView.spacing = 10
+        stackView.spacing = 22
+        stackView.alignment = .fill
         return stackView
     }()
     
@@ -37,40 +37,51 @@ class ExerciseMenuViewController: UIViewController {
         return button
     }()
     
+    private var currentChildViewController: UIViewController?
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
         setupConstraints()
-        showFirstView()
         setupButtons()
+        showFirstView()
     }
 
     private func setupViews() {
         view.backgroundColor = .white
-        view.addSubviews(containerView, headerStackView)
+        view.addSubview(scrollView)
+        scrollView.addSubview(contentView)
+        contentView.addSubviews(headerStackView)
         headerStackView.addArrangedSubviews(exerciseMenuButton, stepsMenuButton)
     }
 
     private func setupConstraints() {
-        containerView.snp.makeConstraints {
-            $0.top.equalTo(headerStackView.snp.bottom)
-            $0.leading.trailing.bottom.equalToSuperview()
+        scrollView.snp.makeConstraints {
+            $0.edges.equalTo(view.safeAreaLayoutGuide)
+        }
+
+        contentView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+            $0.width.equalToSuperview()
         }
 
         headerStackView.snp.makeConstraints {
-            $0.top.equalTo(view.safeAreaLayoutGuide)
-            $0.height.equalTo(28)
+            $0.top.equalToSuperview()
             $0.leading.equalToSuperview().offset(16)
+            $0.height.equalTo(28)
         }
-        // TODO: headerStackView 스크롤 되도록 수정
     }
 
     private func add(asChildViewController viewController: UIViewController) {
         addChild(viewController)
-        containerView.addSubview(viewController.view)
-        viewController.view.frame = containerView.bounds
-        viewController.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        contentView.addSubview(viewController.view)
+        viewController.view.snp.makeConstraints { make in
+            make.top.equalTo(headerStackView.snp.bottom).offset(8)
+            make.leading.trailing.bottom.equalToSuperview()
+            make.height.equalTo(scrollView.snp.height).offset(-36)
+        }
         viewController.didMove(toParent: self)
+        currentChildViewController = viewController
     }
 
     private func remove(asChildViewController viewController: UIViewController) {
@@ -84,7 +95,7 @@ class ExerciseMenuViewController: UIViewController {
         exerciseMenuButton.addTarget(self, action: #selector(showFirstView), for: .touchUpInside)
         stepsMenuButton.addTarget(self, action: #selector(showSecondView), for: .touchUpInside)
     }
-    
+
     @objc private func showFirstView() {
         let exerciseVC = ExerciseViewController()
         transition(to: exerciseVC)
@@ -98,7 +109,7 @@ class ExerciseMenuViewController: UIViewController {
     }
 
     private func transition(to viewController: UIViewController) {
-        if let currentVC = children.first {
+        if let currentVC = currentChildViewController {
             remove(asChildViewController: currentVC)
         }
         add(asChildViewController: viewController)
@@ -107,11 +118,7 @@ class ExerciseMenuViewController: UIViewController {
     private func updateButtonColors(selectedButton: UIButton) {
         let buttons = [exerciseMenuButton, stepsMenuButton]
         buttons.forEach { button in
-            if button == selectedButton {
-                button.tintColor = .appBlack
-            } else {
-                button.tintColor = .appDarkGray
-            }
+            button.tintColor = (button == selectedButton) ? .appBlack : .appDarkGray
         }
     }
 }
