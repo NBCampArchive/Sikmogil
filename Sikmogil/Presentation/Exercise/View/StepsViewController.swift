@@ -80,11 +80,17 @@ class StepsViewController: UIViewController {
 
     private let goalProgressView: UIView = {
         let view = UIView()
+        view.backgroundColor = .appLightGray
+        view.layer.cornerRadius = 10
+        return view
+    }()
+    
+    private let goalProgressValueView: UIView = {
+        let view = UIView()
         view.backgroundColor = .appGreen
         view.layer.cornerRadius = 10
         return view
     }()
-    // TODO: 걷기 프로그레스
     
     private let subCardView: UIView = {
         let view = UIView()
@@ -105,6 +111,7 @@ class StepsViewController: UIViewController {
         super.viewDidLoad()
         setupViews()
         setupConstraints()
+        updateProgress(1.0) // 퍼센트
     }
     
     // MARK: - Setup View
@@ -116,6 +123,7 @@ class StepsViewController: UIViewController {
         circleView.addSubview(stepsImage)
         cardView.addSubviews(goalLabel, goalValueView, goalProgressView, subCardView)
         goalValueView.addSubview(goalValueLabel)
+        goalProgressView.addSubview(goalProgressValueView)
         subCardView.addSubview(kcalLabel)
     }
     
@@ -176,6 +184,11 @@ class StepsViewController: UIViewController {
             $0.height.equalTo(20)
         }
         
+        goalProgressValueView.snp.makeConstraints {
+            $0.top.bottom.equalToSuperview()
+            $0.leading.equalToSuperview()
+        }
+        
         subCardView.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview().inset(16)
             $0.bottom.equalToSuperview().inset(20)
@@ -188,6 +201,21 @@ class StepsViewController: UIViewController {
         
         contentView.snp.makeConstraints {
             $0.bottom.equalTo(cardView.snp.bottom).offset(30)
+        }
+    }
+    
+    // MARK: - 프로그레스 바 업데이트
+    // TODO: Goal Progress View Width 가져오기 & 애니메이션
+    private func updateProgress(_ percentage: CGFloat) {
+        
+//        let maxWidth = goalProgressView.frame.width
+        let maxWidth = 300.0  // 임시 값
+        print("width \(maxWidth)")
+        
+        let progressWidth = maxWidth * percentage // 달성률에 따른 너비 계산
+        
+        goalProgressValueView.snp.makeConstraints {
+            $0.width.equalTo(progressWidth)
         }
     }
 }
