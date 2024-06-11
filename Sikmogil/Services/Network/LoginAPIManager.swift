@@ -19,6 +19,7 @@ class LoginAPIManager{
     
     private init() {}
     
+    // MARK: - 로그인 시도 API
     func getAccessToken(authCode: String?, provider: String, completion: @escaping (Result<LoginModel, Error>) -> Void){
         let url = "\(baseURL)/api/\(provider)/token"
         // Body 설정
@@ -40,4 +41,54 @@ class LoginAPIManager{
                 }
             }
     }
+    
+    // MARK: - 토큰 갱신 API
+    func refreshToken(completion: @escaping (Result<LoginModel, Error>) -> Void){
+        let url = "\(baseURL)/api/token/access"
+        let refreshToken = keychain.get("refreshToken")
+        let parameters: Parameters = [
+            "refreshToken" : refreshToken!,
+        ]
+        
+        AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default)
+            .validate()
+            .responseDecodable(of: LoginModel.self) { response in
+                switch response.result {
+                case .success(let tokenResponse):
+                    print("토큰 만료로 인한 토큰 갱신 성공")
+                    self.keychain.set(tokenResponse.data.accessToken, forKey: "accessToken")
+                    self.keychain.set(tokenResponse.data.refreshToken, forKey: "refreshToken")
+                    completion(.success(tokenResponse))
+                case .failure(let error):
+                    print("토큰 갱신 에러")
+                    completion(.failure(error))
+                }
+            }
+    }
+    
+    // MARK: - 첫 로그인 여부 확인 API
+    func checkFirstLogin(completion: @escaping (Result<FirstLoginResponse, Error>) -> Void) {
+        let url = "\(baseURL)/api/members/success"
+        
+        guard let accessToken = keychain.get("accessToken") else {
+            return
+        }
+        
+        let headers: HTTPHeaders = [
+            "Authorization": "Bearer \(accessToken)",
+            "Accept": "application/json"
+        ]
+        
+        AF.request(url, method: .get, headers: headers)
+            .validate()
+            .responseDecodable(of: FirstLoginResponse.self) { response in
+                switch response.result {
+                case .success(let loginResponse):
+                    completion(.success(loginResponse))
+                case .failure(let error):
+                    completion(.failure(error))
+                }
+            }
+    }
+
 }

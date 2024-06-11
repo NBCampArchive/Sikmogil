@@ -48,7 +48,20 @@ class UserAPIManager {
                     completion(.success(()))
                 case .failure(let error):
                     print("프로필 업데이트 에러")
-                    completion(.failure(error))
+                    if let responseCode = error.responseCode, responseCode == 401 {
+                        // 401 Unauthorized - Access token expired
+                        LoginAPIManager.shared.refreshToken { result in
+                            switch result {
+                            case .success:
+                                // 토큰 갱신 성공 후 다시 요청
+                                self.userProfileUpdate(userProfile: userProfile, completion: completion)
+                            case .failure(let refreshError):
+                                completion(.failure(refreshError))
+                            }
+                        }
+                    } else {
+                        completion(.failure(error))
+                    }
                 }
             }
     }
