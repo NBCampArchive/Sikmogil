@@ -41,6 +41,7 @@ class DietMainViewController: UIViewController {
         $0.backgroundColor = .clear
         $0.progressColor = .appYellow
         $0.trackColor = .appLightGray
+        $0.progress = 0.2
     }
     let dietProgressBarIcon = UIImageView().then {
         $0.image = UIImage(named: "dietIconFill")
@@ -77,9 +78,13 @@ class DietMainViewController: UIViewController {
     let waterAddTabButton = UIButton().then {
         $0.setImage(UIImage(named: "plusIcon"), for: .normal)
     }
-    let waterCircularProgressBar = UIImageView().then {
-        $0.image = UIImage(named: "waterProgress")
+    let waterCircularProgressBar = WaveProgressView().then {
+        $0.layer.cornerRadius = 150
+        $0.layer.masksToBounds = true
+        $0.backgroundColor = .customLightGray
+        $0.progress = 0.1
     }
+    
     let waterLiterLabel = UILabel().then {
         $0.text = "1.00 / 2L"
         $0.textColor = .appBlack
@@ -108,6 +113,7 @@ class DietMainViewController: UIViewController {
         $0.backgroundColor = .clear
         $0.progressColor = .appPurple
         $0.trackColor = .appLightGray
+        $0.progress = 0.9
     }
     let fastingTimerProgressBarIcon = UIImageView().then {
         $0.image = UIImage(named: "fastingTimerIconFill")
@@ -120,27 +126,23 @@ class DietMainViewController: UIViewController {
     }
     
     let endFastingButton = UIButton().then{
-            $0.setTitle("단식 종료", for: .normal)
-            $0.backgroundColor = .appLightGray
-            $0.setTitleColor(.appBlack, for: .normal)
-            $0.titleLabel?.font = Suite.semiBold.of(size: 16)
-
-            $0.layer.cornerRadius = 14
-            $0.clipsToBounds = true
+        $0.setTitle("단식 종료", for: .normal)
+        $0.backgroundColor = .appLightGray
+        $0.setTitleColor(.appBlack, for: .normal)
+        $0.titleLabel?.font = Suite.semiBold.of(size: 16)
+        
+        $0.layer.cornerRadius = 14
+        $0.clipsToBounds = true
     }
     
-
+    
     // MARK: - viewDidLoad
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         setupViews()
         setupConstraints()
-        
-        dietCircularProgressBar.progress = 0.45
-        
-        fastingTimerCircularProgressBar.progress = 0.3
         
         view.backgroundColor = .white
         
@@ -162,7 +164,7 @@ class DietMainViewController: UIViewController {
         // 🤤🤤🤤 FastingTimer
         fastingTimerTitleView.addSubviews(fastingTimerTitleLabel,fastingTimerTitleSubLabel,fastingTimerCircularProgressBar,fastingTimerProgressBarIcon, fastingTimerInfoLabel, endFastingButton)
         
-
+        
     }
     
     // MARK: - setupConstraints
@@ -291,11 +293,11 @@ class DietMainViewController: UIViewController {
         floatingPanelController.delegate = self
         
         floatingPanelController.changePanelStyle()
-
+        
         // ContentViewController 설정
         let contentVC = DietBottomSheetViewController()
         floatingPanelController.set(contentViewController: contentVC)
-
+        
         // 패널 추가
         floatingPanelController.addPanel(toParent: self)
     }
@@ -305,14 +307,14 @@ class DietMainViewController: UIViewController {
         floatingPanelController.delegate = self
         
         floatingPanelController.changePanelStyle()
-
+        
         // ContentViewController 설정
         let contentVC = WaterBottomSheetViewController()
         floatingPanelController.set(contentViewController: contentVC)
-
+        
         // 패널 추가
         floatingPanelController.addPanel(toParent: self)
     }
     
-    }
+}
 
