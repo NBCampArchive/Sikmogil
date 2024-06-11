@@ -132,7 +132,7 @@ class StepsViewController: UIViewController {
         circleView.snp.makeConstraints {
             $0.width.height.equalTo(200)
             $0.centerX.equalToSuperview()
-            $0.top.equalToSuperview().offset(60)
+            $0.top.equalToSuperview().offset(44)
         }
         
         stepsImage.snp.makeConstraints {

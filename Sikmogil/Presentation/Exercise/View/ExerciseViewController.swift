@@ -145,7 +145,7 @@ class ExerciseViewController: UIViewController {
         }
         
         descriptionLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(8)
+            $0.top.equalToSuperview()
             $0.leading.equalToSuperview().inset(16)
         }
         
