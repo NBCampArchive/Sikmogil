@@ -6,10 +6,13 @@
 //
 
 import UIKit
+import HealthKit
 
 class StepsViewController: UIViewController {
 
     // MARK: - Components
+    let healthStore = HKHealthStore()
+    
     private let scrollView = UIScrollView()
     private let contentView = UIView()
     
@@ -111,6 +114,13 @@ class StepsViewController: UIViewController {
         super.viewDidLoad()
         setupViews()
         setupConstraints()
+        
+        // HealthKit 권한 요청
+        requestHealthKitAuthorization()
+        
+        // 걸음 수 데이터 가져오기
+        fetchStepCount { (steps) in
+            print("Total steps: \(steps)")}
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -218,5 +228,45 @@ class StepsViewController: UIViewController {
         goalProgressValueView.snp.makeConstraints {
             $0.width.equalTo(progressWidth)
         }
+    }
+    
+    // MARK: - HealthKit
+    // HealthKit 권한 요청
+    func requestHealthKitAuthorization() {
+        let stepCountType = HKQuantityType.quantityType(forIdentifier: .stepCount)!
+        let dataTypesToRead: Set<HKObjectType> = [stepCountType]
+        
+        healthStore.requestAuthorization(toShare: nil, read: dataTypesToRead) { (success, error) in
+            if success {
+                print("HealthKit authorization granted")
+            } else {
+                print("HealthKit authorization denied")
+                if let error = error {
+                    print(error.localizedDescription)
+                }
+            }
+        }
+    }
+    
+    // 걸음 수 데이터 가져오기
+    func fetchStepCount(completion: @escaping (Double) -> Void) {
+        let stepCountType = HKQuantityType.quantityType(forIdentifier: .stepCount)!
+        let startDate = Calendar.current.startOfDay(for: Date())
+        let endDate = Date()
+        
+        let predicate = HKQuery.predicateForSamples(withStart: startDate, end: endDate, options: .strictStartDate)
+        let query = HKStatisticsQuery(quantityType: stepCountType, quantitySamplePredicate: predicate, options: .cumulativeSum) { (_, result, error) in
+            var totalSteps: Double = 0
+            
+            if let result = result, let sum = result.sumQuantity() {
+                totalSteps = sum.doubleValue(for: HKUnit.count())
+            }
+            
+            DispatchQueue.main.async {
+                completion(totalSteps)
+            }
+        }
+        
+        healthStore.execute(query)
     }
 }
