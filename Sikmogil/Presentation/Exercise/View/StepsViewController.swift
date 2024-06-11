@@ -111,7 +111,11 @@ class StepsViewController: UIViewController {
         super.viewDidLoad()
         setupViews()
         setupConstraints()
-        updateProgress(1.0) // 퍼센트
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        updateProgress(0.8)
     }
     
     // MARK: - Setup View
@@ -205,12 +209,9 @@ class StepsViewController: UIViewController {
     }
     
     // MARK: - 프로그레스 바 업데이트
-    // TODO: Goal Progress View Width 가져오기 & 애니메이션
     private func updateProgress(_ percentage: CGFloat) {
         
-//        let maxWidth = goalProgressView.frame.width
-        let maxWidth = 300.0  // 임시 값
-        print("width \(maxWidth)")
+        let maxWidth = goalProgressView.frame.width
         
         let progressWidth = maxWidth * percentage // 달성률에 따른 너비 계산
         
