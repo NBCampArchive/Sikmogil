@@ -2,6 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSHealthShareUsageDescription</key>
+	<string>some string value stating the reason</string>
+	<key>NSHealthUpdateUsageDescription</key>
+	<string>some string value stating the reason</string>
 	<key>GIDClientID</key>
 	<string>670305186445-c8akon865t2rl4gqg4fp0so4qku7edda.apps.googleusercontent.com</string>
 	<key>CFBundleURLTypes</key>
