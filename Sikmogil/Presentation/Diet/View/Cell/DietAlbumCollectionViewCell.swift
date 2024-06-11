@@ -11,6 +11,13 @@ class DietAlbumCollectionViewCell: UICollectionViewCell {
     
     static let identifier = "DietAlbumCollectionViewCell"
     
+    let imageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
+        return imageView
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupViews()
@@ -22,10 +29,12 @@ class DietAlbumCollectionViewCell: UICollectionViewCell {
     }
     
     private func setupViews() {
-        // 셀의 뷰 구성 요소를 추가
+        contentView.addSubview(imageView)
     }
     
     private func setupConstraints() {
-        // 셀의 레이아웃 설정
+        imageView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
     }
 }
