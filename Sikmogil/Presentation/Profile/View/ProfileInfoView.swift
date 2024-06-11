@@ -31,7 +31,7 @@ class ProfileInfoView: UIView { // 키 | 몸무게 | 성별
     // MARK: - 초기화 메서드를 정의
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setupUI()
+        setupViews()
         setupConstraints()
     }
     
@@ -40,7 +40,7 @@ class ProfileInfoView: UIView { // 키 | 몸무게 | 성별
     }
     
     // MARK: - 사용자 인터페이스(UI)를 설정하는 메서드를 정의
-    private func setupUI() {
+    private func setupViews() {
         self.backgroundColor = .white
         self.layer.cornerRadius = 12
         self.layer.shadowColor = UIColor.black.cgColor
