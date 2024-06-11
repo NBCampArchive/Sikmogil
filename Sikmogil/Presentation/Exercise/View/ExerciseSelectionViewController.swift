@@ -36,20 +36,30 @@ class ExerciseSelectionViewController: UIViewController {
         let button = UIButton(type: .system)
         button.backgroundColor = .appLightGray
         button.layer.cornerRadius = 16
-        button.titleLabel?.font =  Suite.medium.of(size: 16)
-        button.setTitle("-종목을 선택해 주세요-", for: .normal)
-        button.setTitleColor(.customDarkGray, for: .normal)
         return button
+    }()
+    
+    private let exerciseSelectionLabel: UILabel = {
+        let label = UILabel()
+        label.font = Suite.medium.of(size: 16)
+        label.text = "-종목을 선택해 주세요-"
+        label.textColor = .customDarkGray
+        return label
     }()
     
     private let timeSelectionButton: UIButton = {
         let button = UIButton(type: .system)
         button.backgroundColor = .appLightGray
         button.layer.cornerRadius = 16
-        button.titleLabel?.font =  Suite.medium.of(size: 16)
-        button.setTitle("-시간을 선택해 주세요-", for: .normal)
-        button.setTitleColor(.customDarkGray, for: .normal)
         return button
+    }()
+    
+    private let timeSelectionLabel: UILabel = {
+        let label = UILabel()
+        label.font = Suite.medium.of(size: 16)
+        label.text = "-시간을 선택해 주세요-"
+        label.textColor = .customDarkGray
+        return label
     }()
     
     private let lightButton: UIButton = {
@@ -152,6 +162,8 @@ class ExerciseSelectionViewController: UIViewController {
         view.backgroundColor = .white
         
         view.addSubviews(exerciseLabel, exerciseSelectionButton, timeLabel, timeSelectionButton, intensityLabel, exerciseLabel, intensityStackView, expectedLabel, buttonStackView)
+        exerciseSelectionButton.addSubview(exerciseSelectionLabel)
+        timeSelectionButton.addSubview(timeSelectionLabel)
         intensityStackView.addArrangedSubviews(lightButton, moderateButton, intenseButton)
         buttonStackView.addArrangedSubviews(recordButton, measurementButton)
     }
@@ -169,6 +181,10 @@ class ExerciseSelectionViewController: UIViewController {
             $0.width.equalTo(intensityStackView)
         }
         
+        exerciseSelectionLabel.snp.makeConstraints {
+            $0.center.equalToSuperview()
+        }
+        
         timeLabel.snp.makeConstraints {
             $0.top.equalTo(exerciseLabel.snp.bottom).offset(66)
             $0.leading.equalToSuperview().inset(32)
@@ -179,6 +195,10 @@ class ExerciseSelectionViewController: UIViewController {
             $0.centerX.equalTo(intensityStackView)
             $0.height.equalTo(42)
             $0.width.equalTo(intensityStackView)
+        }
+        
+        timeSelectionLabel.snp.makeConstraints {
+            $0.center.equalToSuperview()
         }
         
         intensityLabel.snp.makeConstraints {
@@ -221,33 +241,35 @@ class ExerciseSelectionViewController: UIViewController {
     private func setupMenus() {
         let exerciseActions = [
             UIAction(title: "런닝", handler: { [weak self] _ in
-                self?.exerciseSelectionButton.setTitle("런닝", for: .normal)
-                self?.exerciseSelectionButton.setTitleColor(.appBlack, for: .normal)
+                self?.exerciseSelectionLabel.text = "런닝"
+                self?.exerciseSelectionLabel.textColor = .appBlack
             }),
             UIAction(title: "수영", handler: { [weak self] _ in
-                self?.exerciseSelectionButton.setTitle("수영", for: .normal)
-                self?.exerciseSelectionButton.setTitleColor(.appBlack, for: .normal)
+                self?.exerciseSelectionLabel.text = "수영"
+                self?.exerciseSelectionLabel.textColor = .appBlack
             }),
             UIAction(title: "자전거", handler: { [weak self] _ in
-                self?.exerciseSelectionButton.setTitle("자전거", for: .normal)
-                self?.exerciseSelectionButton.setTitleColor(.appBlack, for: .normal)
+                self?.exerciseSelectionLabel.text = "자전거"
+                self?.exerciseSelectionLabel.textColor = .appBlack
             })
         ]
+        
+        
         
         let exerciseMenu = UIMenu(title: "", children: exerciseActions)
         
         let timeActions = [
             UIAction(title: "30분", handler: { [weak self] _ in
-                self?.timeSelectionButton.setTitle("30분", for: .normal)
-                self?.timeSelectionButton.setTitleColor(.appBlack, for: .normal)
+                self?.timeSelectionLabel.text = "30분"
+                self?.timeSelectionLabel.textColor = .appBlack
             }),
             UIAction(title: "60분", handler: { [weak self] _ in
-                self?.timeSelectionButton.setTitle("60분", for: .normal)
-                self?.timeSelectionButton.setTitleColor(.appBlack, for: .normal)
+                self?.timeSelectionLabel.text = "60분"
+                self?.timeSelectionLabel.textColor = .appBlack
             }),
             UIAction(title: "90분", handler: { [weak self] _ in
-                self?.timeSelectionButton.setTitle("90분", for: .normal)
-                self?.timeSelectionButton.setTitleColor(.appBlack, for: .normal)
+                self?.timeSelectionLabel.text = "90분"
+                self?.timeSelectionLabel.textColor = .appBlack
             })
         ]
         
