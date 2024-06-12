@@ -7,6 +7,11 @@
 
 import UIKit
 
+enum Section: Int, CaseIterable {
+    case dietPhotos
+    case workoutPhotos
+}
+
 class DayViewController: UIViewController {
     
     private let scrollView = UIScrollView().then {
@@ -35,12 +40,6 @@ class DayViewController: UIViewController {
     private let diaryView = UIView().then {
         $0.backgroundColor = .white
         $0.layer.cornerRadius = 16
-    }
-    
-    // 어디로 옮겨야할까요..?
-    enum Section: Int, CaseIterable {
-        case dietPhotos
-        case workoutPhotos
     }
     
     private lazy var  collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: createCompositionalLayout()).then {
