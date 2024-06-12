@@ -60,3 +60,16 @@ class ImageAPIManager {
         
     }
 }
+
+//예시코드
+//let images = [UIImage(named: "calendar")!, UIImage(named: "calendar")!]
+//ImageAPIManager.shared.uploadImage(directory: "diet", images: images) { result in
+//    switch result {
+//    case .success:
+//        print("uploadImage success")
+//        이부분에 사진을 받은 이후 게시글 작성 api, 운동 api 등 추가하시면 됩니다 
+//    case .failure(let error):
+//        print("uploadImage failure")
+//        print(error)
+//    }
+//}
