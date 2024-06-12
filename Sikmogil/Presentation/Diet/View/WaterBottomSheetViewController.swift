@@ -8,6 +8,7 @@
 import UIKit
 import SnapKit
 import Then
+import FloatingPanel
 
 class WaterBottomSheetViewController: UIViewController {
     
@@ -45,6 +46,16 @@ class WaterBottomSheetViewController: UIViewController {
         setupConstraints()
         
         waterRecordTextField.delegate = self
+        
+        // 키보드 노티피케이션 등록
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShowOnce), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    deinit {
+        // 옵저버 제거
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     // MARK: - Setup Methods
@@ -70,6 +81,28 @@ class WaterBottomSheetViewController: UIViewController {
             $0.centerX.equalToSuperview()
             $0.width.equalTo(361)
             $0.height.equalTo(60)
+        }
+    }
+    
+    // MARK: - Action
+    @objc func keyboardWillShowOnce(notification: NSNotification) {
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        if let userInfo = notification.userInfo,
+           let keyboardFrame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect,
+           let fpc = parent as? FloatingPanelController {
+            let keyboardHeight = keyboardFrame.height
+            let initialHeight = self.view.bounds.height - 460
+            fpc.surfaceLocation = CGPoint(x: self.view.bounds.midX, y: initialHeight)
+            fpc.surfaceView.containerMargins.bottom = keyboardHeight
+        }
+    }
+    
+    @objc override func keyboardWillHide(notification: NSNotification) {
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+        if let fpc = parent as? FloatingPanelController {
+            let initialHeight = self.view.bounds.height + 100
+            fpc.surfaceLocation = CGPoint(x: self.view.bounds.midX, y: initialHeight)
+            fpc.surfaceView.containerMargins.bottom = 0
         }
     }
 }

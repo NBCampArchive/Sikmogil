@@ -282,8 +282,11 @@ class DietMainViewController: UIViewController {
         let contentVC = DietBottomSheetViewController()
         floatingPanelController.set(contentViewController: contentVC)
         
-        // 패널 추가
         floatingPanelController.addPanel(toParent: self)
+        
+        // 플로팅 패널의 초기 높이 설정
+            let initialHeight = self.view.bounds.height - 450 // 플로팅 패널의 초기 높이
+            floatingPanelController.surfaceLocation = CGPoint(x: self.view.bounds.midX, y: initialHeight)
     }
     
     @objc private func showWaterBottomSheet() {
@@ -296,5 +299,10 @@ class DietMainViewController: UIViewController {
         floatingPanelController.set(contentViewController: contentVC)
         
         floatingPanelController.addPanel(toParent: self)
+        
+        // 플로팅 패널의 초기 높이 설정
+        let initialHeight = self.view.bounds.height - 320 // 플로팅 패널의 초기 높이
+        floatingPanelController.surfaceLocation = CGPoint(x: self.view.bounds.midX, y: initialHeight)
+        print("호출 self.view.bounds.height = \(self.view.bounds.height)")
     }
 }
