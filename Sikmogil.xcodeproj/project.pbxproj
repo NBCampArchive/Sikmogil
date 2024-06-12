@@ -7,6 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		540768862C12EAB200543A72 /* ProfileInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 540768852C12EAB200543A72 /* ProfileInfoView.swift */; };
+		540768882C12EAD900543A72 /* ProfileTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 540768872C12EAD900543A72 /* ProfileTableView.swift */; };
+		545AA5162C11E6540083D893 /* AlarmTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 545AA5152C11E6540083D893 /* AlarmTableViewCell.swift */; };
+		545AA5182C11F4760083D893 /* ReminderSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 545AA5172C11F4760083D893 /* ReminderSettingsViewController.swift */; };
+		546E32312C1078D100E94C2A /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546E32302C1078D100E94C2A /* EditProfileViewController.swift */; };
+		546E32332C1078E600E94C2A /* NotificationSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546E32322C1078E600E94C2A /* NotificationSettingsViewController.swift */; };
+		546E32352C1078FA00E94C2A /* GoalSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546E32342C1078FA00E94C2A /* GoalSettingsViewController.swift */; };
+		547A1BAC2C0DAA78000A16BF /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 547A1BAB2C0DAA78000A16BF /* ProfileViewController.swift */; };
+		5485F0882C0DFE2D00A2A71E /* ProfileTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5485F0872C0DFE2D00A2A71E /* ProfileTableViewCell.swift */; };
 		62578CD12C0DAB92005035BB /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62578CD02C0DAB92005035BB /* MainViewController.swift */; };
 		62578CD42C0ED558005035BB /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62578CD32C0ED558005035BB /* CalendarViewController.swift */; };
 		62578CD72C0ED5F1005035BB /* FSCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = 62578CD62C0ED5F1005035BB /* FSCalendar */; };
@@ -18,15 +27,6 @@
 		62578CFE2C15A395005035BB /* PhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62578CFD2C15A395005035BB /* PhotoCell.swift */; };
 		62578D002C15A487005035BB /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62578CFF2C15A487005035BB /* HeaderView.swift */; };
 		62578D022C15E476005035BB /* DiaryRecordFloatingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62578D012C15E476005035BB /* DiaryRecordFloatingViewController.swift */; };
-		540768862C12EAB200543A72 /* ProfileInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 540768852C12EAB200543A72 /* ProfileInfoView.swift */; };
-		540768882C12EAD900543A72 /* ProfileTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 540768872C12EAD900543A72 /* ProfileTableView.swift */; };
-		545AA5162C11E6540083D893 /* AlarmTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 545AA5152C11E6540083D893 /* AlarmTableViewCell.swift */; };
-		545AA5182C11F4760083D893 /* ReminderSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 545AA5172C11F4760083D893 /* ReminderSettingsViewController.swift */; };
-		546E32312C1078D100E94C2A /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546E32302C1078D100E94C2A /* EditProfileViewController.swift */; };
-		546E32332C1078E600E94C2A /* NotificationSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546E32322C1078E600E94C2A /* NotificationSettingsViewController.swift */; };
-		546E32352C1078FA00E94C2A /* GoalSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546E32342C1078FA00E94C2A /* GoalSettingsViewController.swift */; };
-		547A1BAC2C0DAA78000A16BF /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 547A1BAB2C0DAA78000A16BF /* ProfileViewController.swift */; };
-		5485F0882C0DFE2D00A2A71E /* ProfileTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5485F0872C0DFE2D00A2A71E /* ProfileTableViewCell.swift */; };
 		B52001AE2C11B99E0083CBDF /* UIViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001AD2C11B99E0083CBDF /* UIViewControllerExtension.swift */; };
 		B52001B02C11D7FA0083CBDF /* UserAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001AF2C11D7FA0083CBDF /* UserAPIManager.swift */; };
 		B52001B22C1217DA0083CBDF /* WaveProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001B12C1217DA0083CBDF /* WaveProgressView.swift */; };
@@ -109,15 +109,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		62578CD02C0DAB92005035BB /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
-		62578CD32C0ED558005035BB /* CalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
-		62578CDF2C106715005035BB /* WeightRecordFloatingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeightRecordFloatingViewController.swift; sourceTree = "<group>"; };
-		62578CE82C107C7A005035BB /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
-		62578CED2C117333005035BB /* The_Scale.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = The_Scale.json; sourceTree = "<group>"; };
-		62578CEF2C11793C005035BB /* DayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayViewController.swift; sourceTree = "<group>"; };
-		62578CFD2C15A395005035BB /* PhotoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCell.swift; sourceTree = "<group>"; };
-		62578CFF2C15A487005035BB /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
-		62578D012C15E476005035BB /* DiaryRecordFloatingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryRecordFloatingViewController.swift; sourceTree = "<group>"; };
 		540768852C12EAB200543A72 /* ProfileInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileInfoView.swift; sourceTree = "<group>"; };
 		540768872C12EAD900543A72 /* ProfileTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTableView.swift; sourceTree = "<group>"; };
 		545AA5152C11E6540083D893 /* AlarmTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmTableViewCell.swift; sourceTree = "<group>"; };
@@ -127,6 +118,15 @@
 		546E32342C1078FA00E94C2A /* GoalSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalSettingsViewController.swift; sourceTree = "<group>"; };
 		547A1BAB2C0DAA78000A16BF /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		5485F0872C0DFE2D00A2A71E /* ProfileTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTableViewCell.swift; sourceTree = "<group>"; };
+		62578CD02C0DAB92005035BB /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		62578CD32C0ED558005035BB /* CalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
+		62578CDF2C106715005035BB /* WeightRecordFloatingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeightRecordFloatingViewController.swift; sourceTree = "<group>"; };
+		62578CE82C107C7A005035BB /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
+		62578CED2C117333005035BB /* The_Scale.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = The_Scale.json; sourceTree = "<group>"; };
+		62578CEF2C11793C005035BB /* DayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayViewController.swift; sourceTree = "<group>"; };
+		62578CFD2C15A395005035BB /* PhotoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCell.swift; sourceTree = "<group>"; };
+		62578CFF2C15A487005035BB /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
+		62578D012C15E476005035BB /* DiaryRecordFloatingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryRecordFloatingViewController.swift; sourceTree = "<group>"; };
 		B52001AD2C11B99E0083CBDF /* UIViewControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtension.swift; sourceTree = "<group>"; };
 		B52001AF2C11D7FA0083CBDF /* UserAPIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAPIManager.swift; sourceTree = "<group>"; };
 		B52001B12C1217DA0083CBDF /* WaveProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaveProgressView.swift; sourceTree = "<group>"; };
@@ -223,36 +223,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		62578CD22C0DAC43005035BB /* Main */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Main;
-			sourceTree = "<group>";
-		};
-		62578CD82C0F3B16005035BB /* Main */ = {
-			isa = PBXGroup;
-			children = (
-				62578CDA2C0F3B30005035BB /* ViewModel */,
-				62578CD92C0F3B28005035BB /* View */,
-			);
-			path = Main;
-			sourceTree = "<group>";
-		};
-		62578CD92C0F3B28005035BB /* View */ = {
-			isa = PBXGroup;
-			children = (
-				62578CD02C0DAB92005035BB /* MainViewController.swift */,
-				62578CDF2C106715005035BB /* WeightRecordFloatingViewController.swift */,
-				62578CD32C0ED558005035BB /* CalendarViewController.swift */,
-				62578D012C15E476005035BB /* DiaryRecordFloatingViewController.swift */,
-				62578CEF2C11793C005035BB /* DayViewController.swift */,
-				62578CFD2C15A395005035BB /* PhotoCell.swift */,
-				62578CFF2C15A487005035BB /* HeaderView.swift */,
-        );
-			path = View;
-			sourceTree = "<group>";
-		};
 		540768822C12A53500543A72 /* Cell */ = {
 			isa = PBXGroup;
 			children = (
@@ -285,6 +255,37 @@
 			path = Profile;
 			sourceTree = "<group>";
 		};
+		62578CD82C0F3B16005035BB /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				62578CDA2C0F3B30005035BB /* ViewModel */,
+				62578CD92C0F3B28005035BB /* View */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
+		62578CD92C0F3B28005035BB /* View */ = {
+			isa = PBXGroup;
+			children = (
+				62578CD02C0DAB92005035BB /* MainViewController.swift */,
+				62578CDF2C106715005035BB /* WeightRecordFloatingViewController.swift */,
+				62578CD32C0ED558005035BB /* CalendarViewController.swift */,
+				62578D012C15E476005035BB /* DiaryRecordFloatingViewController.swift */,
+				62578CEF2C11793C005035BB /* DayViewController.swift */,
+				62578CFD2C15A395005035BB /* PhotoCell.swift */,
+				62578CFF2C15A487005035BB /* HeaderView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		62578CDA2C0F3B30005035BB /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				62578CE82C107C7A005035BB /* MainViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
 		B52001C32C171B8C0083CBDF /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -313,14 +314,6 @@
 				B52001CB2C171B8C0083CBDF /* WaterBottomSheetViewController.swift */,
 			);
 			path = View;
-			sourceTree = "<group>";
-		};
-		62578CDA2C0F3B30005035BB /* ViewModel */ = {
-			isa = PBXGroup;
-			children = (
-				62578CE82C107C7A005035BB /* MainViewModel.swift */,
-        );
-			path = ViewModel;
 			sourceTree = "<group>";
 		};
 		B52001CE2C171B8C0083CBDF /* ViewModel */ = {
@@ -452,7 +445,6 @@
 		B54ABFC22C0CB697002E89DC /* View */ = {
 			isa = PBXGroup;
 			children = (
-				62578CD22C0DAC43005035BB /* Main */,
 				B54ABF8B2C09BD43002E89DC /* ViewController.swift */,
 			);
 			path = View;

@@ -178,7 +178,7 @@ class DietAPIManager {
         
         let parameters: [String: Any] = ["dietDate": date]
         
-        AF.request(url, method: .get, headers: headers).responseDecodable(of: DietLog.self,  emptyResponseCodes: [200]) { response in
+        AF.request(url, method: .get, parameters: parameters, headers: headers).responseDecodable(of: DietLog.self,  emptyResponseCodes: [200]) { response in
             switch response.result {
             case .success(let data):
                 print("getDietLogDate success")
@@ -198,7 +198,7 @@ class DietAPIManager {
         
         let parameters: [String: Any] = ["date": date]
         
-        AF.request(url, method: .get, headers: headers).responseDecodable(of: [DietPicture].self,  emptyResponseCodes: [200]) { response in
+        AF.request(url, method: .get, parameters: parameters, headers: headers).responseDecodable(of: [DietPicture].self,  emptyResponseCodes: [200]) { response in
             switch response.result {
             case .success(let data):
                 print("getDietPictureByDate success")
@@ -217,7 +217,7 @@ class DietAPIManager {
         
         let parameters: [String: Any] = ["date": date]
         
-        AF.request(url, method: .get, headers: headers).responseDecodable(of: [DietList].self,  emptyResponseCodes: [200]) { response in
+        AF.request(url, method: .get, parameters: parameters, headers: headers).responseDecodable(of: [DietList].self,  emptyResponseCodes: [200]) { response in
             switch response.result {
             case .success(let data):
                 print("getDietListByDate success")
