@@ -7,146 +7,118 @@
 
 import UIKit
 import SnapKit
+import Then
 
 class ExerciseSelectionViewController: UIViewController {
    
     // MARK: - Components
-    private let exerciseLabel: UILabel = {
-        let label = UILabel()
-        label.text = "운동 종목"
-        label.font = Suite.semiBold.of(size: 20)
-        return label
-    }()
-    
-    private let timeLabel: UILabel = {
-        let label = UILabel()
-        label.text = "운동 시간"
-        label.font = Suite.semiBold.of(size: 20)
-        return label
-    }()
-    
-    private let intensityLabel: UILabel = {
-        let label = UILabel()
-        label.text = "운동 강도"
-        label.font = Suite.semiBold.of(size: 20)
-        return label
-    }()
-    
-    private let exerciseSelectionButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.backgroundColor = .appLightGray
-        button.layer.cornerRadius = 16
-        return button
-    }()
-    
-    private let exerciseSelectionLabel: UILabel = {
-        let label = UILabel()
-        label.font = Suite.medium.of(size: 16)
-        label.text = "-종목을 선택해 주세요-"
-        label.textColor = .customDarkGray
-        return label
-    }()
-    
-    private let timeSelectionButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.backgroundColor = .appLightGray
-        button.layer.cornerRadius = 16
-        return button
-    }()
-    
-    private let timeSelectionLabel: UILabel = {
-        let label = UILabel()
-        label.font = Suite.medium.of(size: 16)
-        label.text = "-시간을 선택해 주세요-"
-        label.textColor = .customDarkGray
-        return label
-    }()
-    
-    private let lightButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("가볍게", for: .normal)
-        button.titleLabel?.font =  Suite.medium.of(size: 14)
-        button.backgroundColor = .clear
-        button.layer.borderWidth = 1
-        button.tintColor = .appDarkGray
-        button.layer.borderColor = UIColor.appDarkGray.cgColor
-        button.layer.cornerRadius = 16
-        return button
-    }()
-    
-    private let moderateButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("적당히", for: .normal)
-        button.titleLabel?.font =  Suite.medium.of(size: 14)
-        button.backgroundColor = .clear
-        button.layer.borderWidth = 1
-        button.tintColor = .appDarkGray
-        button.layer.borderColor = UIColor.appDarkGray.cgColor
-        button.layer.cornerRadius = 16
-        return button
-    }()
-    
-    private let intenseButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("격하게", for: .normal)
-        button.titleLabel?.font =  Suite.medium.of(size: 14)
-        button.backgroundColor = .clear
-        button.layer.borderWidth = 1
-        button.tintColor = .appDarkGray
-        button.layer.borderColor = UIColor.appDarkGray.cgColor
-        button.layer.cornerRadius = 16
-        return button
-    }()
+    private let exerciseLabel = UILabel().then {
+        $0.text = "운동 종목"
+        $0.font = Suite.semiBold.of(size: 20)
+    }
 
-    private let intensityStackView: UIStackView = {
-       let stackView = UIStackView()
-        stackView.axis = .horizontal
-        stackView.spacing = 10
-        stackView.distribution = .fillEqually
-        return stackView
-    }()
-    
-    private let expectedLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = .appDarkGray
-        label.font = Suite.semiBold.of(size: 20)
+    private let timeLabel = UILabel().then {
+        $0.text = "운동 시간"
+        $0.font = Suite.semiBold.of(size: 20)
+    }
+
+    private let intensityLabel = UILabel().then {
+        $0.text = "운동 강도"
+        $0.font = Suite.semiBold.of(size: 20)
+    }
+
+    private let exerciseSelectionButton = UIButton(type: .system).then {
+        $0.backgroundColor = .appLightGray
+        $0.layer.cornerRadius = 16
+    }
+
+    private let exerciseSelectionLabel = UILabel().then {
+        $0.font = Suite.medium.of(size: 16)
+        $0.text = "-종목을 선택해 주세요-"
+        $0.textColor = .customDarkGray
+    }
+
+    private let timeSelectionButton = UIButton(type: .system).then {
+        $0.backgroundColor = .appLightGray
+        $0.layer.cornerRadius = 16
+    }
+
+    private let timeSelectionLabel = UILabel().then {
+        $0.font = Suite.medium.of(size: 16)
+        $0.text = "-시간을 선택해 주세요-"
+        $0.textColor = .customDarkGray
+    }
+
+    private let lightButton = UIButton(type: .system).then {
+        $0.setTitle("가볍게", for: .normal)
+        $0.titleLabel?.font = Suite.medium.of(size: 14)
+        $0.backgroundColor = .clear
+        $0.layer.borderWidth = 1
+        $0.tintColor = .appDarkGray
+        $0.layer.borderColor = UIColor.appDarkGray.cgColor
+        $0.layer.cornerRadius = 16
+    }
+
+    private let moderateButton = UIButton(type: .system).then {
+        $0.setTitle("적당히", for: .normal)
+        $0.titleLabel?.font = Suite.medium.of(size: 14)
+        $0.backgroundColor = .clear
+        $0.layer.borderWidth = 1
+        $0.tintColor = .appDarkGray
+        $0.layer.borderColor = UIColor.appDarkGray.cgColor
+        $0.layer.cornerRadius = 16
+    }
+
+    private let intenseButton = UIButton(type: .system).then {
+        $0.setTitle("격하게", for: .normal)
+        $0.titleLabel?.font = Suite.medium.of(size: 14)
+        $0.backgroundColor = .clear
+        $0.layer.borderWidth = 1
+        $0.tintColor = .appDarkGray
+        $0.layer.borderColor = UIColor.appDarkGray.cgColor
+        $0.layer.cornerRadius = 16
+    }
+
+    private let intensityStackView = UIStackView().then {
+        $0.axis = .horizontal
+        $0.spacing = 10
+        $0.distribution = .fillEqually
+    }
+
+    private let expectedLabel = UILabel().then {
+        $0.textColor = .appDarkGray
+        $0.font = Suite.semiBold.of(size: 20)
         let fullText = "예상 소모 칼로리는 0kcal예요"
         let font = Suite.semiBold.of(size: 20)
         let changeText = "0kcal"
         let color = UIColor.appGreen
-        label.setAttributedText(fullText: fullText, changeText: changeText, color: color, font: font)
-        return label
-    }()
-    
-    private let recordButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("기록하기", for: .normal)
-        button.titleLabel?.font = Suite.bold.of(size: 18)
-        button.backgroundColor = .appBlack
-        button.tintColor = .white
-        button.layer.cornerRadius = 16
-        return button
-    }()
-    
-    private let measurementButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("측정하기", for: .normal)
-        button.titleLabel?.font = Suite.bold.of(size: 18)
-        button.backgroundColor = .clear
-        button.tintColor = .appBlack
-        button.layer.borderWidth = 2
-        button.layer.borderColor = UIColor.appBlack.cgColor
-        button.layer.cornerRadius = 16
-        return button
-    }()
-    
-    private let buttonStackView: UIStackView = {
-       let stackView = UIStackView()
-        stackView.axis = .horizontal
-        stackView.spacing = 8
-        stackView.distribution = .fillEqually
-        return stackView
-    }()
+        $0.setAttributedText(fullText: fullText, changeText: changeText, color: color, font: font)
+    }
+
+    private let recordButton = UIButton(type: .system).then {
+        $0.setTitle("기록하기", for: .normal)
+        $0.titleLabel?.font = Suite.bold.of(size: 18)
+        $0.backgroundColor = .appBlack
+        $0.tintColor = .white
+        $0.layer.cornerRadius = 16
+    }
+
+    private let measurementButton = UIButton(type: .system).then {
+        $0.setTitle("측정하기", for: .normal)
+        $0.titleLabel?.font = Suite.bold.of(size: 18)
+        $0.backgroundColor = .clear
+        $0.tintColor = .appBlack
+        $0.layer.borderWidth = 2
+        $0.layer.borderColor = UIColor.appBlack.cgColor
+        $0.layer.cornerRadius = 16
+    }
+
+    private let buttonStackView = UIStackView().then {
+        $0.axis = .horizontal
+        $0.spacing = 8
+        $0.distribution = .fillEqually
+    }
+
     
     // MARK: - View Life Cycle
     override func viewDidLoad() {
@@ -157,7 +129,7 @@ class ExerciseSelectionViewController: UIViewController {
         setupMenus()
     }
     
-    // MARK: - Setup View
+    // MARK: - Setup Views
     private func setupViews() {
         view.backgroundColor = .white
         
