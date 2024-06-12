@@ -284,9 +284,6 @@ class DietMainViewController: UIViewController {
         
         floatingPanelController.addPanel(toParent: self)
         
-        // 플로팅 패널의 초기 높이 설정
-            let initialHeight = self.view.bounds.height - 450 // 플로팅 패널의 초기 높이
-            floatingPanelController.surfaceLocation = CGPoint(x: self.view.bounds.midX, y: initialHeight)
     }
     
     @objc private func showWaterBottomSheet() {
