@@ -10,35 +10,31 @@ import Then
 
 class ExerciseMenuViewController: UIViewController {
     
+    // MARK: - Components
     private let scrollView = UIScrollView()
     private let contentView = UIView()
     
-    private let headerStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.axis = .horizontal
-        stackView.spacing = 22
-        stackView.alignment = .fill
-        return stackView
-    }()
+    private let headerStackView = UIStackView().then {
+        $0.axis = .horizontal
+        $0.spacing = 22
+        $0.alignment = .fill
+    }
     
-    let exerciseMenuButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("운동", for: .normal)
-        button.titleLabel?.font = Suite.bold.of(size: 28)
-        button.tintColor = .appBlack
-        return button
-    }()
+    let exerciseMenuButton = UIButton(type: .system).then {
+        $0.setTitle("운동", for: .normal)
+        $0.titleLabel?.font = Suite.bold.of(size: 28)
+        $0.tintColor = .appBlack
+    }
     
-    let stepsMenuButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("걸음 수", for: .normal)
-        button.titleLabel?.font = Suite.bold.of(size: 28)
-        button.tintColor = .appDarkGray
-        return button
-    }()
+    let stepsMenuButton = UIButton(type: .system).then {
+        $0.setTitle("걸음 수", for: .normal)
+        $0.titleLabel?.font = Suite.bold.of(size: 28)
+        $0.tintColor = .appDarkGray
+    }
     
     private var currentChildViewController: UIViewController?
 
+    // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
@@ -47,6 +43,7 @@ class ExerciseMenuViewController: UIViewController {
         showFirstView()
     }
 
+    // MARK: - Setup Views
     private func setupViews() {
         view.backgroundColor = .white
         view.addSubview(scrollView)
@@ -90,7 +87,7 @@ class ExerciseMenuViewController: UIViewController {
         viewController.removeFromParent()
     }
 
-    // MARK: - Setup Button
+    // MARK: - Setup Buttons
     private func setupButtons() {
         exerciseMenuButton.addTarget(self, action: #selector(showFirstView), for: .touchUpInside)
         stepsMenuButton.addTarget(self, action: #selector(showSecondView), for: .touchUpInside)
