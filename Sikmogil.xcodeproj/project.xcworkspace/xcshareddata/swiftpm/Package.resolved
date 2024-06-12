@@ -1,5 +1,5 @@
 {
-  "originHash" : "12e58004da0ea39dbc42ef3ed7478a4a83c38d0a38cae3c860a32a81a8fa123f",
+  "originHash" : "50149cdcfd19545a1a8d190d8154c4a638cecd97c6658e67484d1a6d5e6a7c70",
   "pins" : [
     {
       "identity" : "alamofire",
@@ -74,6 +74,15 @@
       }
     },
     {
+      "identity" : "keychain-swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/evgenyneu/keychain-swift",
+      "state" : {
+        "revision" : "5e1b02b6a9dac2a759a1d5dbc175c86bd192a608",
+        "version" : "24.0.0"
+      }
+    },
+    {
       "identity" : "kingfisher",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/onevcat/Kingfisher",
@@ -89,6 +98,14 @@
       "state" : {
         "revision" : "769b88d83a42ca8d5572b020c96f47e3690b3796",
         "version" : "4.4.3"
+        }
+    },
+      "identity" : "rxswift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ReactiveX/RxSwift",
+      "state" : {
+        "revision" : "b06a8c8596e4c3e8e7788e08e720e3248563ce6a",
+        "version" : "6.7.1"
       }
     },
     {
