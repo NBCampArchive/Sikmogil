@@ -9,7 +9,7 @@ import UIKit
 import SnapKit
 import Then
 
-class ProfileInfoView: UIView { // 키 | 몸무게 | 성별
+class ProfileInfoView: UIView {
     
     // MARK: - 클래스의 속성(프로퍼티)들을 정의
     let weightStackView = createVerticalStackView()
@@ -20,13 +20,13 @@ class ProfileInfoView: UIView { // 키 | 몸무게 | 성별
     let separator2 = createSeparator()
     
     let weightTitleLabel = createTitleLabel(text: "몸무게")
-    let weightValueLabel = createDetailLabel(text: "0.0")
+    let weight = createDetailLabel(text: "0.0")
     let weightUnitLabel = createUnitLabel(text: "kg")
     let heightTitleLabel = createTitleLabel(text: "키")
-    let heightValueLabel = createDetailLabel(text: "000")
+    let height = createDetailLabel(text: "000")
     let heightUnitLabel = createUnitLabel(text: "cm")
     let genderTitleLabel = createTitleLabel(text: "성별")
-    let genderLabel = createDetailLabel(text: "남자")
+    let gender = createDetailLabel(text: "남자")
     
     // MARK: - 초기화 메서드를 정의
     override init(frame: CGRect) {
@@ -49,11 +49,11 @@ class ProfileInfoView: UIView { // 키 | 몸무게 | 성별
         self.layer.shadowRadius = 4
         
         let weightStack = createHorizontalStackView()
-        weightStack.addArrangedSubview(weightValueLabel)
+        weightStack.addArrangedSubview(weight)
         weightStack.addArrangedSubview(weightUnitLabel)
         
         let heightStack = createHorizontalStackView()
-        heightStack.addArrangedSubview(heightValueLabel)
+        heightStack.addArrangedSubview(height)
         heightStack.addArrangedSubview(heightUnitLabel)
         
         weightStackView.addArrangedSubview(weightTitleLabel)
@@ -63,7 +63,7 @@ class ProfileInfoView: UIView { // 키 | 몸무게 | 성별
         heightStackView.addArrangedSubview(heightStack)
         
         genderStackView.addArrangedSubview(genderTitleLabel)
-        genderStackView.addArrangedSubview(genderLabel)
+        genderStackView.addArrangedSubview(gender)
         
         self.addSubview(weightStackView)
         self.addSubview(heightStackView)
@@ -120,7 +120,7 @@ class ProfileInfoView: UIView { // 키 | 몸무게 | 성별
             $0.height.equalTo(30)
         }
         
-        weightValueLabel.snp.makeConstraints {
+        weight.snp.makeConstraints {
             $0.height.equalTo(30)
         }
         
@@ -128,7 +128,7 @@ class ProfileInfoView: UIView { // 키 | 몸무게 | 성별
             $0.height.equalTo(30)
         }
         
-        heightValueLabel.snp.makeConstraints {
+        height.snp.makeConstraints {
             $0.height.equalTo(30)
         }
         
@@ -136,9 +136,15 @@ class ProfileInfoView: UIView { // 키 | 몸무게 | 성별
             $0.height.equalTo(30)
         }
         
-        genderLabel.snp.makeConstraints {
+        gender.snp.makeConstraints {
             $0.height.equalTo(30)
         }
+    }
+    
+    func updateInfo(height: String, weight: String, gender: String) {
+        self.height.text = height
+        self.weight.text = weight
+        self.gender.text = gender
     }
 }
 
