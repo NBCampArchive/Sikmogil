@@ -26,6 +26,7 @@ class WaterBottomSheetViewController: UIViewController {
         $0.textColor = .appDarkGray
         $0.font = Suite.bold.of(size: 48)
         $0.textAlignment = .center
+        $0.keyboardType = .numberPad
     }
     let doneButton = UIButton().then{
         $0.setTitle("완료", for: .normal)
@@ -42,6 +43,8 @@ class WaterBottomSheetViewController: UIViewController {
         view.backgroundColor = .white
         setupViews()
         setupConstraints()
+        
+        waterRecordTextField.delegate = self
     }
     
     // MARK: - Setup Methods
@@ -49,7 +52,7 @@ class WaterBottomSheetViewController: UIViewController {
         view.addSubviews(contentView)
         contentView.addSubviews(titleLabel,waterRecordTextField,doneButton)
     }
-
+    
     private func setupConstraints() {
         contentView.snp.makeConstraints{
             $0.edges.equalTo(view.safeAreaLayoutGuide)
@@ -68,5 +71,45 @@ class WaterBottomSheetViewController: UIViewController {
             $0.width.equalTo(361)
             $0.height.equalTo(60)
         }
+    }
+}
+
+// MARK: - UITextFieldDelegate Methods
+extension WaterBottomSheetViewController: UITextFieldDelegate {
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        // 편집이 시작되면 텍스트를 초기화
+        textField.text = ""
+    }
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        // 숫자만 입력되도록 제한
+        let allowedCharacters = CharacterSet.decimalDigits
+        let characterSet = CharacterSet(charactersIn: string)
+        if !allowedCharacters.isSuperset(of: characterSet) {
+            return false
+        }
+        
+        // 현재 텍스트와 범위 가져오기
+        let currentText = textField.text ?? ""
+        guard let stringRange = Range(range, in: currentText) else { return false }
+        
+        // 텍스트 업데이트
+        let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
+        
+        // 새로운 텍스트가 3자리를 넘지 않도록 제한
+        let newNumbers = updatedText.components(separatedBy: CharacterSet.decimalDigits.inverted).joined()
+        guard newNumbers.count <= 3 else { return false }
+        
+        // 새로운 형식의 텍스트 설정
+        let formattedText = "\(newNumbers) ml"
+        textField.text = formattedText
+        
+        // 커서를 ml 앞에 위치시키기
+        if let newPosition = textField.position(from: textField.endOfDocument, offset: -3) {
+            textField.selectedTextRange = textField.textRange(from: newPosition, to: newPosition)
+        }
+        
+        return false
     }
 }
