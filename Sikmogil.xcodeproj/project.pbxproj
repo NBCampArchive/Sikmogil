@@ -104,6 +104,8 @@
 		F3094EC62C0E40040099DE2C /* ExerciseSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3094EC52C0E40040099DE2C /* ExerciseSelectionViewController.swift */; };
 		F3094EEF2C0EEDA40099DE2C /* ExerciseTimerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3094EEE2C0EEDA40099DE2C /* ExerciseTimerViewController.swift */; };
 		F3094EF12C0EEDBA0099DE2C /* ExerciseResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3094EF02C0EEDBA0099DE2C /* ExerciseResultViewController.swift */; };
+		F3094F062C1841240099DE2C /* ExerciseMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3094F052C1841240099DE2C /* ExerciseMenuViewController.swift */; };
+		F3094F082C197AFA0099DE2C /* HalfCircleProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3094F072C197AFA0099DE2C /* HalfCircleProgressView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -191,6 +193,8 @@
 		F3094EC52C0E40040099DE2C /* ExerciseSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseSelectionViewController.swift; sourceTree = "<group>"; };
 		F3094EEE2C0EEDA40099DE2C /* ExerciseTimerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseTimerViewController.swift; sourceTree = "<group>"; };
 		F3094EF02C0EEDBA0099DE2C /* ExerciseResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseResultViewController.swift; sourceTree = "<group>"; };
+		F3094F052C1841240099DE2C /* ExerciseMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseMenuViewController.swift; sourceTree = "<group>"; };
+		F3094F072C197AFA0099DE2C /* HalfCircleProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HalfCircleProgressView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -521,6 +525,7 @@
 				B54ABFD42C0CBE86002E89DC /* CircularProgressBar.swift */,
 				B54ABFD62C0CC281002E89DC /* CustomCircularProgressBar.swift */,
 				B52001B12C1217DA0083CBDF /* WaveProgressView.swift */,
+				F3094F072C197AFA0099DE2C /* HalfCircleProgressView.swift */,
 			);
 			path = CustomViews;
 			sourceTree = "<group>";
@@ -628,6 +633,7 @@
 		F3094EF42C1033FA0099DE2C /* View */ = {
 			isa = PBXGroup;
 			children = (
+				F3094F052C1841240099DE2C /* ExerciseMenuViewController.swift */,
 				B52001B52C12F4570083CBDF /* StepsViewController.swift */,
 				F3094EC02C0D91310099DE2C /* ExerciseViewController.swift */,
 				F3094EC52C0E40040099DE2C /* ExerciseSelectionViewController.swift */,
@@ -756,6 +762,7 @@
 				B52001AE2C11B99E0083CBDF /* UIViewControllerExtension.swift in Sources */,
 				B52001D12C171B8C0083CBDF /* AddDietMenuTableViewCell.swift in Sources */,
 				B54AC00C2C0F48D1002E89DC /* SikmogilBundle++.swift in Sources */,
+				F3094F082C197AFA0099DE2C /* HalfCircleProgressView.swift in Sources */,
 				B54ABFCF2C0CBB59002E89DC /* UIViewExtensions.swift in Sources */,
 				B54AC01A2C105646002E89DC /* Step1ViewController.swift in Sources */,
 				B54ABFCB2C0CB770002E89DC /* Extension.swift in Sources */,
@@ -782,6 +789,7 @@
 				F3094EF12C0EEDBA0099DE2C /* ExerciseResultViewController.swift in Sources */,
 				B54ABFCD2C0CB78F002E89DC /* Helpers.swift in Sources */,
 				B52001D52C171B8C0083CBDF /* DietBottomSheetViewController.swift in Sources */,
+				F3094F062C1841240099DE2C /* ExerciseMenuViewController.swift in Sources */,
 				B54ABFBD2C0CB60D002E89DC /* Network.swift in Sources */,
 				B52001D72C171B8C0083CBDF /* WaterBottomSheetViewController.swift in Sources */,
 				B52001D02C171B8C0083CBDF /* FloatingPanelControllerDelegate.swift in Sources */,
@@ -953,7 +961,7 @@
 				CODE_SIGN_ENTITLEMENTS = Sikmogil/Sikmogil.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = T7U9UX39U3;
+				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Sikmogil/Resources/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -987,7 +995,7 @@
 				CODE_SIGN_ENTITLEMENTS = Sikmogil/Sikmogil.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = T7U9UX39U3;
+				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Sikmogil/Resources/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
