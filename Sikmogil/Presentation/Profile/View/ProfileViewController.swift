@@ -4,6 +4,7 @@
 //
 //  Created by Developer_P on 6/3/24.
 //
+
 import UIKit
 import SnapKit
 import Then
@@ -14,6 +15,8 @@ class ProfileViewController: UIViewController {
     let scrollView = UIScrollView()
     let contentView = UIView()
     let topBar = UIView()
+    
+    var userProfile = UserProfileDummy.shared
     
     // MARK: - 사용자 인터페이스 요소를 정의
     let profileLabel = UILabel().then {
@@ -28,7 +31,9 @@ class ProfileViewController: UIViewController {
     
     let profileImageView = UIImageView().then {
         $0.image = .profile
-        $0.isUserInteractionEnabled = true
+        $0.isUserInteractionEnabled = false // 이미지 수정을 막기 위해 false로 설정
+        $0.contentMode = .scaleAspectFill
+        $0.clipsToBounds = true
     }
     
     let levelBadgeView = UIImageView().then {
@@ -48,7 +53,7 @@ class ProfileViewController: UIViewController {
         $0.spacing = 4
     }
     
-    let nameLabel = UILabel().then {
+    let nickname = UILabel().then {
         $0.text = "Cats Green"
         $0.font = Suite.bold.of(size: 24)
     }
@@ -66,9 +71,20 @@ class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
-        setupProfileImageTap()
         settingsButton.addTarget(self, action: #selector(settingsButtonTapped(_:)), for: .touchUpInside)
         logoutButton.addTarget(self, action: #selector(logoutButtonTapped(_:)), for: .touchUpInside)
+        
+        // 동적으로 콘텐츠 높이 설정
+        updateContentSize()
+        
+        // 노티피케이션 옵저버 설정
+        NotificationCenter.default.addObserver(self, selector: #selector(profileDidChange(_:)), name: .profileDidChange, object: nil)
+        
+        // 프로필 이미지 뷰를 둥근 원형으로 설정
+        profileImageView.layer.cornerRadius = 50 // 프로필 이미지 뷰의 너비와 높이가 100이므로 반으로 나눈 값
+        profileImageView.layer.masksToBounds = true
+        
+        updateProfileInfo()
     }
     
     // MARK: - 사용자 인터페이스를 설정
@@ -81,7 +97,7 @@ class ProfileViewController: UIViewController {
         topBar.addSubview(profileLabel)
         topBar.addSubview(settingsButton)
         
-        [profileImageView, levelBadgeView, nameLabel, profileInfoView, profileTableView, logoutButton].forEach {
+        [profileImageView, levelBadgeView, nickname, profileInfoView, profileTableView, logoutButton].forEach {
             contentView.addSubview($0)
         }
         
@@ -101,7 +117,6 @@ class ProfileViewController: UIViewController {
         contentView.snp.makeConstraints {
             $0.edges.equalTo(scrollView)
             $0.width.equalTo(scrollView)
-            $0.height.equalTo(800)
         }
         
         topBar.snp.makeConstraints {
@@ -135,16 +150,16 @@ class ProfileViewController: UIViewController {
         levelStackView.snp.makeConstraints {
             $0.edges.equalToSuperview().inset(4)
         }
-
+        
         levelBadgeLabel.snp.makeConstraints {
             $0.height.equalToSuperview()
         }
-
+        
         spacerView.snp.makeConstraints {
             $0.width.equalTo(4)
         }
         
-        nameLabel.snp.makeConstraints {
+        nickname.snp.makeConstraints {
             $0.centerY.equalTo(profileImageView)
             $0.left.equalTo(profileImageView.snp.right).offset(16)
             $0.right.equalTo(contentView).offset(-16)
@@ -166,35 +181,52 @@ class ProfileViewController: UIViewController {
         
         logoutButton.snp.makeConstraints {
             $0.centerX.equalTo(contentView)
+            $0.top.equalTo(profileTableView.snp.bottom).offset(32)
             $0.bottom.equalTo(contentView).offset(-20)
         }
     }
+    
+    // 콘텐츠 높이를 동적으로 업데이트
+    private func updateContentSize() {
+        let contentHeight = contentView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
+        
+        contentView.snp.remakeConstraints {
+            $0.edges.equalTo(scrollView)
+            $0.width.equalTo(scrollView)
+            $0.height.equalTo(contentHeight)
+        }
+    }
+    
+    private func updateProfileInfo() {
+        nickname.text = userProfile.nickname
+        profileInfoView.updateInfo(height: userProfile.height, weight: userProfile.weight, gender: userProfile.gender)
+    }
 }
 
-// MARK: - UIImagePickerControllerDelegate & UINavigationControllerDelegate
-extension ProfileViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    
-    private func setupProfileImageTap() {
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(profileImageTapped))
-        profileImageView.addGestureRecognizer(tapGestureRecognizer)
-    }
-    
-    @objc private func profileImageTapped() {
-        let imagePickerController = UIImagePickerController()
-        imagePickerController.delegate = self
-        imagePickerController.sourceType = .photoLibrary
-        present(imagePickerController, animated: true, completion: nil)
-    }
-    
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        if let selectedImage = info[.originalImage] as? UIImage {
-            profileImageView.image = selectedImage
+// MARK: - 프로필 변경 노티피케이션 처리
+extension ProfileViewController {
+    @objc private func profileDidChange(_ notification: Notification) {
+        if let userInfo = notification.userInfo {
+            if let nickname = userInfo["nickname"] as? String {
+                self.nickname.text = nickname
+                userProfile.nickname = nickname
+            }
+            if let height = userInfo["height"] as? String {
+                userProfile.height = height
+            }
+            if let weight = userInfo["weight"] as? String {
+                userProfile.weight = weight
+            }
+            if let gender = userInfo["gender"] as? String {
+                userProfile.gender = gender
+            }
+            if let profileImage = userInfo["profileImage"] as? UIImage {
+                profileImageView.image = profileImage
+                profileImageView.layer.cornerRadius = profileImageView.frame.width / 2 // 둥근 원형으로 설정
+                profileImageView.layer.masksToBounds = true
+            }
+            updateProfileInfo()
         }
-        dismiss(animated: true, completion: nil)
-    }
-    
-    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        dismiss(animated: true, completion: nil)
     }
 }
 
@@ -204,7 +236,6 @@ extension ProfileViewController {
         let editProfileAction = UIAction(title: "프로필 수정", image: nil) { _ in
             self.showEditProfile()
         }
-        
         let notificationSettingsAction = UIAction(title: "알림 설정", image: nil) { _ in
             self.showNotificationSettings()
         }
@@ -212,7 +243,6 @@ extension ProfileViewController {
         let goalSettingsAction = UIAction(title: "목표 설정", image: nil) { _ in
             self.showGoalSettings()
         }
-        
         let menu = UIMenu(title: "", children: [editProfileAction, notificationSettingsAction, goalSettingsAction])
         sender.menu = menu
         sender.showsMenuAsPrimaryAction = true
@@ -220,6 +250,7 @@ extension ProfileViewController {
     
     private func showEditProfile() {
         let editProfileVC = EditProfileViewController()
+        editProfileVC.userProfile = userProfile
         navigationController?.pushViewController(editProfileVC, animated: true)
     }
     
@@ -233,10 +264,9 @@ extension ProfileViewController {
         navigationController?.pushViewController(goalSettingsVC, animated: true)
     }
 }
-
 // MARK: - 로그아웃 버튼 액션 정의
 extension ProfileViewController {
-    @objc private func logoutButtonTapped(_ sender: UIButton) {
-        // TODO: 로그인 화면으로 루트뷰 바꾸기
-    }
+@objc private func logoutButtonTapped(_ sender: UIButton) {
+// TODO: 로그인 화면으로 루트뷰 바꾸기
+}
 }
