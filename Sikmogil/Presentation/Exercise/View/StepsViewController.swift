@@ -16,100 +16,77 @@ class StepsViewController: UIViewController {
     private let scrollView = UIScrollView()
     private let contentView = UIView()
     
-    private let circleView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .appLightGray
-        view.layer.cornerRadius = 100
-        return view
-    }()
-    
-    private let stepsImage: UIImageView = {
-         let imageView  = UIImageView()
-         imageView.image = .steps
-         imageView.contentMode = .scaleAspectFit
-         return imageView
-     }()
-    
-    private let stepsLabel: UILabel = {
-        let label = UILabel()
-        label.text = "오늘 걸음 수"
-        label.font = Suite.medium.of(size: 18)
-        label.textColor = .appBlack
-        return label
-    }()
-    
-    private let stepsValueLabel: UILabel = {
-        let label = UILabel()
-        label.text = "15,000"
-        label.font = Suite.bold.of(size: 50)
-        label.textColor = .appBlack
-        return label
-    }()
-    
-    private let cardView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .white
-        view.layer.cornerRadius = 16
-        view.layer.shadowColor = UIColor.black.cgColor
-        view.layer.shadowOpacity = 0.2
-        view.layer.shadowOffset = CGSize(width: 0, height: 2)
-        view.layer.shadowRadius = 4
-        return view
-    }()
-    
-    private let goalLabel: UILabel = {
-        let label = UILabel()
-        label.text = "오늘의 만보 걷기"
-        label.font = Suite.semiBold.of(size: 18)
-        label.textColor = .appBlack
-        return label
-    }()
-    
-    private let goalValueLabel: UILabel = {
-        let label = UILabel()
-        label.text = "0% 달성"
-        label.font = Suite.regular.of(size: 12)
-        label.textColor = .appBlack
-        return label
-    }()
-    
-    private let goalValueView: UIView = {
-        let view = UIView()
-        view.layer.borderColor = UIColor.appBlack.cgColor
-        view.layer.borderWidth = 1
-        view.layer.cornerRadius = 8
-        return view
-    }()
+    private let circleView = UIView().then {
+        $0.backgroundColor = .appLightGray
+        $0.layer.cornerRadius = 100
+    }
 
-    private let goalProgressView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .appLightGray
-        view.layer.cornerRadius = 10
-        return view
-    }()
+    private let stepsImage = UIImageView().then {
+        $0.image = .steps
+        $0.contentMode = .scaleAspectFit
+    }
+
+    private let stepsLabel = UILabel().then {
+        $0.text = "오늘 걸음 수"
+        $0.font = Suite.medium.of(size: 18)
+        $0.textColor = .appBlack
+    }
+
+    private let stepsValueLabel = UILabel().then {
+        $0.text = "15,000"
+        $0.font = Suite.bold.of(size: 50)
+        $0.textColor = .appBlack
+    }
+
+    private let cardView = UIView().then {
+        $0.backgroundColor = .white
+        $0.layer.cornerRadius = 16
+        $0.layer.shadowColor = UIColor.black.cgColor
+        $0.layer.shadowOpacity = 0.2
+        $0.layer.shadowOffset = CGSize(width: 0, height: 2)
+        $0.layer.shadowRadius = 4
+    }
+
+    private let goalLabel = UILabel().then {
+        $0.text = "오늘의 만보 걷기"
+        $0.font = Suite.semiBold.of(size: 18)
+        $0.textColor = .appBlack
+    }
+
+    private let goalValueLabel = UILabel().then {
+        $0.text = "0% 달성"
+        $0.font = Suite.regular.of(size: 12)
+        $0.textColor = .appBlack
+    }
+
+    private let goalValueView = UIView().then {
+        $0.layer.borderColor = UIColor.appBlack.cgColor
+        $0.layer.borderWidth = 1
+        $0.layer.cornerRadius = 8
+    }
+
+    private let goalProgressView = UIView().then {
+        $0.backgroundColor = .appLightGray
+        $0.layer.cornerRadius = 10
+    }
+
+    private let goalProgressValueView = UIView().then {
+        $0.backgroundColor = .appGreen
+        $0.layer.cornerRadius = 10
+    }
+
+    private let subCardView = UIView().then {
+        $0.backgroundColor = .appLightGray
+        $0.layer.cornerRadius = 16
+    }
+
+    private let kcalLabel = UILabel().then {
+        $0.text = "소모량 30kcal"
+        $0.font = Suite.semiBold.of(size: 20)
+        $0.textColor = .appBlack
+    }
     
-    private let goalProgressValueView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .appGreen
-        view.layer.cornerRadius = 10
-        return view
-    }()
-    
-    private let subCardView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .appLightGray
-        view.layer.cornerRadius = 16
-        return view
-    }()
-    
-    private let kcalLabel: UILabel = {
-        let label = UILabel()
-        label.text = "소모량 30kcal"
-        label.font = Suite.semiBold.of(size: 20)
-        label.textColor = .appBlack
-        return label
-    }()
-    
+    // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
@@ -128,7 +105,7 @@ class StepsViewController: UIViewController {
         updateProgress(0.8)
     }
     
-    // MARK: - Setup View
+    // MARK: - Setup Views
     private func setupViews() {
         view.backgroundColor = .white
         view.addSubviews(scrollView)
