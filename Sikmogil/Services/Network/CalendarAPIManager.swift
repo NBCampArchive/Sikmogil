@@ -60,7 +60,7 @@ class CalendarAPIManager {
         }
     }
     
-    // MARK: - 캘린더 전체 데이터 출력
+    // MARK: - 특정 날짜 캘린더 데이터 출력
     func getCalendarData(calendarDate: String, completion: @escaping (Result<[CalendarModel], Error>) -> Void) {
         
         let url = "\(baseURL)/api/calendar"
@@ -80,3 +80,30 @@ class CalendarAPIManager {
         }
     }
 }
+// MARK: - Example Code
+//CalendarAPIManager.shared.updateCalendarData(calendarDate: DateHelper.shared.formatDateToYearMonthDay(Date()), diaryText: "다이어리 테스트 1"){ result in
+//    switch result {
+//    case .success:
+//        print("다이어리 업데이트 성공")
+//    case .failure(let error):
+//        print("다이어리 업데이트 실패: \(error)")
+//    }
+//}
+//
+//CalendarAPIManager.shared.getCalendarData(calendarDate: DateHelper.shared.formatDateToYearMonthDay(Date())){ result in
+//    switch result {
+//    case .success(let data):
+//        print("다이어리 데이터 가져오기 성공: \(data)")
+//    case .failure(let error):
+//        print("다이어리 데이터 가져오기 실패: \(error)")
+//    }
+//}
+//
+//CalendarAPIManager.shared.getAllCalendarData() { result in
+//    switch result {
+//    case .success(let data):
+//        print("다이어리 전체 데이터 가져오기 성공: \(data)")
+//    case .failure(let error):
+//        print("다이어리 전체 데이터 가져오기 실패: \(error)")
+//    }
+//}
