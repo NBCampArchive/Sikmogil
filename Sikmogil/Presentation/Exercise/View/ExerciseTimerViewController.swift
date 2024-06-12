@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import SnapKit
+import Then
 
 class ExerciseTimerViewController: UIViewController {
     
@@ -13,38 +15,30 @@ class ExerciseTimerViewController: UIViewController {
     private var isPaused: Bool = true
     private var selectedTime: TimeInterval = 30 // 선택한 시간을 저장할 변수: 30분(30 * 60 = 1800)
     private var timer: Timer?
-    
-    private let timeLabel: UILabel = {
-        let label = UILabel()
-        label.text = "00 : 00"
 
-        label.font = Suite.semiBold.of(size: 60)
-        return label
-    }()
-    
-    private let stopPauseButton: UIButton = {
-        let button = UIButton()
-        button.setImage(.pause, for: .normal)
-        return button
-    }()
-    
-    private let statusLabel: UILabel = {
-        let label = UILabel()
-        label.text = "START"
-        label.font = Suite.semiBold.of(size: 24)
-        label.textColor = .appGreen
-        return label
-    }()
-    
-    private let recordButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("기록하기", for: .normal)
-        button.titleLabel?.font = Suite.bold.of(size: 18)
-        button.backgroundColor = .appBlack
-        button.tintColor = .white
-        button.layer.cornerRadius = 16
-        return button
-    }()
+    private let timeLabel = UILabel().then {
+        $0.text = "00 : 00"
+        $0.font = Suite.semiBold.of(size: 60)
+    }
+
+    private let stopPauseButton = UIButton().then {
+        $0.setImage(.pause, for: .normal)
+    }
+
+    private let statusLabel = UILabel().then {
+        $0.text = "START"
+        $0.font = Suite.semiBold.of(size: 24)
+        $0.textColor = .appGreen
+    }
+
+    private let recordButton = UIButton(type: .system).then {
+        $0.setTitle("기록하기", for: .normal)
+        $0.titleLabel?.font = Suite.bold.of(size: 18)
+        $0.backgroundColor = .appBlack
+        $0.tintColor = .white
+        $0.layer.cornerRadius = 16
+    }
+
     
     // MARK: - View Life Cycle
     override func viewDidLoad() {
@@ -58,7 +52,7 @@ class ExerciseTimerViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(handleSelectedTime(_:)), name: Notification.Name("SelectedTimeNotification"), object: nil)
     }
     
-    // MARK: - Setup View
+    // MARK: - Setup Views
     private func setupViews() {
         view.backgroundColor = .white
         view.addSubviews(timeLabel, stopPauseButton, statusLabel, recordButton)
@@ -89,7 +83,7 @@ class ExerciseTimerViewController: UIViewController {
         }
     }
     
-    // MARK: - Setup Button
+    // MARK: - Setup Buttons
     private func setupButtons() {
         stopPauseButton.addTarget(self, action: #selector(stopPauseButtonTapped), for: .touchUpInside)
         recordButton.addTarget(self, action: #selector(recordButtonTapped), for: .touchUpInside)
