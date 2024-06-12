@@ -35,6 +35,8 @@
 		B52001DC2C171F9D0083CBDF /* FloatingPanelControllerStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001DA2C171F9C0083CBDF /* FloatingPanelControllerStyle.swift */; };
 		B52001E02C18922D0083CBDF /* DietAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001DF2C18922D0083CBDF /* DietAPIManager.swift */; };
 		B52001E22C1897C20083CBDF /* DietModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001E12C1897C20083CBDF /* DietModel.swift */; };
+		B52001E42C1971CD0083CBDF /* ImageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001E32C1971CD0083CBDF /* ImageModel.swift */; };
+		B52001E62C1972330083CBDF /* ImageAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001E52C1972330083CBDF /* ImageAPIManager.swift */; };
 		B54ABF882C09BD43002E89DC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABF872C09BD43002E89DC /* AppDelegate.swift */; };
 		B54ABF8A2C09BD43002E89DC /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABF892C09BD43002E89DC /* SceneDelegate.swift */; };
 		B54ABF8C2C09BD43002E89DC /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABF8B2C09BD43002E89DC /* ViewController.swift */; };
@@ -122,6 +124,8 @@
 		B52001DA2C171F9C0083CBDF /* FloatingPanelControllerStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatingPanelControllerStyle.swift; sourceTree = "<group>"; };
 		B52001DF2C18922D0083CBDF /* DietAPIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DietAPIManager.swift; sourceTree = "<group>"; };
 		B52001E12C1897C20083CBDF /* DietModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DietModel.swift; sourceTree = "<group>"; };
+		B52001E32C1971CD0083CBDF /* ImageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageModel.swift; sourceTree = "<group>"; };
+		B52001E52C1972330083CBDF /* ImageAPIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageAPIManager.swift; sourceTree = "<group>"; };
 		B54ABF842C09BD43002E89DC /* Sikmogil.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sikmogil.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B54ABF872C09BD43002E89DC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B54ABF892C09BD43002E89DC /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -322,6 +326,7 @@
 				B54AC00D2C105475002E89DC /* UserProfile.swift */,
 				B52001C02C15ADA50083CBDF /* ExerciseModel.swift */,
 				B52001E12C1897C20083CBDF /* DietModel.swift */,
+				B52001E32C1971CD0083CBDF /* ImageModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -343,6 +348,7 @@
 				B52001AF2C11D7FA0083CBDF /* UserAPIManager.swift */,
 				B52001BE2C15AC1E0083CBDF /* ExerciseAPIManager.swift */,
 				B52001DF2C18922D0083CBDF /* DietAPIManager.swift */,
+				B52001E52C1972330083CBDF /* ImageAPIManager.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -684,6 +690,7 @@
 				B54ABFCF2C0CBB59002E89DC /* UIViewExtensions.swift in Sources */,
 				B54AC01A2C105646002E89DC /* Step1ViewController.swift in Sources */,
 				B54ABFCB2C0CB770002E89DC /* Extension.swift in Sources */,
+				B52001E42C1971CD0083CBDF /* ImageModel.swift in Sources */,
 				540768882C12EAD900543A72 /* ProfileTableView.swift in Sources */,
 				546E32332C1078E600E94C2A /* NotificationSettingsViewController.swift in Sources */,
 				540768862C12EAB200543A72 /* ProfileInfoView.swift in Sources */,
@@ -727,6 +734,7 @@
 				B54AC0122C1054B1002E89DC /* OnboardingViewModel.swift in Sources */,
 				B52001B02C11D7FA0083CBDF /* UserAPIManager.swift in Sources */,
 				B54ABFC52C0CB6AB002E89DC /* ViewModel.swift in Sources */,
+				B52001E62C1972330083CBDF /* ImageAPIManager.swift in Sources */,
 				B52001D32C171B8C0083CBDF /* AddDietMenuViewController.swift in Sources */,
 				B54ABFBF2C0CB639002E89DC /* PersistentStorage.swift in Sources */,
 				B52001D42C171B8C0083CBDF /* DietAlbumViewController.swift in Sources */,
