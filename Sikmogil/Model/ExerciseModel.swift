@@ -8,14 +8,14 @@
 import Foundation
 
 // MARK: - 특정 날짜 운동 총량
-struct ExerciseModel: Codable {
+struct ExerciseModel: Decodable {
     let workoutDate: String?
     let steps: Int?
     let totalCaloriesBurned: Int?
 }
 
 // MARK: - 특정 날짜 운동 리스트
-struct ExerciseListModel: Codable {
+struct ExerciseListModel: Decodable {
     let workoutListId: Int
     let performedWorkout: String
     let workoutTime: Int
