@@ -254,8 +254,6 @@ class ExerciseSelectionViewController: UIViewController {
             })
         ]
         
-        
-        
         let exerciseMenu = UIMenu(title: "", children: exerciseActions)
         
         let timeActions = [
