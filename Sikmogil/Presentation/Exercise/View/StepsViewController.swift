@@ -102,6 +102,7 @@ class StepsViewController: UIViewController {
         updateStepsData()
     }
     
+    // MARK: - Steps Data
     private func updateStepsData() {
         // 걸음 수 데이터 가져오기
         fetchStepCount { (steps) in
@@ -114,7 +115,7 @@ class StepsViewController: UIViewController {
             // 현재 소모 칼로리 계산 (1걸음당 0.04kcal)
             let kcalPerStep: Double = 0.04
             let totalKcal = steps * kcalPerStep
-            let formattedKcal = String(format: "소모량 %.1fkcal", totalKcal)
+            let formattedKcal = String(format: "소모량 %.0fkcal", totalKcal) // 소수점 없이 표시
             
             // 메인 스레드에서 UI 업데이트
             DispatchQueue.main.async {
@@ -268,7 +269,7 @@ extension StepsViewController {
         let percentage = (steps / dailyGoalSteps) * 100
         
         // %로 표시할 문자열 생성
-        let formattedPercentage = String(format: "%.1f%% 달성", percentage)
+        let formattedPercentage = String(format: "%.0f%% 달성", percentage) // 소수점 없이 표시
         
         // 현재 진행률 업데이트
         currentProgressPercentage = CGFloat(percentage / 100)
@@ -276,7 +277,6 @@ extension StepsViewController {
         // 메인 스레드에서 UI 업데이트
         DispatchQueue.main.async {
             self.goalValueLabel.text = formattedPercentage
-            
         }
     }
     
