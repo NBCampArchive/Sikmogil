@@ -19,3 +19,10 @@ struct TokenData: Decodable {
     let accessToken: String
     let refreshToken: String
 }
+
+// MARK: - FirstLoginCheck
+struct FirstLoginResponse: Decodable {
+    let statusCode: Int
+    let message: String
+    let data: Bool
+}
