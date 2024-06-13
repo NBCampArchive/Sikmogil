@@ -101,6 +101,9 @@
 		B54AC01E2C1056C3002E89DC /* Step3ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54AC01D2C1056C3002E89DC /* Step3ViewController.swift */; };
 		CACA65B82C1860CF0030D8D5 /* DietAlbumViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CACA65B72C1860CF0030D8D5 /* DietAlbumViewModel.swift */; };
 		CACA65BA2C19BBDF0030D8D5 /* SavedDietImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CACA65B92C19BBDF0030D8D5 /* SavedDietImage.swift */; };
+		CACA65C62C1B5CE20030D8D5 /* FoodDbInfoAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CACA65C52C1B5CE20030D8D5 /* FoodDbInfoAPIManager.swift */; };
+		CACA65C82C1B5D0C0030D8D5 /* FoodDbModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CACA65C72C1B5D0C0030D8D5 /* FoodDbModel.swift */; };
+		CACA65CA2C1B5D470030D8D5 /* apiTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CACA65C92C1B5D470030D8D5 /* apiTest.swift */; };
 		F3094EC12C0D91310099DE2C /* ExerciseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3094EC02C0D91310099DE2C /* ExerciseViewController.swift */; };
 		F3094EC42C0DB1940099DE2C /* ExerciseHistoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3094EC32C0DB1940099DE2C /* ExerciseHistoryCell.swift */; };
 		F3094EC62C0E40040099DE2C /* ExerciseSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3094EC52C0E40040099DE2C /* ExerciseSelectionViewController.swift */; };
@@ -192,6 +195,9 @@
 		B54AC01D2C1056C3002E89DC /* Step3ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Step3ViewController.swift; sourceTree = "<group>"; };
 		CACA65B72C1860CF0030D8D5 /* DietAlbumViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DietAlbumViewModel.swift; sourceTree = "<group>"; };
 		CACA65B92C19BBDF0030D8D5 /* SavedDietImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedDietImage.swift; sourceTree = "<group>"; };
+		CACA65C52C1B5CE20030D8D5 /* FoodDbInfoAPIManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoodDbInfoAPIManager.swift; sourceTree = "<group>"; };
+		CACA65C72C1B5D0C0030D8D5 /* FoodDbModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoodDbModel.swift; sourceTree = "<group>"; };
+		CACA65C92C1B5D470030D8D5 /* apiTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = apiTest.swift; sourceTree = "<group>"; };
 		F3094EC02C0D91310099DE2C /* ExerciseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseViewController.swift; sourceTree = "<group>"; };
 		F3094EC32C0DB1940099DE2C /* ExerciseHistoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseHistoryCell.swift; sourceTree = "<group>"; };
 		F3094EC52C0E40040099DE2C /* ExerciseSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseSelectionViewController.swift; sourceTree = "<group>"; };
@@ -335,6 +341,7 @@
 				B52001C32C171B8C0083CBDF /* Extensions */,
 				B52001CC2C171B8C0083CBDF /* View */,
 				B52001CE2C171B8C0083CBDF /* ViewModel */,
+				CACA65C92C1B5D470030D8D5 /* apiTest.swift */,
 			);
 			name = Diet;
 			path = Sikmogil/Presentation/Diet;
@@ -390,6 +397,7 @@
 				B52001C02C15ADA50083CBDF /* ExerciseModel.swift */,
 				B52001E12C1897C20083CBDF /* DietModel.swift */,
 				B52001E32C1971CD0083CBDF /* ImageModel.swift */,
+				CACA65C72C1B5D0C0030D8D5 /* FoodDbModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -412,6 +420,7 @@
 				B52001BE2C15AC1E0083CBDF /* ExerciseAPIManager.swift */,
 				B52001DF2C18922D0083CBDF /* DietAPIManager.swift */,
 				B52001E52C1972330083CBDF /* ImageAPIManager.swift */,
+				CACA65C52C1B5CE20030D8D5 /* FoodDbInfoAPIManager.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -754,12 +763,14 @@
 				B54ABFEE2C0D7370002E89DC /* UIColorExtension.swift in Sources */,
 				B52001E22C1897C20083CBDF /* DietModel.swift in Sources */,
 				F3094EC62C0E40040099DE2C /* ExerciseSelectionViewController.swift in Sources */,
+				CACA65C62C1B5CE20030D8D5 /* FoodDbInfoAPIManager.swift in Sources */,
 				B52001D82C171B8C0083CBDF /* DietViewModel.swift in Sources */,
 				B52001DB2C171F9D0083CBDF /* UIApplication.swift in Sources */,
 				B54ABFFA2C0F0F65002E89DC /* LoginModel.swift in Sources */,
 				B52001AE2C11B99E0083CBDF /* UIViewControllerExtension.swift in Sources */,
 				B52001D12C171B8C0083CBDF /* AddDietMenuTableViewCell.swift in Sources */,
 				CACA65B82C1860CF0030D8D5 /* DietAlbumViewModel.swift in Sources */,
+				CACA65C82C1B5D0C0030D8D5 /* FoodDbModel.swift in Sources */,
 				B54AC00C2C0F48D1002E89DC /* SikmogilBundle++.swift in Sources */,
 				F3094F082C197AFA0099DE2C /* HalfCircleProgressView.swift in Sources */,
 				B54ABFCF2C0CBB59002E89DC /* UIViewExtensions.swift in Sources */,
@@ -811,6 +822,7 @@
 				B54ABFF82C0F0DC7002E89DC /* LoginAPIManager.swift in Sources */,
 				B54AC01E2C1056C3002E89DC /* Step3ViewController.swift in Sources */,
 				B54AC01C2C1056A4002E89DC /* Step2ViewController.swift in Sources */,
+				CACA65CA2C1B5D470030D8D5 /* apiTest.swift in Sources */,
 				B54ABFEC2C0D6BA6002E89DC /* BottomTabBarController.swift in Sources */,
 				B54AC0122C1054B1002E89DC /* OnboardingViewModel.swift in Sources */,
 				B52001B02C11D7FA0083CBDF /* UserAPIManager.swift in Sources */,
