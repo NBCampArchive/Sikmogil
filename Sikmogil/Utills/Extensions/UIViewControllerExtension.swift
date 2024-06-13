@@ -35,6 +35,10 @@ extension UIViewController {
             if let scrollView = view.subviews.first(where: { $0 is UIScrollView }) as? UIScrollView {
                 scrollView.contentInset = contentInsets
                 scrollView.scrollIndicatorInsets = contentInsets
+            } else {
+                // 스크롤 뷰가 아닌 경우 뷰의 위치 조정
+                let bottomPadding = view.safeAreaInsets.bottom
+                view.frame.origin.y = 0 - (keyboardHeight - bottomPadding)
             }
         }
     }
@@ -44,6 +48,9 @@ extension UIViewController {
         if let scrollView = view.subviews.first(where: { $0 is UIScrollView }) as? UIScrollView {
             scrollView.contentInset = contentInsets
             scrollView.scrollIndicatorInsets = contentInsets
+        } else {
+            // 스크롤 뷰가 아닌 경우 뷰의 위치 원상복귀
+            view.frame.origin.y = 0
         }
     }
 }
