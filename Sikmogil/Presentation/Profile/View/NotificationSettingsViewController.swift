@@ -8,6 +8,7 @@
 import UIKit
 import SnapKit
 import Then
+import UserNotifications
 
 class NotificationSettingsViewController: UIViewController {
     
@@ -41,6 +42,16 @@ class NotificationSettingsViewController: UIViewController {
         super.viewDidLoad()
         setupUI()
         setupConstraints()
+        requestNotificationPermission()
+    }
+    
+    private func requestNotificationPermission() {
+        let center = UNUserNotificationCenter.current()
+        center.requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
+            if let error = error {
+                print("Notification permission error: \(error)")
+            }
+        }
     }
     
     // MARK: - UI 설정
@@ -63,9 +74,8 @@ class NotificationSettingsViewController: UIViewController {
         }
         
         contentView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
-            $0.width.equalToSuperview()
-            $0.height.equalTo(800) // 임의 스크롤 높이
+            $0.edges.equalTo(scrollView)
+            $0.width.equalTo(scrollView)
         }
         
         titleLabel.snp.makeConstraints {
@@ -80,7 +90,29 @@ class NotificationSettingsViewController: UIViewController {
         
         tableView.snp.makeConstraints {
             $0.top.equalTo(subtitleLabel.snp.bottom).offset(16)
-            $0.leading.trailing.bottom.equalToSuperview()
+            $0.leading.trailing.equalToSuperview()
+            $0.bottom.equalToSuperview().offset(-16)
+        }
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        // Table view content height를 기반으로 contentView 높이 설정
+        tableView.layoutIfNeeded()
+        let tableViewHeight = tableView.contentSize.height
+        
+        // 기존 제약 조건을 업데이트합니다.
+        tableView.snp.remakeConstraints {
+            $0.top.equalTo(subtitleLabel.snp.bottom).offset(16)
+            $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(tableViewHeight) // 여기서 높이를 업데이트 합니다.
+        }
+        
+        contentView.snp.remakeConstraints {
+            $0.edges.equalTo(scrollView)
+            $0.width.equalTo(scrollView)
+            $0.bottom.equalTo(tableView.snp.bottom).offset(16)
         }
     }
 }
@@ -97,7 +129,9 @@ extension NotificationSettingsViewController: UITableViewDelegate, UITableViewDa
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: AlarmTableViewCell.identifier, for: indexPath) as! AlarmTableViewCell
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: AlarmTableViewCell.identifier, for: indexPath) as? AlarmTableViewCell else {
+            return UITableViewCell()
+        }
         
         switch indexPath.section {
         case 0:
