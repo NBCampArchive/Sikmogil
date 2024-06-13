@@ -111,7 +111,17 @@ class StepsViewController: UIViewController {
             // 목표 달성률 업데이트
             self.updateGoalProgress(steps: steps)
             
-            print("currentProgressPercentage: \(self.currentProgressPercentage)")
+            // 현재 소모 칼로리 계산 (1걸음당 0.04kcal)
+            let kcalPerStep: Double = 0.04
+            let totalKcal = steps * kcalPerStep
+            let formattedKcal = String(format: "소모량 %.1fkcal", totalKcal)
+            
+            // 메인 스레드에서 UI 업데이트
+            DispatchQueue.main.async {
+                self.kcalLabel.text = formattedKcal
+            }
+            
+            // 프로그레스 바 업데이트
             self.updateProgress(self.currentProgressPercentage)
         }
     }
