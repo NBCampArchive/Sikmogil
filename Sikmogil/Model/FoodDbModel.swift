@@ -3,11 +3,10 @@
 //  Sikmogil
 //
 //  Created by 희라 on 6/13/24.
-//
+//  [Model] **설명** 식단 식품영양성분DB정보 API 모델
 
 import Foundation
 
-// Response 구조체 정의
 struct Response: Codable {
     let body: Body
 
