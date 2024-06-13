@@ -39,6 +39,8 @@ class AlarmTableViewCell: UITableViewCell {
         }
     }
     
+    var switchValueChanged: ((Bool) -> Void)?
+    
     // MARK: - 초기화 메서드
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -59,13 +61,19 @@ class AlarmTableViewCell: UITableViewCell {
         
         customSwitch.snp.makeConstraints {
             $0.centerY.equalToSuperview()
-            $0.trailing.equalTo(accessoryButton.snp.leading).offset(16)
+            $0.trailing.equalTo(accessoryButton.snp.leading).offset(-16)
         }
         
         accessoryButton.snp.makeConstraints {
             $0.centerY.equalToSuperview()
             $0.trailing.equalToSuperview().offset(-16)
         }
+        
+        customSwitch.addTarget(self, action: #selector(switchChanged), for: .valueChanged)
+    }
+    
+    @objc private func switchChanged() {
+        switchValueChanged?(customSwitch.isOn)
     }
     
     required init?(coder: NSCoder) {
