@@ -3,7 +3,7 @@
 //  Sikmogil
 //
 //  Created by 희라 on 6/14/24.
-//
+//  테스트용 뷰 입니다.
 
 import UIKit
 import Alamofire
@@ -92,7 +92,7 @@ class APITestViewController: UIViewController {
         print("API 응답:")
         for item in items {
             print("식품명: \(item.foodNmKr)")
-            print("칼로리: \(item.amtNum1)")
+            print("칼로리: \(item.amtNum1)Kcal")
         }
         // UI 업데이트 또는 추가 작업 수행
     }
