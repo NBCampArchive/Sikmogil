@@ -7,12 +7,13 @@
 
 import UIKit
 import SnapKit
-import Then
+import Combine
 import FloatingPanel
 
 class DietMainViewController: UIViewController {
     
-    var viewModel: DietViewModel!
+    var viewModel: DietViewModel = DietViewModel.shared
+    private var cancellables = Set<AnyCancellable>()
     
     // MARK: - UI components
     let scrollView = UIScrollView()
@@ -83,7 +84,7 @@ class DietMainViewController: UIViewController {
         $0.progress = 0.1
     }
     let waterLiterLabel = UILabel().then {
-        $0.text = "1.00 / 2L"
+        $0.text = "000ml / 2L"
         $0.textColor = .appBlack
         $0.font = Suite.bold.of(size: 26)
         $0.textAlignment = .center
@@ -137,10 +138,10 @@ class DietMainViewController: UIViewController {
         
         view.backgroundColor = .white
         
+        subscribeToViewModel()
+        
         dietAddTabButton.addTarget(self, action: #selector(showDietBottomSheet), for: .touchUpInside)
         waterAddTabButton.addTarget(self, action: #selector(showWaterBottomSheet), for: .touchUpInside)
-        
-        viewModel = DietViewModel()
     }
     
     // MARK: - Setup Methods
@@ -300,6 +301,22 @@ class DietMainViewController: UIViewController {
         // 플로팅 패널의 초기 높이 설정
         let initialHeight = self.view.bounds.height - 320 // 플로팅 패널의 초기 높이
         floatingPanelController.surfaceLocation = CGPoint(x: self.view.bounds.midX, y: initialHeight)
-        print("호출 self.view.bounds.height = \(self.view.bounds.height)")
+    }
+    
+    // MARK: - ViewModel
+    private func subscribeToViewModel() {
+        viewModel.waterLiterLabelTextPublisher
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] value in
+                self?.waterLiterLabel.text = value
+            }
+            .store(in: &cancellables)
+        
+        viewModel.waterProgressPublisher
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] progress in
+                self?.waterCircularProgressBar.progress = Double(progress)
+            }
+            .store(in: &cancellables)
     }
 }
