@@ -91,4 +91,8 @@ class DiaryRecordFloatingViewController: UIViewController {
             present(alert, animated: true)
         }
     }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
 }
