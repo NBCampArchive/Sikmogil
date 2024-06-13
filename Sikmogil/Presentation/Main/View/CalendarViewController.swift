@@ -169,6 +169,7 @@ class CalendarViewController: UIViewController {
     @objc override func keyboardWillShow(notification: NSNotification) {
         guard let userInfo = notification.userInfo else { return }
         if userInfo[UIResponder.keyboardFrameEndUserInfoKey] is CGRect {
+            // FloatingPanel 높이 수정
             editDiaryFloatingPanelController.move(to: .full, animated: true)
         }
     }
