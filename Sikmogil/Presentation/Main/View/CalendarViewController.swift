@@ -168,7 +168,7 @@ class CalendarViewController: UIViewController {
     // 키보드가 나타날 때 호출되는 메서드
     @objc override func keyboardWillShow(notification: NSNotification) {
         guard let userInfo = notification.userInfo else { return }
-        if let keyboardFrame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect {
+        if userInfo[UIResponder.keyboardFrameEndUserInfoKey] is CGRect {
             editDiaryFloatingPanelController.move(to: .full, animated: true)
         }
     }
