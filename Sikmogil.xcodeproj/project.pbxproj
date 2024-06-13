@@ -106,6 +106,7 @@
 		F3094EF12C0EEDBA0099DE2C /* ExerciseResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3094EF02C0EEDBA0099DE2C /* ExerciseResultViewController.swift */; };
 		F3094F062C1841240099DE2C /* ExerciseMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3094F052C1841240099DE2C /* ExerciseMenuViewController.swift */; };
 		F3094F082C197AFA0099DE2C /* HalfCircleProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3094F072C197AFA0099DE2C /* HalfCircleProgressView.swift */; };
+		F3094F0E2C19A1BE0099DE2C /* ExerciseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3094F0D2C19A1BE0099DE2C /* ExerciseViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -195,6 +196,7 @@
 		F3094EF02C0EEDBA0099DE2C /* ExerciseResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseResultViewController.swift; sourceTree = "<group>"; };
 		F3094F052C1841240099DE2C /* ExerciseMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseMenuViewController.swift; sourceTree = "<group>"; };
 		F3094F072C197AFA0099DE2C /* HalfCircleProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HalfCircleProgressView.swift; sourceTree = "<group>"; };
+		F3094F0D2C19A1BE0099DE2C /* ExerciseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -618,6 +620,7 @@
 			isa = PBXGroup;
 			children = (
 				F3094EF42C1033FA0099DE2C /* View */,
+				F3094F0C2C19A1970099DE2C /* ViewModel */,
 			);
 			path = Exercise;
 			sourceTree = "<group>";
@@ -634,6 +637,14 @@
 				F3094EC22C0DB1730099DE2C /* Cell */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		F3094F0C2C19A1970099DE2C /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				F3094F0D2C19A1BE0099DE2C /* ExerciseViewModel.swift */,
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -756,6 +767,7 @@
 				B54AC00C2C0F48D1002E89DC /* SikmogilBundle++.swift in Sources */,
 				F3094F082C197AFA0099DE2C /* HalfCircleProgressView.swift in Sources */,
 				B54ABFCF2C0CBB59002E89DC /* UIViewExtensions.swift in Sources */,
+				F3094F0E2C19A1BE0099DE2C /* ExerciseViewModel.swift in Sources */,
 				B54AC01A2C105646002E89DC /* Step1ViewController.swift in Sources */,
 				B54ABFCB2C0CB770002E89DC /* Extension.swift in Sources */,
 				62578CFE2C15A395005035BB /* PhotoCell.swift in Sources */,
