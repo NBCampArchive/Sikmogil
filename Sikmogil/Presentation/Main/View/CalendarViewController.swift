@@ -14,7 +14,6 @@ import FloatingPanel
 
 class CalendarViewController: UIViewController {
     
-    var secondFloatingPanelController: FloatingPanelController!
     var editDiaryFloatingPanelController: FloatingPanelController!
     var secondDimmingView: UIView!
     
