@@ -109,7 +109,7 @@ class DietMainViewController: UIViewController {
         $0.backgroundColor = .clear
         $0.progressColor = .appPurple
         $0.trackColor = .appLightGray
-        $0.progress = 0.9
+        $0.progress = 0.0
     }
     let fastingTimerProgressBarIcon = UIImageView().then {
         $0.image = UIImage(named: "fastingTimerIconFill")
@@ -120,14 +120,22 @@ class DietMainViewController: UIViewController {
         $0.font = Suite.bold.of(size: 22)
         $0.textAlignment = .center
     }
-    let endFastingButton = UIButton().then{
-        $0.setTitle("단식 종료", for: .normal)
+    let FastingButton = UIButton().then{
+        $0.setTitle("공복 시작", for: .normal)
+        $0.setTitle("공복 종료", for: .selected)
         $0.backgroundColor = .appLightGray
         $0.setTitleColor(.appBlack, for: .normal)
         $0.titleLabel?.font = Suite.semiBold.of(size: 16)
         $0.layer.cornerRadius = 14
         $0.clipsToBounds = true
+        $0.addTarget(self, action: #selector(fastingButtonButtonTapped), for: .touchUpInside)
     }
+    
+    // Timer properties
+    var timer: Timer?
+    var isTimerRunning = false
+    var startTime: Date?
+    var elapsedTime: TimeInterval = 0
     
     // MARK: - View Lifecycle
     override func viewDidLoad() {
@@ -154,7 +162,7 @@ class DietMainViewController: UIViewController {
         // 💦 Water
         waterTitleView.addSubviews(waterTitleLabel,waterTitleSubLabel,waterAddTabButton,waterCircularProgressBar,waterLiterLabel)
         // 🤤 FastingTimer
-        fastingTimerTitleView.addSubviews(fastingTimerTitleLabel,fastingTimerTitleSubLabel,fastingTimerCircularProgressBar,fastingTimerProgressBarIcon, fastingTimerInfoLabel, endFastingButton)
+        fastingTimerTitleView.addSubviews(fastingTimerTitleLabel,fastingTimerTitleSubLabel,fastingTimerCircularProgressBar,fastingTimerProgressBarIcon, fastingTimerInfoLabel, FastingButton)
     }
     
     private func setupConstraints() {
@@ -264,7 +272,7 @@ class DietMainViewController: UIViewController {
             $0.centerX.equalTo(fastingTimerCircularProgressBar)
             $0.top.equalTo(fastingTimerProgressBarIcon.snp.bottom).offset(16)
         }
-        endFastingButton.snp.makeConstraints {
+        FastingButton.snp.makeConstraints {
             $0.top.equalTo(fastingTimerCircularProgressBar.snp.bottom).offset(16)
             $0.centerX.equalToSuperview()
             $0.width.equalTo(180)
@@ -284,7 +292,6 @@ class DietMainViewController: UIViewController {
         floatingPanelController.set(contentViewController: contentVC)
         
         floatingPanelController.addPanel(toParent: self)
-        
     }
     
     @objc private func showWaterBottomSheet() {
@@ -301,6 +308,38 @@ class DietMainViewController: UIViewController {
         // 플로팅 패널의 초기 높이 설정
         let initialHeight = self.view.bounds.height - 320 // 플로팅 패널의 초기 높이
         floatingPanelController.surfaceLocation = CGPoint(x: self.view.bounds.midX, y: initialHeight)
+    }
+    
+    @objc func fastingButtonButtonTapped() {
+        FastingButton.isSelected.toggle()
+        
+        if FastingButton.isSelected {
+            // Start timer
+            startTime = Date()
+            timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateTimer), userInfo: nil, repeats: true)
+            RunLoop.current.add(timer!, forMode: .common)
+            isTimerRunning = true
+        } else {
+            // Stop timer
+            timer?.invalidate()
+            timer = nil
+            isTimerRunning = false
+        }
+    }
+    
+    @objc func updateTimer() {
+        guard let startTime = startTime else { return }
+        elapsedTime = Date().timeIntervalSince(startTime)
+        
+        // Update circular progress bar
+        let maxTime: TimeInterval = 24 * 60 * 60 // 24 hours in seconds
+        let progress = Float(elapsedTime / maxTime)
+        fastingTimerCircularProgressBar.progress = CGFloat(progress)
+        
+        // Update elapsed time label
+        let hours = Int(elapsedTime / 3600)
+        let minutes = Int((elapsedTime.truncatingRemainder(dividingBy: 3600)) / 60)
+        fastingTimerInfoLabel.text = String(format: "경과 시간: %d시간 %d분", hours, minutes)
     }
     
     // MARK: - ViewModel
