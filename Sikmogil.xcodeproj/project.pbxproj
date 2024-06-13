@@ -316,6 +316,7 @@
 		B52001CC2C171B8C0083CBDF /* View */ = {
 			isa = PBXGroup;
 			children = (
+				CACA65C92C1B5D470030D8D5 /* apiTest.swift */,
 				B52001C72C171B8C0083CBDF /* AddDietMenuViewController.swift */,
 				B52001C82C171B8C0083CBDF /* DietAlbumViewController.swift */,
 				B52001C92C171B8C0083CBDF /* DietBottomSheetViewController.swift */,
@@ -341,7 +342,6 @@
 				B52001C32C171B8C0083CBDF /* Extensions */,
 				B52001CC2C171B8C0083CBDF /* View */,
 				B52001CE2C171B8C0083CBDF /* ViewModel */,
-				CACA65C92C1B5D470030D8D5 /* apiTest.swift */,
 			);
 			name = Diet;
 			path = Sikmogil/Presentation/Diet;

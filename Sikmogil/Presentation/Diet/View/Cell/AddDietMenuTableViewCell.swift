@@ -48,6 +48,7 @@ class AddDietMenuTableViewCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupViews()
         setupConstraints()
+        
     }
     
     required init?(coder: NSCoder) {
@@ -70,7 +71,6 @@ class AddDietMenuTableViewCell: UITableViewCell {
         }
         contentArea.snp.makeConstraints{
             $0.edges.equalToSuperview().inset(16)
-            $0.width.equalTo(332)
             $0.height.equalTo(46)
         }
         cellTitleLabel.snp.makeConstraints{
