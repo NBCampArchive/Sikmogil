@@ -6,57 +6,81 @@
 //
 
 import Foundation
-import Combine
 
-class ExerciseViewModel: ObservableObject {
+class ExerciseViewModel {
     
-    @Published var exerciseData: [ExerciseModel] = []
-    @Published var exerciseList: [ExerciseListModel] = []
-    @Published var errorMessage: String?
+    // 운동 데이터
+    var exerciseData: ExerciseModel?
     
-    private var cancellables = Set<AnyCancellable>()
+    // 운동 리스트 데이터
+    var exerciseList: [ExerciseListModel] = []
     
-    func fetchAllExerciseData() {
-        ExerciseAPIManager.shared.getAllExerciseData { result in
+    // 사용자가 선택한 운동 리스트
+    var selectedExerciseList: [ExerciseListModel] = []
+    
+    // API Manager
+    let exerciseAPIManager = ExerciseAPIManager.shared
+    
+    // MARK: - Fetch Data
+    
+    func fetchExerciseData(for exerciseDay: String, completion: @escaping (Result<Void, Error>) -> Void) {
+        exerciseAPIManager.getExerciseData(exerciseDay: exerciseDay) { result in
             switch result {
             case .success(let data):
-                DispatchQueue.main.async {
-                    self.exerciseData = data
-                }
+                self.exerciseData = data
+                completion(.success(()))
             case .failure(let error):
-                DispatchQueue.main.async {
-                    self.errorMessage = error.localizedDescription
-                }
+                completion(.failure(error))
             }
         }
     }
     
-    func fetchExerciseData(for date: String) {
-        ExerciseAPIManager.shared.getExerciseData(exerciseDay: date) { result in
+    func fetchExerciseList(for exerciseDay: String, completion: @escaping (Result<Void, Error>) -> Void) {
+        exerciseAPIManager.getExerciseList(exerciseDay: exerciseDay) { result in
             switch result {
             case .success(let data):
-                DispatchQueue.main.async {
-                    self.exerciseData = [data]
-                }
+                self.exerciseList = data
+                completion(.success(()))
             case .failure(let error):
-                DispatchQueue.main.async {
-                    self.errorMessage = error.localizedDescription
-                }
+                completion(.failure(error))
             }
         }
     }
     
-    func fetchExerciseList(for date: String) {
-        ExerciseAPIManager.shared.getExerciseList(exerciseDay: date) { result in
+    // MARK: - Update Data
+    
+    func updateExerciseData(exerciseDay: String, steps: Int, totalCaloriesBurned: Int, completion: @escaping (Result<Void, Error>) -> Void) {
+        exerciseAPIManager.updateExerciseData(exerciseDay: exerciseDay, steps: steps, totalCaloriesBurned: totalCaloriesBurned) { result in
             switch result {
-            case .success(let data):
-                DispatchQueue.main.async {
-                    self.exerciseList = data
-                }
+            case .success:
+                // Update local exercise data or refresh if necessary
+                completion(.success(()))
             case .failure(let error):
-                DispatchQueue.main.async {
-                    self.errorMessage = error.localizedDescription
-                }
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    func addExerciseListData(exerciseDay: String, exerciseList: ExerciseListModel, completion: @escaping (Result<Void, Error>) -> Void) {
+        exerciseAPIManager.addExerciseListData(exerciseDay: exerciseDay, exerciseList: exerciseList) { result in
+            switch result {
+            case .success:
+                // Update local exercise list or refresh if necessary
+                completion(.success(()))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    func deleteExerciseListData(exerciseDay: String, exerciseListId: Int, completion: @escaping (Result<Void, Error>) -> Void) {
+        exerciseAPIManager.deleteExerciseListData(exerciseDay: exerciseDay, exerciseListId: exerciseListId) { result in
+            switch result {
+            case .success:
+                // Update local exercise list or refresh if necessary
+                completion(.success(()))
+            case .failure(let error):
+                completion(.failure(error))
             }
         }
     }
