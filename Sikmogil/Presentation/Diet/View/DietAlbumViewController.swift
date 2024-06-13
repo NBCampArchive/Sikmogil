@@ -8,16 +8,18 @@
 import UIKit
 import SnapKit
 import Then
+import MobileCoreServices
 
 class DietAlbumViewController: UIViewController, UINavigationControllerDelegate {
-
-    let AlbumTitleLabel = UILabel().then {
+    
+    // MARK: - UI components
+    let albumTitleLabel = UILabel().then {
         $0.text = "식단 앨범"
         $0.textColor = .appBlack
         $0.font = Suite.bold.of(size: 28)
         $0.textAlignment = .left
     }
-    let AlbumTitleSubLabel = UILabel().then {
+    let albumTitleSubLabel = UILabel().then {
         $0.text = "먹은 음식을 사진으로 기록해보세요!"
         $0.textColor = .appDarkGray
         $0.font = Suite.semiBold.of(size: 14)
@@ -28,12 +30,11 @@ class DietAlbumViewController: UIViewController, UINavigationControllerDelegate 
         $0.backgroundColor = .appBlack
         $0.setTitleColor(.white, for: .normal)
         $0.titleLabel?.font = Suite.bold.of(size: 22)
-
         $0.layer.cornerRadius = 14
         $0.clipsToBounds = true
+        $0.addTarget(self, action: #selector(albumAddPhotoButtonTapped), for: .touchUpInside)
     }
-    
-    let AlbumcollectionView: UICollectionView = {
+    let albumCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         layout.minimumLineSpacing = 8
@@ -41,38 +42,42 @@ class DietAlbumViewController: UIViewController, UINavigationControllerDelegate 
         return UICollectionView(frame: .zero, collectionViewLayout: layout)
     }()
     
+    var viewModel: DietAlbumViewModel!
     
+    // MARK: - View Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        view.backgroundColor = .white
         setupViews()
         setupConstraints()
         
-        view.backgroundColor = .white
+        viewModel = DietAlbumViewModel()
         
-        AlbumcollectionView.delegate = self
-        AlbumcollectionView.dataSource = self
+        albumCollectionView.delegate = self
+        albumCollectionView.dataSource = self
         
-        AlbumcollectionView.register(DietAlbumCollectionViewCell.self, forCellWithReuseIdentifier: DietAlbumCollectionViewCell.identifier)
+        albumCollectionView.register(DietAlbumCollectionViewCell.self, forCellWithReuseIdentifier: DietAlbumCollectionViewCell.identifier)
+        
+        viewModel.loadImages()
     }
     
-
+    // MARK: - Setup Methods
     private func setupViews() {
-        view.addSubviews(AlbumTitleLabel, AlbumTitleSubLabel, AlbumcollectionView, albumAddPhotoButton)
+        view.addSubviews(albumTitleLabel, albumTitleSubLabel, albumCollectionView, albumAddPhotoButton)
     }
-    
+
     private func setupConstraints() {
-        AlbumTitleLabel.snp.makeConstraints{
+        albumTitleLabel.snp.makeConstraints{
             $0.top.equalTo(view.safeAreaLayoutGuide)
             $0.leading.equalToSuperview().offset(16)
         }
-        AlbumTitleSubLabel.snp.makeConstraints{
-            $0.top.equalTo(AlbumTitleLabel.snp.bottom)
+        albumTitleSubLabel.snp.makeConstraints{
+            $0.top.equalTo(albumTitleLabel.snp.bottom)
             $0.leading.equalToSuperview().offset(16)
             $0.width.equalToSuperview()
         }
-        AlbumcollectionView.snp.makeConstraints{
-            $0.top.equalTo(AlbumTitleSubLabel.snp.bottom).offset(16)
+        albumCollectionView.snp.makeConstraints{
+            $0.top.equalTo(albumTitleSubLabel.snp.bottom).offset(16)
             $0.leading.equalToSuperview().offset(16)
             $0.trailing.equalToSuperview().inset(16)
             $0.bottom.equalToSuperview()
@@ -85,23 +90,65 @@ class DietAlbumViewController: UIViewController, UINavigationControllerDelegate 
         }
     }
     
+    // MARK: - Actions
+    
+    /*앨범없이 카메라만 바로 연결
     @objc func albumAddPhotoButtonTapped() {
+        print("시도 imagePicker")
         let imagePicker = UIImagePickerController()
-        imagePicker.sourceType = .camera // 카메라를 사용하도록 설정
+        imagePicker.sourceType = .camera
         imagePicker.delegate = self
         present(imagePicker, animated: true, completion: nil)
+    }*/
+    
+   // 카메라/앨범 중 선택
+    @objc func albumAddPhotoButtonTapped() {
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        
+        let cameraAction = UIAlertAction(title: "사진 찍기", style: .default) { _ in
+            self.presentImagePicker(sourceType: .camera)
+        }
+        
+        let photoLibraryAction = UIAlertAction(title: "앨범에서 가져오기", style: .default) { _ in
+            self.presentImagePicker(sourceType: .photoLibrary)
+        }
+        
+        let cancelAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
+        
+        alert.addAction(cameraAction)
+        alert.addAction(photoLibraryAction)
+        alert.addAction(cancelAction)
+        
+        present(alert, animated: true, completion: nil)
+    }
+    
+    private func presentImagePicker(sourceType: UIImagePickerController.SourceType) {
+        if UIImagePickerController.isSourceTypeAvailable(sourceType) {
+            let imagePicker = UIImagePickerController()
+            imagePicker.sourceType = sourceType
+            imagePicker.delegate = self
+            imagePicker.mediaTypes = [kUTTypeImage as String] // JPG 또는 PNG 이미지만 선택 가능하도록 설정
+            present(imagePicker, animated: true, completion: nil)
+        } else {
+            let alertController = UIAlertController(title: nil, message: "JPG 또는 PNG 이미지만 선택 가능합니다.", preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            present(alertController, animated: true, completion: nil)
+        }
     }
 }
 
-
+// MARK: - UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
 extension DietAlbumViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 20
+        return viewModel.savedDietImages.count
     }
-    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DietAlbumCollectionViewCell.identifier, for: indexPath) as! DietAlbumCollectionViewCell
-        cell.backgroundColor = .appLightGray
+        let reversedIndex = viewModel.savedDietImages.count - 1 - indexPath.item
+        let dietImage = viewModel.savedDietImages[reversedIndex]
+        cell.imageView.image = UIImage(data: dietImage.imageData)
+        cell.dataLabel.text = "\(dietImage.dateSaved)"
+        
         return cell
     }
     
@@ -112,8 +159,32 @@ extension DietAlbumViewController: UICollectionViewDelegate, UICollectionViewDat
         let widthPerItem = availableWidth / itemsPerRow
         return CGSize(width: widthPerItem, height: widthPerItem)
     }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        confirmDeleteImage(at: indexPath)
+    }
+    
+    func confirmDeleteImage(at indexPath: IndexPath) {
+        let alert = UIAlertController(title: "사진 삭제", message: "이 사진을 삭제하시겠습니까?", preferredStyle: .alert)
+        let deleteAction = UIAlertAction(title: "삭제", style: .destructive) { _ in
+            let index = self.viewModel.savedDietImages.count - 1 - indexPath.item
+            self.viewModel.deleteImage(at: index)
+            self.albumCollectionView.reloadData()
+        }
+        let cancelAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
+        alert.addAction(deleteAction)
+        alert.addAction(cancelAction)
+        present(alert, animated: true, completion: nil)
+    }
 }
 
+// MARK: - UIImagePickerControllerDelegate
 extension DietAlbumViewController: UIImagePickerControllerDelegate {
-    // 클래스 내용...
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        if let image = info[.originalImage] as? UIImage {
+            viewModel.saveImage(image)
+            albumCollectionView.reloadData()
+        }
+        picker.dismiss(animated: true, completion: nil)
+    }
 }
