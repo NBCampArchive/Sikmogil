@@ -106,11 +106,19 @@ class LoginViewController: UIViewController {
     
     private func setupBindings() {
         // ViewModel Outputs
+        viewModel.firstLoginSuccess
+            .subscribe(onNext: {
+                print("첫 로그인 성공")
+                self.navigateToOnboarding()
+            })
+            .disposed(by: disposeBag)
+        
         viewModel.loginSuccess
             .subscribe(onNext: {
-                print("Login succeeded")
-                print("Access Token!!: \(String(describing: LoginAPIManager.shared.keychain.get("accessToken")))")
-                self.navigateToOnboarding()
+                print("로그인 성공")
+                DispatchQueue.main.async {
+                    self.navigateToMainScreen()
+                }
             })
             .disposed(by: disposeBag)
         
@@ -131,9 +139,20 @@ class LoginViewController: UIViewController {
     
     private func navigateToOnboarding() {
         print("로그인 성공, 온보딩 화면으로 이동")
-//        self.navigationController?.pushViewController(OnboardingViewController(), animated: true)
         modalPresentationStyle = .fullScreen
         present(OnboardingViewController(), animated: true, completion: nil)
+    }
+    
+    private func navigateToMainScreen() {
+        print("로그인 성공, 메인 화면으로 이동")
+        let bottomTabBarController = BottomTabBarController()
+        
+        let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as! SceneDelegate
+        sceneDelegate.window?.rootViewController = bottomTabBarController
+        sceneDelegate.window?.rootViewController?.view.alpha = 0
+        UIView.animate(withDuration: 1.5, animations: {
+            sceneDelegate.window?.rootViewController?.view.alpha = 1
+        })
     }
     
 }

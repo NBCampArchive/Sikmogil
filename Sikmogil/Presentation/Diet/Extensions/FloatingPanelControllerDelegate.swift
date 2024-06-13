@@ -10,22 +10,15 @@ import FloatingPanel
 
 extension DietMainViewController: FloatingPanelControllerDelegate {
     
-    func floatingPanelWillAppear(_ fpc: FloatingPanelController) {
-        if fpc.state != .hidden {
-            tabBarController?.tabBar.isHidden = true
-        }
-    }
-    
     // FloatingPanel이 이동할 때 호출되는 메서드
     func floatingPanelDidMove(_ fpc: FloatingPanelController) {
+        
         if fpc.state != .hidden {
             tabBarController?.tabBar.isHidden = true
         }
 
         // 패널의 현재 위치 가져오기
         let loc = fpc.surfaceLocation
-        // 패널이 절반 이상 내려간 위치
-        let minY = fpc.surfaceLocation(for: .half).y
         // 패널이 완전히 내려간 위치
         let maxY = fpc.surfaceLocation(for: .tip).y
         
@@ -38,10 +31,5 @@ extension DietMainViewController: FloatingPanelControllerDelegate {
                 fpc.removeFromParent()
             }
         }
-        // half보다 위로 올라갈 수 없음
-        if loc.y < minY {
-            fpc.surfaceLocation = CGPoint(x: loc.x, y: minY)
-        }
     }
-
 }

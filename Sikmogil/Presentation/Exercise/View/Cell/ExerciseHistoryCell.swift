@@ -7,49 +7,40 @@
 
 import UIKit
 import SnapKit
+import Then
 
 // MARK: - ExerciseHistoryCell
 class ExerciseHistoryCell: UITableViewCell {
 
     static let identifier = "ExerciseHistoryCell"
     
-    private let cardView: UIView = {
-        let view = UIView()
-        view.layer.cornerRadius = 16
-        return view
-    }()
-    
-    private let exerciseImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFit
-        return imageView
-    }()
-    
-    private let exerciseLabel: UILabel = {
-        let label = UILabel()
-        label.font = Suite.semiBold.of(size: 16)
-        return label
-    }()
-    
-    private let caloriesLabel: UILabel = {
-        let label = UILabel()
-        label.font = Suite.bold.of(size: 16)
-        return label
-    }()
-    
-    private let addButton: UIButton = {
-        let button = UIButton(type: .system)
-        if let plusImage = UIImage(systemName: "plus") {
-            button.setImage(plusImage, for: .normal)
-        }
-        button.tintColor = .customBlack
-        return button
-    }()
+    // MARK: - Components
+    private let cardView = UIView().then {
+        $0.layer.cornerRadius = 16
+    }
 
+    private let exerciseImageView = UIImageView().then {
+        $0.contentMode = .scaleAspectFit
+    }
+
+    private let exerciseLabel = UILabel().then {
+        $0.font = Suite.semiBold.of(size: 16)
+    }
+
+    private let caloriesLabel = UILabel().then {
+        $0.font = Suite.bold.of(size: 16)
+    }
+
+    private let addButton = UIButton(type: .system).then {
+        if let plusImage = UIImage(systemName: "plus") {
+            $0.setImage(plusImage, for: .normal)
+        }
+        $0.tintColor = .appBlack
+    }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        configureUI()
+        setupViews()
         setupConstraints()
     }
     
@@ -57,18 +48,20 @@ class ExerciseHistoryCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - Configure
     func configure(with image: UIImage, exercise: String, calories: String) {
         exerciseImageView.image = image
         exerciseLabel.text = exercise
         caloriesLabel.text = calories
     }
     
-    private func configureUI() {
+    // MARK: - Setup Views
+    private func setupViews() {
         contentView.addSubview(cardView)
         cardView.addSubviews(exerciseImageView, exerciseLabel, caloriesLabel, addButton)
         contentView.backgroundColor = .clear
         selectionStyle = .none
-        cardView.backgroundColor = .customLightGray
+        cardView.backgroundColor = .appLightGray
     }
     
     private func setupConstraints() {

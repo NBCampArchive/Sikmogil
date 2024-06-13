@@ -17,13 +17,13 @@ class BottomTabBarController: UITabBarController {
     }
     
     private func setupTabBar() {
-        let homeVC = ViewController()
+        let homeVC = MainViewController()
         homeVC.tabBarItem = UITabBarItem(title: "홈", image: UIImage(named: "home"), tag: 0)
         
         let dietVC = DietMainViewController()
         dietVC.tabBarItem = UITabBarItem(title: "식단", image: UIImage(named: "diet"), tag: 1)
         
-        let exerciseVC = ExerciseViewController()
+        let exerciseVC = ExerciseMenuViewController()
         exerciseVC.tabBarItem = UITabBarItem(title: "운동", image: UIImage(named: "exercise"), tag: 2)
         
         let communicationVC = ViewController()

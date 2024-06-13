@@ -7,6 +7,7 @@
 
 import UIKit
 import SnapKit
+import Then
 
 class ExerciseViewController: UIViewController {
     
@@ -14,115 +15,79 @@ class ExerciseViewController: UIViewController {
     private let scrollView = UIScrollView()
     private let contentView = UIView()
 
-    private let stackView: UIStackView = {
-       let stackView = UIStackView()
-        stackView.axis = .vertical
-        stackView.spacing = 22
-        return stackView
-    }()
-    
-    private let headerStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.axis = .horizontal
-        stackView.spacing = 10
-        return stackView
-    }()
-    
-    private let descriptionLabel: UILabel = {
-        let label = UILabel()
-        label.text = "오늘의 활동을 기록해보세요!"
-        label.font = Suite.semiBold.of(size: 16)
-        label.textColor = .customDarkGray
-        return label
-    }()
-    
-    let exerciseMenuButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("운동", for: .normal)
-        button.titleLabel?.font = Suite.bold.of(size: 28)
-        button.tintColor = .customBlack
-        return button
-    }()
-    
-    let stepsMenuButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("걸음 수", for: .normal)
-        button.titleLabel?.font = Suite.bold.of(size: 28)
-        button.tintColor = .customDarkGray
-        return button
-    }()
-    
-    private let progressView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .clear
-        return view
-    }()
-    
+    private let descriptionLabel = UILabel().then {
+        $0.text = "오늘의 활동을 기록해보세요!"
+        $0.font = Suite.semiBold.of(size: 14)
+        $0.textColor = .appDarkGray
+    }
+
+    let exerciseMenuButton = UIButton(type: .system).then {
+        $0.setTitle("운동", for: .normal)
+        $0.titleLabel?.font = Suite.bold.of(size: 28)
+        $0.tintColor = .appBlack
+    }
+
+    let stepsMenuButton = UIButton(type: .system).then {
+        $0.setTitle("걸음 수", for: .normal)
+        $0.titleLabel?.font = Suite.bold.of(size: 28)
+        $0.tintColor = .appDarkGray
+    }
+
+    private let progressView = UIView().then {
+        $0.backgroundColor = .clear
+    }
+
     private let customCircularProgressBar = CustomCircularProgressBar().then {
         $0.backgroundColor = .clear
         $0.progressColor = .appGreen
         $0.trackColor = .appLightGray
     }
-    
-    private let exerciseCircleView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .customGreen
-        view.layer.cornerRadius = 40
-        return view
-    }()
-    
-   private let activeImage: UIImageView = {
-        let imageView  = UIImageView()
-        imageView.image = .active
-        imageView.contentMode = .scaleAspectFit
-        return imageView
-    }()
-    
-    private let progressLabel: UILabel = {
-        let label = UILabel()
-        label.text = "활동시간 00분\n소모칼로리 0kcal"
-        label.numberOfLines = 2
-        label.textAlignment = .center
-        label.font = Suite.semiBold.of(size: 18)
-        label.textColor = .customDarkGray
-        return label
-    }()
-    
-    private let historyLabel: UILabel = {
-        let label = UILabel()
-        label.text = "운동 기록"
-        label.font = Suite.bold.of(size: 28)
-        label.textColor = .customBlack
-        return label
-    }()
-    
-    private let albumButton: UIButton = {
-        let button = UIButton()
-        button.setTitle("앨범", for: .normal)
-        button.titleLabel?.font = Suite.semiBold.of(size: 16)
-        button.tintColor = .white
-        button.backgroundColor = .customBlack
-        button.layer.cornerRadius = 16
-        return button
-    }()
-    
-    private let startExerciseButton: UIButton = {
-        let button = UIButton()
-        button.setTitle("운동하기", for: .normal)
-        button.titleLabel?.font = Suite.bold.of(size: 20)
-        button.tintColor = .white
-        button.backgroundColor = .customBlack
-        button.layer.cornerRadius = 16
-        return button
-    }()
-    
-    private let tableView: UITableView = {
-        let tableView = UITableView()
-        tableView.backgroundColor = .clear
-        tableView.isScrollEnabled = false
-        tableView.separatorStyle = .none
-        return tableView
-    }()
+
+    private let exerciseCircleView = UIView().then {
+        $0.backgroundColor = .appGreen
+        $0.layer.cornerRadius = 40
+    }
+
+    private let activeImage = UIImageView().then {
+        $0.image = .active
+        $0.contentMode = .scaleAspectFit
+    }
+
+    private let progressLabel = UILabel().then {
+        $0.text = "활동시간 00분\n소모칼로리 0kcal"
+        $0.numberOfLines = 2
+        $0.textAlignment = .center
+        $0.font = Suite.semiBold.of(size: 18)
+        $0.textColor = .appDarkGray
+    }
+
+    private let historyLabel = UILabel().then {
+        $0.text = "운동 기록"
+        $0.font = Suite.bold.of(size: 28)
+        $0.textColor = .appBlack
+    }
+
+    private let albumButton = UIButton().then {
+        $0.setTitle("앨범", for: .normal)
+        $0.titleLabel?.font = Suite.semiBold.of(size: 16)
+        $0.tintColor = .white
+        $0.backgroundColor = .appBlack
+        $0.layer.cornerRadius = 16
+    }
+
+    private let startExerciseButton = UIButton().then {
+        $0.setTitle("운동하기", for: .normal)
+        $0.titleLabel?.font = Suite.bold.of(size: 20)
+        $0.tintColor = .white
+        $0.backgroundColor = .appBlack
+        $0.layer.cornerRadius = 16
+    }
+
+    private let tableView = UITableView().then {
+        $0.backgroundColor = .clear
+        $0.isScrollEnabled = false
+        $0.separatorStyle = .none
+    }
     
     // MARK: - View Life Cycle
     override func viewDidLoad() {
@@ -143,15 +108,14 @@ class ExerciseViewController: UIViewController {
         
         view.addSubviews(scrollView, startExerciseButton)
         scrollView.addSubview(contentView)
-        contentView.addSubviews(headerStackView, descriptionLabel, progressView, historyLabel, albumButton, tableView)
-        headerStackView.addArrangedSubviews(exerciseMenuButton, stepsMenuButton)
+        contentView.addSubviews(descriptionLabel, progressView, historyLabel, albumButton, tableView)
         progressView.addSubviews(customCircularProgressBar, exerciseCircleView, progressLabel)
         exerciseCircleView.addSubview(activeImage)
     }
     
     private func setupConstraints() {
         scrollView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+            $0.edges.equalTo(view.safeAreaLayoutGuide)
         }
         
         contentView.snp.makeConstraints {
@@ -159,13 +123,8 @@ class ExerciseViewController: UIViewController {
             $0.width.equalTo(scrollView)
         }
         
-        headerStackView.snp.makeConstraints {
-            $0.leading.equalTo(contentView).inset(16)
-            $0.top.equalToSuperview().inset(16)
-        }
-        
         descriptionLabel.snp.makeConstraints {
-            $0.top.equalTo(headerStackView.snp.bottom).offset(8)
+            $0.top.equalToSuperview()
             $0.leading.equalToSuperview().inset(16)
         }
         
