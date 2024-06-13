@@ -3,7 +3,7 @@
 //  Sikmogil
 //
 //  Created by 희라 on 6/13/24.
-//
+//  [Network] **설명** 식단 식품영양성분DB정보 API 매니저
 
 import Foundation
 import Alamofire
@@ -20,10 +20,8 @@ class FoodDbInfoAPIManager {
     private let baseURLString = "https://apis.data.go.kr/1471000/FoodNtrCpntDbInfo/getFoodNtrCpntDbInq"
     private let serviceKey = "F%2Fl3ZLO9%2FhXg%2BaVY%2FrrO6OR949MJzDvWQUzVZsh3lNQHHHC950O2kyl5TCipWM51RkRQyGjwIZLwrOYWDSgvHQ%3D%3D"
 
-    // private 초기화자
     init() {}
     
-    // static으로 공유 인스턴스 노출
     static let shared = FoodDbInfoAPIManager()
     
     func fetchFoodItems(searchQuery: String, completion: @escaping (Result<[FoodItem], Error>) -> Void) {
@@ -43,7 +41,7 @@ class FoodDbInfoAPIManager {
         }
 
         sessionManager.request(url, method: .get).responseJSON { response in
-            debugPrint(response) // 응답 정보 디버깅
+            //debugPrint(response) // 응답 정보 디버깅용
 
             switch response.result {
             case .success(let data):
