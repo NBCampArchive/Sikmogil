@@ -7,7 +7,7 @@
 
 import UIKit
 import SnapKit
-import Then
+import Combine
 import FloatingPanel
 
 class WaterBottomSheetViewController: UIViewController {
@@ -36,6 +36,7 @@ class WaterBottomSheetViewController: UIViewController {
         $0.titleLabel?.font = Suite.bold.of(size: 22)
         $0.layer.cornerRadius = 14
         $0.clipsToBounds = true
+        $0.addTarget(self, action: #selector(doneButtonTapped), for: .touchUpInside)
     }
     
     // MARK: - View Lifecycle
@@ -103,6 +104,28 @@ class WaterBottomSheetViewController: UIViewController {
             let initialHeight = self.view.bounds.height + 100
             fpc.surfaceLocation = CGPoint(x: self.view.bounds.midX, y: initialHeight)
             fpc.surfaceView.containerMargins.bottom = 0
+        }
+    }
+    
+    @objc func doneButtonTapped() {
+        waterRecordTextField.resignFirstResponder()//키보드 종료
+        // 텍스트 필드의 값을 가져와서 정수로 변환
+        guard let text = waterRecordTextField.text?.replacingOccurrences(of: " ml", with: ""),
+              let waterAmount = Int(text)
+        else {
+            return
+        }
+        
+        // 싱글톤 인스턴스를 통해 데이터 업데이트
+        DietViewModel.shared.addWaterAmount(waterAmount)
+        
+        if let fpc = parent as? FloatingPanelController {
+            fpc.move(to: .hidden, animated: true)
+            fpc.hide(animated: true){
+                self.tabBarController?.tabBar.isHidden = false
+                fpc.view.removeFromSuperview()
+                fpc.removeFromParent()
+            }
         }
     }
 }
