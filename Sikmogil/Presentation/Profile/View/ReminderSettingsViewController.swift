@@ -13,20 +13,21 @@ import RxCocoa
 
 class ReminderSettingsViewController: UIViewController {
     
-    // MARK: - 속성정의
     private let scrollView = UIScrollView()
     private let contentView = UIView()
+    private let notificationHelper = NotificationHelper.shared
+    private let disposeBag = DisposeBag()
     
     private let titleLabel = UILabel().then {
         $0.text = "리마인드 알림 시간 설정"
-        $0.font = Suite.bold.of(size: 24)
-        $0.textColor = .appBlack
+        $0.font = UIFont.boldSystemFont(ofSize: 24)
+        $0.textColor = .black
     }
     
     private let descriptionLabel = UILabel().then {
         $0.text = "하루 리마인드 알림을 원하는 시간을 선택해주세요"
-        $0.font = Suite.semiBold.of(size: 14)
-        $0.textColor = .customDarkGray
+        $0.font = UIFont.boldSystemFont(ofSize: 14)
+        $0.textColor = .darkGray
     }
     
     private let timeTextField = UITextField().then {
@@ -40,7 +41,7 @@ class ReminderSettingsViewController: UIViewController {
     
     private let timeTextFieldWarningLabel = UILabel().then {
         $0.text = "시간을 입력해주세요"
-        $0.font = Suite.regular.of(size: 12)
+        $0.font = UIFont.systemFont(ofSize: 12)
         $0.textColor = .red
         $0.isHidden = true
     }
@@ -48,12 +49,12 @@ class ReminderSettingsViewController: UIViewController {
     private let doneButton = UIButton(type: .system).then {
         $0.setTitle("완료", for: .normal)
         $0.setTitleColor(.white, for: .normal)
-        $0.titleLabel?.font = Suite.bold.of(size: 22)
-        $0.backgroundColor = .customBlack
+        $0.titleLabel?.font = UIFont.boldSystemFont(ofSize: 22)
+        $0.backgroundColor = .black
         $0.layer.cornerRadius = 8
     }
     
-    // MARK: - 생명주기정의
+    // MARK: - 생명주기
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
@@ -114,10 +115,47 @@ class ReminderSettingsViewController: UIViewController {
     }
     
     @objc private func doneButtonTapped() {
-        // 완료 버튼 눌렀을 때의 동작을 여기에 정의
-        // viewModel.reminderValidateForm() 또는 다른 유효성 검사 로직을 추가
-        // viewModel.saveReminderData() 또는 다른 저장 로직을 추가
-        // view.shake() 또는 경고 라벨 표시 로직을 추가
+        guard let timeText = timeTextField.text, !timeText.isEmpty else {
+            timeTextFieldWarningLabel.isHidden = false
+            return
+        }
+        
+        let timeComponents = timeText.split(separator: ":")
+        guard timeComponents.count == 2,
+              let hours = Int(timeComponents[0]),
+              let minutes = Int(timeComponents[1]),
+              hours >= 0, hours < 24,
+              minutes >= 0, minutes < 60 else {
+            timeTextFieldWarningLabel.isHidden = false
+            return
+        }
+        
+        timeTextFieldWarningLabel.isHidden = true
+        
+        // 알림 스케줄링
+        var dateComponents = DateComponents()
+        dateComponents.hour = hours
+        dateComponents.minute = minutes
+        
+        notificationHelper.scheduleDailyNotification(at: dateComponents) { error in
+            if let error = error {
+                print("Failed to schedule notification: \(error)")
+                self.showAlert(title: "오류", message: "알림 설정에 실패했습니다.")
+            } else {
+                print("Notification scheduled successfully for \(hours):\(minutes)")
+                self.showAlert(title: "성공", message: "알림이 설정되었습니다.") {
+                    self.navigationController?.popViewController(animated: true)
+                }
+            }
+        }
+    }
+    
+    private func showAlert(title: String, message: String, completion: (() -> Void)? = nil) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "확인", style: .default) { _ in
+            completion?()
+        })
+        present(alert, animated: true, completion: nil)
     }
 }
 
@@ -125,20 +163,15 @@ extension ReminderSettingsViewController: UITextFieldDelegate {
     // UITextFieldDelegate 메서드
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         if let text = textField.text {
-            // 숫자 입력만 허용
             let allowedCharacters = CharacterSet.decimalDigits
             let characterSet = CharacterSet(charactersIn: string)
             if !allowedCharacters.isSuperset(of: characterSet) {
                 return false
             }
-            
-            // 현재 텍스트와 입력된 문자열 결합
             var newString = (text as NSString).replacingCharacters(in: range, with: string)
-            
-            // : 추가 로직
             newString = newString.replacingOccurrences(of: ":", with: "")
             
-            if newString.count > 5 {
+            if newString.count > 4 {
                 return false
             }
             
@@ -148,7 +181,6 @@ extension ReminderSettingsViewController: UITextFieldDelegate {
                 newString.insert(":", at: newString.index(newString.startIndex, offsetBy: 2))
             }
             
-            // 유효성 검사 (00:00 ~ 23:59)
             if newString.count == 5 {
                 let components = newString.split(separator: ":")
                 if let hours = Int(components[0]), let minutes = Int(components[1]) {
@@ -157,7 +189,6 @@ extension ReminderSettingsViewController: UITextFieldDelegate {
                     }
                 }
             }
-            
             textField.text = newString
             return false
         }
