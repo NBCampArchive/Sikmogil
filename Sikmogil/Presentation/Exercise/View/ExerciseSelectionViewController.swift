@@ -211,37 +211,24 @@ class ExerciseSelectionViewController: UIViewController {
     }
     
     private func setupMenus() {
-        let exerciseActions = [
-            UIAction(title: "런닝", handler: { [weak self] _ in
-                self?.exerciseSelectionLabel.text = "런닝"
+        let exercises = ["런닝", "수영", "자전거", "기타"]
+        let times = ["30분", "60분", "90분"]
+        
+        let exerciseActions = exercises.map { exercise in
+            UIAction(title: exercise) { [weak self] _ in
+                self?.exerciseSelectionLabel.text = exercise
                 self?.exerciseSelectionLabel.textColor = .appBlack
-            }),
-            UIAction(title: "수영", handler: { [weak self] _ in
-                self?.exerciseSelectionLabel.text = "수영"
-                self?.exerciseSelectionLabel.textColor = .appBlack
-            }),
-            UIAction(title: "자전거", handler: { [weak self] _ in
-                self?.exerciseSelectionLabel.text = "자전거"
-                self?.exerciseSelectionLabel.textColor = .appBlack
-            })
-        ]
+            }
+        }
         
         let exerciseMenu = UIMenu(title: "", children: exerciseActions)
         
-        let timeActions = [
-            UIAction(title: "30분", handler: { [weak self] _ in
-                self?.timeSelectionLabel.text = "30분"
+        let timeActions = times.map { time in
+            UIAction(title: time) { [weak self] _ in
+                self?.timeSelectionLabel.text = time
                 self?.timeSelectionLabel.textColor = .appBlack
-            }),
-            UIAction(title: "60분", handler: { [weak self] _ in
-                self?.timeSelectionLabel.text = "60분"
-                self?.timeSelectionLabel.textColor = .appBlack
-            }),
-            UIAction(title: "90분", handler: { [weak self] _ in
-                self?.timeSelectionLabel.text = "90분"
-                self?.timeSelectionLabel.textColor = .appBlack
-            })
-        ]
+            }
+        }
         
         let timeMenu = UIMenu(title: "", children: timeActions)
         
