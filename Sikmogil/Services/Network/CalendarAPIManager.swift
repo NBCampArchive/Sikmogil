@@ -7,6 +7,7 @@
 
 import Foundation
 import Alamofire
+import Combine
 
 class CalendarAPIManager {
     
@@ -49,7 +50,7 @@ class CalendarAPIManager {
     func getAllCalendarData(completion: @escaping (Result<[CalendarModel], Error>) -> Void) {
         let url = "\(baseURL)/api/calendar"
         
-        AF.request(url, method: .get, encoding: URLEncoding.default, headers: headers).responseDecodable(of: [CalendarModel].self) { response in
+        AF.request(url, method: .get, encoding: JSONEncoding.default, headers: headers).responseDecodable(of: [CalendarModel].self) { response in
             switch response.result {
             case .success(let data):
                 print("getAllCalendarData success")
@@ -69,7 +70,7 @@ class CalendarAPIManager {
             "diaryDate": calendarDate
         ]
         
-        AF.request(url, method: .get, parameters: parameters, encoding: URLEncoding.default, headers: headers).responseDecodable(of: [CalendarModel].self) { response in
+        AF.request(url, method: .get, parameters: parameters, encoding: JSONEncoding.default, headers: headers).responseDecodable(of: [CalendarModel].self) { response in
             switch response.result {
             case .success(let data):
                 print("getCalendarData success")
@@ -79,6 +80,39 @@ class CalendarAPIManager {
             }
         }
     }
+    
+    //MARK: - 특정 날짜 몸무게 업데이트
+    func updateWeightData(weightDate: String, weight: String)  -> AnyPublisher<Void, Error> {
+        let url = "\(baseURL)/api/calendar/updateWeight"
+        
+        let parameters: [String: Any] = [
+            "date": weightDate,
+            "weight": weight
+        ]
+        
+        return AF.request(url, method: .post, parameters: parameters, encoding: URLEncoding.default, headers: headers)
+            .validate()
+            .publishData()
+            .tryMap{ response in
+                if response.error != nil {
+                    throw response.error!
+                }
+                return ()
+            }
+            .eraseToAnyPublisher()
+    }
+    
+    //MARK: - 7일 기록치 몸무게 출력, 시작일 - 목표기간 포함
+    func getWeightData() -> AnyPublisher<TargetModel, Error> {
+        let url = "\(baseURL)/api/calendar/getWeek"
+        
+        return AF.request(url, method: .get, encoding: JSONEncoding.default, headers: headers)
+            .publishDecodable(type: TargetModel.self)
+            .value()
+            .mapError { $0 as Error }
+            .eraseToAnyPublisher()
+    }
+    
 }
 // MARK: - Example Code
 //CalendarAPIManager.shared.updateCalendarData(calendarDate: DateHelper.shared.formatDateToYearMonthDay(Date()), diaryText: "다이어리 테스트 1"){ result in
