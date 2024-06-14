@@ -50,6 +50,7 @@
 		B52001E22C1897C20083CBDF /* DietModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001E12C1897C20083CBDF /* DietModel.swift */; };
 		B52001E42C1971CD0083CBDF /* ImageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001E32C1971CD0083CBDF /* ImageModel.swift */; };
 		B52001E62C1972330083CBDF /* ImageAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001E52C1972330083CBDF /* ImageAPIManager.swift */; };
+		B52001EC2C1AE1FB0083CBDF /* FloatingPannelStyleHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001EB2C1AE1FB0083CBDF /* FloatingPannelStyleHelper.swift */; };
 		B54ABF882C09BD43002E89DC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABF872C09BD43002E89DC /* AppDelegate.swift */; };
 		B54ABF8A2C09BD43002E89DC /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABF892C09BD43002E89DC /* SceneDelegate.swift */; };
 		B54ABF8C2C09BD43002E89DC /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABF8B2C09BD43002E89DC /* ViewController.swift */; };
@@ -154,6 +155,7 @@
 		B52001E12C1897C20083CBDF /* DietModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DietModel.swift; sourceTree = "<group>"; };
 		B52001E32C1971CD0083CBDF /* ImageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageModel.swift; sourceTree = "<group>"; };
 		B52001E52C1972330083CBDF /* ImageAPIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageAPIManager.swift; sourceTree = "<group>"; };
+		B52001EB2C1AE1FB0083CBDF /* FloatingPannelStyleHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingPannelStyleHelper.swift; sourceTree = "<group>"; };
 		B54ABF842C09BD43002E89DC /* Sikmogil.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sikmogil.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B54ABF872C09BD43002E89DC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B54ABF892C09BD43002E89DC /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -511,6 +513,7 @@
 			children = (
 				B54ABFCC2C0CB78F002E89DC /* Helpers.swift */,
 				B54ABFD02C0CBC55002E89DC /* DateHelper.swift */,
+				B52001EB2C1AE1FB0083CBDF /* FloatingPannelStyleHelper.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -763,6 +766,7 @@
 				B52001D82C171B8C0083CBDF /* DietViewModel.swift in Sources */,
 				B52001DB2C171F9D0083CBDF /* UIApplication.swift in Sources */,
 				B54ABFFA2C0F0F65002E89DC /* LoginModel.swift in Sources */,
+				B52001EC2C1AE1FB0083CBDF /* FloatingPannelStyleHelper.swift in Sources */,
 				B52001AE2C11B99E0083CBDF /* UIViewControllerExtension.swift in Sources */,
 				B52001D12C171B8C0083CBDF /* AddDietMenuTableViewCell.swift in Sources */,
 				CACA65B82C1860CF0030D8D5 /* DietAlbumViewModel.swift in Sources */,
