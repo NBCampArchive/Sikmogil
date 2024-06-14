@@ -107,6 +107,10 @@
 		F3094F062C1841240099DE2C /* ExerciseMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3094F052C1841240099DE2C /* ExerciseMenuViewController.swift */; };
 		F3094F082C197AFA0099DE2C /* HalfCircleProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3094F072C197AFA0099DE2C /* HalfCircleProgressView.swift */; };
 		F3094F0E2C19A1BE0099DE2C /* ExerciseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3094F0D2C19A1BE0099DE2C /* ExerciseViewModel.swift */; };
+		F36105B12C1ADD7D00237572 /* APITestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F36105B02C1ADD7D00237572 /* APITestViewController.swift */; };
+		F36105B32C1BE05800237572 /* ExerciseCategoryAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F36105B22C1BE05800237572 /* ExerciseCategoryAPIManager.swift */; };
+		F36105B52C1BFF6500237572 /* UILabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F36105B42C1BFF6500237572 /* UILabel.swift */; };
+		F36105B72C1BFF7600237572 /* Double.swift in Sources */ = {isa = PBXBuildFile; fileRef = F36105B62C1BFF7600237572 /* Double.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -197,6 +201,10 @@
 		F3094F052C1841240099DE2C /* ExerciseMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseMenuViewController.swift; sourceTree = "<group>"; };
 		F3094F072C197AFA0099DE2C /* HalfCircleProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HalfCircleProgressView.swift; sourceTree = "<group>"; };
 		F3094F0D2C19A1BE0099DE2C /* ExerciseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseViewModel.swift; sourceTree = "<group>"; };
+		F36105B02C1ADD7D00237572 /* APITestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APITestViewController.swift; sourceTree = "<group>"; };
+		F36105B22C1BE05800237572 /* ExerciseCategoryAPIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseCategoryAPIManager.swift; sourceTree = "<group>"; };
+		F36105B42C1BFF6500237572 /* UILabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabel.swift; sourceTree = "<group>"; };
+		F36105B62C1BFF7600237572 /* Double.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Double.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -406,6 +414,7 @@
 				B54ABFF72C0F0DC7002E89DC /* LoginAPIManager.swift */,
 				B52001AF2C11D7FA0083CBDF /* UserAPIManager.swift */,
 				B52001BE2C15AC1E0083CBDF /* ExerciseAPIManager.swift */,
+				F36105B22C1BE05800237572 /* ExerciseCategoryAPIManager.swift */,
 				B52001DF2C18922D0083CBDF /* DietAPIManager.swift */,
 				B52001E52C1972330083CBDF /* ImageAPIManager.swift */,
 			);
@@ -485,13 +494,15 @@
 		B54ABFC82C0CB75A002E89DC /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				B54ABFCA2C0CB770002E89DC /* Extension.swift */,
 				B52001DA2C171F9C0083CBDF /* FloatingPanelControllerStyle.swift */,
 				B52001D92C171F9C0083CBDF /* UIApplication.swift */,
 				B54AC00B2C0F48D1002E89DC /* SikmogilBundle++.swift */,
-				B54ABFCA2C0CB770002E89DC /* Extension.swift */,
 				B54ABFCE2C0CBB59002E89DC /* UIViewExtensions.swift */,
 				B54ABFED2C0D7370002E89DC /* UIColorExtension.swift */,
 				B52001AD2C11B99E0083CBDF /* UIViewControllerExtension.swift */,
+				F36105B42C1BFF6500237572 /* UILabel.swift */,
+				F36105B62C1BFF7600237572 /* Double.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -634,6 +645,7 @@
 				F3094EC52C0E40040099DE2C /* ExerciseSelectionViewController.swift */,
 				F3094EEE2C0EEDA40099DE2C /* ExerciseTimerViewController.swift */,
 				F3094EF02C0EEDBA0099DE2C /* ExerciseResultViewController.swift */,
+				F36105B02C1ADD7D00237572 /* APITestViewController.swift */,
 				F3094EC22C0DB1730099DE2C /* Cell */,
 			);
 			path = View;
@@ -770,6 +782,7 @@
 				F3094F0E2C19A1BE0099DE2C /* ExerciseViewModel.swift in Sources */,
 				B54AC01A2C105646002E89DC /* Step1ViewController.swift in Sources */,
 				B54ABFCB2C0CB770002E89DC /* Extension.swift in Sources */,
+				F36105B12C1ADD7D00237572 /* APITestViewController.swift in Sources */,
 				62578CFE2C15A395005035BB /* PhotoCell.swift in Sources */,
 				B52001E42C1971CD0083CBDF /* ImageModel.swift in Sources */,
 				540768882C12EAD900543A72 /* ProfileTableView.swift in Sources */,
@@ -788,6 +801,7 @@
 				5485F0882C0DFE2D00A2A71E /* ProfileTableViewCell.swift in Sources */,
 				546E32312C1078D100E94C2A /* EditProfileViewController.swift in Sources */,
 				B54ABFCD2C0CB78F002E89DC /* Helpers.swift in Sources */,
+				F36105B32C1BE05800237572 /* ExerciseCategoryAPIManager.swift in Sources */,
 				B54ABFBD2C0CB60D002E89DC /* Network.swift in Sources */,
 				545AA5182C11F4760083D893 /* ReminderSettingsViewController.swift in Sources */,
 				F3094EF12C0EEDBA0099DE2C /* ExerciseResultViewController.swift in Sources */,
@@ -814,6 +828,7 @@
 				B54AC0152C1055DA002E89DC /* OnboardingProgressBar.swift in Sources */,
 				B54ABFF82C0F0DC7002E89DC /* LoginAPIManager.swift in Sources */,
 				B54AC01E2C1056C3002E89DC /* Step3ViewController.swift in Sources */,
+				F36105B72C1BFF7600237572 /* Double.swift in Sources */,
 				B54AC01C2C1056A4002E89DC /* Step2ViewController.swift in Sources */,
 				B54ABFEC2C0D6BA6002E89DC /* BottomTabBarController.swift in Sources */,
 				B54AC0122C1054B1002E89DC /* OnboardingViewModel.swift in Sources */,
@@ -823,6 +838,7 @@
 				62578D022C15E476005035BB /* DiaryRecordFloatingViewController.swift in Sources */,
 				B52001E62C1972330083CBDF /* ImageAPIManager.swift in Sources */,
 				B52001D32C171B8C0083CBDF /* AddDietMenuViewController.swift in Sources */,
+				F36105B52C1BFF6500237572 /* UILabel.swift in Sources */,
 				B54ABFBF2C0CB639002E89DC /* PersistentStorage.swift in Sources */,
 				B52001D42C171B8C0083CBDF /* DietAlbumViewController.swift in Sources */,
 				F3094EC12C0D91310099DE2C /* ExerciseViewController.swift in Sources */,
