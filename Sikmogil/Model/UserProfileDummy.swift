@@ -16,6 +16,7 @@ struct UserProfileDummy {
         targetWeight: "60",
         toDate: "2024-06-12",
         targetDate: "2024-12-12",
-        reminderTime: "09:00"
+        reminderTime: "09:00",
+        canEatCalorie: 2000
     )
 }
