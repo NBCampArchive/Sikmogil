@@ -1,5 +1,5 @@
 //
-//  FoodDbInfoAPIManager.swift
+//  FoodDbAPIManager.swift
 //  Sikmogil
 //
 //  Created by 희라 on 6/13/24.
@@ -15,14 +15,14 @@ let sessionManager: Session = {
     return Session(configuration: configuration, serverTrustManager: manager)
 }()
 
-class FoodDbInfoAPIManager {
+class FoodDbAPIManager {
     
     private let baseURLString = "https://apis.data.go.kr/1471000/FoodNtrCpntDbInfo/getFoodNtrCpntDbInq"
     private let serviceKey = "F%2Fl3ZLO9%2FhXg%2BaVY%2FrrO6OR949MJzDvWQUzVZsh3lNQHHHC950O2kyl5TCipWM51RkRQyGjwIZLwrOYWDSgvHQ%3D%3D"
 
     init() {}
     
-    static let shared = FoodDbInfoAPIManager()
+    static let shared = FoodDbAPIManager()
     
     func fetchFoodItems(searchQuery: String, completion: @escaping (Result<[FoodItem], Error>) -> Void) {
         guard let encodedQuery = searchQuery.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
@@ -31,7 +31,7 @@ class FoodDbInfoAPIManager {
             return
         }
 
-        let urlString = "\(baseURLString)?serviceKey=\(serviceKey)&pageNo=1&numOfRows=5&type=json&FOOD_NM_KR=\(encodedQuery)"
+        let urlString = "\(baseURLString)?serviceKey=\(serviceKey)&pageNo=1&numOfRows=30&type=json&FOOD_NM_KR=\(encodedQuery)"
         print("요청 URL:", urlString)
 
         guard let url = URL(string: urlString) else {

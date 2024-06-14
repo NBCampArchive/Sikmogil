@@ -12,7 +12,7 @@ class APITestViewController: UIViewController {
     
     // MARK: - Properties
     
-    let apiManager = FoodDbInfoAPIManager()
+    let apiManager = FoodDbAPIManager()
     
     lazy var searchTextField: UITextField = {
         let textField = UITextField()

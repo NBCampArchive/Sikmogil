@@ -25,7 +25,7 @@ struct Response: Codable {
 struct FoodItem: Codable {
     let num: String // 번호
     let foodCd: String // 식품코드
-    let foodNmKr: String // 식품명
+    let foodNmKr: String // 식품명 (사용하는 변수 🌝)
     let dbGrpCm: String // 데이터구분코드
     let dbGrpNm: String? // 데이터구분명 (옵셔널)
     let foodOrCd: String // 식품기원코드
@@ -38,8 +38,8 @@ struct FoodItem: Codable {
     let foodCat3Nm: String? // 식품소분류명 (옵셔널)
     let foodCat4Cd: String? // 식품세분류코드 (옵셔널)
     let foodCat4Nm: String? // 식품세분류명 (옵셔널)
-    let servingSize: String? // 영양성분함량기준량 (옵셔널)
-    let amtNum1: String // 에너지(kcal) (옵셔널)
+    let servingSize: String // 영양성분함량기준량 (사용하는 변수 🌝)
+    let amtNum1: String // 에너지(kcal) (사용하는 변수 🌝)
     let amtNum2: String? // 수분(g) (옵셔널)
     let amtNum3: String? // 단백질(g) (옵셔널)
     let amtNum4: String? // 지방(g) (옵셔널)
@@ -95,7 +95,7 @@ struct FoodItem: Codable {
         case foodCat3Nm = "FOOD_CAT3_NM"
         case foodCat4Cd = "FOOD_CAT4_CD"
         case foodCat4Nm = "FOOD_CAT4_NM"
-        case servingSize = "SERVING_SIZE"
+        case servingSize = "SERVING_SIZE "
         case amtNum1 = "AMT_NUM1 "
         case amtNum2 = "AMT_NUM2"
         case amtNum3 = "AMT_NUM3"

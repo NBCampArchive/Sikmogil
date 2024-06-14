@@ -215,6 +215,9 @@ class DietBottomSheetViewController: UIViewController {
     @objc func breakfastAddTabButtonTapped() {
         let addDietMenuViewController = AddDietMenuViewController()
         addDietMenuViewController.hidesBottomBarWhenPushed = true
+        addDietMenuViewController.addMeal = {
+            foodItem in 
+        }
         navigationController?.pushViewController(addDietMenuViewController, animated: true)
     }
     @objc func lunchAddTabButtonTapped() {

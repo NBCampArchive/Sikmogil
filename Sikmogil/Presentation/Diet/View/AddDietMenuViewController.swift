@@ -30,6 +30,11 @@ class AddDietMenuViewController: UIViewController {
         $0.separatorStyle = .none
     }
     
+    // MARK: - Properties
+    var foodItems: [FoodItem] = []  // 데이터 저장 배열
+    
+    var addMeal: ((FoodItem) -> Void)?
+    
     // MARK: - View Lifecycle
     override func viewDidLoad() {
         view.backgroundColor = .white
@@ -72,7 +77,7 @@ class AddDietMenuViewController: UIViewController {
 extension AddDietMenuViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
+        return foodItems.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -80,8 +85,11 @@ extension AddDietMenuViewController: UITableViewDelegate, UITableViewDataSource 
             return UITableViewCell()
         }
         
-        // 셀 구성
-        //cell.textLabel?.text = "Item \(indexPath.row + 1)"
+        let foodItem = foodItems[indexPath.row]
+        
+        cell.cellTitleLabel.text = foodItem.foodNmKr
+        cell.cellInfoLabel.text = foodItem.servingSize
+        cell.cellKcalLabel.text = "\(foodItem.amtNum1) Kcal"
         
         return cell
     }
@@ -111,9 +119,7 @@ extension AddDietMenuViewController: UISearchBarDelegate {
             return
         }
         
-        let apiManager = FoodDbInfoAPIManager()
-        
-        apiManager.fetchFoodItems(searchQuery: searchText) { [weak self] result in
+        FoodDbAPIManager.shared.fetchFoodItems(searchQuery: searchText) { [weak self] result in
             guard let self = self else { return }
             
             switch result {
@@ -132,12 +138,8 @@ extension AddDietMenuViewController: UISearchBarDelegate {
     }
     
     private func handleSuccessResponse(_ items: [FoodItem]) {
-        print("API 응답:")
-        for item in items {
-            print("식품명: \(item.foodNmKr)")
-            print("칼로리: \(item.amtNum1)Kcal")
-        }
-        // UI 업데이트 또는 추가 작업 수행
+        self.foodItems = items
+        searchResultTableView.reloadData()
     }
     
     private func handleError(_ error: Error) {
@@ -145,7 +147,6 @@ extension AddDietMenuViewController: UISearchBarDelegate {
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        // 취소 버튼을 눌렀을 때의 액션
         searchBar.resignFirstResponder()  // 키보드 숨기기
         searchBar.setShowsCancelButton(false, animated: true)
         searchBar.text = nil  // 검색어 초기화

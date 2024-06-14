@@ -22,13 +22,13 @@ class AddDietMenuTableViewCell: UITableViewCell {
         $0.backgroundColor = .appLightGray
     }
     let cellTitleLabel = UILabel().then {
-        $0.text = "흰 쌀밥"
+        $0.text = "식품명"
         $0.textColor = .appBlack
         $0.font = Suite.semiBold.of(size: 18)
         $0.textAlignment = .left
     }
     let cellInfoLabel = UILabel().then {
-        $0.text = "1공기 (210g)"
+        $0.text = "제공량"
         $0.textColor = .appDarkGray
         $0.font = Suite.semiBold.of(size: 12)
         $0.textAlignment = .left
@@ -37,7 +37,7 @@ class AddDietMenuTableViewCell: UITableViewCell {
         $0.setImage(UIImage(named: "addRingDuotone"), for: .normal)
     }
     let cellKcalLabel = UILabel().then {
-        $0.text = "300kcal"
+        $0.text = "칼로리"
         $0.textColor = .appDarkGray
         $0.font = Suite.semiBold.of(size: 12)
         $0.textAlignment = .left
