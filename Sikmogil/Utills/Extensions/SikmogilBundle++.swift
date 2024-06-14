@@ -25,4 +25,18 @@ extension Bundle{
         return value
     }
     
+    var foodDBKEY: String{
+        guard let filePath = Bundle.main.path(forResource: "SikmogilPlist", ofType: "plist") else{
+            fatalError("Couldn't find file 'TodayWeatherAPI.plist'.")
+        }
+        
+        let plist = NSDictionary(contentsOfFile: filePath)
+        
+        guard let value = plist?.object(forKey: "FoodDbAPI_KEY") as? String else{
+            fatalError("Couldn't find key 'API_KEY' in 'TodayWeatherAPI.plist'.")
+        }
+        
+        return value
+    }
+    
 }

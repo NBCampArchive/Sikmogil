@@ -18,7 +18,7 @@ let sessionManager: Session = {
 class FoodDbAPIManager {
     
     private let baseURLString = "https://apis.data.go.kr/1471000/FoodNtrCpntDbInfo/getFoodNtrCpntDbInq"
-    private let serviceKey = ""
+    private let serviceKey = Bundle.main.foodDBKEY
 
     init() {}
     
