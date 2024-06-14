@@ -82,7 +82,7 @@ class ProfileViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(profileDidChange(_:)), name: .profileDidChange, object: nil)
         
         // 프로필 이미지 뷰를 둥근 원형으로 설정
-        profileImageView.layer.cornerRadius = 50 // 프로필 이미지 뷰의 너비와 높이가 100이므로 반으로 나눈 값
+        profileImageView.layer.cornerRadius = 50
         profileImageView.layer.masksToBounds = true
         
         updateProfileInfo()
@@ -128,22 +128,24 @@ class ProfileViewController: UIViewController {
         
         profileLabel.snp.makeConstraints {
             $0.left.equalTo(topBar).offset(16)
+            $0.centerY.equalTo(topBar)
         }
         
         settingsButton.snp.makeConstraints {
             $0.right.equalTo(topBar).offset(-16)
+            $0.centerY.equalTo(topBar)
             $0.width.height.equalTo(24)
         }
         
         profileImageView.snp.makeConstraints {
             $0.top.equalTo(topBar.snp.bottom).offset(20)
-            $0.left.equalTo(contentView).offset(25)
+            $0.centerX.equalTo(contentView)
             $0.width.height.equalTo(100)
         }
         
         levelBadgeView.snp.makeConstraints {
-            $0.bottom.equalTo(profileImageView.snp.bottom).offset(10)
-            $0.centerX.equalTo(profileImageView.snp.right).offset(-50)
+            $0.top.equalTo(profileImageView.snp.bottom).offset(-20)
+            $0.centerX.equalTo(contentView)
             $0.height.equalTo(24)
             $0.width.equalTo(60)
         }
@@ -161,13 +163,12 @@ class ProfileViewController: UIViewController {
         }
         
         nickname.snp.makeConstraints {
-            $0.centerY.equalTo(profileImageView)
-            $0.left.equalTo(profileImageView.snp.right).offset(16)
-            $0.right.equalTo(contentView).offset(-16)
+            $0.top.equalTo(levelBadgeView.snp.bottom).offset(10)
+            $0.centerX.equalTo(contentView)
         }
         
         profileInfoView.snp.makeConstraints {
-            $0.top.equalTo(profileImageView.snp.bottom).offset(30)
+            $0.top.equalTo(nickname.snp.bottom).offset(30)
             $0.left.equalTo(contentView).offset(16)
             $0.right.equalTo(contentView).offset(-16)
             $0.height.equalTo(100)
