@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import SnapKit
+import Then
 
 class ExerciseResultViewController: UIViewController {
 
@@ -13,143 +15,107 @@ class ExerciseResultViewController: UIViewController {
     private let scrollView = UIScrollView()
     private let contentView = UIView()
 
-    private let cardView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .customLightGray
-        return view
-    }()
-    
-    private let checkImage: UIImageView = {
-        let imageView  = UIImageView()
-        imageView.image = .check
-        imageView.contentMode = .scaleAspectFit
-        return imageView
-    }()
-    
-    private let completionLabel: UILabel = {
-        let label = UILabel()
-        label.text = "운동을 끝마쳤습니다!"
-        label.font = Suite.semiBold.of(size: 20)
-        label.textColor = .customBlack
-        return label
-    }()
-    
-    private let cardStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.axis = .horizontal
-        stackView.spacing = 4
-        stackView.alignment = .center
-        return stackView
-    }()
-    
-    private let progressView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .clear
-        return view
-    }()
-    
+    private let cardView = UIView().then {
+        $0.backgroundColor = .appLightGray
+    }
+
+    private let checkImage = UIImageView().then {
+        $0.image = .check
+        $0.contentMode = .scaleAspectFit
+    }
+
+    private let completionLabel = UILabel().then {
+        $0.text = "운동을 끝마쳤습니다!"
+        $0.font = Suite.semiBold.of(size: 20)
+        $0.textColor = .appBlack
+    }
+
+    private let cardStackView = UIStackView().then {
+        $0.axis = .horizontal
+        $0.spacing = 4
+        $0.alignment = .center
+    }
+
+    private let progressView = UIView().then {
+        $0.backgroundColor = .clear
+    }
+
     private let circularProgressBar = CircularProgressBar().then {
         $0.backgroundColor = .clear
         $0.progressColor = .appGreen
         $0.trackColor = .appLightGray
     }
-    
-    private let progressLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = .customDarkGray
-        label.font = Suite.semiBold.of(size: 20)
-        label.numberOfLines = 2
-        label.textAlignment = .center
+
+    private let progressLabel = UILabel().then {
+        $0.textColor = .appDarkGray
+        $0.font = Suite.semiBold.of(size: 20)
+        $0.numberOfLines = 2
+        $0.textAlignment = .center
         let fullText = "예상 소모 칼로리는\n0kcal 예요"
         let font = Suite.semiBold.of(size: 20)
         let changeText = "0kcal"
         let color = UIColor.appGreen
-        label.setAttributedText(fullText: fullText, changeText: changeText, color: color, font: font)
-        return label
-    }()
-   
-    private let resultView: UIView = {
-        let view = UIView()
-        return view
-    }()
-    
-    private let runningImage: UIImageView = {
-        let imageView  = UIImageView()
-        imageView.image = .running
-        imageView.contentMode = .scaleAspectFit
-        return imageView
-    }()
-    
-    private let periodLable: UILabel = {
-        let label = UILabel()
-        label.text = "0:00 am - 0:00 am"
-        label.font = Suite.regular.of(size: 16)
-        label.textColor = .customDarkGray
-        return label
-    }()
-    
-    private let verticalLine: UIView = {
-        let view = UIView()
-        view.backgroundColor = .customDarkGray
-        return view
-    }()
-    
-    
-    private let timeStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.axis = .vertical
-        stackView.spacing = 4
-        return stackView
-    }()
-    
-    private let kcalStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.axis = .vertical
-        stackView.spacing = 4
-        return stackView
-    }()
+        $0.setAttributedText(fullText: fullText, changeText: changeText, color: color, font: font)
+    }
 
-    private let timeLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Time"
-        label.font = Suite.regular.of(size: 16)
-        label.textColor = .customDarkGray
-        return label
-    }()
+    private let resultView = UIView()
 
-    private let kcalLabel: UILabel = {
-        let label = UILabel()
-        label.text = "kcal"
-        label.font = Suite.regular.of(size: 16)
-        label.textColor = .customDarkGray
-        return label
-    }()
-    
-    private let timeValueLabel: UILabel = {
-        let label = UILabel()
-        label.text = "0h.00min"
-        label.font = Suite.medium.of(size: 18)
-        label.textColor = .customBlack
-        return label
-    }()
+    private let runningImage = UIImageView().then {
+        $0.image = .running
+        $0.contentMode = .scaleAspectFit
+    }
 
-    private let kcalValueLabel: UILabel = {
-        let label = UILabel()
-        label.text = "0Kcal"
-        label.font = Suite.medium.of(size: 18)
-        label.textColor = .customBlack
-        return label
-    }()
-   
-    private let addButton: UIButton = {
-        let button = UIButton()
-        button.setTitle("추가하기", for: .normal)
-        button.titleLabel?.font = Suite.bold.of(size: 20)
-        button.tintColor = .white
-        button.backgroundColor = .customBlack
-        button.layer.cornerRadius = 16
-        return button
-    }()
+    private let periodLable = UILabel().then {
+        $0.text = "0:00 am - 0:00 am"
+        $0.font = Suite.regular.of(size: 16)
+        $0.textColor = .appDarkGray
+    }
+
+    private let verticalLine = UIView().then {
+        $0.backgroundColor = .appDarkGray
+    }
+
+    private let timeStackView = UIStackView().then {
+        $0.axis = .vertical
+        $0.spacing = 4
+    }
+
+    private let kcalStackView = UIStackView().then {
+        $0.axis = .vertical
+        $0.spacing = 4
+    }
+
+    private let timeLabel = UILabel().then {
+        $0.text = "Time"
+        $0.font = Suite.regular.of(size: 16)
+        $0.textColor = .appDarkGray
+    }
+
+    private let kcalLabel = UILabel().then {
+        $0.text = "kcal"
+        $0.font = Suite.regular.of(size: 16)
+        $0.textColor = .appDarkGray
+    }
+
+    private let timeValueLabel = UILabel().then {
+        $0.text = "0h.00min"
+        $0.font = Suite.medium.of(size: 18)
+        $0.textColor = .appBlack
+    }
+
+    private let kcalValueLabel = UILabel().then {
+        $0.text = "0Kcal"
+        $0.font = Suite.medium.of(size: 18)
+        $0.textColor = .appBlack
+    }
+
+    private let addButton = UIButton().then {
+        $0.setTitle("추가하기", for: .normal)
+        $0.titleLabel?.font = Suite.bold.of(size: 20)
+        $0.tintColor = .white
+        $0.backgroundColor = .appBlack
+        $0.layer.cornerRadius = 16
+    }
     
     // MARK: - View Life Cycle
     override func viewDidLoad() {
@@ -158,7 +124,7 @@ class ExerciseResultViewController: UIViewController {
         setupConstraints()
     }
     
-    // MARK: - Setup View
+    // MARK: - Setup Views
     private func setupViews() {
         view.backgroundColor = .white
         circularProgressBar.progress = 0.6
@@ -175,9 +141,8 @@ class ExerciseResultViewController: UIViewController {
     }
     
     private func setupConstraints() {
-        // TODO: 스크롤뷰 레이아웃 조정
         scrollView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+            $0.edges.equalTo(view.safeAreaLayoutGuide)
         }
         
         contentView.snp.makeConstraints {

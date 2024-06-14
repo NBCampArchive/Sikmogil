@@ -7,18 +7,18 @@
 
 import UIKit
 import SnapKit
-import Then
+import Combine
 import FloatingPanel
 
 class DietMainViewController: UIViewController {
     
-    var viewModel: DietViewModel!
+    var viewModel: DietViewModel = DietViewModel.shared
+    private var cancellables = Set<AnyCancellable>()
     
-    
+    // MARK: - UI components
     let scrollView = UIScrollView()
     let contentView = UIView()
-    
-    // 🍳🍳🍳 Diet
+    // 🍳 Diet
     let dietTitleView = UIView().then {
         $0.backgroundColor = .white
     }
@@ -41,6 +41,7 @@ class DietMainViewController: UIViewController {
         $0.backgroundColor = .clear
         $0.progressColor = .appYellow
         $0.trackColor = .appLightGray
+        $0.progress = 0.2
     }
     let dietProgressBarIcon = UIImageView().then {
         $0.image = UIImage(named: "dietIconFill")
@@ -57,8 +58,7 @@ class DietMainViewController: UIViewController {
         $0.font = Suite.regular.of(size: 12)
         $0.textAlignment = .center
     }
-    
-    // 💦💦💦 Water
+    // 💦 Water
     let waterTitleView = UIView().then {
         $0.backgroundColor = .clear
     }
@@ -77,17 +77,19 @@ class DietMainViewController: UIViewController {
     let waterAddTabButton = UIButton().then {
         $0.setImage(UIImage(named: "plusIcon"), for: .normal)
     }
-    let waterCircularProgressBar = UIImageView().then {
-        $0.image = UIImage(named: "waterProgress")
+    let waterCircularProgressBar = WaveProgressView().then {
+        $0.layer.cornerRadius = 150
+        $0.layer.masksToBounds = true
+        $0.backgroundColor = .customLightGray
+        $0.progress = 0.1
     }
     let waterLiterLabel = UILabel().then {
-        $0.text = "1.00 / 2L"
+        $0.text = "000ml / 2L"
         $0.textColor = .appBlack
         $0.font = Suite.bold.of(size: 26)
         $0.textAlignment = .center
     }
-    
-    // 🤤🤤🤤 FastingTimer
+    // 🤤 FastingTimer
     let fastingTimerTitleView = UIView().then {
         $0.backgroundColor = .clear
     }
@@ -103,11 +105,11 @@ class DietMainViewController: UIViewController {
         $0.font = Suite.semiBold.of(size: 14)
         $0.textAlignment = .left
     }
-    
     let fastingTimerCircularProgressBar = CircularProgressBar().then {
         $0.backgroundColor = .clear
         $0.progressColor = .appPurple
         $0.trackColor = .appLightGray
+        $0.progress = 0.0
     }
     let fastingTimerProgressBarIcon = UIImageView().then {
         $0.image = UIImage(named: "fastingTimerIconFill")
@@ -118,54 +120,51 @@ class DietMainViewController: UIViewController {
         $0.font = Suite.bold.of(size: 22)
         $0.textAlignment = .center
     }
-    
-    let endFastingButton = UIButton().then{
-            $0.setTitle("단식 종료", for: .normal)
-            $0.backgroundColor = .appLightGray
-            $0.setTitleColor(.appBlack, for: .normal)
-            $0.titleLabel?.font = Suite.semiBold.of(size: 16)
-
-            $0.layer.cornerRadius = 14
-            $0.clipsToBounds = true
+    let FastingButton = UIButton().then{
+        $0.setTitle("공복 시작", for: .normal)
+        $0.setTitle("공복 종료", for: .selected)
+        $0.backgroundColor = .appLightGray
+        $0.setTitleColor(.appBlack, for: .normal)
+        $0.titleLabel?.font = Suite.semiBold.of(size: 16)
+        $0.layer.cornerRadius = 14
+        $0.clipsToBounds = true
+        $0.addTarget(self, action: #selector(fastingButtonButtonTapped), for: .touchUpInside)
     }
     
-
-    // MARK: - viewDidLoad
+    // Timer properties
+    var timer: Timer?
+    var isTimerRunning = false
+    var startTime: Date?
+    var elapsedTime: TimeInterval = 0
     
+    // MARK: - View Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         setupViews()
         setupConstraints()
         
-        dietCircularProgressBar.progress = 0.45
-        
-        fastingTimerCircularProgressBar.progress = 0.3
-        
         view.backgroundColor = .white
+        
+        subscribeToViewModel()
         
         dietAddTabButton.addTarget(self, action: #selector(showDietBottomSheet), for: .touchUpInside)
         waterAddTabButton.addTarget(self, action: #selector(showWaterBottomSheet), for: .touchUpInside)
-        
-        viewModel = DietViewModel()
     }
     
-    // MARK: - setupViews
+    // MARK: - Setup Methods
     private func setupViews() {
         view.addSubview(scrollView)
         scrollView.addSubviews(contentView)
         contentView.addSubviews(dietTitleView,waterTitleView,fastingTimerTitleView)
-        // 🍳🍳🍳 Diet
+        // 🍳 Diet
         dietTitleView.addSubviews(dietTitleLabel,dietTitleSubLabel,dietAddTabButton,dietCircularProgressBar,dietProgressBarIcon,dietKcalLabel,dietInfoLabel)
-        // 💦💦💦 Water
+        // 💦 Water
         waterTitleView.addSubviews(waterTitleLabel,waterTitleSubLabel,waterAddTabButton,waterCircularProgressBar,waterLiterLabel)
-        // 🤤🤤🤤 FastingTimer
-        fastingTimerTitleView.addSubviews(fastingTimerTitleLabel,fastingTimerTitleSubLabel,fastingTimerCircularProgressBar,fastingTimerProgressBarIcon, fastingTimerInfoLabel, endFastingButton)
-        
-
+        // 🤤 FastingTimer
+        fastingTimerTitleView.addSubviews(fastingTimerTitleLabel,fastingTimerTitleSubLabel,fastingTimerCircularProgressBar,fastingTimerProgressBarIcon, fastingTimerInfoLabel, FastingButton)
     }
     
-    // MARK: - setupConstraints
     private func setupConstraints() {
         scrollView.snp.makeConstraints { make in
             make.edges.equalTo(view.safeAreaLayoutGuide)
@@ -175,8 +174,7 @@ class DietMainViewController: UIViewController {
             make.width.equalToSuperview()
             make.bottom.equalTo(fastingTimerTitleView.snp.bottom)
         }
-        
-        // 🍳🍳🍳 Diet
+        // 🍳 Diet
         dietTitleView.snp.makeConstraints {
             $0.top.equalToSuperview()
             $0.leading.equalToSuperview().offset(16)
@@ -214,8 +212,7 @@ class DietMainViewController: UIViewController {
             $0.centerX.equalTo(dietCircularProgressBar)
             $0.top.equalTo(dietKcalLabel.snp.bottom).offset(8)
         }
-        
-        // 💦💦💦 Water
+        // 💦 Water
         waterTitleView.snp.makeConstraints{
             $0.top.equalTo(dietTitleView.snp.bottom).offset(8)
             $0.leading.equalToSuperview().offset(16)
@@ -245,8 +242,7 @@ class DietMainViewController: UIViewController {
             $0.centerX.equalTo(waterCircularProgressBar)
             $0.centerY.equalTo(waterCircularProgressBar)
         }
-        
-        // 🤤🤤🤤 FastingTimer
+        // 🤤 FastingTimer
         fastingTimerTitleView.snp.makeConstraints{
             $0.top.equalTo(waterTitleView.snp.bottom).offset(32)
             $0.leading.equalToSuperview().offset(16)
@@ -276,7 +272,7 @@ class DietMainViewController: UIViewController {
             $0.centerX.equalTo(fastingTimerCircularProgressBar)
             $0.top.equalTo(fastingTimerProgressBarIcon.snp.bottom).offset(16)
         }
-        endFastingButton.snp.makeConstraints {
+        FastingButton.snp.makeConstraints {
             $0.top.equalTo(fastingTimerCircularProgressBar.snp.bottom).offset(16)
             $0.centerX.equalToSuperview()
             $0.width.equalTo(180)
@@ -284,19 +280,17 @@ class DietMainViewController: UIViewController {
         }
     }
     
-    // MARK: - BottomSheet
-    
+    // MARK: - Actions
     @objc func showDietBottomSheet() {
         let floatingPanelController = FloatingPanelController()
         floatingPanelController.delegate = self
         
         floatingPanelController.changePanelStyle()
-
+        
         // ContentViewController 설정
         let contentVC = DietBottomSheetViewController()
         floatingPanelController.set(contentViewController: contentVC)
-
-        // 패널 추가
+        
         floatingPanelController.addPanel(toParent: self)
     }
     
@@ -305,14 +299,63 @@ class DietMainViewController: UIViewController {
         floatingPanelController.delegate = self
         
         floatingPanelController.changePanelStyle()
-
-        // ContentViewController 설정
+        
         let contentVC = WaterBottomSheetViewController()
         floatingPanelController.set(contentViewController: contentVC)
-
-        // 패널 추가
+        
         floatingPanelController.addPanel(toParent: self)
+        
+        // 플로팅 패널의 초기 높이 설정
+        let initialHeight = self.view.bounds.height - 320 // 플로팅 패널의 초기 높이
+        floatingPanelController.surfaceLocation = CGPoint(x: self.view.bounds.midX, y: initialHeight)
     }
     
+    @objc func fastingButtonButtonTapped() {
+        FastingButton.isSelected.toggle()
+        
+        if FastingButton.isSelected {
+            // Start timer
+            startTime = Date()
+            timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateTimer), userInfo: nil, repeats: true)
+            RunLoop.current.add(timer!, forMode: .common)
+            isTimerRunning = true
+        } else {
+            // Stop timer
+            timer?.invalidate()
+            timer = nil
+            isTimerRunning = false
+        }
     }
-
+    
+    @objc func updateTimer() {
+        guard let startTime = startTime else { return }
+        elapsedTime = Date().timeIntervalSince(startTime)
+        
+        // Update circular progress bar
+        let maxTime: TimeInterval = 24 * 60 * 60 // 24 hours in seconds
+        let progress = Float(elapsedTime / maxTime)
+        fastingTimerCircularProgressBar.progress = CGFloat(progress)
+        
+        // Update elapsed time label
+        let hours = Int(elapsedTime / 3600)
+        let minutes = Int((elapsedTime.truncatingRemainder(dividingBy: 3600)) / 60)
+        fastingTimerInfoLabel.text = String(format: "경과 시간: %d시간 %d분", hours, minutes)
+    }
+    
+    // MARK: - ViewModel
+    private func subscribeToViewModel() {
+        viewModel.waterLiterLabelTextPublisher
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] value in
+                self?.waterLiterLabel.text = value
+            }
+            .store(in: &cancellables)
+        
+        viewModel.waterProgressPublisher
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] progress in
+                self?.waterCircularProgressBar.progress = Double(progress)
+            }
+            .store(in: &cancellables)
+    }
+}

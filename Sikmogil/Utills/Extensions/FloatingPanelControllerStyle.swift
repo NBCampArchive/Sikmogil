@@ -32,7 +32,7 @@ extension FloatingPanelController {
         surfaceView.appearance = appearance
         
         // 백드롭 (바텀 시트 뒷 화면)
-        backdropView.dismissalTapGestureRecognizer.isEnabled = true
+        backdropView.dismissalTapGestureRecognizer.isEnabled = false
         backdropView.backgroundColor = UIColor.black
     }
 }

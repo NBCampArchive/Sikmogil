@@ -10,13 +10,13 @@ import FloatingPanel
 
 class AddDietMenuViewController: UIViewController {
     
+    // MARK: - UI components
     let TitleLabel = UILabel().then {
         $0.text = "식사 추가"
         $0.textColor = .appBlack
         $0.font = Suite.bold.of(size: 28)
         $0.textAlignment = .left
     }
-    
     let searchBar = UISearchBar().then {
         $0.placeholder = "무슨 음식을 드셨나요?"
         $0.searchTextField.backgroundColor = .white
@@ -24,13 +24,13 @@ class AddDietMenuViewController: UIViewController {
         $0.searchTextField.layer.borderColor = UIColor.appBlack.cgColor
         $0.searchTextField.layer.cornerRadius = 10
     }
-    
     let searchResultTableView = UITableView().then {
         $0.backgroundColor = .appLightGray
         $0.register(AddDietMenuTableViewCell.self, forCellReuseIdentifier: "AddDietMenuTableViewCell")
         $0.separatorStyle = .none
     }
-
+    
+    // MARK: - View Lifecycle
     override func viewDidLoad() {
         view.backgroundColor = .white
         setupViews()
@@ -38,16 +38,14 @@ class AddDietMenuViewController: UIViewController {
         
         searchResultTableView.delegate = self
         searchResultTableView.dataSource = self
-        
     }
     
-    
+    // MARK: - Setup Methods
     private func setupViews() {
         view.addSubviews(TitleLabel, searchBar, searchResultTableView)
     }
     
     private func setupConstraints() {
-        
         TitleLabel.snp.makeConstraints{
             $0.top.equalToSuperview().offset(100)
             $0.leading.equalToSuperview().offset(16)
@@ -64,10 +62,9 @@ class AddDietMenuViewController: UIViewController {
             $0.bottom.equalToSuperview().inset(16)
         }
     }
-
 }
 
-
+// MARK: - UITableViewDelegate, UITableViewDataSource
 extension AddDietMenuViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -79,10 +76,9 @@ extension AddDietMenuViewController: UITableViewDelegate, UITableViewDataSource 
             return UITableViewCell()
         }
         
-        // 셀 구성 (필요에 따라 설정)
+        // 셀 구성
         //cell.textLabel?.text = "Item \(indexPath.row + 1)"
         
         return cell
     }
-    
 }
