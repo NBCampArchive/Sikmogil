@@ -5,6 +5,8 @@
 	<key>header_KEY</key>
 	<string></string>
 	<key>CategoryAPI_KEY</key>
+  <string></string>
+	<key>FoodDbAPI_KEY</key>
 	<string></string>
 	<key>BASE_URL</key>
 	<string></string>

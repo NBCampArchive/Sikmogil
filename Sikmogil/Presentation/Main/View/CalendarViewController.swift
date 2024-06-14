@@ -6,13 +6,15 @@
 //
 
 import UIKit
+import Then
+import SnapKit
 import FSCalendar
 import FloatingPanel
 
 
 class CalendarViewController: UIViewController {
     
-    var secondFloatingPanelController: FloatingPanelController!
+    var editDiaryFloatingPanelController: FloatingPanelController!
     var secondDimmingView: UIView!
     
     private let scrollView = UIScrollView().then {
@@ -74,10 +76,19 @@ class CalendarViewController: UIViewController {
         
         setupViews()
         setupConstraints()
-        setupFloatingPanel()
+        setupDiaryPannel()
         
         detailButton.addTarget(self, action: #selector(tapDetailButton), for: .touchUpInside)
         writeButton.addTarget(self, action: #selector(tapWriteButton), for: .touchUpInside)
+        
+        hideKeyboardWhenTappedAround()
+        setKeyboardObserver()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        editDiaryFloatingPanelController.dismiss(animated: true)
     }
     
     private func setupViews() {
@@ -150,67 +161,38 @@ class CalendarViewController: UIViewController {
     }
     
     @objc func tapWriteButton() {
-        secondFloatingPanelController.show(animated: true, completion: nil)
-        secondDimmingView.isHidden = false
-        UIView.animate(withDuration: 0.3) {
-            self.secondDimmingView.alpha = 1.0
+        self.present(editDiaryFloatingPanelController, animated: true)
+    }
+    
+    // 키보드가 나타날 때 호출되는 메서드
+    @objc override func keyboardWillShow(notification: NSNotification) {
+        guard let userInfo = notification.userInfo else { return }
+        if userInfo[UIResponder.keyboardFrameEndUserInfoKey] is CGRect {
+            // FloatingPanel 높이 수정
+            editDiaryFloatingPanelController.move(to: .full, animated: true)
         }
     }
-}
-
-extension CalendarViewController: DiaryRecordFloatingViewControllerDelegate {
-    func didTapDoneButton() {
-        dismissFloatingPanel()
+    
+    // 키보드가 사라질 때 호출되는 메서드
+    @objc override func keyboardWillHide(notification: NSNotification) {
+        editDiaryFloatingPanelController.move(to: .half, animated: true)
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 }
 
 extension CalendarViewController: FloatingPanelControllerDelegate {
-    
-    func setupFloatingPanel() {
-        secondFloatingPanelController = FloatingPanelController()
+    func setupDiaryPannel(){
+        editDiaryFloatingPanelController = FloatingPanelController()
+        editDiaryFloatingPanelController.layout = CustomFloatingPanelLayout()
+        editDiaryFloatingPanelController.delegate = self
         
         let contentVC = DiaryRecordFloatingViewController()
-        contentVC.delegate = self
-        secondFloatingPanelController.set(contentViewController: contentVC)
+        editDiaryFloatingPanelController.set(contentViewController: contentVC)
         
-        secondFloatingPanelController.surfaceView.appearance.cornerRadius = 20
-        secondFloatingPanelController.delegate = self
-        
-        secondDimmingView = UIView(frame: view.bounds)
-        secondDimmingView.backgroundColor = UIColor.appBlack.withAlphaComponent(0.5)
-        secondDimmingView.isHidden = true
-        secondDimmingView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dismissFloatingPanel)))
-        
-        view.addSubview(secondDimmingView)
-        
-        secondFloatingPanelController.addPanel(toParent: self)
-        secondFloatingPanelController.hide(animated: false, completion: nil)
-    }
-    
-    @objc func dismissFloatingPanel() {
-        secondFloatingPanelController.hide(animated: true) {
-            self.secondDimmingView.isHidden = true
-            self.secondDimmingView.alpha = 0.0
-        }
-    }
-    
-    func floatingPanelDidMove(_ fpc: FloatingPanelController) {
-        if fpc.state != .hidden {
-            tabBarController?.tabBar.isHidden = true
-        }
-        
-        let loc = fpc.surfaceLocation
-        let minY = fpc.surfaceLocation(for: .half).y
-        let maxY = fpc.surfaceLocation(for: .tip).y
-        
-        if loc.y > maxY {
-            fpc.move(to: .hidden, animated: true)
-            self.secondDimmingView.isHidden = true
-            tabBarController?.tabBar.isHidden = false
-        }
-        
-        if loc.y < minY {
-            fpc.surfaceLocation = CGPoint(x: loc.x, y: minY)
-        }
+        editDiaryFloatingPanelController.isRemovalInteractionEnabled = true
+        editDiaryFloatingPanelController.changePanelStyle()
     }
 }

@@ -17,3 +17,4 @@ struct UserProfile: Decodable {
     var targetDate: String
     var reminderTime: String
 }
+
