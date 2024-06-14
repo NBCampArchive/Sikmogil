@@ -35,7 +35,7 @@ class ExerciseSelectionViewController: UIViewController {
     private let exerciseSelectionLabel = UILabel().then {
         $0.font = Suite.medium.of(size: 16)
         $0.text = "-종목을 선택해 주세요-"
-        $0.textColor = .customDarkGray
+        $0.textColor = .appDarkGray
     }
 
     private let timeSelectionButton = UIButton(type: .system).then {
@@ -46,7 +46,7 @@ class ExerciseSelectionViewController: UIViewController {
     private let timeSelectionLabel = UILabel().then {
         $0.font = Suite.medium.of(size: 16)
         $0.text = "-시간을 선택해 주세요-"
-        $0.textColor = .customDarkGray
+        $0.textColor = .appDarkGray
     }
 
     private let lightButton = UIButton(type: .system).then {
@@ -88,11 +88,8 @@ class ExerciseSelectionViewController: UIViewController {
     private let expectedLabel = UILabel().then {
         $0.textColor = .appDarkGray
         $0.font = Suite.semiBold.of(size: 20)
-        let fullText = "예상 소모 칼로리는 0kcal예요"
-        let font = Suite.semiBold.of(size: 20)
-        let changeText = "0kcal"
-        let color = UIColor.appGreen
-        $0.setAttributedText(fullText: fullText, changeText: changeText, color: color, font: font)
+        $0.text = "예상 소모 칼로리는 0kcal예요"
+        $0.textColor = .appDarkGray
     }
 
     private let recordButton = UIButton(type: .system).then {
@@ -118,6 +115,11 @@ class ExerciseSelectionViewController: UIViewController {
         $0.spacing = 8
         $0.distribution = .fillEqually
     }
+    
+    // MARK: - State
+    private var selectedExercise: String?
+    private var selectedTime: String?
+    private var selectedIntensity: Int?
     
     // MARK: - View Life Cycle
     override func viewDidLoad() {
@@ -210,12 +212,13 @@ class ExerciseSelectionViewController: UIViewController {
     
     private func setupMenus() {
         let exercises = ["런닝", "수영", "자전거", "기타"]
-        let times = ["30분", "60분", "90분"]
+        let times = ["15분", "30분", "60분", "90분"]
         
         let exerciseActions = exercises.map { exercise in
             UIAction(title: exercise) { [weak self] _ in
                 self?.exerciseSelectionLabel.text = exercise
                 self?.exerciseSelectionLabel.textColor = .appBlack
+                self?.exerciseSelected(exercise)
             }
         }
         
@@ -225,6 +228,7 @@ class ExerciseSelectionViewController: UIViewController {
             UIAction(title: time) { [weak self] _ in
                 self?.timeSelectionLabel.text = time
                 self?.timeSelectionLabel.textColor = .appBlack
+                self?.timeSelected(time)
             }
         }
         
@@ -236,13 +240,41 @@ class ExerciseSelectionViewController: UIViewController {
         timeSelectionButton.menu = timeMenu
         timeSelectionButton.showsMenuAsPrimaryAction = true
     }
+    
+    // MARK: - 선택된 항목 저장 및 라벨 업데이트
+    private func exerciseSelected(_ exercise: String) {
+        selectedExercise = exercise
+        updateExpectedCaloriesLabel()
+    }
+    
+    private func timeSelected(_ time: String) {
+        selectedTime = time
+        updateExpectedCaloriesLabel()
+    }
+    
+    private func updateExpectedCaloriesLabel() {
+        guard let exercise = selectedExercise, let time = selectedTime, let intensity = selectedIntensity else {
+            expectedLabel.text = "예상 소모 칼로리는 0kcal예요"
+            return
+        }
+        
+        let calories = calculateCalories(exercise: exercise, time: time, intensity: intensity)
+        let fullText = "예상 소모 칼로리는 \(calories)kcal예요"
+        let changeText = "\(calories)kcal"
+        let color = UIColor.appGreen
+        expectedLabel.setAttributedText(fullText: fullText, changeText: changeText, color: color, font: Suite.semiBold.of(size: 20))
+    }
+    
+    private func calculateCalories(exercise: String, time: String, intensity: Int) -> Int {
+        // TODO: 계산 로직 구현
+        return 100
+    }
 }
 
 // MARK: - Button Actions
 extension ExerciseSelectionViewController {
     
     @objc private func intensityButtonTapped(_ sender: UIButton) {
-        print("\(sender.currentTitle ?? "") Button tapped")
         [lightButton, moderateButton, intenseButton].forEach {
             $0.backgroundColor = .clear
             $0.tintColor = .appDarkGray
@@ -252,6 +284,19 @@ extension ExerciseSelectionViewController {
         sender.backgroundColor = .appBlack
         sender.tintColor = .white
         sender.layer.borderColor = UIColor.clear.cgColor
+        
+        switch sender {
+        case lightButton:
+            selectedIntensity = 0
+        case moderateButton:
+            selectedIntensity = 1
+        case intenseButton:
+            selectedIntensity = 2
+        default:
+            break
+        }
+        
+        updateExpectedCaloriesLabel()
     }
     
     @objc private func startButtonTapped(_ sender: UIButton) {
