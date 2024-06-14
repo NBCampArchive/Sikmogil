@@ -16,7 +16,6 @@ class APITestViewController: UIViewController {
         $0.font = Suite.bold.of(size: 30)
         $0.textColor = .appBlack
     }
-
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,22 +27,22 @@ class APITestViewController: UIViewController {
        
         // MARK: - API 테스트
         // 예시로 사용할 날짜
-//        let exerciseDayToFetch = "2024-06-13"
+//        let exerciseDayToFetch = "2024.06.13"
 //        insertDataList()
 //        fetchExerciseList(for: exerciseDayToFetch)
         
-        deleteExerciseListData(for: "2024-06-13", exerciseListId: 1) 
+//        deleteExerciseListData(for: "2024-06-13", exerciseListId: 1) 
         // -> deleteExerciseListData success
         
 //        updateExerciseData()
 //        fetchAllExerciseData()
 
 //        fetchExerciseData(for: "2024-06-13")
+        // 더 사용해보기!
     
     }
     
-    // MARK: - API Test ⭐️
-    
+    // MARK: - Exercise API Test ⭐️
     // 1. 특정 날짜 운동 리스트 = 리스트 출력
     // addExerciseListData, getExerciseList, deleteExerciseListData
     private func insertDataList() {
@@ -58,7 +57,7 @@ class APITestViewController: UIViewController {
         )
 
         // 예시로 사용할 날짜
-        let exerciseDayToAdd = "2024-06-13"
+        let exerciseDayToAdd = "2024.06.13"
 
         // ExerciseAPIManager.shared.addExerciseListData 호출
         ExerciseAPIManager.shared.addExerciseListData(exerciseDay: exerciseDayToAdd, exerciseList: exerciseListToAdd) { result in
@@ -105,9 +104,9 @@ class APITestViewController: UIViewController {
     // updateExerciseData, getExerciseData, getAllExerciseData
     private func updateExerciseData() {
         // 예시로 사용할 날짜와 운동 데이터
-        let exerciseDayToUpdate = "2024-06-13"
-        let steps = 20000
-        let totalCaloriesBurned = 300
+        let exerciseDayToUpdate = "2024.06.12"
+        let steps = 60000
+        let totalCaloriesBurned = 200
 
         // updateExerciseData 메서드 호출
         ExerciseAPIManager.shared.updateExerciseData(exerciseDay: exerciseDayToUpdate, steps: steps, totalCaloriesBurned: totalCaloriesBurned) { result in
@@ -161,5 +160,24 @@ class APITestViewController: UIViewController {
         }
     }
     
+    
+    // MARK: - Exercise Category Test ⭐️
+    private func fetchAllExerciseCategories() {
+        ExerciseCategoryAPIManager.shared.getAllExerciseCategories { result in
+            switch result {
+            case .success(let categories):
+                print("All Exercise Categories:")
+                if categories.isEmpty {
+                    print("No exercise categories available.")
+                } else {
+                    for category in categories {
+                        print("Category Name: \(category.categoryName), Calories Burned: \(category.caloriesBurned)")
+                    }
+                }
+            case .failure(let error):
+                print("Failed to fetch exercise categories:", error)
+            }
+        }
+    }
 }
 
