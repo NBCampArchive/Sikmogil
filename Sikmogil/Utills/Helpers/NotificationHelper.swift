@@ -11,7 +11,6 @@ import Then
 
 class NotificationHelper {
     
-    // 싱글톤 인스턴스 생성
     static let shared = NotificationHelper()
 
     // 초기화 방지
