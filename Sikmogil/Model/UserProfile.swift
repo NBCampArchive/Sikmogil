@@ -16,5 +16,6 @@ struct UserProfile: Decodable {
     var toDate: String
     var targetDate: String
     var reminderTime: String
+    var canEatCalorie: Int
 }
 
