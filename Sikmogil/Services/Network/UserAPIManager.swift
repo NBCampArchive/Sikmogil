@@ -17,19 +17,19 @@ class UserAPIManager {
     
     private init() {}
     
+    let token = "Bearer \(LoginAPIManager.shared.getAccessTokenFromKeychain())"
+    
+    private var headers: HTTPHeaders {
+        return [
+            "Authorization": token,
+            "Accept": "application/json"
+        ]
+    }
+    
+    //MARK: - 사용자 프로필 내용 업데이트 (온보딩, 프로필 수정)
     func userProfileUpdate(userProfile: UserProfile, completion: @escaping (Result<Void, Error>) -> Void) {
         
         let url = "\(baseURL)/api/members/onboarding"
-        
-        let accessToken = KeychainSwift().get("accessToken") ?? ""
-        
-        print("accessToken \(accessToken)")
-        print("\(userProfile)")
-        
-        let headers: HTTPHeaders = [
-            "Authorization": "Bearer \(accessToken)",
-            "Accept": "application/json"
-        ]
         
         let parameters: [String: Any] = [
             "nickname": userProfile.nickname,
@@ -38,7 +38,8 @@ class UserAPIManager {
             "gender": userProfile.gender,
             "targetWeight": userProfile.targetWeight,
             "targetDate": userProfile.targetDate,
-            "createdDate": userProfile.toDate
+            "createdDate": userProfile.toDate,
+            "canEatCalorie": userProfile.canEatCalorie
         ]
         
         AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
@@ -65,4 +66,37 @@ class UserAPIManager {
                 }
             }
     }
+    
+    //MARK: - 사용자 정보 출력
+    func getUserInfo(completion: @escaping (Result<UserResponse, Error>) -> Void) {
+        
+        let url = "\(baseURL)/api/members/getMember"
+        
+        AF.request(url, method: .get, encoding: JSONEncoding.default, headers: headers)
+            .validate()
+            .responseDecodable(of: UserResponse.self) { response in
+                switch response.result {
+                case .success(let userProfile):
+                    completion(.success(userProfile))
+                case .failure(let error):
+                    print(self.token)
+                    print("getUserInfo error\(error.localizedDescription)")
+                    if let responseCode = error.responseCode, responseCode == 401 {
+                        // 401 Unauthorized - Access token expired
+                        LoginAPIManager.shared.refreshToken { result in
+                            switch result {
+                            case .success:
+                                // 토큰 갱신 성공 후 다시 요청
+                                self.getUserInfo(completion: completion)
+                            case .failure(let refreshError):
+                                completion(.failure(refreshError))
+                            }
+                        }
+                    } else {
+                        completion(.failure(error))
+                    }
+                }
+            }
+    }
+    
 }

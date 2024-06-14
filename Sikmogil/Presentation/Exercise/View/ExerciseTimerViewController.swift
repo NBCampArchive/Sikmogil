@@ -13,7 +13,7 @@ class ExerciseTimerViewController: UIViewController {
     
     // MARK: - Components
     private var isPaused: Bool = true
-    private var selectedTime: TimeInterval = 30 // 선택한 시간을 저장할 변수: 30분(30 * 60 = 1800)
+    var selectedTime: TimeInterval = 30 // 선택한 시간을 저장할 변수: 30분(30 * 60 = 1800)
     private var timer: Timer?
 
     private let timeLabel = UILabel().then {

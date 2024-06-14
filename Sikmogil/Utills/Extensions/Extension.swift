@@ -10,14 +10,4 @@ import UIKit
 // Extension 파일은 폴더로 나누지 않아도 괜찮아요!
 // Extension 파일은 해당 클래스의 기능을 확장하는 기능을 담당합니다.
 
-// MARK: - 특정 문자열 스타일 변경
-extension UILabel {
-    func setAttributedText(fullText: String, changeText: String, color: UIColor, font: UIFont) {
-        let range = (fullText as NSString).range(of: changeText)
-        let attributedString = NSMutableAttributedString(string: fullText)
-        attributedString.addAttribute(.foregroundColor, value: color, range: range)
-        attributedString.addAttribute(.font, value: font, range: range)
-        self.attributedText = attributedString
-    }
-}
 

@@ -40,7 +40,7 @@ class DietAPIManager {
             parameters["totalCalorieEaten"] = totalCalorieEaten
         }
         
-        AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).response { response in
+        AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).validate().response { response in
             switch response.result {
             case .success:
                 print("updateDietLog success")
@@ -60,13 +60,11 @@ class DietAPIManager {
         
         let parameters: [String: Any] = [
             "date": date,
-            "dietPictureDTO": [
-                "foodPicture": pictureData,
-                "dietDate": date
-            ]
+            "foodPicture": pictureData,
+            "dietDate": date
         ]
         
-        AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).response { response in
+        AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).validate().response { response in
             switch response.result {
             case .success:
                 print("addDietPicture success")
@@ -90,7 +88,7 @@ class DietAPIManager {
             
         ]
         
-        AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).response { response in
+        AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).validate().response { response in
             switch response.result {
             case .success:
                 print("deleteDietPicture success")
@@ -110,14 +108,12 @@ class DietAPIManager {
         
         let parameters: [String: Any] = [
             "date": date,
-            "dietList": [
-                "calorie": dietList.calorie,
-                "foodName": dietList.foodName,
-                "mealTime": dietList.mealTime // 밥먹은 시간 예시 ) breakfast, lunch, dinner, snack
-            ]
+            "calorie": dietList.calorie,
+            "foodName": dietList.foodName,
+            "mealTime": dietList.mealTime // 밥먹은 시간 예시 ) breakfast, lunch, dinner, snack
         ]
         
-        AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).response { response in
+        AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).validate().response { response in
             switch response.result {
             case .success:
                 print("addDietList success")
@@ -140,7 +136,7 @@ class DietAPIManager {
             "dietListId": dietListId
         ]
         
-        AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).response { response in
+        AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).validate().response { response in
             switch response.result {
             case .success:
                 print("deleteDietList success")

@@ -33,8 +33,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/scenee/FloatingPanel",
       "state" : {
-        "revision" : "22d46c526084724a718b8c39ab77f12452712cc7",
-        "version" : "2.8.3"
+        "revision" : "8f2be39bf49b4d5e22bbf7bdde69d5b76d0ecd2a",
+        "version" : "2.8.2"
       }
     },
     {
@@ -87,8 +87,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/onevcat/Kingfisher",
       "state" : {
-        "revision" : "2ef543ee21d63734e1c004ad6c870255e8716c50",
-        "version" : "7.12.0"
+        "revision" : "5b92f029fab2cce44386d28588098b5be0824ef5",
+        "version" : "7.11.0"
       }
     },
     {

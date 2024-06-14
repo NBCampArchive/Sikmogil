@@ -6,13 +6,15 @@
 //
 
 import UIKit
+import Then
+import SnapKit
 import FSCalendar
 import FloatingPanel
 
 
 class CalendarViewController: UIViewController {
     
-    var secondFloatingPanelController: FloatingPanelController!
+    var editDiaryFloatingPanelController: FloatingPanelController!
     var secondDimmingView: UIView!
     
     private let scrollView = UIScrollView().then {
@@ -31,7 +33,6 @@ class CalendarViewController: UIViewController {
         $0.locale = Locale(identifier: "ko_KR")
         $0.appearance.headerTitleColor = .black
         $0.appearance.weekdayTextColor = .appDarkGray
-        $0.appearance.weekdayFont = Suite.bold.of(size: 14)
     }
     
     private let diaryView = UIView().then {
@@ -67,17 +68,42 @@ class CalendarViewController: UIViewController {
         $0.setImage(.addDiary, for: .normal)
     }
     
+    private var boldDates: [Date] = []
+    
+    private var diaryRecords: [CalendarModel] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = .white
         
+        calendar.delegate = self
+        calendar.dataSource = self
+        calendar.register(CalendarCell.self, forCellReuseIdentifier: CalendarCell.description())
+        diaryRecords = fetchDiaryRecords()
+        
+        // 예시 시작일과 목표일 설정
+        let startDate = createDate(from: "2024.06.11")
+        let endDate = createDate(from: "2024.06.30")
+        
+        // 볼드 날짜 배열 생성
+        boldDates = generateDates(from: startDate, to: endDate)
+        
         setupViews()
         setupConstraints()
-        setupFloatingPanel()
+        setupDiaryPannel()
         
         detailButton.addTarget(self, action: #selector(tapDetailButton), for: .touchUpInside)
         writeButton.addTarget(self, action: #selector(tapWriteButton), for: .touchUpInside)
+        
+        hideKeyboardWhenTappedAround()
+        setKeyboardObserver()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        editDiaryFloatingPanelController.dismiss(animated: true)
     }
     
     private func setupViews() {
@@ -150,67 +176,113 @@ class CalendarViewController: UIViewController {
     }
     
     @objc func tapWriteButton() {
-        secondFloatingPanelController.show(animated: true, completion: nil)
-        secondDimmingView.isHidden = false
-        UIView.animate(withDuration: 0.3) {
-            self.secondDimmingView.alpha = 1.0
+        self.present(editDiaryFloatingPanelController, animated: true)
+    }
+    
+    // 키보드가 나타날 때 호출되는 메서드
+    @objc override func keyboardWillShow(notification: NSNotification) {
+        guard let userInfo = notification.userInfo else { return }
+        if userInfo[UIResponder.keyboardFrameEndUserInfoKey] is CGRect {
+            // FloatingPanel 높이 수정
+            editDiaryFloatingPanelController.move(to: .full, animated: true)
         }
     }
-}
-
-extension CalendarViewController: DiaryRecordFloatingViewControllerDelegate {
-    func didTapDoneButton() {
-        dismissFloatingPanel()
+    
+    // 키보드가 사라질 때 호출되는 메서드
+    @objc override func keyboardWillHide(notification: NSNotification) {
+        editDiaryFloatingPanelController.move(to: .half, animated: true)
+    }
+    
+    func fetchDiaryRecords() -> [CalendarModel] {
+            // 실제 API 호출을 통해 데이터를 가져오는 로직을 구현하세요.
+            // 여기서는 예시 데이터를 반환합니다.
+            return [
+                CalendarModel(diaryDate: "2024.06.11", diaryText: "동해물과 백두산이 마르고 닳도록",dietPictures: [CalendarDietPicture(dietPictureId: 1, foodPicture: "https://sikmogil.com/food1.jpg", dietDate: "2024.06.11")],workoutLists: [CalendarWorkoutList(workoutListId: 1, performedWorkout: "스쿼트", workoutTime: 30, workoutIntensity: 3, workoutPicture: "https://sikmogil.com/workout1.jpg", calorieBurned: 100)]),
+                CalendarModel(diaryDate: "2024.06.12", diaryText: "동해물과 백두산이 마르고 닳도록",dietPictures: [CalendarDietPicture(dietPictureId: 1, foodPicture: "https://sikmogil.com/food1.jpg", dietDate: "2024.06.11")],workoutLists: []),
+                CalendarModel(diaryDate: "2024.06.13", diaryText: "동해물과 백두산이 마르고 닳도록",dietPictures: [],workoutLists: [CalendarWorkoutList(workoutListId: 1, performedWorkout: "스쿼트", workoutTime: 30, workoutIntensity: 3, workoutPicture: "https://sikmogil.com/workout1.jpg", calorieBurned: 100)]),
+                ]
+        }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 }
 
 extension CalendarViewController: FloatingPanelControllerDelegate {
-    
-    func setupFloatingPanel() {
-        secondFloatingPanelController = FloatingPanelController()
+    func setupDiaryPannel(){
+        editDiaryFloatingPanelController = FloatingPanelController()
+        editDiaryFloatingPanelController.layout = CustomFloatingPanelLayout()
+        editDiaryFloatingPanelController.delegate = self
         
         let contentVC = DiaryRecordFloatingViewController()
-        contentVC.delegate = self
-        secondFloatingPanelController.set(contentViewController: contentVC)
+        editDiaryFloatingPanelController.set(contentViewController: contentVC)
         
-        secondFloatingPanelController.surfaceView.appearance.cornerRadius = 20
-        secondFloatingPanelController.delegate = self
+        editDiaryFloatingPanelController.isRemovalInteractionEnabled = true
+        editDiaryFloatingPanelController.changePanelStyle()
+    }
+}
+
+extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource, FSCalendarDelegateAppearance {
+    
+    func createDate(from dateString: String) -> Date {
+           let dateFormatter = DateFormatter()
+           dateFormatter.dateFormat = "yyyy.MM.dd"
+           return dateFormatter.date(from: dateString)!
+       }
+    
+    func generateDates(from startDate: Date, to endDate: Date) -> [Date] {
+        var dates: [Date] = []
+        var currentDate = startDate
+        let calendar = Calendar.current
         
-        secondDimmingView = UIView(frame: view.bounds)
-        secondDimmingView.backgroundColor = UIColor.appBlack.withAlphaComponent(0.5)
-        secondDimmingView.isHidden = true
-        secondDimmingView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dismissFloatingPanel)))
+        while currentDate <= endDate {
+            dates.append(currentDate)
+            currentDate = calendar.date(byAdding: .day, value: 1, to: currentDate)!
+        }
         
-        view.addSubview(secondDimmingView)
-        
-        secondFloatingPanelController.addPanel(toParent: self)
-        secondFloatingPanelController.hide(animated: false, completion: nil)
+        return dates
     }
     
-    @objc func dismissFloatingPanel() {
-        secondFloatingPanelController.hide(animated: true) {
-            self.secondDimmingView.isHidden = true
-            self.secondDimmingView.alpha = 0.0
+    func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, titleDefaultColorFor date: Date) -> UIColor? {
+        let calendar = Calendar.current
+        if boldDates.contains(where: { calendar.isDate($0, inSameDayAs: date) }) {
+            return .appBlack // 볼드 처리된 날짜의 텍스트 색상
+        } else {
+            return .appLightGray // 기본 텍스트 색상
         }
     }
     
-    func floatingPanelDidMove(_ fpc: FloatingPanelController) {
-        if fpc.state != .hidden {
-            tabBarController?.tabBar.isHidden = true
+    func calendar(_ calendar: FSCalendar, cellFor date: Date, at position: FSCalendarMonthPosition) -> FSCalendarCell {
+        guard let cell = calendar.dequeueReusableCell(withIdentifier: CalendarCell.description(), for: date, at: position) as? CalendarCell else {
+            print("Error: CalendarCell is nil")
+            return FSCalendarCell() }
+                
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy.MM.dd"
+        let dateString = dateFormatter.string(from: date)
+        
+        var colors: [UIColor] = []
+        if let record = diaryRecords.first(where: { $0.diaryDate == dateString }) {
+            if !record.dietPictures!.isEmpty {
+                colors.append(.appYellow)
+            }
+            if !record.workoutLists!.isEmpty {
+                colors.append(.appGreen)
+            }
         }
         
-        let loc = fpc.surfaceLocation
-        let minY = fpc.surfaceLocation(for: .half).y
-        let maxY = fpc.surfaceLocation(for: .tip).y
+        cell.configure(with: colors)
         
-        if loc.y > maxY {
-            fpc.move(to: .hidden, animated: true)
-            self.secondDimmingView.isHidden = true
-            tabBarController?.tabBar.isHidden = false
-        }
-        
-        if loc.y < minY {
-            fpc.surfaceLocation = CGPoint(x: loc.x, y: minY)
+        return cell
+    }
+    
+    private func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, fillDefaultColorFor date: Date) -> UIFont? {
+        let calendar = Calendar.current
+        if boldDates.contains(where: { calendar.isDate($0, inSameDayAs: date) }) {
+            return Suite.bold.of(size: 16) // 볼드 처리된 날짜의 배경 색상
+        } else {
+            return Suite.regular.of(size: 16) // 기본 배경 색상
         }
     }
 }
