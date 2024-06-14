@@ -56,6 +56,7 @@ class LoginAPIManager{
                 switch response.result {
                 case .success(let tokenResponse):
                     print("토큰 만료로 인한 토큰 갱신 성공")
+                    print(tokenResponse.data.accessToken)
                     self.keychain.set(tokenResponse.data.accessToken, forKey: "accessToken")
                     self.keychain.set(tokenResponse.data.refreshToken, forKey: "refreshToken")
                     completion(.success(tokenResponse))
