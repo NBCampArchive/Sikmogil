@@ -8,6 +8,7 @@
 import UIKit
 import SnapKit
 import Then
+import KeychainSwift
 
 class ProfileViewController: UIViewController {
     
@@ -70,7 +71,7 @@ class ProfileViewController: UIViewController {
     // MARK: - 뷰 컨트롤러의 생명주기 메서드를 정의
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupUI()
+        setupViews()
         settingsButton.addTarget(self, action: #selector(settingsButtonTapped(_:)), for: .touchUpInside)
         logoutButton.addTarget(self, action: #selector(logoutButtonTapped(_:)), for: .touchUpInside)
         
@@ -88,7 +89,7 @@ class ProfileViewController: UIViewController {
     }
     
     // MARK: - 사용자 인터페이스를 설정
-    private func setupUI() {
+    private func setupViews() {
         view.backgroundColor = .white
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
@@ -181,7 +182,7 @@ class ProfileViewController: UIViewController {
         
         logoutButton.snp.makeConstraints {
             $0.centerX.equalTo(contentView)
-            $0.top.equalTo(profileTableView.snp.bottom).offset(32)
+            $0.top.equalTo(profileTableView.snp.bottom).offset(240)
             $0.bottom.equalTo(contentView).offset(-20)
         }
     }
@@ -203,7 +204,7 @@ class ProfileViewController: UIViewController {
     }
 }
 
-// MARK: - 프로필 변경 노티피케이션 처리
+// MARK: - 프로필 변경
 extension ProfileViewController {
     @objc private func profileDidChange(_ notification: Notification) {
         if let userInfo = notification.userInfo {
@@ -266,7 +267,14 @@ extension ProfileViewController {
 }
 // MARK: - 로그아웃 버튼 액션 정의
 extension ProfileViewController {
-@objc private func logoutButtonTapped(_ sender: UIButton) {
-// TODO: 로그인 화면으로 루트뷰 바꾸기
-}
+    @objc private func logoutButtonTapped(_ sender: UIButton) {
+        let keychain = KeychainSwift()
+        keychain.clear()
+        if let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate {
+            let loginVC = LoginViewController()
+            let navController = UINavigationController(rootViewController: loginVC)
+            sceneDelegate.window?.rootViewController = navController
+            sceneDelegate.window?.makeKeyAndVisible()
+        }
+    }
 }
