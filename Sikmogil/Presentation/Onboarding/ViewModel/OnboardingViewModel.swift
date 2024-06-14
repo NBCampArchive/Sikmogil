@@ -10,7 +10,7 @@ import RxSwift
 import RxCocoa
 
 class OnboardingViewModel {
-    var userProfile = UserProfile(nickname: "", height: "", weight: "", gender: "", targetWeight: "", toDate: "", targetDate: "", reminderTime: "")
+    var userProfile = UserProfile(nickname: "", height: "", weight: "", gender: "", targetWeight: "", toDate: "", targetDate: "", reminderTime: "", canEatCalorie: 0)
     var currentIndex = BehaviorRelay<Int>(value: 0)
     
     var nickname = BehaviorRelay<String>(value: "")
