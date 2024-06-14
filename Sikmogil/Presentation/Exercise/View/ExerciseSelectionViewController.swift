@@ -291,6 +291,15 @@ class ExerciseSelectionViewController: UIViewController {
         
         return Int(totalCalories)
     }
+    
+    // 버튼 상태 업데이트
+    private func updateButtonsState() {
+        let isEnabled = selectedExercise != nil && selectedTime != nil && selectedIntensity != nil
+        recordButton.isEnabled = isEnabled
+        measurementButton.isEnabled = isEnabled
+        recordButton.alpha = isEnabled ? 1.0 : 0.5
+        measurementButton.alpha = isEnabled ? 1.0 : 0.5
+    }
 }
 
 // MARK: - Button Actions
@@ -340,7 +349,13 @@ extension ExerciseSelectionViewController {
     }
     
     private func navigateToMeasurementScreen() {
+        guard let time = selectedTime else { return }
+        // 시간 문자열을 초 단위로 변환 ("30분" -> 1800초)
+        let timeInMinutes = Int(time.dropLast(1)) ?? 0
+        let timeInSeconds = TimeInterval(timeInMinutes * 60)
+        
         let exerciseTimerVC = ExerciseTimerViewController()
+        exerciseTimerVC.selectedTime = timeInSeconds
         navigationController?.pushViewController(exerciseTimerVC, animated: true)
     }
 }
