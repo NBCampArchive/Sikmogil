@@ -35,6 +35,7 @@ class AddDietMenuTableViewCell: UITableViewCell {
     }
     let plusButton = UIButton().then {
         $0.setImage(UIImage(named: "addRingDuotone"), for: .normal)
+        $0.addTarget(self, action: #selector(plusButtonTapped), for: .touchUpInside)
     }
     let cellKcalLabel = UILabel().then {
         $0.text = "칼로리"
@@ -43,12 +44,14 @@ class AddDietMenuTableViewCell: UITableViewCell {
         $0.textAlignment = .left
     }
     
+    var foodItem: FoodItem?
+    var addMealAction: ((FoodItem) -> Void)?
+    
     // MARK: - View Lifecycle
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupViews()
         setupConstraints()
-        
     }
     
     required init?(coder: NSCoder) {
@@ -90,6 +93,14 @@ class AddDietMenuTableViewCell: UITableViewCell {
         cellKcalLabel.snp.makeConstraints{
             $0.bottom.equalTo(contentArea.snp.bottom)
             $0.trailing.equalTo(contentArea.snp.trailing)
+        }
+    }
+    
+    // MARK: - Action
+    @objc private func plusButtonTapped() {
+        if let foodItem = foodItem {
+            addMealAction?(foodItem)
+            print(foodItem.foodNmKr)
         }
     }
 }

@@ -45,7 +45,7 @@ class DietBottomSheetViewController: UIViewController {
         $0.textAlignment = .left
     }
     let breakfastKcalLabel = UILabel().then {
-        $0.text = "300kcal"
+        $0.text = "000kcal"
         $0.textColor = .appBlack
         $0.font = Suite.bold.of(size: 16)
         $0.textAlignment = .left
@@ -215,19 +215,31 @@ class DietBottomSheetViewController: UIViewController {
     @objc func breakfastAddTabButtonTapped() {
         let addDietMenuViewController = AddDietMenuViewController()
         addDietMenuViewController.hidesBottomBarWhenPushed = true
-        addDietMenuViewController.addMeal = {
-            foodItem in 
+        addDietMenuViewController.addMeal = { [weak self] foodItem in
+            guard let self = self else { return }
+            // 아침 식사 칼로리 레이블 업데이트
+            self.breakfastKcalLabel.text = "\(foodItem.amtNum1) Kcal"
         }
         navigationController?.pushViewController(addDietMenuViewController, animated: true)
     }
     @objc func lunchAddTabButtonTapped() {
         let addDietMenuViewController = AddDietMenuViewController()
         addDietMenuViewController.hidesBottomBarWhenPushed = true
+        addDietMenuViewController.addMeal = { [weak self] foodItem in
+            guard let self = self else { return }
+            // 점심 식사 칼로리 레이블 업데이트
+            self.lunchKcalLabel.text = "\(foodItem.amtNum1) Kcal"
+        }
         navigationController?.pushViewController(addDietMenuViewController, animated: true)
     }
     @objc func dinnerAddTabButtonTapped() {
         let addDietMenuViewController = AddDietMenuViewController()
         addDietMenuViewController.hidesBottomBarWhenPushed = true
+        addDietMenuViewController.addMeal = { [weak self] foodItem in
+            guard let self = self else { return }
+            // 저녁 식사 칼로리 레이블 업데이트
+            self.dinnerKcalLabel.text = "\(foodItem.amtNum1) Kcal"
+        }
         navigationController?.pushViewController(addDietMenuViewController, animated: true)
     }
     @objc func albumButtonTapped() {

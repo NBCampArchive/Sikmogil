@@ -32,7 +32,6 @@ class AddDietMenuViewController: UIViewController {
     
     // MARK: - Properties
     var foodItems: [FoodItem] = []  // 데이터 저장 배열
-    
     var addMeal: ((FoodItem) -> Void)?
     
     // MARK: - View Lifecycle
@@ -69,8 +68,6 @@ class AddDietMenuViewController: UIViewController {
             $0.bottom.equalToSuperview().inset(16)
         }
     }
-    
-    
 }
 
 // MARK: - UITableViewDelegate, UITableViewDataSource
@@ -86,15 +83,20 @@ extension AddDietMenuViewController: UITableViewDelegate, UITableViewDataSource 
         }
         
         let foodItem = foodItems[indexPath.row]
-        
+        cell.foodItem = foodItem
         cell.cellTitleLabel.text = foodItem.foodNmKr
         cell.cellInfoLabel.text = foodItem.servingSize
         cell.cellKcalLabel.text = "\(foodItem.amtNum1) Kcal"
         
+        cell.addMealAction = { [weak self] foodItem in
+            self?.addMeal?(foodItem)
+            self?.navigationController?.popViewController(animated: true)
+        }
         return cell
     }
 }
 
+// MARK: - UISearchBarDelegate
 extension AddDietMenuViewController: UISearchBarDelegate {
     func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
         // 키보드가 나타나도록 설정
