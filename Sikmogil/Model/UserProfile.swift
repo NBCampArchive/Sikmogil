@@ -19,3 +19,19 @@ struct UserProfile: Decodable {
     var canEatCalorie: Int
 }
 
+struct UserResponse: Codable {
+    let statusCode: Int
+    let message: String
+    let data: UserData
+}
+
+struct UserData: Codable {
+    let nickname: String
+    let height: String
+    let weight: String
+    let gender: String
+    let targetWeight: String
+    let targetDate: String
+    let canEatCalorie: Int?
+    let createdDate: String
+}
