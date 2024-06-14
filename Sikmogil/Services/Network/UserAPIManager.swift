@@ -68,18 +68,19 @@ class UserAPIManager {
     }
     
     //MARK: - 사용자 정보 출력
-    func getUserInfo(completion: @escaping (Result<UserProfile, Error>) -> Void) {
+    func getUserInfo(completion: @escaping (Result<UserResponse, Error>) -> Void) {
         
         let url = "\(baseURL)/api/members/getMember"
         
-        AF.request(url, method: .get, headers: headers)
+        AF.request(url, method: .get, encoding: JSONEncoding.default, headers: headers)
             .validate()
-            .responseDecodable(of: UserProfile.self) { response in
+            .responseDecodable(of: UserResponse.self) { response in
                 switch response.result {
                 case .success(let userProfile):
                     completion(.success(userProfile))
                 case .failure(let error):
-                    print("getUserInfo error")
+                    print(self.token)
+                    print("getUserInfo error\(error.localizedDescription)")
                     if let responseCode = error.responseCode, responseCode == 401 {
                         // 401 Unauthorized - Access token expired
                         LoginAPIManager.shared.refreshToken { result in
