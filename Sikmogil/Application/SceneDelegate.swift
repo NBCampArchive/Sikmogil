@@ -22,7 +22,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(windowScene: windowScene)
         
         let viewController = BottomTabBarController()
-        //let viewController = APITestViewController()
         window?.rootViewController = viewController
         window?.makeKeyAndVisible()
         
