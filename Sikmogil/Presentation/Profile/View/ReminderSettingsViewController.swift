@@ -20,13 +20,13 @@ class ReminderSettingsViewController: UIViewController {
     
     private let titleLabel = UILabel().then {
         $0.text = "리마인드 알림 시간 설정"
-        $0.font = UIFont.boldSystemFont(ofSize: 24)
+        $0.font = Suite.bold.of(size: 28)
         $0.textColor = .black
     }
     
     private let descriptionLabel = UILabel().then {
         $0.text = "하루 리마인드 알림을 원하는 시간을 선택해주세요"
-        $0.font = UIFont.boldSystemFont(ofSize: 14)
+        $0.font = Suite.semiBold.of(size: 14)
         $0.textColor = .darkGray
     }
     
@@ -41,7 +41,7 @@ class ReminderSettingsViewController: UIViewController {
     
     private let timeTextFieldWarningLabel = UILabel().then {
         $0.text = "시간을 입력해주세요"
-        $0.font = UIFont.systemFont(ofSize: 12)
+        $0.font = Suite.regular.of(size: 12)
         $0.textColor = .red
         $0.isHidden = true
     }
@@ -49,7 +49,7 @@ class ReminderSettingsViewController: UIViewController {
     private let doneButton = UIButton(type: .system).then {
         $0.setTitle("완료", for: .normal)
         $0.setTitleColor(.white, for: .normal)
-        $0.titleLabel?.font = UIFont.boldSystemFont(ofSize: 22)
+        $0.titleLabel?.font = Suite.bold.of(size: 22)
         $0.backgroundColor = .black
         $0.layer.cornerRadius = 8
     }
