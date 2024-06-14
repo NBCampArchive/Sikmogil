@@ -52,6 +52,7 @@
 		B52001EA2C19865E0083CBDF /* CalendarModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001E92C19865E0083CBDF /* CalendarModel.swift */; };
 		B52001EC2C1AE1FB0083CBDF /* FloatingPannelStyleHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001EB2C1AE1FB0083CBDF /* FloatingPannelStyleHelper.swift */; };
 		B52001EE2C1C5CD60083CBDF /* CalendarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001ED2C1C5CD60083CBDF /* CalendarCell.swift */; };
+		B52001F02C1C8D7E0083CBDF /* TargetModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001EF2C1C8D7E0083CBDF /* TargetModel.swift */; };
 		B54ABF882C09BD43002E89DC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABF872C09BD43002E89DC /* AppDelegate.swift */; };
 		B54ABF8A2C09BD43002E89DC /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABF892C09BD43002E89DC /* SceneDelegate.swift */; };
 		B54ABF8C2C09BD43002E89DC /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABF8B2C09BD43002E89DC /* ViewController.swift */; };
@@ -158,6 +159,7 @@
 		B52001E92C19865E0083CBDF /* CalendarModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarModel.swift; sourceTree = "<group>"; };
 		B52001EB2C1AE1FB0083CBDF /* FloatingPannelStyleHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingPannelStyleHelper.swift; sourceTree = "<group>"; };
 		B52001ED2C1C5CD60083CBDF /* CalendarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarCell.swift; sourceTree = "<group>"; };
+		B52001EF2C1C8D7E0083CBDF /* TargetModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TargetModel.swift; sourceTree = "<group>"; };
 		B54ABF842C09BD43002E89DC /* Sikmogil.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sikmogil.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B54ABF872C09BD43002E89DC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B54ABF892C09BD43002E89DC /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -400,6 +402,7 @@
 				B52001E92C19865E0083CBDF /* CalendarModel.swift */,
 				B52001E12C1897C20083CBDF /* DietModel.swift */,
 				B52001E32C1971CD0083CBDF /* ImageModel.swift */,
+				B52001EF2C1C8D7E0083CBDF /* TargetModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -780,6 +783,7 @@
 				B54AC01A2C105646002E89DC /* Step1ViewController.swift in Sources */,
 				B54ABFCB2C0CB770002E89DC /* Extension.swift in Sources */,
 				62578CFE2C15A395005035BB /* PhotoCell.swift in Sources */,
+				B52001F02C1C8D7E0083CBDF /* TargetModel.swift in Sources */,
 				B52001E42C1971CD0083CBDF /* ImageModel.swift in Sources */,
 				540768882C12EAD900543A72 /* ProfileTableView.swift in Sources */,
 				B52001E82C1984CF0083CBDF /* CalendarAPIManager.swift in Sources */,
