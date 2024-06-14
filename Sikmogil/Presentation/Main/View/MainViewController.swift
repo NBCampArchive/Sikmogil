@@ -6,12 +6,17 @@
 //
 
 import UIKit
+import SnapKit
+import Then
 import DGCharts
 import FloatingPanel
 import Lottie
+import Combine
 
 class MainViewController: UIViewController {
     
+    private let viewModel = MainViewModel()
+    private var cancellables = Set<AnyCancellable>()
     var floatingPanelController: FloatingPanelController!
     var dimmingView: UIView!
     
@@ -117,6 +122,9 @@ class MainViewController: UIViewController {
         
         view.backgroundColor = .white
         
+        viewModel.loadWeightData()
+        bindViewModel()
+        
         setupViews()
         setupConstraints()
         setupFloatingPanel()
@@ -191,7 +199,7 @@ class MainViewController: UIViewController {
         }
         
         weightLogLabel.snp.makeConstraints {
-            $0.top.equalTo(percentView.snp.bottom).offset(16)
+            $0.top.equalTo(percentView.snp.bottom).offset(32)
             $0.leading.equalToSuperview().offset(16)
         }
         
@@ -214,13 +222,13 @@ class MainViewController: UIViewController {
         
         recordButton.snp.makeConstraints {
             $0.top.equalTo(animationView.snp.bottom).offset(8)
-            $0.leading.equalTo(view.safeAreaLayoutGuide).offset(18)
-            $0.trailing.equalTo(view.safeAreaLayoutGuide).offset(-18)
+            $0.leading.equalTo(view.safeAreaLayoutGuide).offset(16)
+            $0.trailing.equalTo(view.safeAreaLayoutGuide).offset(-16)
             $0.height.equalTo(48)
         }
         
         graphLabel.snp.makeConstraints {
-            $0.top.equalTo(recordButton.snp.bottom).offset(30)
+            $0.top.equalTo(recordButton.snp.bottom).offset(32)
             $0.leading.equalTo(view.safeAreaLayoutGuide).offset(16)
         }
         
@@ -232,6 +240,37 @@ class MainViewController: UIViewController {
         }
     }
     
+    private func bindViewModel() {
+        viewModel.$targetModel
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] targetModel in
+                self?.updateUI(with: targetModel)
+            }
+            .store(in: &cancellables)
+        
+        viewModel.$progress
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] progress in
+                self?.dateProgressView.progress = progress
+                self?.percentLabel.text = String(format: "%.0f%%", progress * 100)
+            }
+            .store(in: &cancellables)
+        
+        viewModel.$remainingDays
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] remainingDays in
+                self?.weightLabel.text = "목표까지 남은기간 \(remainingDays)일!"
+            }
+            .store(in: &cancellables)
+    }
+    
+    private func updateUI(with targetModel: TargetModel?) {
+        guard let targetModel = targetModel else { return }
+        weightNowLabel.text = "현재 체중 \(targetModel.weekWeights.last?.weight ?? 0) Kg"
+        weightToGoalLabel.text = "목표까지 \(Double(targetModel.weekWeights.last?.weight ?? 0.0) - (Double(targetModel.targetWeight) ?? 0.0)) Kg"
+        progressLabel.text = "\(targetModel.createDate) ~ \(targetModel.targetDate)"
+    }
+    
     @objc func tapCalendarButton() {
         let nextView = CalendarViewController()
         
@@ -239,19 +278,11 @@ class MainViewController: UIViewController {
     }
     
     @objc func tapRecordButton() {
-        floatingPanelController.show(animated: true, completion: nil)
-        dimmingView.isHidden = false
-        UIView.animate(withDuration: 0.3) {
-            self.dimmingView.alpha = 1.0
-        }
+        self.present(floatingPanelController, animated: true)
     }
 }
 
-extension MainViewController: WeightRecordFloatingViewControllerDelegate {
-    func didTapDoneButton() {
-        dismissFloatingPanel()
-    }
-}
+
 
 extension MainViewController: FloatingPanelControllerDelegate {
     
@@ -260,7 +291,6 @@ extension MainViewController: FloatingPanelControllerDelegate {
         
         let contentVC = WeightRecordFloatingViewController()
         floatingPanelController.set(contentViewController: contentVC)
-        contentVC.delegate = self
         
         floatingPanelController.surfaceView.appearance.cornerRadius = 20
         floatingPanelController.delegate = self
@@ -271,9 +301,6 @@ extension MainViewController: FloatingPanelControllerDelegate {
         dimmingView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dismissFloatingPanel)))
         
         view.addSubview(dimmingView)
-        
-        floatingPanelController.addPanel(toParent: self)
-        floatingPanelController.hide(animated: false, completion: nil)
     }
     
     @objc func dismissFloatingPanel() {
