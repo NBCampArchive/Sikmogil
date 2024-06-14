@@ -118,7 +118,6 @@ class ExerciseSelectionViewController: UIViewController {
         $0.spacing = 8
         $0.distribution = .fillEqually
     }
-
     
     // MARK: - View Life Cycle
     override func viewDidLoad() {
@@ -132,7 +131,6 @@ class ExerciseSelectionViewController: UIViewController {
     // MARK: - Setup Views
     private func setupViews() {
         view.backgroundColor = .white
-        
         view.addSubviews(exerciseLabel, exerciseSelectionButton, timeLabel, timeSelectionButton, intensityLabel, exerciseLabel, intensityStackView, expectedLabel, buttonStackView)
         exerciseSelectionButton.addSubview(exerciseSelectionLabel)
         timeSelectionButton.addSubview(timeSelectionLabel)
@@ -238,7 +236,11 @@ class ExerciseSelectionViewController: UIViewController {
         timeSelectionButton.menu = timeMenu
         timeSelectionButton.showsMenuAsPrimaryAction = true
     }
+}
 
+// MARK: - Button Actions
+extension ExerciseSelectionViewController {
+    
     @objc private func intensityButtonTapped(_ sender: UIButton) {
         print("\(sender.currentTitle ?? "") Button tapped")
         [lightButton, moderateButton, intenseButton].forEach {
