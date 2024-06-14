@@ -27,17 +27,20 @@ class APITestViewController: UIViewController {
         }
         
         // MARK: - API 테스트
-        addExerciseListData()
-    
-        getExerciseList(for: "2024.06.14")
+//        addExerciseListData()
+//        
+//        getExerciseList(for: "2024.06.14")
+//        
+//        deleteExerciseListData(for: "2024.06.13", exerciseListId: 1)
+//        
+//        updateExerciseData()
+//        
+//        getExerciseData(for: "2024.06.13")
+//        
+//        getAllExerciseData()
+//        
+//        fetchAllExerciseCategories()
         
-        deleteExerciseListData(for: "2024.06.13", exerciseListId: 1)
-    
-        updateExerciseData()
-        
-        getExerciseData(for: "2024.06.13")
-        
-        getAllExerciseData()
     }
     
     // MARK: - Exercise List
@@ -156,7 +159,7 @@ class APITestViewController: UIViewController {
                     }
                 }
             case .failure(let error):
-                print("운동 카테고리 불러오기 실해:", error)
+                print("운동 카테고리 불러오기 실패:", error)
             }
         }
     }

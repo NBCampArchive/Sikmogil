@@ -15,6 +15,8 @@ class ExerciseCategoryAPIManager {
     private init() {}
     
     let baseURL = "https://api.odcloud.kr/api"
+    let apiKey = Bundle.main.categoryBaseURL
+    let headerKey = Bundle.main.headerBaseURL
     
     // MARK: - 모든 운동 종목 조회
     func getAllExerciseCategories(completion: @escaping (Result<[ExerciseCategoryModel], Error>) -> Void) {
@@ -22,13 +24,13 @@ class ExerciseCategoryAPIManager {
         let url = "\(baseURL)/15068730/v1/uddi:734ff9bb-3696-4993-a365-c0201eb0a6cd"
 
         let parameters: [String: Any] = [
-//            "serviceKey": apiKey,
+            "serviceKey": apiKey,
             "page": 1,
             "perPage": 100
         ]
 
         let header: HTTPHeaders = [
-            "Authorization": "tyjjku7%2FNiW72Gywhp%2FsfnkUcvEz6jUAPEZ47eEh6IbSBn5y8Ndz147CDWS%2BiRq%2B7C136MJRDqlFZlPkDBZ76g%3D%3D"
+            "Authorization": headerKey
         ]
         
         AF.request(url, method: .get, parameters: parameters, headers: header).validate(statusCode: 200..<300).responseDecodable(of: ExerciseCategoryResponse.self) { response in
