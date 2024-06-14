@@ -44,13 +44,14 @@
 		B52001D82C171B8C0083CBDF /* DietViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001CD2C171B8C0083CBDF /* DietViewModel.swift */; };
 		B52001DB2C171F9D0083CBDF /* UIApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001D92C171F9C0083CBDF /* UIApplication.swift */; };
 		B52001DC2C171F9D0083CBDF /* FloatingPanelControllerStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001DA2C171F9C0083CBDF /* FloatingPanelControllerStyle.swift */; };
-		B52001E82C1984CF0083CBDF /* CalendarAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001E72C1984CF0083CBDF /* CalendarAPIManager.swift */; };
-		B52001EA2C19865E0083CBDF /* CalendarModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001E92C19865E0083CBDF /* CalendarModel.swift */; };
 		B52001E02C18922D0083CBDF /* DietAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001DF2C18922D0083CBDF /* DietAPIManager.swift */; };
 		B52001E22C1897C20083CBDF /* DietModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001E12C1897C20083CBDF /* DietModel.swift */; };
 		B52001E42C1971CD0083CBDF /* ImageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001E32C1971CD0083CBDF /* ImageModel.swift */; };
 		B52001E62C1972330083CBDF /* ImageAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001E52C1972330083CBDF /* ImageAPIManager.swift */; };
+		B52001E82C1984CF0083CBDF /* CalendarAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001E72C1984CF0083CBDF /* CalendarAPIManager.swift */; };
+		B52001EA2C19865E0083CBDF /* CalendarModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001E92C19865E0083CBDF /* CalendarModel.swift */; };
 		B52001EC2C1AE1FB0083CBDF /* FloatingPannelStyleHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001EB2C1AE1FB0083CBDF /* FloatingPannelStyleHelper.swift */; };
+		B52001EE2C1C5CD60083CBDF /* CalendarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001ED2C1C5CD60083CBDF /* CalendarCell.swift */; };
 		B54ABF882C09BD43002E89DC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABF872C09BD43002E89DC /* AppDelegate.swift */; };
 		B54ABF8A2C09BD43002E89DC /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABF892C09BD43002E89DC /* SceneDelegate.swift */; };
 		B54ABF8C2C09BD43002E89DC /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABF8B2C09BD43002E89DC /* ViewController.swift */; };
@@ -156,13 +157,14 @@
 		B52001CD2C171B8C0083CBDF /* DietViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DietViewModel.swift; sourceTree = "<group>"; };
 		B52001D92C171F9C0083CBDF /* UIApplication.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIApplication.swift; sourceTree = "<group>"; };
 		B52001DA2C171F9C0083CBDF /* FloatingPanelControllerStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatingPanelControllerStyle.swift; sourceTree = "<group>"; };
-		B52001E72C1984CF0083CBDF /* CalendarAPIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarAPIManager.swift; sourceTree = "<group>"; };
-		B52001E92C19865E0083CBDF /* CalendarModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarModel.swift; sourceTree = "<group>"; };
 		B52001DF2C18922D0083CBDF /* DietAPIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DietAPIManager.swift; sourceTree = "<group>"; };
 		B52001E12C1897C20083CBDF /* DietModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DietModel.swift; sourceTree = "<group>"; };
 		B52001E32C1971CD0083CBDF /* ImageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageModel.swift; sourceTree = "<group>"; };
 		B52001E52C1972330083CBDF /* ImageAPIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageAPIManager.swift; sourceTree = "<group>"; };
+		B52001E72C1984CF0083CBDF /* CalendarAPIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarAPIManager.swift; sourceTree = "<group>"; };
+		B52001E92C19865E0083CBDF /* CalendarModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarModel.swift; sourceTree = "<group>"; };
 		B52001EB2C1AE1FB0083CBDF /* FloatingPannelStyleHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingPannelStyleHelper.swift; sourceTree = "<group>"; };
+		B52001ED2C1C5CD60083CBDF /* CalendarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarCell.swift; sourceTree = "<group>"; };
 		B54ABF842C09BD43002E89DC /* Sikmogil.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sikmogil.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B54ABF872C09BD43002E89DC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B54ABF892C09BD43002E89DC /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -298,6 +300,7 @@
 				62578CEF2C11793C005035BB /* DayViewController.swift */,
 				62578CFD2C15A395005035BB /* PhotoCell.swift */,
 				62578CFF2C15A487005035BB /* HeaderView.swift */,
+				B52001ED2C1C5CD60083CBDF /* CalendarCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -803,6 +806,7 @@
 				CACA65C82C1B5D0C0030D8D5 /* FoodDbModel.swift in Sources */,
 				B54AC00C2C0F48D1002E89DC /* SikmogilBundle++.swift in Sources */,
 				F3094F082C197AFA0099DE2C /* HalfCircleProgressView.swift in Sources */,
+				B52001EE2C1C5CD60083CBDF /* CalendarCell.swift in Sources */,
 				B54ABFCF2C0CBB59002E89DC /* UIViewExtensions.swift in Sources */,
 				F3094F0E2C19A1BE0099DE2C /* ExerciseViewModel.swift in Sources */,
 				B54AC01A2C105646002E89DC /* Step1ViewController.swift in Sources */,

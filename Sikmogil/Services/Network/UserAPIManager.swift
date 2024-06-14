@@ -38,7 +38,8 @@ class UserAPIManager {
             "gender": userProfile.gender,
             "targetWeight": userProfile.targetWeight,
             "targetDate": userProfile.targetDate,
-            "createdDate": userProfile.toDate
+            "createdDate": userProfile.toDate,
+            "canEatCalorie": userProfile.canEatCalorie
         ]
         
         AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers)

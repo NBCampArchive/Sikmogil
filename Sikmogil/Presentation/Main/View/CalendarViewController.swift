@@ -33,7 +33,6 @@ class CalendarViewController: UIViewController {
         $0.locale = Locale(identifier: "ko_KR")
         $0.appearance.headerTitleColor = .black
         $0.appearance.weekdayTextColor = .appDarkGray
-        $0.appearance.weekdayFont = Suite.bold.of(size: 14)
     }
     
     private let diaryView = UIView().then {
@@ -69,10 +68,26 @@ class CalendarViewController: UIViewController {
         $0.setImage(.addDiary, for: .normal)
     }
     
+    private var boldDates: [Date] = []
+    
+    private var diaryRecords: [CalendarModel] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = .white
+        
+        calendar.delegate = self
+        calendar.dataSource = self
+        calendar.register(CalendarCell.self, forCellReuseIdentifier: CalendarCell.description())
+        diaryRecords = fetchDiaryRecords()
+        
+        // 예시 시작일과 목표일 설정
+        let startDate = createDate(from: "2024.06.11")
+        let endDate = createDate(from: "2024.06.30")
+        
+        // 볼드 날짜 배열 생성
+        boldDates = generateDates(from: startDate, to: endDate)
         
         setupViews()
         setupConstraints()
@@ -178,6 +193,16 @@ class CalendarViewController: UIViewController {
         editDiaryFloatingPanelController.move(to: .half, animated: true)
     }
     
+    func fetchDiaryRecords() -> [CalendarModel] {
+            // 실제 API 호출을 통해 데이터를 가져오는 로직을 구현하세요.
+            // 여기서는 예시 데이터를 반환합니다.
+            return [
+                CalendarModel(diaryDate: "2024.06.11", diaryText: "동해물과 백두산이 마르고 닳도록",dietPictures: [CalendarDietPicture(dietPictureId: 1, foodPicture: "https://sikmogil.com/food1.jpg", dietDate: "2024.06.11")],workoutLists: [CalendarWorkoutList(workoutListId: 1, performedWorkout: "스쿼트", workoutTime: 30, workoutIntensity: 3, workoutPicture: "https://sikmogil.com/workout1.jpg", calorieBurned: 100)]),
+                CalendarModel(diaryDate: "2024.06.12", diaryText: "동해물과 백두산이 마르고 닳도록",dietPictures: [CalendarDietPicture(dietPictureId: 1, foodPicture: "https://sikmogil.com/food1.jpg", dietDate: "2024.06.11")],workoutLists: []),
+                CalendarModel(diaryDate: "2024.06.13", diaryText: "동해물과 백두산이 마르고 닳도록",dietPictures: [],workoutLists: [CalendarWorkoutList(workoutListId: 1, performedWorkout: "스쿼트", workoutTime: 30, workoutIntensity: 3, workoutPicture: "https://sikmogil.com/workout1.jpg", calorieBurned: 100)]),
+                ]
+        }
+    
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
@@ -194,5 +219,70 @@ extension CalendarViewController: FloatingPanelControllerDelegate {
         
         editDiaryFloatingPanelController.isRemovalInteractionEnabled = true
         editDiaryFloatingPanelController.changePanelStyle()
+    }
+}
+
+extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource, FSCalendarDelegateAppearance {
+    
+    func createDate(from dateString: String) -> Date {
+           let dateFormatter = DateFormatter()
+           dateFormatter.dateFormat = "yyyy.MM.dd"
+           return dateFormatter.date(from: dateString)!
+       }
+    
+    func generateDates(from startDate: Date, to endDate: Date) -> [Date] {
+        var dates: [Date] = []
+        var currentDate = startDate
+        let calendar = Calendar.current
+        
+        while currentDate <= endDate {
+            dates.append(currentDate)
+            currentDate = calendar.date(byAdding: .day, value: 1, to: currentDate)!
+        }
+        
+        return dates
+    }
+    
+    func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, titleDefaultColorFor date: Date) -> UIColor? {
+        let calendar = Calendar.current
+        if boldDates.contains(where: { calendar.isDate($0, inSameDayAs: date) }) {
+            return .appBlack // 볼드 처리된 날짜의 텍스트 색상
+        } else {
+            return .appLightGray // 기본 텍스트 색상
+        }
+    }
+    
+    func calendar(_ calendar: FSCalendar, cellFor date: Date, at position: FSCalendarMonthPosition) -> FSCalendarCell {
+        guard let cell = calendar.dequeueReusableCell(withIdentifier: CalendarCell.description(), for: date, at: position) as? CalendarCell else {
+            print("Error: CalendarCell is nil")
+            return FSCalendarCell() }
+                
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy.MM.dd"
+        let dateString = dateFormatter.string(from: date)
+        
+        var colors: [UIColor] = []
+        if let record = diaryRecords.first(where: { $0.diaryDate == dateString }) {
+            if !record.dietPictures!.isEmpty {
+                colors.append(.appYellow)
+            }
+            if !record.workoutLists!.isEmpty {
+                colors.append(.appGreen)
+            }
+        }
+        
+        cell.configure(with: colors)
+        
+        return cell
+    }
+    
+    private func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, fillDefaultColorFor date: Date) -> UIFont? {
+        let calendar = Calendar.current
+        if boldDates.contains(where: { calendar.isDate($0, inSameDayAs: date) }) {
+            return Suite.bold.of(size: 16) // 볼드 처리된 날짜의 배경 색상
+        } else {
+            return Suite.regular.of(size: 16) // 기본 배경 색상
+        }
     }
 }
