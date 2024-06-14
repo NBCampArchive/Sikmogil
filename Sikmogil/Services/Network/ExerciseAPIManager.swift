@@ -28,7 +28,7 @@ class ExerciseAPIManager {
         ]
         
         let parameters: [String: Any] = [
-            "date": exerciseDay,
+            "workoutDate": exerciseDay,
             "steps": steps,
             "totalCaloriesBurned": totalCaloriesBurned
         ]
@@ -53,18 +53,15 @@ class ExerciseAPIManager {
             "Accept": "application/json"
         ]
         
-        
         let parameters: [String: Any] = [
             "date": exerciseDay,
-            "workoutList": [
-                "performedWorkout": exerciseList.performedWorkout,
-                "workoutTime": exerciseList.workoutTime,
-                "workoutIntensity": exerciseList.workoutIntensity,
-//                "workoutPicture": exerciseList.workoutPicture,(사진 추가시 사용할 예정)
-                "calorieBurned": exerciseList.calorieBurned
-            ]
+            "performedWorkout": exerciseList.performedWorkout,
+            "workoutTime": exerciseList.workoutTime,
+            "workoutIntensity": exerciseList.workoutIntensity,
+            //                "workoutPicture": exerciseList.workoutPicture,(사진 추가시 사용할 예정)
+            "calorieBurned": exerciseList.calorieBurned
+            
         ]
-        
         
         AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).response { response in
             switch response.result {
