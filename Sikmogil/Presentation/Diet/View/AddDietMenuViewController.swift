@@ -30,6 +30,10 @@ class AddDietMenuViewController: UIViewController {
         $0.separatorStyle = .none
     }
     
+    // MARK: - Properties
+    var foodItems: [FoodItem] = []  // 데이터 저장 배열
+    var addMeal: ((FoodItem) -> Void)?
+    
     // MARK: - View Lifecycle
     override func viewDidLoad() {
         view.backgroundColor = .white
@@ -38,6 +42,8 @@ class AddDietMenuViewController: UIViewController {
         
         searchResultTableView.delegate = self
         searchResultTableView.dataSource = self
+        
+        searchBar.delegate = self
     }
     
     // MARK: - Setup Methods
@@ -68,7 +74,7 @@ class AddDietMenuViewController: UIViewController {
 extension AddDietMenuViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
+        return foodItems.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -76,9 +82,75 @@ extension AddDietMenuViewController: UITableViewDelegate, UITableViewDataSource 
             return UITableViewCell()
         }
         
-        // 셀 구성
-        //cell.textLabel?.text = "Item \(indexPath.row + 1)"
+        let foodItem = foodItems[indexPath.row]
+        cell.foodItem = foodItem
+        cell.cellTitleLabel.text = foodItem.foodNmKr
+        cell.cellInfoLabel.text = foodItem.servingSize
+        cell.cellKcalLabel.text = "\(foodItem.amtNum1) Kcal"
         
+        cell.addMealAction = { [weak self] foodItem in
+            self?.addMeal?(foodItem)
+            self?.navigationController?.popViewController(animated: true)
+        }
         return cell
+    }
+}
+
+// MARK: - UISearchBarDelegate
+extension AddDietMenuViewController: UISearchBarDelegate {
+    func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
+        // 키보드가 나타나도록 설정
+        searchBar.setShowsCancelButton(true, animated: true)
+        return true
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        // 검색 버튼(리턴 키)을 눌렀을 때의 액션
+        searchBar.resignFirstResponder()  // 키보드 숨기기
+        
+        // 검색어가 공백일 경우
+        guard let searchText = searchBar.text?.trimmingCharacters(in: .whitespacesAndNewlines), !searchText.isEmpty else {
+            print("검색어를 입력해주세요.")
+            return
+        }
+        
+        // 특수 문자 체크
+        let specialCharacterSet = CharacterSet(charactersIn: "!@#$%^&*()_+{}[]|\"':;<>,.?/~`")
+        if let _ = searchText.rangeOfCharacter(from: specialCharacterSet) {
+            print("검색어에 특수 문자는 사용할 수 없습니다.")
+            return
+        }
+        
+        FoodDbAPIManager.shared.fetchFoodItems(searchQuery: searchText) { [weak self] result in
+            guard let self = self else { return }
+            
+            switch result {
+            case .success(let items):
+                DispatchQueue.main.async {
+                    // API 응답 처리
+                    self.handleSuccessResponse(items)
+                }
+            case .failure(let error):
+                DispatchQueue.main.async {
+                    // 에러 처리
+                    self.handleError(error)
+                }
+            }
+        }
+    }
+    
+    private func handleSuccessResponse(_ items: [FoodItem]) {
+        self.foodItems = items
+        searchResultTableView.reloadData()
+    }
+    
+    private func handleError(_ error: Error) {
+        print("데이터를 가져오는 중 오류 발생: \(error.localizedDescription)")
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()  // 키보드 숨기기
+        searchBar.setShowsCancelButton(false, animated: true)
+        searchBar.text = nil  // 검색어 초기화
     }
 }
