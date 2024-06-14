@@ -32,7 +32,6 @@ class AlarmTableViewCell: UITableViewCell {
         $0.setImage(UIImage(systemName: "chevron.right"), for: .normal)
         $0.tintColor = .appBlack
     }
-    
     var showsAccessoryButton: Bool = true {
         didSet {
             accessoryButton.isHidden = !showsAccessoryButton
@@ -61,7 +60,7 @@ class AlarmTableViewCell: UITableViewCell {
         
         customSwitch.snp.makeConstraints {
             $0.centerY.equalToSuperview()
-            $0.trailing.equalTo(accessoryButton.snp.leading).offset(-16)
+            $0.trailing.equalTo(accessoryButton.snp.leading).offset(16)
         }
         
         accessoryButton.snp.makeConstraints {
