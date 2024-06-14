@@ -266,8 +266,30 @@ class ExerciseSelectionViewController: UIViewController {
     }
     
     private func calculateCalories(exercise: String, time: String, intensity: Int) -> Int {
-        // TODO: 계산 로직 구현
-        return 100
+        // 각 운동 종목에 대한 예시 분당 칼로리 소모량
+        let caloriesPerMinute: [String: Int] = [
+            "런닝": 10,
+            "수영": 8,
+            "자전거": 7,
+            "기타": 5
+        ]
+        
+        // 시간 문자열을 분 단위로 변환
+        let timeInMinutes = Int(time.dropLast(1)) ?? 0
+        
+        // 강도에 따른 보정값 (예: 0: 가볍게, 1: 적당히, 2: 격하게)
+        let intensityMultiplier: [Int: Double] = [
+            0: 0.75,
+            1: 1.0,
+            2: 1.25
+        ]
+        
+        // 칼로리 계산 로직
+        let baseCalories = caloriesPerMinute[exercise] ?? 0
+        let multiplier = intensityMultiplier[intensity] ?? 1.0
+        let totalCalories = Double(baseCalories) * Double(timeInMinutes) * multiplier
+        
+        return Int(totalCalories)
     }
 }
 
