@@ -128,6 +128,7 @@ class ExerciseSelectionViewController: UIViewController {
         setupConstraints()
         setupButtons()
         setupMenus()
+        updateButtonsState()
     }
     
     // MARK: - Setup Views
@@ -245,11 +246,13 @@ class ExerciseSelectionViewController: UIViewController {
     private func exerciseSelected(_ exercise: String) {
         selectedExercise = exercise
         updateExpectedCaloriesLabel()
+        updateButtonsState()
     }
     
     private func timeSelected(_ time: String) {
         selectedTime = time
         updateExpectedCaloriesLabel()
+        updateButtonsState()
     }
     
     private func updateExpectedCaloriesLabel() {
@@ -277,7 +280,7 @@ class ExerciseSelectionViewController: UIViewController {
         // 시간 문자열을 분 단위로 변환
         let timeInMinutes = Int(time.dropLast(1)) ?? 0
         
-        // 강도에 따른 보정값 (예: 0: 가볍게, 1: 적당히, 2: 격하게)
+        // 강도에 따른 값 (예: 0: 가볍게, 1: 적당히, 2: 격하게)
         let intensityMultiplier: [Int: Double] = [
             0: 0.75,
             1: 1.0,
@@ -328,6 +331,7 @@ extension ExerciseSelectionViewController {
         }
         
         updateExpectedCaloriesLabel()
+        updateButtonsState()
     }
     
     @objc private func startButtonTapped(_ sender: UIButton) {
@@ -343,12 +347,16 @@ extension ExerciseSelectionViewController {
         sender.tintColor = .white
         sender.layer.borderColor = UIColor.clear.cgColor
         
+        if sender == recordButton {
+            navigateResultVC()
+        }
+        
         if sender == measurementButton {
-            navigateToMeasurementScreen()
+            navigateToTimerVC()
         }
     }
     
-    private func navigateToMeasurementScreen() {
+    private func navigateToTimerVC() {
         guard let time = selectedTime else { return }
         // 시간 문자열을 초 단위로 변환 ("30분" -> 1800초)
         let timeInMinutes = Int(time.dropLast(1)) ?? 0
@@ -357,5 +365,10 @@ extension ExerciseSelectionViewController {
         let exerciseTimerVC = ExerciseTimerViewController()
         exerciseTimerVC.selectedTime = timeInSeconds
         navigationController?.pushViewController(exerciseTimerVC, animated: true)
+    }
+    
+    private func navigateResultVC() {
+        let exerciseResultVC = ExerciseResultViewController()
+        navigationController?.pushViewController(exerciseResultVC, animated: true)
     }
 }
