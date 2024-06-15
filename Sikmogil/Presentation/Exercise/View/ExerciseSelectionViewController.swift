@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Combine
 import SnapKit
 import Then
 
@@ -117,9 +118,13 @@ class ExerciseSelectionViewController: UIViewController {
     }
     
     // MARK: - State
-    private var selectedExercise: String?
-    private var selectedTime: String?
-    private var selectedIntensity: Int?
+//    private var selectedExercise: String?
+//    private var selectedTime: String?
+//    private var selectedIntensity: Int?
+    
+    // MARK: - Properties
+    private var viewModel = ExerciseSelectionViewModel()
+    private var cancellables = Set<AnyCancellable>()
     
     // MARK: - View Life Cycle
     override func viewDidLoad() {
@@ -128,9 +133,9 @@ class ExerciseSelectionViewController: UIViewController {
         setupConstraints()
         setupButtons()
         setupMenus()
-        updateButtonsState()
+        bindViewModel()
     }
-    
+
     // MARK: - Setup Views
     private func setupViews() {
         view.backgroundColor = .white
@@ -211,6 +216,32 @@ class ExerciseSelectionViewController: UIViewController {
         measurementButton.addTarget(self, action: #selector(startButtonTapped(_:)), for: .touchUpInside)
     }
     
+    // MARK: -  Bind ViewModel
+    private func bindViewModel() {
+        viewModel.$expectedCalories
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] calories in
+                self?.updateExpectedCaloriesLabel(calories: calories)
+            }
+            .store(in: &cancellables)
+        
+        viewModel.$selectedExercise
+            .combineLatest(viewModel.$selectedTime, viewModel.$selectedIntensity)
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] exercise, time, intensity in
+                self?.updateButtonsState()
+            }
+            .store(in: &cancellables)
+    }
+    
+    private func updateExpectedCaloriesLabel(calories: Int) {
+        let fullText = "예상 소모 칼로리는 \(calories)kcal예요"
+        let changeText = "\(calories)kcal"
+        let color = UIColor.appGreen
+        expectedLabel.setAttributedText(fullText: fullText, changeText: changeText, color: color, font: Suite.semiBold.of(size: 20))
+    }
+    
+    // MARK: - Setup Menus
     private func setupMenus() {
         let exercises = ["런닝", "수영", "자전거", "기타"]
         let times = ["15분", "30분", "60분", "90분"]
@@ -219,7 +250,7 @@ class ExerciseSelectionViewController: UIViewController {
             UIAction(title: exercise) { [weak self] _ in
                 self?.exerciseSelectionLabel.text = exercise
                 self?.exerciseSelectionLabel.textColor = .appBlack
-                self?.exerciseSelected(exercise)
+                self?.viewModel.selectedExercise = exercise
             }
         }
         
@@ -229,7 +260,7 @@ class ExerciseSelectionViewController: UIViewController {
             UIAction(title: time) { [weak self] _ in
                 self?.timeSelectionLabel.text = time
                 self?.timeSelectionLabel.textColor = .appBlack
-                self?.timeSelected(time)
+                self?.viewModel.selectedTime = time
             }
         }
         
@@ -242,71 +273,14 @@ class ExerciseSelectionViewController: UIViewController {
         timeSelectionButton.showsMenuAsPrimaryAction = true
     }
     
-    // MARK: - 선택된 항목 저장 및 라벨 업데이트
-    private func exerciseSelected(_ exercise: String) {
-        selectedExercise = exercise
-        updateExpectedCaloriesLabel()
-        updateButtonsState()
-    }
-    
-    private func timeSelected(_ time: String) {
-        selectedTime = time
-        updateExpectedCaloriesLabel()
-        updateButtonsState()
-    }
-    
-    private func updateExpectedCaloriesLabel() {
-        guard let exercise = selectedExercise, let time = selectedTime, let intensity = selectedIntensity else {
-            expectedLabel.text = "예상 소모 칼로리는 0kcal예요"
-            return
-        }
-        
-        let calories = calculateCalories(exercise: exercise, time: time, intensity: intensity)
-        let fullText = "예상 소모 칼로리는 \(calories)kcal예요"
-        let changeText = "\(calories)kcal"
-        let color = UIColor.appGreen
-        expectedLabel.setAttributedText(fullText: fullText, changeText: changeText, color: color, font: Suite.semiBold.of(size: 20))
-    }
-    
-    private func calculateCalories(exercise: String, time: String, intensity: Int) -> Int {
-        // 각 운동 종목에 대한 예시 분당 칼로리 소모량
-        let caloriesPerMinute: [String: Int] = [
-            "런닝": 10,
-            "수영": 8,
-            "자전거": 7,
-            "기타": 5
-        ]
-        
-        // 시간 문자열을 분 단위로 변환
-        let timeInMinutes = Int(time.dropLast(1)) ?? 0
-        
-        // 강도에 따른 값 (예: 0: 가볍게, 1: 적당히, 2: 격하게)
-        let intensityMultiplier: [Int: Double] = [
-            0: 0.75,
-            1: 1.0,
-            2: 1.25
-        ]
-        
-        // 칼로리 계산 로직
-        let baseCalories = caloriesPerMinute[exercise] ?? 0
-        let multiplier = intensityMultiplier[intensity] ?? 1.0
-        let totalCalories = Double(baseCalories) * Double(timeInMinutes) * multiplier
-        
-        return Int(totalCalories)
-    }
-    
-    // 버튼 상태 업데이트
+    // MARK: - Button Actions
     private func updateButtonsState() {
-        let isEnabled = selectedExercise != nil && selectedTime != nil && selectedIntensity != nil
+        let isEnabled = viewModel.selectedExercise != nil && viewModel.selectedTime != nil && viewModel.selectedIntensity != nil
         recordButton.isEnabled = isEnabled
         measurementButton.isEnabled = isEnabled
         recordButton.alpha = isEnabled ? 1.0 : 0.5
         measurementButton.alpha = isEnabled ? 1.0 : 0.5
     }
-}
-
-// MARK: - Button Actions
-extension ExerciseSelectionViewController {
     
     @objc private func intensityButtonTapped(_ sender: UIButton) {
         [lightButton, moderateButton, intenseButton].forEach {
@@ -321,17 +295,14 @@ extension ExerciseSelectionViewController {
         
         switch sender {
         case lightButton:
-            selectedIntensity = 0
+            viewModel.selectedIntensity = 0
         case moderateButton:
-            selectedIntensity = 1
+            viewModel.selectedIntensity = 1
         case intenseButton:
-            selectedIntensity = 2
+            viewModel.selectedIntensity = 2
         default:
             break
         }
-        
-        updateExpectedCaloriesLabel()
-        updateButtonsState()
     }
     
     @objc private func startButtonTapped(_ sender: UIButton) {
@@ -357,7 +328,7 @@ extension ExerciseSelectionViewController {
     }
     
     private func navigateToTimerVC() {
-        guard let time = selectedTime else { return }
+        guard let time = viewModel.selectedTime else { return }
         // 시간 문자열을 초 단위로 변환 ("30분" -> 1800초)
         let timeInMinutes = Int(time.dropLast(1)) ?? 0
         let timeInSeconds = TimeInterval(timeInMinutes * 60)
@@ -365,6 +336,7 @@ extension ExerciseSelectionViewController {
         let exerciseTimerVC = ExerciseTimerViewController()
         exerciseTimerVC.selectedTime = timeInSeconds
         navigationController?.pushViewController(exerciseTimerVC, animated: true)
+        
     }
     
     private func navigateResultVC() {
