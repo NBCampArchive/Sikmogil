@@ -122,27 +122,27 @@ class DietAPIManager {
     }
     
     // MARK: - 특정 날짜 식단 삭제
-       func deleteDietList(date: String, dietListId: Int, completion: @escaping (Result<Void, Error>) -> Void) {
-           
-           let url = "\(baseURL)/api/dietLog/dietList/deleteDietList"
-           
-           let parameters: [String: Any] = [
-               "date": date,
-               "dietListId": dietListId
-           ]
-           
-           AF.request(url, method: .post, parameters: parameters, encoding: URLEncoding.default, headers: headers).validate().response { response in
-               switch response.result {
-               case .success:
-                   print("deleteDietList success")
-                   completion(.success(()))
-               case .failure(let error):
-                   print("deleteDietList failure \(error.localizedDescription)")
-                   completion(.failure(error))
-               }
-           }
-           
-       }
+    func deleteDietList(date: String, dietListId: Int, completion: @escaping (Result<Void, Error>) -> Void) {
+        
+        let url = "\(baseURL)/api/dietLog/dietList/deleteDietList"
+        
+        let parameters: [String: Any] = [
+            "date": date,
+            "dietListId": dietListId
+        ]
+        
+        AF.request(url, method: .post, parameters: parameters, encoding: URLEncoding.default, headers: headers).validate().response { response in
+            switch response.result {
+            case .success:
+                print("deleteDietList success")
+                completion(.success(()))
+            case .failure(let error):
+                print("deleteDietList failure \(error.localizedDescription)")
+                completion(.failure(error))
+            }
+        }
+        
+    }
     
     // MARK: - 사용자 모든 식단 내역 출력
     func getDietLog(completion: @escaping (Result<[DietLog], Error>) -> Void) {
