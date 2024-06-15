@@ -7,9 +7,12 @@
 
 import UIKit
 import SnapKit
-import Then
+import Combine
 
 class DietBottomSheetViewController: UIViewController {
+    
+    var addMealViewModel: AddMealViewModel = AddMealViewModel.shared
+    private var cancellables = Set<AnyCancellable>()
     
     // MARK: - UI components
     let contentView = UIView().then {
@@ -120,6 +123,9 @@ class DietBottomSheetViewController: UIViewController {
         super.viewDidLoad()
         setupViews()
         setupConstraints()
+        
+        // 구독 설정
+        subscribeToViewModel()
         
         breakfastAddTabButton.addTarget(self, action: #selector(breakfastAddTabButtonTapped), for: .touchUpInside)
         lunchAddTabButton.addTarget(self, action: #selector(lunchAddTabButtonTapped), for: .touchUpInside)
@@ -242,9 +248,11 @@ class DietBottomSheetViewController: UIViewController {
             
             self.breakfastFoodItems.append(foodItem) // foodItem을 breakfastfoodItems에 추가
             
-            if let kcal = Int(foodItem.amtNum1) { self.totalBreakfastKcal += kcal } // totalBreakfastKcal 업데이트
+            if let kcal = Int(foodItem.amtNum1) {
+                addMealViewModel.totalBreakfastKcal += kcal
+            }
             
-            self.breakfastKcalLabel.text = "\(self.totalBreakfastKcal) Kcal" // 아침 식사 칼로리 레이블 업데이트
+            print(addMealViewModel.totalBreakfastKcal)
             
             // 새로운 UIView 생성 및 추가
             let newFoodContentView = UIView()
@@ -295,11 +303,9 @@ class DietBottomSheetViewController: UIViewController {
             
             self.lunchFoodItems.append(foodItem) // foodItem을 lunchFoodItems에 추가
             
-            if let kcal = Int(foodItem.amtNum1) { // totalLunchKcal 업데이트
-                self.totalLunchKcal += kcal
+            if let kcal = Int(foodItem.amtNum1) {
+                addMealViewModel.totalLunchKcal += kcal
             }
-            
-            self.lunchKcalLabel.text = "\(self.totalLunchKcal) Kcal" // 점심 식사 칼로리 레이블 업데이트
             
             // 새로운 UIView 생성 및 추가
             let newFoodContentView = UIView()
@@ -350,11 +356,9 @@ class DietBottomSheetViewController: UIViewController {
             
             self.dinnerFoodItems.append(foodItem) // foodItem을 dinnerFoodItems에 추가
             
-            if let kcal = Int(foodItem.amtNum1) { // totalDinnerKcal 업데이트
-                self.totalDinnerKcal += kcal
+            if let kcal = Int(foodItem.amtNum1) {
+                addMealViewModel.totalDinnerKcal += kcal
             }
-            
-            self.dinnerKcalLabel.text = "\(self.totalDinnerKcal) Kcal" // 저녁 식사 칼로리 레이블 업데이트
             
             // 새로운 UIView 생성 및 추가
             let newFoodContentView = UIView()
@@ -401,5 +405,33 @@ class DietBottomSheetViewController: UIViewController {
         let dietAlbumViewController = DietAlbumViewController()
         dietAlbumViewController.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(dietAlbumViewController, animated: true)
+    }
+    
+    // MARK: - ViewModel
+    private func subscribeToViewModel() {
+        // AddMealViewModel의 totalBreakfastKcal을 구독하여 breakfastKcalLabel을 업데이트
+        addMealViewModel.$totalBreakfastKcal
+            .map { "\($0) Kcal" }
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] value in
+                self?.breakfastKcalLabel.text = value
+            }
+            .store(in: &cancellables)
+        
+        addMealViewModel.$totalLunchKcal
+            .map { "\($0) Kcal" }
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] value in
+                self?.lunchKcalLabel.text = value
+            }
+            .store(in: &cancellables)
+        
+        addMealViewModel.$totalDinnerKcal
+            .map { "\($0) Kcal" }
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] value in
+                self?.dinnerKcalLabel.text = value
+            }
+            .store(in: &cancellables)
     }
 }

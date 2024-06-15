@@ -13,8 +13,8 @@ import FloatingPanel
 class DietMainViewController: UIViewController {
     
     var waterViewModel: WaterViewModel = WaterViewModel.shared
-    
-    let dietViewModel = DietViewModel()
+    var addMealViewModel: AddMealViewModel = AddMealViewModel.shared
+    var dietViewModel = DietViewModel()
     
     private var cancellables = Set<AnyCancellable>()
     
@@ -50,7 +50,7 @@ class DietMainViewController: UIViewController {
         $0.image = UIImage(named: "dietIconFill")
     }
     let dietKcalLabel = UILabel().then {
-        $0.text = "0000 / 0000 kcal"
+        $0.text = "kcalkcalkcal"
         $0.textColor = .appDarkGray
         $0.font = Suite.semiBold.of(size: 16)
         $0.textAlignment = .center
@@ -361,17 +361,29 @@ class DietMainViewController: UIViewController {
     
     // MARK: - ViewModel
     private func subscribeToViewModel() {
+        //물마시기 LabelText구독
         waterViewModel.waterLiterLabelTextPublisher
             .receive(on: DispatchQueue.main)
             .sink { [weak self] value in
                 self?.waterLiterLabel.text = value
             }
             .store(in: &cancellables)
-        
+        //물마시기 Progress구독
         waterViewModel.waterProgressPublisher
             .receive(on: DispatchQueue.main)
             .sink { [weak self] progress in
                 self?.waterCircularProgressBar.progress = Double(progress)
+            }
+            .store(in: &cancellables)
+        
+        //AddMealViewModel의 totalKcalPublisher를 구독하여 dietKcalLabel을 업데이트
+        addMealViewModel.totalKcalPublisher
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] value in
+                print("총 칼로리 업데이트됨:", value)
+                self?.dietKcalLabel.text = "\(value) / 2000Kcal"
+                let progress = Double(value) / 2000.0
+                self?.dietCircularProgressBar.progress = Double(progress)
             }
             .store(in: &cancellables)
     }
