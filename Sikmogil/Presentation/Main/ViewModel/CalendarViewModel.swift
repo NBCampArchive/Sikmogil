@@ -14,11 +14,13 @@ class CalendarViewModel: ObservableObject {
     @Published var errorMessage: String?
     @Published var createDate: Date?
     @Published var targetDate: Date?
+    @Published var postSuccess: Bool = false
+    @Published var selectedDate: Date?
  
     private var cancellables = Set<AnyCancellable>()
     private let calendarService = CalendarAPIManager.shared
     
-    //MARK: - 캘린더 기간 불러오는 함수
+    //MARK: - 캘린더 기간
     func loadTargetData() {
         calendarService.getWeightData()
             .sink { completion in
@@ -34,6 +36,7 @@ class CalendarViewModel: ObservableObject {
             .store(in: &cancellables)
     }
     
+    //MARK: - 전체 캘린더 정보
     func loadCalendarData() {
         calendarService.getAllCalendarData()
             .sink { completion in
@@ -47,6 +50,7 @@ class CalendarViewModel: ObservableObject {
             .store(in: &cancellables)
     }
     
+    //MARK: - 특정 날짜 일기 업데이트
     func updateCalendarData(calendarDate: String, diaryText: String) {
         calendarService.updateCalendarData(calendarDate: calendarDate, diaryText: diaryText)
             .sink { completion in
@@ -55,6 +59,7 @@ class CalendarViewModel: ObservableObject {
                 }
             } receiveValue: { _ in
                 self.loadCalendarData()
+                self.postSuccess = true
             }
             .store(in: &cancellables)
     }
