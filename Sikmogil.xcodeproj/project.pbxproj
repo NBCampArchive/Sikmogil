@@ -11,6 +11,7 @@
 		540768882C12EAD900543A72 /* ProfileTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 540768872C12EAD900543A72 /* ProfileTableView.swift */; };
 		545AA5162C11E6540083D893 /* AlarmTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 545AA5152C11E6540083D893 /* AlarmTableViewCell.swift */; };
 		545AA5182C11F4760083D893 /* ReminderSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 545AA5172C11F4760083D893 /* ReminderSettingsViewController.swift */; };
+		546285CC2C1E4499002247BB /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546285CA2C1E4499002247BB /* ProfileViewModel.swift */; };
 		546E32312C1078D100E94C2A /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546E32302C1078D100E94C2A /* EditProfileViewController.swift */; };
 		546E32332C1078E600E94C2A /* NotificationSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546E32322C1078E600E94C2A /* NotificationSettingsViewController.swift */; };
 		546E32352C1078FA00E94C2A /* GoalSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546E32342C1078FA00E94C2A /* GoalSettingsViewController.swift */; };
@@ -132,6 +133,7 @@
 		540768872C12EAD900543A72 /* ProfileTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTableView.swift; sourceTree = "<group>"; };
 		545AA5152C11E6540083D893 /* AlarmTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmTableViewCell.swift; sourceTree = "<group>"; };
 		545AA5172C11F4760083D893 /* ReminderSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderSettingsViewController.swift; sourceTree = "<group>"; };
+		546285CA2C1E4499002247BB /* ProfileViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		546E32302C1078D100E94C2A /* EditProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewController.swift; sourceTree = "<group>"; };
 		546E32322C1078E600E94C2A /* NotificationSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSettingsViewController.swift; sourceTree = "<group>"; };
 		546E32342C1078FA00E94C2A /* GoalSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalSettingsViewController.swift; sourceTree = "<group>"; };
@@ -270,6 +272,14 @@
 			path = Cell;
 			sourceTree = "<group>";
 		};
+		546285CB2C1E4499002247BB /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				546285CA2C1E4499002247BB /* ProfileViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
 		546E322E2C102E3A00E94C2A /* View */ = {
 			isa = PBXGroup;
 			children = (
@@ -288,6 +298,7 @@
 		547A1BAA2C0DA9E8000A16BF /* Profile */ = {
 			isa = PBXGroup;
 			children = (
+				546285CB2C1E4499002247BB /* ViewModel */,
 				546E322E2C102E3A00E94C2A /* View */,
 			);
 			path = Profile;
@@ -814,7 +825,7 @@
 				B52001E22C1897C20083CBDF /* DietModel.swift in Sources */,
 				F3094EC62C0E40040099DE2C /* ExerciseSelectionViewController.swift in Sources */,
 				CACA65C62C1B5CE20030D8D5 /* FoodDbAPIManager.swift in Sources */,
-				B52001D82C171B8C0083CBDF /* DietViewModel.swift in Sources */,
+				B52001D82C171B8C0083CBDF /* WaterViewModel.swift in Sources */,
 				548951562C1C8370004EA44A /* NotificationHelper.swift in Sources */,
 				B52001D82C171B8C0083CBDF /* WaterViewModel.swift in Sources */,
 				B52001DB2C171F9D0083CBDF /* UIApplication.swift in Sources */,
@@ -843,6 +854,7 @@
 				540768862C12EAB200543A72 /* ProfileInfoView.swift in Sources */,
 				B54ABFE92C0D69CD002E89DC /* Font.swift in Sources */,
 				B54AC00E2C105475002E89DC /* UserProfile.swift in Sources */,
+				546285CC2C1E4499002247BB /* ProfileViewModel.swift in Sources */,
 				B54ABFB82C0CB595002E89DC /* Model.swift in Sources */,
 				62578CE02C106715005035BB /* WeightRecordFloatingViewController.swift in Sources */,
 				547A1BAC2C0DAA78000A16BF /* ProfileViewController.swift in Sources */,
