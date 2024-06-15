@@ -116,12 +116,7 @@ class ExerciseSelectionViewController: UIViewController {
         $0.spacing = 8
         $0.distribution = .fillEqually
     }
-    
-    // MARK: - State
-//    private var selectedExercise: String?
-//    private var selectedTime: String?
-//    private var selectedIntensity: Int?
-    
+
     // MARK: - Properties
     private var viewModel = ExerciseSelectionViewModel()
     private var cancellables = Set<AnyCancellable>()
@@ -241,7 +236,7 @@ class ExerciseSelectionViewController: UIViewController {
         expectedLabel.setAttributedText(fullText: fullText, changeText: changeText, color: color, font: Suite.semiBold.of(size: 20))
     }
     
-    // MARK: - Setup Menus
+    // MARK: -  Setup Binding
     private func setupMenus() {
         let exercises = ["런닝", "수영", "자전거", "기타"]
         let times = ["15분", "30분", "60분", "90분"]
