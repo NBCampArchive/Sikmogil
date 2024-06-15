@@ -29,7 +29,7 @@ class ProfileViewController: UIViewController {
     }
     
     let profileImageView = UIImageView().then {
-        $0.isUserInteractionEnabled = false
+        $0.image = UIImage(systemName: "person.crop.circle.fill")
         $0.contentMode = .scaleAspectFill
         $0.clipsToBounds = true
     }
@@ -224,9 +224,11 @@ class ProfileViewController: UIViewController {
             }
             if let profileImage = userInfo["profileImage"] as? UIImage {
                 profileImageView.image = profileImage
-                profileImageView.layer.cornerRadius = profileImageView.frame.width / 2
-                profileImageView.layer.masksToBounds = true
+            } else {
+                profileImageView.image = UIImage(systemName: "person.crop.circle.fill")
             }
+            profileImageView.layer.cornerRadius = profileImageView.frame.width / 2
+            profileImageView.layer.masksToBounds = true
         }
     }
     
