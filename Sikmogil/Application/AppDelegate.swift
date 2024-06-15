@@ -36,6 +36,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 }
             }
         }
+        // Override point for customization after application launch.
+        // 네비게이션 바의 스타일을 전역적으로 설정
+        let appearance = UINavigationBar.appearance()
+        appearance.tintColor = .black // 버튼의 색상
+        
+        // 네비게이션 바의 백 버튼 타이틀을 비우기
+        let barButtonAppearance = UIBarButtonItem.appearance(whenContainedInInstancesOf: [UINavigationBar.self])
+        barButtonAppearance.setTitleTextAttributes([.foregroundColor: UIColor.clear], for: .normal)
         return true
     }
     

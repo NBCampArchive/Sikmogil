@@ -10,7 +10,7 @@ import Foundation
 struct CalendarModel: Decodable {
     var diaryDate: String
     var diaryWeight: Int?
-    var diaryText: String
+    var diaryText: String?
     var dietPictures: [CalendarDietPicture]?
     var workoutLists: [CalendarWorkoutList]?
 }

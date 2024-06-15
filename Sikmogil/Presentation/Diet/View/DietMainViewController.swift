@@ -12,7 +12,10 @@ import FloatingPanel
 
 class DietMainViewController: UIViewController {
     
-    var viewModel: DietViewModel = DietViewModel.shared
+    var waterViewModel: WaterViewModel = WaterViewModel.shared
+    
+    let dietViewModel = DietViewModel()
+    
     private var cancellables = Set<AnyCancellable>()
     
     // MARK: - UI components
@@ -143,6 +146,20 @@ class DietMainViewController: UIViewController {
         
         setupViews()
         setupConstraints()
+        
+        //뷰진입시 서버에 있는 값으로 ui업데이트해주기
+        dietViewModel.getDietLogDate(for: DateHelper.shared.formatDateToYearMonthDay(Date())) {
+            result in
+            switch result {
+            case .success(_):
+                // waterIntake 값을 이용해 WaterViewModel 업데이트
+                let waterIntake = self.dietViewModel.dietLog!.waterIntake
+                self.waterViewModel.setWaterAmount(waterIntake)
+                
+            case .failure(let error):
+                print("식단 출력 실패")
+            }
+        }
         
         view.backgroundColor = .white
         
@@ -344,14 +361,14 @@ class DietMainViewController: UIViewController {
     
     // MARK: - ViewModel
     private func subscribeToViewModel() {
-        viewModel.waterLiterLabelTextPublisher
+        waterViewModel.waterLiterLabelTextPublisher
             .receive(on: DispatchQueue.main)
             .sink { [weak self] value in
                 self?.waterLiterLabel.text = value
             }
             .store(in: &cancellables)
         
-        viewModel.waterProgressPublisher
+        waterViewModel.waterProgressPublisher
             .receive(on: DispatchQueue.main)
             .sink { [weak self] progress in
                 self?.waterCircularProgressBar.progress = Double(progress)

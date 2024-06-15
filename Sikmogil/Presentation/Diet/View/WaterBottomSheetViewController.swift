@@ -12,6 +12,8 @@ import FloatingPanel
 
 class WaterBottomSheetViewController: UIViewController {
     
+    let dietViewModel = DietViewModel()
+    
     // MARK: - UI components
     let contentView = UIView().then {
         $0.backgroundColor = .clear
@@ -47,6 +49,17 @@ class WaterBottomSheetViewController: UIViewController {
         setupConstraints()
         
         waterRecordTextField.delegate = self
+        
+        //(디버깅용) 식단 출력
+        dietViewModel.getDietLogDate(for: DateHelper.shared.formatDateToYearMonthDay(Date())) {
+            result in
+            switch result {
+            case .success(let data):
+                print("식단 출력 성공: \(data)")
+            case .failure(let error):
+                print("식단 출력 실패: \(error)")
+            }
+        }
         
         // 키보드 노티피케이션 등록
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShowOnce), name: UIResponder.keyboardWillShowNotification, object: nil)
@@ -117,7 +130,7 @@ class WaterBottomSheetViewController: UIViewController {
         }
         
         // 싱글톤 인스턴스를 통해 데이터 업데이트
-        DietViewModel.shared.addWaterAmount(waterAmount)
+        WaterViewModel.shared.addWaterAmount(waterAmount)
         
         if let fpc = parent as? FloatingPanelController {
             fpc.move(to: .hidden, animated: true)

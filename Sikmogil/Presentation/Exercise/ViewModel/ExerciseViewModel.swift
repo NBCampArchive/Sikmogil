@@ -6,82 +6,32 @@
 //
 
 import Foundation
+import Combine
 
 class ExerciseViewModel {
     
-    // 운동 데이터
-    var exerciseData: ExerciseModel?
+    @Published var exercises: [ExerciseListModel] = []
+    @Published var totalWorkoutTime: Int = 0
+    @Published var totalCaloriesBurned: Int = 0
     
-    // 운동 리스트 데이터
-    var exerciseList: [ExerciseListModel] = []
+    private var cancellables = Set<AnyCancellable>()
     
-    // 사용자가 선택한 운동 리스트
-    var selectedExerciseList: [ExerciseListModel] = []
-    
-    // API Manager
-    let exerciseAPIManager = ExerciseAPIManager.shared
-    
-    // MARK: - Fetch Data
-    
-    func fetchExerciseData(for exerciseDay: String, completion: @escaping (Result<Void, Error>) -> Void) {
-        exerciseAPIManager.getExerciseData(exerciseDay: exerciseDay) { result in
+    func fetchExerciseList(for day: String) {
+        ExerciseAPIManager.shared.getExerciseList(exerciseDay: day) { [weak self] result in
             switch result {
-            case .success(let data):
-                self.exerciseData = data
-                completion(.success(()))
+            case .success(let exercises):
+                DispatchQueue.main.async {
+                    self?.exercises = exercises
+                    self?.updateTotals()
+                }
             case .failure(let error):
-                completion(.failure(error))
+                print("운동 데이터 불러오기 실패: \(error)")
             }
         }
     }
     
-    func fetchExerciseList(for exerciseDay: String, completion: @escaping (Result<Void, Error>) -> Void) {
-        exerciseAPIManager.getExerciseList(exerciseDay: exerciseDay) { result in
-            switch result {
-            case .success(let data):
-                self.exerciseList = data
-                completion(.success(()))
-            case .failure(let error):
-                completion(.failure(error))
-            }
-        }
-    }
-    
-    // MARK: - Update Data
-    
-    func updateExerciseData(exerciseDay: String, steps: Int, totalCaloriesBurned: Int, completion: @escaping (Result<Void, Error>) -> Void) {
-        exerciseAPIManager.updateExerciseData(exerciseDay: exerciseDay, steps: steps, totalCaloriesBurned: totalCaloriesBurned) { result in
-            switch result {
-            case .success:
-                // Update local exercise data or refresh if necessary
-                completion(.success(()))
-            case .failure(let error):
-                completion(.failure(error))
-            }
-        }
-    }
-    
-    func addExerciseListData(exerciseDay: String, exerciseList: ExerciseListModel, completion: @escaping (Result<Void, Error>) -> Void) {
-        exerciseAPIManager.addExerciseListData(exerciseDay: exerciseDay, exerciseList: exerciseList) { result in
-            switch result {
-            case .success:
-                // Update local exercise list or refresh if necessary
-                completion(.success(()))
-            case .failure(let error):
-                completion(.failure(error))
-            }
-        }
-    }
-    
-    func deleteExerciseListData(exerciseDay: String, exerciseListId: Int, completion: @escaping (Result<Void, Error>) -> Void) {
-        exerciseAPIManager.deleteExerciseListData(exerciseDay: exerciseDay, exerciseListId: exerciseListId) { result in
-            switch result {
-            case .success:
-                // Update local exercise list or refresh if necessary
-                completion(.success(()))
-            case .failure(let error):
-                completion(.failure(error))
-            }
-        }
+    private func updateTotals() {
+        totalWorkoutTime = exercises.reduce(0) { $0 + $1.workoutTime }
+        totalCaloriesBurned = exercises.reduce(0) { $0 + $1.calorieBurned }
     }
 }

@@ -49,10 +49,10 @@ class ExerciseHistoryCell: UITableViewCell {
     }
     
     // MARK: - Configure
-    func configure(with image: UIImage, exercise: String, calories: String) {
+    func configure(with image: UIImage, exercise: ExerciseListModel) {
         exerciseImageView.image = image
-        exerciseLabel.text = exercise
-        caloriesLabel.text = calories
+        exerciseLabel.text = exercise.performedWorkout
+        caloriesLabel.text = "\(exercise.calorieBurned) kcal"
     }
     
     // MARK: - Setup Views

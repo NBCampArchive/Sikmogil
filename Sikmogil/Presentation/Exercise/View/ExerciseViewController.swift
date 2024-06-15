@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Combine
 import SnapKit
 import Then
 
@@ -89,12 +90,64 @@ class ExerciseViewController: UIViewController {
         $0.separatorStyle = .none
     }
     
+    // MARK: - Properties
+    let day = DateHelper.shared.formatDateToYearMonthDay(Date())
+    private var viewModel = ExerciseViewModel()
+    private var cancellables = Set<AnyCancellable>()
+    
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
         setupConstraints()
         setupButtons()
+        bindViewModel()
+        viewModel.fetchExerciseList(for: day)
+    }
+    
+    // MARK: - Bind ViewModel
+    private func bindViewModel() {
+        viewModel.$exercises
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                self?.tableView.reloadData()
+                self?.updateProgressLabel()
+                self?.updateTableViewHeight()
+            }
+            .store(in: &cancellables)
+        
+        viewModel.$totalWorkoutTime
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] totalWorkoutTime in
+                self?.updateProgressLabel()
+            }
+            .store(in: &cancellables)
+        
+        viewModel.$totalCaloriesBurned
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] totalCaloriesBurned in
+                self?.updateProgressLabel()
+            }
+            .store(in: &cancellables)
+    }
+    
+    private func updateProgressLabel() {
+        let totalTime = viewModel.totalWorkoutTime
+        let totalCalories = viewModel.totalCaloriesBurned
+        progressLabel.text = "활동시간 \(totalTime)분\n소모칼로리 \(totalCalories)kcal"
+    }
+    
+    private func updateTableViewHeight() {
+        let tableViewHeight = viewModel.exercises.count * 88
+        tableView.snp.updateConstraints {
+            $0.height.equalTo(tableViewHeight)
+        }
+    }
+    
+    // MARK: - API
+    func fetchExerciseList() {
+        viewModel.fetchExerciseList(for: day)
+        self.tableView.reloadData()
     }
     
     // MARK: - Setup View
@@ -174,8 +227,7 @@ class ExerciseViewController: UIViewController {
         
         // 테이블 뷰의 높이 설정
         tableView.layoutIfNeeded()
-        let tableViewHeight = 10 * 88
-        // TODO: 데이터 개수 넣어서 높이 설정하기
+        let tableViewHeight = 88
         
         tableView.snp.updateConstraints {
             $0.height.equalTo(tableViewHeight)
@@ -213,16 +265,19 @@ class ExerciseViewController: UIViewController {
 // MARK: - UITableView
 extension ExerciseViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
+        return viewModel.exercises.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        let reversedIndex = viewModel.exercises.count - 1 - indexPath.row
+        
         guard let cell = tableView.dequeueReusableCell(withIdentifier: ExerciseHistoryCell.identifier, for: indexPath) as? ExerciseHistoryCell else {
             return UITableViewCell()
         }
         
-        cell.configure(with: UIImage.exercise, exercise: "운동 종목 \(indexPath.row + 1)", calories: "\(100 * (indexPath.row + 1)) kcal")
-        
+        let exercise = viewModel.exercises[reversedIndex]
+        cell.configure(with: UIImage.exercise, exercise: exercise)
         return cell
     }
     

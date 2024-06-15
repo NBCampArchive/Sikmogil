@@ -43,7 +43,7 @@
 		B52001D52C171B8C0083CBDF /* DietBottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001C92C171B8C0083CBDF /* DietBottomSheetViewController.swift */; };
 		B52001D62C171B8C0083CBDF /* DietMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001CA2C171B8C0083CBDF /* DietMainViewController.swift */; };
 		B52001D72C171B8C0083CBDF /* WaterBottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001CB2C171B8C0083CBDF /* WaterBottomSheetViewController.swift */; };
-		B52001D82C171B8C0083CBDF /* DietViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001CD2C171B8C0083CBDF /* DietViewModel.swift */; };
+		B52001D82C171B8C0083CBDF /* WaterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001CD2C171B8C0083CBDF /* WaterViewModel.swift */; };
 		B52001DB2C171F9D0083CBDF /* UIApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001D92C171F9C0083CBDF /* UIApplication.swift */; };
 		B52001DC2C171F9D0083CBDF /* FloatingPanelControllerStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001DA2C171F9C0083CBDF /* FloatingPanelControllerStyle.swift */; };
 		B52001E02C18922D0083CBDF /* DietAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001DF2C18922D0083CBDF /* DietAPIManager.swift */; };
@@ -54,6 +54,8 @@
 		B52001EA2C19865E0083CBDF /* CalendarModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001E92C19865E0083CBDF /* CalendarModel.swift */; };
 		B52001EC2C1AE1FB0083CBDF /* FloatingPannelStyleHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001EB2C1AE1FB0083CBDF /* FloatingPannelStyleHelper.swift */; };
 		B52001EE2C1C5CD60083CBDF /* CalendarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001ED2C1C5CD60083CBDF /* CalendarCell.swift */; };
+		B52001F02C1C8D7E0083CBDF /* TargetModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001EF2C1C8D7E0083CBDF /* TargetModel.swift */; };
+		B52001F22C1DBAF70083CBDF /* CalendarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001F12C1DBAF70083CBDF /* CalendarViewModel.swift */; };
 		B54ABF882C09BD43002E89DC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABF872C09BD43002E89DC /* AppDelegate.swift */; };
 		B54ABF8A2C09BD43002E89DC /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABF892C09BD43002E89DC /* SceneDelegate.swift */; };
 		B54ABF8C2C09BD43002E89DC /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABF8B2C09BD43002E89DC /* ViewController.swift */; };
@@ -109,6 +111,8 @@
 		CACA65BA2C19BBDF0030D8D5 /* SavedDietImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CACA65B92C19BBDF0030D8D5 /* SavedDietImage.swift */; };
 		CACA65C62C1B5CE20030D8D5 /* FoodDbAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CACA65C52C1B5CE20030D8D5 /* FoodDbAPIManager.swift */; };
 		CACA65C82C1B5D0C0030D8D5 /* FoodDbModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CACA65C72C1B5D0C0030D8D5 /* FoodDbModel.swift */; };
+		CACA65CC2C1C7BC50030D8D5 /* DietViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CACA65CB2C1C7BC50030D8D5 /* DietViewModel.swift */; };
+		CACA65D02C1C8B5F0030D8D5 /* DietAPITest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CACA65CF2C1C8B5F0030D8D5 /* DietAPITest.swift */; };
 		F3094EC12C0D91310099DE2C /* ExerciseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3094EC02C0D91310099DE2C /* ExerciseViewController.swift */; };
 		F3094EC42C0DB1940099DE2C /* ExerciseHistoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3094EC32C0DB1940099DE2C /* ExerciseHistoryCell.swift */; };
 		F3094EC62C0E40040099DE2C /* ExerciseSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3094EC52C0E40040099DE2C /* ExerciseSelectionViewController.swift */; };
@@ -121,6 +125,7 @@
 		F36105B32C1BE05800237572 /* ExerciseCategoryAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F36105B22C1BE05800237572 /* ExerciseCategoryAPIManager.swift */; };
 		F36105B52C1BFF6500237572 /* UILabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F36105B42C1BFF6500237572 /* UILabel.swift */; };
 		F36105B72C1BFF7600237572 /* Double.swift in Sources */ = {isa = PBXBuildFile; fileRef = F36105B62C1BFF7600237572 /* Double.swift */; };
+		F36105B92C1E00A700237572 /* ExerciseSelectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F36105B82C1E00A700237572 /* ExerciseSelectionViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -158,7 +163,7 @@
 		B52001C92C171B8C0083CBDF /* DietBottomSheetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DietBottomSheetViewController.swift; sourceTree = "<group>"; };
 		B52001CA2C171B8C0083CBDF /* DietMainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DietMainViewController.swift; sourceTree = "<group>"; };
 		B52001CB2C171B8C0083CBDF /* WaterBottomSheetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WaterBottomSheetViewController.swift; sourceTree = "<group>"; };
-		B52001CD2C171B8C0083CBDF /* DietViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DietViewModel.swift; sourceTree = "<group>"; };
+		B52001CD2C171B8C0083CBDF /* WaterViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WaterViewModel.swift; sourceTree = "<group>"; };
 		B52001D92C171F9C0083CBDF /* UIApplication.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIApplication.swift; sourceTree = "<group>"; };
 		B52001DA2C171F9C0083CBDF /* FloatingPanelControllerStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatingPanelControllerStyle.swift; sourceTree = "<group>"; };
 		B52001DF2C18922D0083CBDF /* DietAPIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DietAPIManager.swift; sourceTree = "<group>"; };
@@ -169,6 +174,8 @@
 		B52001E92C19865E0083CBDF /* CalendarModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarModel.swift; sourceTree = "<group>"; };
 		B52001EB2C1AE1FB0083CBDF /* FloatingPannelStyleHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingPannelStyleHelper.swift; sourceTree = "<group>"; };
 		B52001ED2C1C5CD60083CBDF /* CalendarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarCell.swift; sourceTree = "<group>"; };
+		B52001EF2C1C8D7E0083CBDF /* TargetModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TargetModel.swift; sourceTree = "<group>"; };
+		B52001F12C1DBAF70083CBDF /* CalendarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewModel.swift; sourceTree = "<group>"; };
 		B54ABF842C09BD43002E89DC /* Sikmogil.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sikmogil.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B54ABF872C09BD43002E89DC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B54ABF892C09BD43002E89DC /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -213,6 +220,8 @@
 		CACA65B92C19BBDF0030D8D5 /* SavedDietImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedDietImage.swift; sourceTree = "<group>"; };
 		CACA65C52C1B5CE20030D8D5 /* FoodDbAPIManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoodDbAPIManager.swift; sourceTree = "<group>"; };
 		CACA65C72C1B5D0C0030D8D5 /* FoodDbModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoodDbModel.swift; sourceTree = "<group>"; };
+		CACA65CB2C1C7BC50030D8D5 /* DietViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DietViewModel.swift; sourceTree = "<group>"; };
+		CACA65CF2C1C8B5F0030D8D5 /* DietAPITest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DietAPITest.swift; sourceTree = "<group>"; };
 		F3094EC02C0D91310099DE2C /* ExerciseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseViewController.swift; sourceTree = "<group>"; };
 		F3094EC32C0DB1940099DE2C /* ExerciseHistoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseHistoryCell.swift; sourceTree = "<group>"; };
 		F3094EC52C0E40040099DE2C /* ExerciseSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseSelectionViewController.swift; sourceTree = "<group>"; };
@@ -225,6 +234,7 @@
 		F36105B22C1BE05800237572 /* ExerciseCategoryAPIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseCategoryAPIManager.swift; sourceTree = "<group>"; };
 		F36105B42C1BFF6500237572 /* UILabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabel.swift; sourceTree = "<group>"; };
 		F36105B62C1BFF7600237572 /* Double.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Double.swift; sourceTree = "<group>"; };
+		F36105B82C1E00A700237572 /* ExerciseSelectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseSelectionViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -313,6 +323,7 @@
 			isa = PBXGroup;
 			children = (
 				62578CE82C107C7A005035BB /* MainViewModel.swift */,
+				B52001F12C1DBAF70083CBDF /* CalendarViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -337,6 +348,7 @@
 		B52001CC2C171B8C0083CBDF /* View */ = {
 			isa = PBXGroup;
 			children = (
+				CACA65CF2C1C8B5F0030D8D5 /* DietAPITest.swift */,
 				B52001C72C171B8C0083CBDF /* AddDietMenuViewController.swift */,
 				B52001C82C171B8C0083CBDF /* DietAlbumViewController.swift */,
 				B52001C92C171B8C0083CBDF /* DietBottomSheetViewController.swift */,
@@ -350,7 +362,8 @@
 		B52001CE2C171B8C0083CBDF /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
-				B52001CD2C171B8C0083CBDF /* DietViewModel.swift */,
+				CACA65CB2C1C7BC50030D8D5 /* DietViewModel.swift */,
+				B52001CD2C171B8C0083CBDF /* WaterViewModel.swift */,
 				CACA65B72C1860CF0030D8D5 /* DietAlbumViewModel.swift */,
 			);
 			path = ViewModel;
@@ -419,6 +432,7 @@
 				B52001E92C19865E0083CBDF /* CalendarModel.swift */,
 				B52001E12C1897C20083CBDF /* DietModel.swift */,
 				B52001E32C1971CD0083CBDF /* ImageModel.swift */,
+				B52001EF2C1C8D7E0083CBDF /* TargetModel.swift */,
 				CACA65C72C1B5D0C0030D8D5 /* FoodDbModel.swift */,
 			);
 			path = Model;
@@ -685,6 +699,7 @@
 			isa = PBXGroup;
 			children = (
 				F3094F0D2C19A1BE0099DE2C /* ExerciseViewModel.swift */,
+				F36105B82C1E00A700237572 /* ExerciseSelectionViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -804,6 +819,7 @@
 				CACA65C62C1B5CE20030D8D5 /* FoodDbAPIManager.swift in Sources */,
 				B52001D82C171B8C0083CBDF /* DietViewModel.swift in Sources */,
 				548951562C1C8370004EA44A /* NotificationHelper.swift in Sources */,
+				B52001D82C171B8C0083CBDF /* WaterViewModel.swift in Sources */,
 				B52001DB2C171F9D0083CBDF /* UIApplication.swift in Sources */,
 				B54ABFFA2C0F0F65002E89DC /* LoginModel.swift in Sources */,
 				B52001EC2C1AE1FB0083CBDF /* FloatingPannelStyleHelper.swift in Sources */,
@@ -814,12 +830,14 @@
 				B54AC00C2C0F48D1002E89DC /* SikmogilBundle++.swift in Sources */,
 				F3094F082C197AFA0099DE2C /* HalfCircleProgressView.swift in Sources */,
 				B52001EE2C1C5CD60083CBDF /* CalendarCell.swift in Sources */,
+				F36105B92C1E00A700237572 /* ExerciseSelectionViewModel.swift in Sources */,
 				B54ABFCF2C0CBB59002E89DC /* UIViewExtensions.swift in Sources */,
 				F3094F0E2C19A1BE0099DE2C /* ExerciseViewModel.swift in Sources */,
 				B54AC01A2C105646002E89DC /* Step1ViewController.swift in Sources */,
 				B54ABFCB2C0CB770002E89DC /* Extension.swift in Sources */,
 				F36105B12C1ADD7D00237572 /* APITestViewController.swift in Sources */,
 				62578CFE2C15A395005035BB /* PhotoCell.swift in Sources */,
+				B52001F02C1C8D7E0083CBDF /* TargetModel.swift in Sources */,
 				B52001E42C1971CD0083CBDF /* ImageModel.swift in Sources */,
 				540768882C12EAD900543A72 /* ProfileTableView.swift in Sources */,
 				B52001E82C1984CF0083CBDF /* CalendarAPIManager.swift in Sources */,
@@ -851,6 +869,7 @@
 				B52001D72C171B8C0083CBDF /* WaterBottomSheetViewController.swift in Sources */,
 				B52001D02C171B8C0083CBDF /* FloatingPanelControllerDelegate.swift in Sources */,
 				B54ABFF12C0DE03D002E89DC /* LoginViewController.swift in Sources */,
+				B52001F22C1DBAF70083CBDF /* CalendarViewModel.swift in Sources */,
 				B54ABFD72C0CC281002E89DC /* CustomCircularProgressBar.swift in Sources */,
 				B52001BF2C15AC1E0083CBDF /* ExerciseAPIManager.swift in Sources */,
 				F3094EC42C0DB1940099DE2C /* ExerciseHistoryCell.swift in Sources */,
@@ -869,6 +888,7 @@
 				B54AC01E2C1056C3002E89DC /* Step3ViewController.swift in Sources */,
 				F36105B72C1BFF7600237572 /* Double.swift in Sources */,
 				B54AC01C2C1056A4002E89DC /* Step2ViewController.swift in Sources */,
+				CACA65D02C1C8B5F0030D8D5 /* DietAPITest.swift in Sources */,
 				B54ABFEC2C0D6BA6002E89DC /* BottomTabBarController.swift in Sources */,
 				B54AC0122C1054B1002E89DC /* OnboardingViewModel.swift in Sources */,
 				B52001B02C11D7FA0083CBDF /* UserAPIManager.swift in Sources */,
@@ -879,6 +899,7 @@
 				B52001D32C171B8C0083CBDF /* AddDietMenuViewController.swift in Sources */,
 				F36105B52C1BFF6500237572 /* UILabel.swift in Sources */,
 				B54ABFBF2C0CB639002E89DC /* PersistentStorage.swift in Sources */,
+				CACA65CC2C1C7BC50030D8D5 /* DietViewModel.swift in Sources */,
 				B52001D42C171B8C0083CBDF /* DietAlbumViewController.swift in Sources */,
 				B52001EA2C19865E0083CBDF /* CalendarModel.swift in Sources */,
 				F3094EC12C0D91310099DE2C /* ExerciseViewController.swift in Sources */,

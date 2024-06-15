@@ -46,6 +46,7 @@ class APITestViewController: UIViewController {
     // MARK: - Exercise List
     
     private func addExerciseListData() {
+        let day = DateHelper.shared.formatDateToYearMonthDay(Date())
         
         let exerciseDay = "2024.06.14"
         
@@ -72,7 +73,7 @@ class APITestViewController: UIViewController {
     }
     
     private func getExerciseList(for date: String) {
-        ExerciseAPIManager.shared.getExerciseList(exerciseDay: DateHelper.shared.formatDateToYearMonthDay(Date())) {
+        ExerciseAPIManager.shared.getExerciseList(exerciseDay: date) {
             result in
             switch result {
             case .success(let data):
