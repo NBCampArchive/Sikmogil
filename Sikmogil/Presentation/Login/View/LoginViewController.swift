@@ -117,7 +117,7 @@ class LoginViewController: UIViewController {
             .subscribe(onNext: {
                 print("로그인 성공")
                 DispatchQueue.main.async {
-                    self.navigateToOnboarding()
+                    self.navigateToMainScreen()
                 }
             })
             .disposed(by: disposeBag)
