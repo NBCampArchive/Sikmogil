@@ -135,7 +135,7 @@ class ExerciseResultViewController: UIViewController {
         cardStackView.addArrangedSubviews(checkImage, completionLabel)
         cardView.addSubview(cardStackView)
         progressView.addSubviews(circularProgressBar, progressLabel)
-        resultView.addSubviews(runningImage, periodLable, verticalLine, timeStackView, kcalStackView)
+        resultView.addSubviews(runningImage, verticalLine, timeStackView, kcalStackView)
         timeStackView.addArrangedSubviews(timeLabel, timeValueLabel)
         kcalStackView.addArrangedSubviews(kcalLabel, kcalValueLabel)
     }
@@ -189,10 +189,10 @@ class ExerciseResultViewController: UIViewController {
             $0.width.equalTo(32)
         }
         
-        periodLable.snp.makeConstraints {
-            $0.centerY.equalTo(runningImage)
-            $0.leading.equalTo(runningImage.snp.trailing).offset(4)
-        }
+//        periodLable.snp.makeConstraints {
+//            $0.centerY.equalTo(runningImage)
+//            $0.leading.equalTo(runningImage.snp.trailing).offset(4)
+//        }
         
         verticalLine.snp.makeConstraints {
             $0.width.equalTo(1)
