@@ -16,7 +16,6 @@
 		546E32352C1078FA00E94C2A /* GoalSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546E32342C1078FA00E94C2A /* GoalSettingsViewController.swift */; };
 		547A1BAC2C0DAA78000A16BF /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 547A1BAB2C0DAA78000A16BF /* ProfileViewController.swift */; };
 		5485F0882C0DFE2D00A2A71E /* ProfileTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5485F0872C0DFE2D00A2A71E /* ProfileTableViewCell.swift */; };
-		548951542C1C8332004EA44A /* UserProfileDummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 548951532C1C8332004EA44A /* UserProfileDummy.swift */; };
 		548951562C1C8370004EA44A /* NotificationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 548951552C1C8370004EA44A /* NotificationHelper.swift */; };
 		62578CD12C0DAB92005035BB /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62578CD02C0DAB92005035BB /* MainViewController.swift */; };
 		62578CD42C0ED558005035BB /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62578CD32C0ED558005035BB /* CalendarViewController.swift */; };
@@ -133,7 +132,6 @@
 		546E32342C1078FA00E94C2A /* GoalSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalSettingsViewController.swift; sourceTree = "<group>"; };
 		547A1BAB2C0DAA78000A16BF /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		5485F0872C0DFE2D00A2A71E /* ProfileTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTableViewCell.swift; sourceTree = "<group>"; };
-		548951532C1C8332004EA44A /* UserProfileDummy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfileDummy.swift; sourceTree = "<group>"; };
 		548951552C1C8370004EA44A /* NotificationHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationHelper.swift; sourceTree = "<group>"; };
 		62578CD02C0DAB92005035BB /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		62578CD32C0ED558005035BB /* CalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
@@ -413,7 +411,6 @@
 				B54ABFB72C0CB595002E89DC /* Model.swift */,
 				B54ABFF92C0F0F65002E89DC /* LoginModel.swift */,
 				B54AC00D2C105475002E89DC /* UserProfile.swift */,
-				548951532C1C8332004EA44A /* UserProfileDummy.swift */,
 				CACA65B92C19BBDF0030D8D5 /* SavedDietImage.swift */,
 				B52001C02C15ADA50083CBDF /* ExerciseModel.swift */,
 				B52001E92C19865E0083CBDF /* CalendarModel.swift */,
@@ -833,7 +830,6 @@
 				547A1BAC2C0DAA78000A16BF /* ProfileViewController.swift in Sources */,
 				B52001DC2C171F9D0083CBDF /* FloatingPanelControllerStyle.swift in Sources */,
 				B52001E02C18922D0083CBDF /* DietAPIManager.swift in Sources */,
-				548951542C1C8332004EA44A /* UserProfileDummy.swift in Sources */,
 				545AA5162C11E6540083D893 /* AlarmTableViewCell.swift in Sources */,
 				B52001D62C171B8C0083CBDF /* DietMainViewController.swift in Sources */,
 				B54ABF922C09BD43002E89DC /* Sikmogil.xcdatamodeld in Sources */,
