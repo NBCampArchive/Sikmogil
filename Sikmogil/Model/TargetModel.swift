@@ -17,5 +17,5 @@ struct TargetModel: Decodable {
 
 struct WeekWeight: Decodable {
     let date: String
-    let weight: Double
+    let weight: Double?
 }
