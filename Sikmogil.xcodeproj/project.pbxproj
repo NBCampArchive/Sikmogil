@@ -41,7 +41,7 @@
 		B52001D52C171B8C0083CBDF /* DietBottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001C92C171B8C0083CBDF /* DietBottomSheetViewController.swift */; };
 		B52001D62C171B8C0083CBDF /* DietMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001CA2C171B8C0083CBDF /* DietMainViewController.swift */; };
 		B52001D72C171B8C0083CBDF /* WaterBottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001CB2C171B8C0083CBDF /* WaterBottomSheetViewController.swift */; };
-		B52001D82C171B8C0083CBDF /* DietViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001CD2C171B8C0083CBDF /* DietViewModel.swift */; };
+		B52001D82C171B8C0083CBDF /* WaterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001CD2C171B8C0083CBDF /* WaterViewModel.swift */; };
 		B52001DB2C171F9D0083CBDF /* UIApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001D92C171F9C0083CBDF /* UIApplication.swift */; };
 		B52001DC2C171F9D0083CBDF /* FloatingPanelControllerStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001DA2C171F9C0083CBDF /* FloatingPanelControllerStyle.swift */; };
 		B52001E02C18922D0083CBDF /* DietAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001DF2C18922D0083CBDF /* DietAPIManager.swift */; };
@@ -109,6 +109,8 @@
 		CACA65BA2C19BBDF0030D8D5 /* SavedDietImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CACA65B92C19BBDF0030D8D5 /* SavedDietImage.swift */; };
 		CACA65C62C1B5CE20030D8D5 /* FoodDbAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CACA65C52C1B5CE20030D8D5 /* FoodDbAPIManager.swift */; };
 		CACA65C82C1B5D0C0030D8D5 /* FoodDbModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CACA65C72C1B5D0C0030D8D5 /* FoodDbModel.swift */; };
+		CACA65CC2C1C7BC50030D8D5 /* DietViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CACA65CB2C1C7BC50030D8D5 /* DietViewModel.swift */; };
+		CACA65D02C1C8B5F0030D8D5 /* DietAPITest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CACA65CF2C1C8B5F0030D8D5 /* DietAPITest.swift */; };
 		F3094EC12C0D91310099DE2C /* ExerciseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3094EC02C0D91310099DE2C /* ExerciseViewController.swift */; };
 		F3094EC42C0DB1940099DE2C /* ExerciseHistoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3094EC32C0DB1940099DE2C /* ExerciseHistoryCell.swift */; };
 		F3094EC62C0E40040099DE2C /* ExerciseSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3094EC52C0E40040099DE2C /* ExerciseSelectionViewController.swift */; };
@@ -157,7 +159,7 @@
 		B52001C92C171B8C0083CBDF /* DietBottomSheetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DietBottomSheetViewController.swift; sourceTree = "<group>"; };
 		B52001CA2C171B8C0083CBDF /* DietMainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DietMainViewController.swift; sourceTree = "<group>"; };
 		B52001CB2C171B8C0083CBDF /* WaterBottomSheetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WaterBottomSheetViewController.swift; sourceTree = "<group>"; };
-		B52001CD2C171B8C0083CBDF /* DietViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DietViewModel.swift; sourceTree = "<group>"; };
+		B52001CD2C171B8C0083CBDF /* WaterViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WaterViewModel.swift; sourceTree = "<group>"; };
 		B52001D92C171F9C0083CBDF /* UIApplication.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIApplication.swift; sourceTree = "<group>"; };
 		B52001DA2C171F9C0083CBDF /* FloatingPanelControllerStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatingPanelControllerStyle.swift; sourceTree = "<group>"; };
 		B52001DF2C18922D0083CBDF /* DietAPIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DietAPIManager.swift; sourceTree = "<group>"; };
@@ -214,6 +216,8 @@
 		CACA65B92C19BBDF0030D8D5 /* SavedDietImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedDietImage.swift; sourceTree = "<group>"; };
 		CACA65C52C1B5CE20030D8D5 /* FoodDbAPIManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoodDbAPIManager.swift; sourceTree = "<group>"; };
 		CACA65C72C1B5D0C0030D8D5 /* FoodDbModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoodDbModel.swift; sourceTree = "<group>"; };
+		CACA65CB2C1C7BC50030D8D5 /* DietViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DietViewModel.swift; sourceTree = "<group>"; };
+		CACA65CF2C1C8B5F0030D8D5 /* DietAPITest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DietAPITest.swift; sourceTree = "<group>"; };
 		F3094EC02C0D91310099DE2C /* ExerciseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseViewController.swift; sourceTree = "<group>"; };
 		F3094EC32C0DB1940099DE2C /* ExerciseHistoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseHistoryCell.swift; sourceTree = "<group>"; };
 		F3094EC52C0E40040099DE2C /* ExerciseSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseSelectionViewController.swift; sourceTree = "<group>"; };
@@ -340,6 +344,7 @@
 		B52001CC2C171B8C0083CBDF /* View */ = {
 			isa = PBXGroup;
 			children = (
+				CACA65CF2C1C8B5F0030D8D5 /* DietAPITest.swift */,
 				B52001C72C171B8C0083CBDF /* AddDietMenuViewController.swift */,
 				B52001C82C171B8C0083CBDF /* DietAlbumViewController.swift */,
 				B52001C92C171B8C0083CBDF /* DietBottomSheetViewController.swift */,
@@ -353,7 +358,8 @@
 		B52001CE2C171B8C0083CBDF /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
-				B52001CD2C171B8C0083CBDF /* DietViewModel.swift */,
+				CACA65CB2C1C7BC50030D8D5 /* DietViewModel.swift */,
+				B52001CD2C171B8C0083CBDF /* WaterViewModel.swift */,
 				CACA65B72C1860CF0030D8D5 /* DietAlbumViewModel.swift */,
 			);
 			path = ViewModel;
@@ -805,7 +811,7 @@
 				B52001E22C1897C20083CBDF /* DietModel.swift in Sources */,
 				F3094EC62C0E40040099DE2C /* ExerciseSelectionViewController.swift in Sources */,
 				CACA65C62C1B5CE20030D8D5 /* FoodDbAPIManager.swift in Sources */,
-				B52001D82C171B8C0083CBDF /* DietViewModel.swift in Sources */,
+				B52001D82C171B8C0083CBDF /* WaterViewModel.swift in Sources */,
 				B52001DB2C171F9D0083CBDF /* UIApplication.swift in Sources */,
 				B54ABFFA2C0F0F65002E89DC /* LoginModel.swift in Sources */,
 				B52001EC2C1AE1FB0083CBDF /* FloatingPannelStyleHelper.swift in Sources */,
@@ -873,6 +879,7 @@
 				B54AC01E2C1056C3002E89DC /* Step3ViewController.swift in Sources */,
 				F36105B72C1BFF7600237572 /* Double.swift in Sources */,
 				B54AC01C2C1056A4002E89DC /* Step2ViewController.swift in Sources */,
+				CACA65D02C1C8B5F0030D8D5 /* DietAPITest.swift in Sources */,
 				B54ABFEC2C0D6BA6002E89DC /* BottomTabBarController.swift in Sources */,
 				B54AC0122C1054B1002E89DC /* OnboardingViewModel.swift in Sources */,
 				B52001B02C11D7FA0083CBDF /* UserAPIManager.swift in Sources */,
@@ -883,6 +890,7 @@
 				B52001D32C171B8C0083CBDF /* AddDietMenuViewController.swift in Sources */,
 				F36105B52C1BFF6500237572 /* UILabel.swift in Sources */,
 				B54ABFBF2C0CB639002E89DC /* PersistentStorage.swift in Sources */,
+				CACA65CC2C1C7BC50030D8D5 /* DietViewModel.swift in Sources */,
 				B52001D42C171B8C0083CBDF /* DietAlbumViewController.swift in Sources */,
 				B52001EA2C19865E0083CBDF /* CalendarModel.swift in Sources */,
 				F3094EC12C0D91310099DE2C /* ExerciseViewController.swift in Sources */,

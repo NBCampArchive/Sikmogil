@@ -5,10 +5,10 @@
 	<key>header_KEY</key>
 	<string></string>
 	<key>CategoryAPI_KEY</key>
-  <string></string>
+	<string></string>
 	<key>FoodDbAPI_KEY</key>
-	<string></string>
+	<string>F%2Fl3ZLO9%2FhXg%2BaVY%2FrrO6OR949MJzDvWQUzVZsh3lNQHHHC950O2kyl5TCipWM51RkRQyGjwIZLwrOYWDSgvHQ%3D%3D</string>
 	<key>BASE_URL</key>
-	<string></string>
+	<string>https://sikmogil.duckdns.org</string>
 </dict>
 </plist>
