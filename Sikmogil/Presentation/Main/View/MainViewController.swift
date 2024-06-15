@@ -6,13 +6,18 @@
 //
 
 import UIKit
+import SnapKit
+import Then
 import DGCharts
 import FloatingPanel
 import Lottie
+import Combine
 
 class MainViewController: UIViewController {
     
-    var floatingPanelController: FloatingPanelController!
+    private let viewModel = MainViewModel()
+    private var cancellables = Set<AnyCancellable>()
+    var recodingWeightPanel: FloatingPanelController!
     var dimmingView: UIView!
     
     private let scrollView = UIScrollView().then {
@@ -109,7 +114,17 @@ class MainViewController: UIViewController {
     }
     
     private let graph = BarChartView().then {
-        $0.backgroundColor = .appLightGray
+        $0.backgroundColor = .clear
+        $0.xAxis.drawGridLinesEnabled = false
+        $0.leftAxis.drawGridLinesEnabled = false
+        $0.rightAxis.drawGridLinesEnabled = false
+        $0.xAxis.drawAxisLineEnabled = false
+        $0.leftAxis.drawAxisLineEnabled = false
+        $0.rightAxis.drawAxisLineEnabled = false
+        $0.xAxis.drawLabelsEnabled = false
+        $0.leftAxis.drawLabelsEnabled = false
+        $0.rightAxis.drawLabelsEnabled = false
+        $0.legend.enabled = false
     }
     
     override func viewDidLoad() {
@@ -117,9 +132,16 @@ class MainViewController: UIViewController {
         
         view.backgroundColor = .white
         
+        viewModel.loadWeightData()
+        bindViewModel()
+        
         setupViews()
         setupConstraints()
         setupFloatingPanel()
+        
+        hideKeyboardWhenTappedAround()
+        setKeyboardObserver()
+        
         calendarButton.addTarget(self, action: #selector(tapCalendarButton), for: .touchUpInside)
         recordButton.addTarget(self, action: #selector(tapRecordButton), for: .touchUpInside)
     }
@@ -191,7 +213,7 @@ class MainViewController: UIViewController {
         }
         
         weightLogLabel.snp.makeConstraints {
-            $0.top.equalTo(percentView.snp.bottom).offset(16)
+            $0.top.equalTo(percentView.snp.bottom).offset(32)
             $0.leading.equalToSuperview().offset(16)
         }
         
@@ -214,13 +236,13 @@ class MainViewController: UIViewController {
         
         recordButton.snp.makeConstraints {
             $0.top.equalTo(animationView.snp.bottom).offset(8)
-            $0.leading.equalTo(view.safeAreaLayoutGuide).offset(18)
-            $0.trailing.equalTo(view.safeAreaLayoutGuide).offset(-18)
+            $0.leading.equalTo(view.safeAreaLayoutGuide).offset(16)
+            $0.trailing.equalTo(view.safeAreaLayoutGuide).offset(-16)
             $0.height.equalTo(48)
         }
         
         graphLabel.snp.makeConstraints {
-            $0.top.equalTo(recordButton.snp.bottom).offset(30)
+            $0.top.equalTo(recordButton.snp.bottom).offset(32)
             $0.leading.equalTo(view.safeAreaLayoutGuide).offset(16)
         }
         
@@ -232,6 +254,66 @@ class MainViewController: UIViewController {
         }
     }
     
+    private func bindViewModel() {
+        viewModel.$targetModel
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] targetModel in
+                self?.updateUI(with: targetModel)
+            }
+            .store(in: &cancellables)
+        
+        viewModel.$progress
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] progress in
+                self?.dateProgressView.progress = progress
+                self?.percentLabel.text = String(format: "%.0f%%", progress * 100)
+            }
+            .store(in: &cancellables)
+        
+        viewModel.$remainingDays
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] remainingDays in
+                self?.weightLabel.text = "목표까지 남은기간 \(remainingDays)일!"
+            }
+            .store(in: &cancellables)
+        
+        viewModel.$chartDateEntries
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] chartDateEntries in
+                self?.updateGraph(with: chartDateEntries)
+            }
+            .store(in: &cancellables)
+        
+        viewModel.$weight
+            .receive(on: DispatchQueue.main)
+            .print("업데이트 성공적 호출")
+            .sink { [weak self] weight in
+                self?.viewModel.loadWeightData()
+            }
+            .store(in: &cancellables)
+        
+    }
+    
+    private func updateUI(with targetModel: TargetModel?) {
+        guard let targetModel = targetModel else { return }
+        weightNowLabel.text = "현재 체중 \(targetModel.weekWeights.first?.weight ?? 0) Kg"
+        weightToGoalLabel.text = "목표까지 \((Double(targetModel.targetWeight) ?? 0.0) - Double(targetModel.weekWeights.first?.weight ?? 0.0)) Kg"
+        progressLabel.text = "\(targetModel.createDate) ~ \(targetModel.targetDate)"
+    }
+    
+    private func updateGraph(with chartDateEntries: [BarChartDataEntry]) {
+        let dataSet = BarChartDataSet(entries: chartDateEntries)
+        dataSet.colors = [UIColor.appDarkGray]
+        dataSet.valueFont = Suite.semiBold.of(size: 12)
+        dataSet.valueFormatter = DefaultValueFormatter { value, _,_,_  in
+            return "\(value)Kg"
+        }
+        
+        let data = BarChartData(dataSet: dataSet)
+        graph.data = data
+        
+    }
+    
     @objc func tapCalendarButton() {
         let nextView = CalendarViewController()
         
@@ -239,67 +321,37 @@ class MainViewController: UIViewController {
     }
     
     @objc func tapRecordButton() {
-        floatingPanelController.show(animated: true, completion: nil)
-        dimmingView.isHidden = false
-        UIView.animate(withDuration: 0.3) {
-            self.dimmingView.alpha = 1.0
+        self.present(recodingWeightPanel, animated: true)
+    }
+    
+    // 키보드가 나타날 때 호출되는 메서드
+    @objc override func keyboardWillShow(notification: NSNotification) {
+        guard let userInfo = notification.userInfo else { return }
+        if userInfo[UIResponder.keyboardFrameEndUserInfoKey] is CGRect {
+            // FloatingPanel 높이 수정
+            recodingWeightPanel.move(to: .full, animated: true)
         }
     }
-}
-
-extension MainViewController: WeightRecordFloatingViewControllerDelegate {
-    func didTapDoneButton() {
-        dismissFloatingPanel()
+    
+    // 키보드가 사라질 때 호출되는 메서드
+    @objc override func keyboardWillHide(notification: NSNotification) {
+        recodingWeightPanel.move(to: .half, animated: true)
     }
 }
 
 extension MainViewController: FloatingPanelControllerDelegate {
     
     func setupFloatingPanel() {
-        floatingPanelController = FloatingPanelController()
+        recodingWeightPanel = FloatingPanelController()
         
         let contentVC = WeightRecordFloatingViewController()
-        floatingPanelController.set(contentViewController: contentVC)
-        contentVC.delegate = self
+        contentVC.viewModel = viewModel
+        recodingWeightPanel.set(contentViewController: contentVC)
         
-        floatingPanelController.surfaceView.appearance.cornerRadius = 20
-        floatingPanelController.delegate = self
-        
-        dimmingView = UIView(frame: view.bounds)
-        dimmingView.backgroundColor = UIColor.appBlack.withAlphaComponent(0.5)
-        dimmingView.isHidden = true
-        dimmingView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dismissFloatingPanel)))
-        
-        view.addSubview(dimmingView)
-        
-        floatingPanelController.addPanel(toParent: self)
-        floatingPanelController.hide(animated: false, completion: nil)
+        recodingWeightPanel.layout = CustomFloatingPanelLayout()
+        recodingWeightPanel.isRemovalInteractionEnabled = true
+        recodingWeightPanel.changePanelStyle()
+        recodingWeightPanel.delegate = self
     }
     
-    @objc func dismissFloatingPanel() {
-        floatingPanelController.hide(animated: true) {
-            self.dimmingView.isHidden = true
-            self.dimmingView.alpha = 0.0
-        }
-    }
-    
-    func floatingPanelDidMove(_ fpc: FloatingPanelController) {
-        if fpc.state != .hidden {
-            tabBarController?.tabBar.isHidden = true
-        }
-        
-        let loc = fpc.surfaceLocation
-        let minY = fpc.surfaceLocation(for: .half).y
-        let maxY = fpc.surfaceLocation(for: .tip).y
-        
-        if loc.y > maxY {
-            fpc.move(to: .hidden, animated: true)
-            self.dimmingView.isHidden = true
-            tabBarController?.tabBar.isHidden = false
-        }
-        
-        if loc.y < minY {
-            fpc.surfaceLocation = CGPoint(x: loc.x, y: minY)
-        }
-    }
 }

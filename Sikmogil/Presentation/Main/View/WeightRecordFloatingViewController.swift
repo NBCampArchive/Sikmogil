@@ -6,14 +6,14 @@
 //
 
 import UIKit
-
-protocol WeightRecordFloatingViewControllerDelegate {
-    func didTapDoneButton()
-}
+import SnapKit
+import Then
+import Combine
 
 class WeightRecordFloatingViewController: UIViewController {
     
-    var delegate: WeightRecordFloatingViewControllerDelegate?
+    var viewModel: MainViewModel?
+    private var cancellables = Set<AnyCancellable>()
     
     private let label = UILabel().then {
         $0.text = "몸무게 기록하기"
@@ -45,8 +45,14 @@ class WeightRecordFloatingViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        view.backgroundColor = .white
+        
         setupViews()
         setupConstraints()
+        
+        bindViewModel()
+        
+        hideKeyboardWhenTappedAround()
         
         doneButton.addTarget(self, action: #selector(tapDoneButton), for: .touchUpInside)
         print(#function)
@@ -81,7 +87,28 @@ class WeightRecordFloatingViewController: UIViewController {
         }
     }
     
+    private func bindViewModel() {
+        guard let viewModel = viewModel else { return }
+        
+        viewModel.$postSuccess
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] postSuccess in
+                if postSuccess {
+                    self?.dismiss(animated: true, completion: nil)
+                }
+            }
+            .store(in: &cancellables)
+    }
+    
     @objc func tapDoneButton() {
-        delegate?.didTapDoneButton()
+        guard let viewModel = viewModel else { return }
+        
+        guard let weight = weightTextField.text else {
+            print("TextFiled is empty")
+            return
+        }
+        
+        // viewmodel에 weight 데이터 전달
+        viewModel.updateWeightData(weightDate: DateHelper.shared.formatDateToYearMonthDay(Date()), weight: weight)
     }
 }

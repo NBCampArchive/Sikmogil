@@ -6,6 +6,9 @@
 //
 
 import UIKit
+import SnapKit
+import Then
+import Combine
 
 enum Section: Int, CaseIterable {
     case dietPhotos
@@ -13,6 +16,9 @@ enum Section: Int, CaseIterable {
 }
 
 class DayViewController: UIViewController {
+    
+    var viewModel: CalendarViewModel?
+    private var cancellables = Set<AnyCancellable>()
     
     private let scrollView = UIScrollView().then {
         $0.backgroundColor = .clear
@@ -40,6 +46,12 @@ class DayViewController: UIViewController {
     private let diaryView = UIView().then {
         $0.backgroundColor = .white
         $0.layer.cornerRadius = 16
+    }
+    
+    private let diaryTextView = UITextView().then {
+        $0.backgroundColor = .clear
+        $0.font = Suite.regular.of(size: 16)
+        $0.text = ""
     }
     
     private lazy var  collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: createCompositionalLayout()).then {
@@ -81,6 +93,31 @@ class DayViewController: UIViewController {
         
         setupViews()
         setupConstraints()
+        
+        bindeViewModel()
+    }
+    
+    private func bindeViewModel() {
+        guard let viewModel = viewModel else { return }
+        
+        viewModel.loadDayCalendar(calendarDate: DateHelper.shared.formatDateToYearMonthDay( viewModel.selectedDate ?? Date()))
+        print(DateHelper.shared.formatDateToYearMonthDay( viewModel.selectedDate ?? Date()))
+        
+        viewModel.$calendarModels
+            .receive(on: DispatchQueue.main)
+            .sink { calendarModel in
+                self.updateUI(with: calendarModel)
+            }
+            .store(in: &cancellables)
+    }
+    
+    private func updateUI(with calendarModel: CalendarModel?) {
+        guard let calendarModel = calendarModel else { return }
+        
+        dateLabel.text = calendarModel.diaryDate
+        diaryTextView.text = calendarModel.diaryText
+        
+        collectionView.reloadData()
     }
     
     private func setupViews() {
@@ -88,7 +125,7 @@ class DayViewController: UIViewController {
         
         scrollView.addSubview(scrollSubView)
         
-        scrollSubView.addSubviews(dateLabel, blueDot, diaryLabel, diaryView, collectionView)
+        scrollSubView.addSubviews(dateLabel, blueDot, diaryLabel, diaryView, diaryTextView, collectionView)
     }
     
     private func setupConstraints() {
@@ -126,6 +163,13 @@ class DayViewController: UIViewController {
             $0.height.equalTo(150)
         }
         
+        diaryTextView.snp.makeConstraints {
+            $0.top.equalTo(diaryView.snp.top).offset(8)
+            $0.leading.equalTo(diaryView.snp.leading).offset(8)
+            $0.trailing.equalTo(diaryView.snp.trailing).offset(-8)
+            $0.bottom.equalTo(diaryView.snp.bottom).offset(-8)
+        }
+        
         collectionView.snp.makeConstraints {
             $0.top.equalTo(diaryView.snp.bottom).offset(12)
             $0.leading.equalToSuperview().offset(16)
@@ -142,7 +186,7 @@ extension DayViewController: UICollectionViewDelegate, UICollectionViewDataSourc
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 4
+        return 2
         /*
          switch Section(rawValue: section)! {
          case .dietPhotos:

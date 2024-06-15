@@ -8,8 +8,12 @@
 import UIKit
 import Then
 import SnapKit
+import Combine
 
 class DiaryRecordFloatingViewController: UIViewController {
+    
+    var viewModel: CalendarViewModel?
+    private var cancellables = Set<AnyCancellable>()
     
     private let label = UILabel().then {
         $0.text = "오늘의 한 줄 일기를 작성해보세요!"
@@ -42,6 +46,8 @@ class DiaryRecordFloatingViewController: UIViewController {
         setupConstraints()
         hideKeyboardWhenTappedAround()
         
+        bindViewModel()
+        
         doneButton.addTarget(self, action: #selector(tapDoneButton), for: .touchUpInside)
     }
     
@@ -70,15 +76,37 @@ class DiaryRecordFloatingViewController: UIViewController {
         }
     }
     
+    private func bindViewModel() {
+        guard let viewModel = viewModel else { return }
+        
+        viewModel.$postSuccess
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] postSuccess in
+                    self?.dismiss(animated: true)
+            }
+            .store(in: &cancellables)
+    }
+    
     @objc func tapDoneButton() {
+        guard let viewModel = viewModel else {
+            print("viewModel is nil")
+            return
+        }
+        
+        guard let recordDate = viewModel.selectedDate else {
+            print("recordDate is nil")
+            return
+        }
+        
         if diaryTextView.text.isEmpty {
             self.dismiss(animated: true)
         } else {
             let alert = UIAlertController(title: "일기를 저장하시겠어요?", message: nil, preferredStyle: .alert)
             
             let okAction = UIAlertAction(title: "네", style: .default) { _ in
-               //TODO: 일기 저장 추가
+                viewModel.updateCalendarData(calendarDate: DateHelper.shared.formatDateToYearMonthDay(recordDate), diaryText: self.diaryTextView.text)
                 self.dismiss(animated: true)
+                self.diaryTextView.text = ""
             }
             
             let cancelAction = UIAlertAction(title: "아니요", style: .cancel) { _ in
