@@ -28,11 +28,14 @@ class CalendarAPIManager {
     
     // MARK: - 캘린더 데이터 업데이트
     func updateCalendarData(calendarDate: String, diaryText: String) -> AnyPublisher<Void, Error> {
-        let url = "\(baseURL)/api/calendar/UpdateCalendar"
+        let url = "\(baseURL)/api/calendar/updateCalendar"
         
         let parameters: [String: Any] = [
             "diaryDate": calendarDate,
+            "diaryWeight": 0,
             "diaryText": diaryText,
+            "dietPictures": [],
+            "workoutLists": []
         ]
         
         return AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
