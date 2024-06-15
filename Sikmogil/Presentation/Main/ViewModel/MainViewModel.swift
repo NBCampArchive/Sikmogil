@@ -35,6 +35,7 @@ class MainViewModel: ObservableObject {
     @Published var remainingDays: Int = 0
     @Published var chartDateEntries: [BarChartDataEntry] = []
     @Published var dataUpdated: Bool = false
+    @Published var weight: String = ""
     
     private var cancellables = Set<AnyCancellable>()
     private let calendarService = CalendarAPIManager.shared
@@ -74,12 +75,13 @@ class MainViewModel: ObservableObject {
         print("updateWeightData")
         calendarService.updateWeightData(weightDate: weightDate ,weight: weight)
             .receive(on: DispatchQueue.main)
-            .print("Combien debug")
+            .print("updateWeightData debug")
             .sink { completion in
                 switch completion {
                 case .finished:
                     self.postSuccess = true
-                    self.loadWeightData()
+                    self.weight = weight
+                    self.updateChartDataEntry()
                 case .failure(let error):
                     self.errorMessage = error.localizedDescription
                 }
@@ -138,7 +140,6 @@ class MainViewModel: ObservableObject {
 //            return BarChartDataEntry(x: Double(index), y: weekWeight.weight)
 //        }
         var entries: [BarChartDataEntry] = []
-        var labels: [String] = []
         
         for index in 0..<7 {
             if targetModel.weekWeights.isEmpty {

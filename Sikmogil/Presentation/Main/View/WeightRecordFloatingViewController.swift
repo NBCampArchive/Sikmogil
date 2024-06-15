@@ -12,7 +12,7 @@ import Combine
 
 class WeightRecordFloatingViewController: UIViewController {
     
-    private let viewmodel = MainViewModel()
+    var viewModel: MainViewModel?
     private var cancellables = Set<AnyCancellable>()
     
     private let label = UILabel().then {
@@ -45,8 +45,12 @@ class WeightRecordFloatingViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        view.backgroundColor = .white
+        
         setupViews()
         setupConstraints()
+        
+        bindViewModel()
         
         doneButton.addTarget(self, action: #selector(tapDoneButton), for: .touchUpInside)
         print(#function)
@@ -81,17 +85,10 @@ class WeightRecordFloatingViewController: UIViewController {
         }
     }
     
-    @objc func tapDoneButton() {
-        guard let weight = weightTextField.text else {
-            print("TextFiled is empty")
-            return
-        }
+    private func bindViewModel() {
+        guard let viewModel = viewModel else { return }
         
-        // viewmodel에 weight 데이터 전달
-        viewmodel.updateWeightData(weightDate: DateHelper.shared.formatDateToYearMonthDay(Date()), weight: weight)
-        
-        // viewmodel에 postSuccess 가 true 이면 dismiss
-        viewmodel.$postSuccess
+        viewModel.$postSuccess
             .receive(on: DispatchQueue.main)
             .sink { [weak self] postSuccess in
                 if postSuccess {
@@ -99,5 +96,17 @@ class WeightRecordFloatingViewController: UIViewController {
                 }
             }
             .store(in: &cancellables)
+    }
+    
+    @objc func tapDoneButton() {
+        guard let viewModel = viewModel else { return }
+        
+        guard let weight = weightTextField.text else {
+            print("TextFiled is empty")
+            return
+        }
+        
+        // viewmodel에 weight 데이터 전달
+        viewModel.updateWeightData(weightDate: DateHelper.shared.formatDateToYearMonthDay(Date()), weight: weight)
     }
 }

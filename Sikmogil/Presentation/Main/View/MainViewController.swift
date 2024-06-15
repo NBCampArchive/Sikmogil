@@ -17,7 +17,7 @@ class MainViewController: UIViewController {
     
     private let viewModel = MainViewModel()
     private var cancellables = Set<AnyCancellable>()
-    var floatingPanelController: FloatingPanelController!
+    var recodingWeightPanel: FloatingPanelController!
     var dimmingView: UIView!
     
     private let scrollView = UIScrollView().then {
@@ -280,12 +280,20 @@ class MainViewController: UIViewController {
             }
             .store(in: &cancellables)
         
+        viewModel.$weight
+            .receive(on: DispatchQueue.main)
+            .print("업데이트 성공적 호출")
+            .sink { [weak self] weight in
+                self?.viewModel.loadWeightData()
+            }
+            .store(in: &cancellables)
+        
     }
     
     private func updateUI(with targetModel: TargetModel?) {
         guard let targetModel = targetModel else { return }
         weightNowLabel.text = "현재 체중 \(targetModel.weekWeights.first?.weight ?? 0) Kg"
-        weightToGoalLabel.text = "목표까지 \(Double(targetModel.weekWeights.first?.weight ?? 0.0) - (Double(targetModel.targetWeight) ?? 0.0)) Kg"
+        weightToGoalLabel.text = "목표까지 \((Double(targetModel.targetWeight) ?? 0.0) - Double(targetModel.weekWeights.first?.weight ?? 0.0)) Kg"
         progressLabel.text = "\(targetModel.createDate) ~ \(targetModel.targetDate)"
     }
     
@@ -294,7 +302,7 @@ class MainViewController: UIViewController {
         dataSet.colors = [UIColor.appDarkGray]
         dataSet.valueFont = Suite.semiBold.of(size: 12)
         dataSet.valueFormatter = DefaultValueFormatter { value, _,_,_  in
-            return value == 0.0 ? "" : String(format: "%.2f", value)
+            return "\(value)Kg"
         }
         
         let data = BarChartData(dataSet: dataSet)
@@ -309,55 +317,23 @@ class MainViewController: UIViewController {
     }
     
     @objc func tapRecordButton() {
-        self.present(floatingPanelController, animated: true)
+        self.present(recodingWeightPanel, animated: true)
     }
 }
-
-
 
 extension MainViewController: FloatingPanelControllerDelegate {
     
     func setupFloatingPanel() {
-        floatingPanelController = FloatingPanelController()
+        recodingWeightPanel = FloatingPanelController()
         
         let contentVC = WeightRecordFloatingViewController()
-        floatingPanelController.set(contentViewController: contentVC)
+        contentVC.viewModel = viewModel
+        recodingWeightPanel.set(contentViewController: contentVC)
         
-        floatingPanelController.surfaceView.appearance.cornerRadius = 20
-        floatingPanelController.delegate = self
-        
-        dimmingView = UIView(frame: view.bounds)
-        dimmingView.backgroundColor = UIColor.appBlack.withAlphaComponent(0.5)
-        dimmingView.isHidden = true
-        dimmingView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dismissFloatingPanel)))
-        
-        view.addSubview(dimmingView)
+        recodingWeightPanel.layout = CustomFloatingPanelLayout()
+        recodingWeightPanel.isRemovalInteractionEnabled = true
+        recodingWeightPanel.changePanelStyle()
+        recodingWeightPanel.delegate = self
     }
     
-    @objc func dismissFloatingPanel() {
-        floatingPanelController.hide(animated: true) {
-            self.dimmingView.isHidden = true
-            self.dimmingView.alpha = 0.0
-        }
-    }
-    
-    func floatingPanelDidMove(_ fpc: FloatingPanelController) {
-        if fpc.state != .hidden {
-            tabBarController?.tabBar.isHidden = true
-        }
-        
-        let loc = fpc.surfaceLocation
-        let minY = fpc.surfaceLocation(for: .half).y
-        let maxY = fpc.surfaceLocation(for: .tip).y
-        
-        if loc.y > maxY {
-            fpc.move(to: .hidden, animated: true)
-            self.dimmingView.isHidden = true
-            tabBarController?.tabBar.isHidden = false
-        }
-        
-        if loc.y < minY {
-            fpc.surfaceLocation = CGPoint(x: loc.x, y: minY)
-        }
-    }
 }
