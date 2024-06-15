@@ -322,6 +322,7 @@ class ExerciseSelectionViewController: UIViewController {
         }
     }
     
+    // TODO: - 뷰모델 넘기는 방식 대신 옵져버블한 변수로 바꾸기
     private func navigateToTimerVC() {
         guard let time = viewModel.selectedTime else { return }
         // 시간 문자열을 초 단위로 변환 ("30분" -> 1800초)
@@ -330,12 +331,13 @@ class ExerciseSelectionViewController: UIViewController {
         
         let exerciseTimerVC = ExerciseTimerViewController()
         exerciseTimerVC.selectedTime = timeInSeconds
+        exerciseTimerVC.viewModel = self.viewModel
         navigationController?.pushViewController(exerciseTimerVC, animated: true)
-        
     }
     
     private func navigateResultVC() {
         let exerciseResultVC = ExerciseResultViewController()
+        exerciseResultVC.viewModel = self.viewModel
         navigationController?.pushViewController(exerciseResultVC, animated: true)
     }
 }
