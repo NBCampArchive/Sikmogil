@@ -112,6 +112,7 @@ class ExerciseViewController: UIViewController {
             .sink { [weak self] _ in
                 self?.tableView.reloadData()
                 self?.updateProgressLabel()
+                self?.updateTableViewHeight()
             }
             .store(in: &cancellables)
         
@@ -134,6 +135,13 @@ class ExerciseViewController: UIViewController {
         let totalTime = viewModel.totalWorkoutTime
         let totalCalories = viewModel.totalCaloriesBurned
         progressLabel.text = "활동시간 \(totalTime)분\n소모칼로리 \(totalCalories)kcal"
+    }
+    
+    private func updateTableViewHeight() {
+        let tableViewHeight = viewModel.exercises.count * 88
+        tableView.snp.updateConstraints {
+            $0.height.equalTo(tableViewHeight)
+        }
     }
     
     // MARK: - API
@@ -218,8 +226,7 @@ class ExerciseViewController: UIViewController {
         
         // 테이블 뷰의 높이 설정
         tableView.layoutIfNeeded()
-        let tableViewHeight = 10 * 88
-        // TODO: 데이터 개수 넣어서 높이 설정하기
+        let tableViewHeight = 88
         
         tableView.snp.updateConstraints {
             $0.height.equalTo(tableViewHeight)
