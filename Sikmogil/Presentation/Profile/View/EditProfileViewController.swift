@@ -1,3 +1,4 @@
+//
 //  EditProfileViewController.swift
 //  Sikmogil
 //
@@ -7,6 +8,8 @@
 import UIKit
 import SnapKit
 import Then
+import RxSwift
+import RxCocoa
 
 extension NSNotification.Name {
     static let profileDidChange = NSNotification.Name("profileDidChange")
@@ -14,6 +17,8 @@ extension NSNotification.Name {
 
 class EditProfileViewController: UIViewController {
     var userProfile: UserProfile?
+    private let disposeBag = DisposeBag()
+    private let viewModel = ProfileViewModel()
     
     // MARK: - UI 요소 설정
     let scrollView = UIScrollView().then {
@@ -125,19 +130,39 @@ class EditProfileViewController: UIViewController {
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(profileImageTapped))
         profileImageView.addGestureRecognizer(tapGestureRecognizer)
         
+        bindViewModel()
+        
         if let profile = userProfile {
             nickname.text = profile.nickname
             height.text = profile.height
             weight.text = profile.weight
         }
         
-        // 키보드 이벤트 감지
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     deinit {
         NotificationCenter.default.removeObserver(self)
+    }
+    
+    private func bindViewModel() {
+        // ViewModel에서 받은 데이터를 UI에 반영
+        viewModel.nickname.accept(nickname.text ?? "")
+        viewModel.height.accept(height.text ?? "")
+        viewModel.weight.accept(weight.text ?? "")
+        
+        nickname.rx.text.orEmpty
+            .bind(to: viewModel.nickname)
+            .disposed(by: disposeBag)
+        
+        height.rx.text.orEmpty
+            .bind(to: viewModel.height)
+            .disposed(by: disposeBag)
+        
+        weight.rx.text.orEmpty
+            .bind(to: viewModel.weight)
+            .disposed(by: disposeBag)
     }
 }
 
@@ -255,7 +280,6 @@ extension EditProfileViewController {
             $0.centerY.equalTo(weight)
             $0.trailing.equalTo(weightView.snp.trailing).offset(-10)
         }
-        
         contentView.snp.makeConstraints {
             $0.bottom.equalTo(weightView.snp.bottom).offset(100) // 모든 자식 뷰를 포함하도록 설정
         }
@@ -273,6 +297,7 @@ extension EditProfileViewController {
         profileImageView.layer.masksToBounds = true
     }
 }
+
 // MARK: - 사용자 액션
 extension EditProfileViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     @objc func profileImageTapped() { // 이미지 피커
@@ -289,10 +314,17 @@ extension EditProfileViewController: UIImagePickerControllerDelegate, UINavigati
         }
         dismiss(animated: true, completion: nil)
     }
+    
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         dismiss(animated: true, completion: nil)
     }
+    
     @objc func saveButtonTapped() {
+        viewModel.nickname.accept(nickname.text ?? "")
+        viewModel.height.accept(height.text ?? "")
+        viewModel.weight.accept(weight.text ?? "")
+        viewModel.saveProfileData()
+        
         NotificationCenter.default.post(name: .profileDidChange, object: nil, userInfo: [
             "nickname": nickname.text ?? "",
             "height": height.text ?? "",
@@ -300,7 +332,15 @@ extension EditProfileViewController: UIImagePickerControllerDelegate, UINavigati
             "gender": userProfile?.gender ?? "",
             "profileImage": profileImageView.image ?? UIImage()
         ])
-        navigationController?.popViewController(animated: true)
+        
+        viewModel.submitProfile { [weak self] result in
+            switch result {
+            case .success:
+                self?.navigationController?.popViewController(animated: true)
+            case .failure(let error):
+                print("Error updating profile: \(error)")
+            }
+        }
     }
     
     @objc override func keyboardWillShow(notification: NSNotification) {
