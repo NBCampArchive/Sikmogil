@@ -26,32 +26,27 @@ class DietAPIManager {
     }
     
     // MARK: - 특정 날짜 식단 데어터 업데이트
-    func updateDietLog(date: String, water: Int?, totalCalorieEaten: Int?, completion: @escaping (Result<Void, Error>) -> Void) {
-        
-        let url = "\(baseURL)/api/dietLog/updateDietLog"
-        
-        var parameters: [String: Any] = ["date": date]
-        
-        if let water = water {
-            parameters["water"] = water
-        }
-        
-        if let totalCalorieEaten = totalCalorieEaten {
-            parameters["totalCalorieEaten"] = totalCalorieEaten
-        }
-        
-        AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).validate().response { response in
-            switch response.result {
-            case .success:
-                print("updateDietLog success")
-                completion(.success(()))
-            case .failure(let error):
-                print("updateDietLog failure")
-                completion(.failure(error))
+        func updateDietLog(date: String, water: Int, totalCalorieEaten: Int, completion: @escaping (Result<Void, Error>) -> Void) {
+            
+            let url = "\(baseURL)/api/dietLog/updateDietLog"
+            
+            let parameters: [String: Any] = [
+                "dietDate": date,
+                "waterIntake": water,
+                "totalCalorieEaten": totalCalorieEaten
+            ]
+            
+            AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).validate().response { response in
+                switch response.result {
+                case .success:
+                    print("updateDietLog success")
+                    completion(.success(()))
+                case .failure(let error):
+                    print("updateDietLog failure")
+                    completion(.failure(error))
+                }
             }
         }
-        
-    }
     
     // MARK: - 특정 날짜 식단 사진 추가
     func addDietPicture(date: String, pictureData: String, completion: @escaping (Result<Void, Error>) -> Void) {
@@ -127,27 +122,27 @@ class DietAPIManager {
     }
     
     // MARK: - 특정 날짜 식단 삭제
-    func deleteDietList(date: String, dietListId: Int, completion: @escaping (Result<Void, Error>) -> Void) {
-        
-        let url = "\(baseURL)/api/dietLog/dietList/deleteDietList"
-        
-        let parameters: [String: Any] = [
-            "date": date,
-            "dietListId": dietListId
-        ]
-        
-        AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).validate().response { response in
-            switch response.result {
-            case .success:
-                print("deleteDietList success")
-                completion(.success(()))
-            case .failure(let error):
-                print("deleteDietList failure")
-                completion(.failure(error))
-            }
-        }
-        
-    }
+       func deleteDietList(date: String, dietListId: Int, completion: @escaping (Result<Void, Error>) -> Void) {
+           
+           let url = "\(baseURL)/api/dietLog/dietList/deleteDietList"
+           
+           let parameters: [String: Any] = [
+               "date": date,
+               "dietListId": dietListId
+           ]
+           
+           AF.request(url, method: .post, parameters: parameters, encoding: URLEncoding.default, headers: headers).validate().response { response in
+               switch response.result {
+               case .success:
+                   print("deleteDietList success")
+                   completion(.success(()))
+               case .failure(let error):
+                   print("deleteDietList failure \(error.localizedDescription)")
+                   completion(.failure(error))
+               }
+           }
+           
+       }
     
     // MARK: - 사용자 모든 식단 내역 출력
     func getDietLog(completion: @escaping (Result<[DietLog], Error>) -> Void) {

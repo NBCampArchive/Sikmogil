@@ -25,7 +25,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 //        let viewController = LoginViewController()
 //        window?.rootViewController = viewController
 //        window?.makeKeyAndVisible()
-        
+//        
         // MARK: - API Test 시 아래 코드를 활성화 하고 진행해주세요
         // 토큰 유효성 검사
         if KeychainSwift().get("refreshToken") != nil {
