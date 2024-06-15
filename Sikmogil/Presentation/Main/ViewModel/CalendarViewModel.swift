@@ -43,9 +43,9 @@ class CalendarViewModel: ObservableObject {
                 if case .failure(let error) = completion {
                     self.errorMessage = error.localizedDescription
                 }
-            } receiveValue: { calendarModels in
-                print("Loaded Calendar Models: \(calendarModels)") // 디버깅 출력
-                self.calendarListModels = calendarModels
+            } receiveValue: { calendarListModel in
+                print("Loaded Calendar Models: \(calendarListModel)") // 디버깅 출력
+                self.calendarListModels = calendarListModel
             }
             .store(in: &cancellables)
     }
@@ -60,6 +60,19 @@ class CalendarViewModel: ObservableObject {
             } receiveValue: { _ in
                 self.loadCalendarData()
                 self.postSuccess = true
+            }
+            .store(in: &cancellables)
+    }
+    
+    //MARK: - 특정 날짜 캘린더 정보
+    func loadDayCalendar(calendarDate: String) {
+        calendarService.getCalendarData(calendarDate: calendarDate)
+            .sink { completion in
+                if case .failure(let error) = completion {
+                    self.errorMessage = error.localizedDescription
+                }
+            } receiveValue: { calendarModels in
+                self.calendarModels = calendarModels
             }
             .store(in: &cancellables)
     }
