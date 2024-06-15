@@ -1,14 +1,17 @@
 //
-//  DietViewModel.swift
+//  WaterViewModel.swift
 //  Sikmogil
 //
 //  Created by 희라 on 6/3/24.
-//  [ViewModel] **설명** 다이어트 뷰모델
+//  [ViewModel] **설명** 물마시기 뷰모델
 
 import Foundation
 import Combine
 
 class WaterViewModel {
+    
+    let dietViewModel = DietViewModel()
+    
     static let shared = WaterViewModel()
     
     @Published var todayWaterAmount: Int = 0
@@ -35,5 +38,18 @@ class WaterViewModel {
     
     func addWaterAmount(_ amount: Int) {
         todayWaterAmount += amount
+        updateDietLog()
     }
+    
+    func updateDietLog() {
+        dietViewModel.updateDietLog(for: DateHelper.shared.formatDateToYearMonthDay(Date()), water: todayWaterAmount, totalCalorieEaten: 0) { result in
+            switch result {
+            case .success():
+                print("식단 업데이트 성공")
+            case .failure(let error):
+                print("식단 업데이트 실패: \(error)")
+            }
+        }
+    }
+    
 }
