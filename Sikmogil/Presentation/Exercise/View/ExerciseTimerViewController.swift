@@ -10,6 +10,8 @@ import SnapKit
 import Then
 
 class ExerciseTimerViewController: UIViewController {
+  
+    var viewModel = ExerciseSelectionViewModel()
     
     // MARK: - Components
     private var isPaused: Bool = true
@@ -158,6 +160,7 @@ class ExerciseTimerViewController: UIViewController {
     
     @objc private func recordButtonTapped() {
         let exerciseResultVC = ExerciseResultViewController()
+        exerciseResultVC.viewModel = self.viewModel
         navigationController?.pushViewController(exerciseResultVC, animated: true)
     }
 }

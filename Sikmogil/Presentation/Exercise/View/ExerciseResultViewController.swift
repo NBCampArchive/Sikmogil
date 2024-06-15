@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Combine
 import SnapKit
 import Then
 
@@ -65,7 +66,7 @@ class ExerciseResultViewController: UIViewController {
         $0.contentMode = .scaleAspectFit
     }
 
-    private let periodLable = UILabel().then {
+    private let periodLabel = UILabel().then {
         $0.text = "0:00 am - 0:00 am"
         $0.font = Suite.regular.of(size: 16)
         $0.textColor = .appDarkGray
@@ -117,11 +118,44 @@ class ExerciseResultViewController: UIViewController {
         $0.layer.cornerRadius = 16
     }
     
+    // MARK: - Properties
+    var viewModel = ExerciseSelectionViewModel()
+    private var cancellables = Set<AnyCancellable>()
+    
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
         setupConstraints()
+        setupButtons()
+        bindViewModel()
+    }
+    
+    // MARK: - Setup Binding
+    private func bindViewModel() {
+        viewModel.$expectedCalories
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] calories in
+                self?.updateProgressLabel(calories: calories)
+                self?.kcalValueLabel.text = "\(calories)kcal"
+            }
+            .store(in: &cancellables)
+        
+        // TODO: - timeValueLabel 형식 수정
+        viewModel.$selectedTime
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] time in
+                self?.timeValueLabel.text = time
+            }
+            .store(in: &cancellables)
+    }
+    
+    private func updateProgressLabel(calories: Int) {
+        let fullText = "예상 소모 칼로리는\n\(calories)kcal 예요"
+        let changeText = "\(calories)kcal"
+        let font = Suite.semiBold.of(size: 20)
+        let color = UIColor.appGreen
+        progressLabel.setAttributedText(fullText: fullText, changeText: changeText, color: color, font: font)
     }
     
     // MARK: - Setup Views
@@ -135,7 +169,7 @@ class ExerciseResultViewController: UIViewController {
         cardStackView.addArrangedSubviews(checkImage, completionLabel)
         cardView.addSubview(cardStackView)
         progressView.addSubviews(circularProgressBar, progressLabel)
-        resultView.addSubviews(runningImage, periodLable, verticalLine, timeStackView, kcalStackView)
+        resultView.addSubviews(runningImage, verticalLine, timeStackView, kcalStackView)
         timeStackView.addArrangedSubviews(timeLabel, timeValueLabel)
         kcalStackView.addArrangedSubviews(kcalLabel, kcalValueLabel)
     }
@@ -189,10 +223,11 @@ class ExerciseResultViewController: UIViewController {
             $0.width.equalTo(32)
         }
         
-        periodLable.snp.makeConstraints {
-            $0.centerY.equalTo(runningImage)
-            $0.leading.equalTo(runningImage.snp.trailing).offset(4)
-        }
+        // TODO: - periodLable 대신 운동 종목으로 바꾸기
+//        periodLable.snp.makeConstraints {
+//            $0.centerY.equalTo(runningImage)
+//            $0.leading.equalTo(runningImage.snp.trailing).offset(4)
+//        }
         
         verticalLine.snp.makeConstraints {
             $0.width.equalTo(1)
@@ -221,5 +256,33 @@ class ExerciseResultViewController: UIViewController {
             $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottomMargin).inset(26)
             $0.height.equalTo(60)
         }
+    }
+    
+    // MARK: - Setup Buttons
+    private func setupButtons() {
+        addButton.addTarget(self, action: #selector(addButtonTapped), for: .touchUpInside)
+    }
+    
+    @objc private func addButtonTapped() {
+        
+        let exerciseData = viewModel.saveExerciseData()
+        let day = DateHelper.shared.formatDateToYearMonthDay(Date())
+        
+        ExerciseAPIManager.shared.addExerciseListData(exerciseDay: day, exerciseList: exerciseData) { result in
+            switch result {
+            case .success:
+                print("운동 리스트 추가 성공")
+                self.showAlert(message: "운동 리스트 추가 성공")
+            case .failure(let error):
+                print("운동 리스트 추가 실패", error)
+            }
+        }
+    }
+    
+    private func showAlert(message: String) {
+        let alertController = UIAlertController(title: nil, message: message, preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "확인", style: .default, handler: nil)
+        alertController.addAction(okAction)
+        present(alertController, animated: true, completion: nil)
     }
 }
