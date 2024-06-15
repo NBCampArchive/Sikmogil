@@ -20,7 +20,7 @@ struct UserProfile: Decodable {
     var gender: String
     var targetWeight: String
     var targetDate: String
-    var canEatCalorie: Int?
+    var canEatCalorie: Int
     var createdDate: String
-    var reminderTime: String?
+    var remindTime: String
 }

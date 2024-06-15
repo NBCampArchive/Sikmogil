@@ -10,7 +10,7 @@ import RxSwift
 import RxCocoa
 
 class OnboardingViewModel {
-    var userProfile = UserProfile(nickname: "", height: "", weight: "", gender: "", targetWeight: "", targetDate: "", canEatCalorie: 0, createdDate: "", reminderTime: "")
+    var userProfile = UserProfile(nickname: "", height: "", weight: "", gender: "", targetWeight: "", targetDate: "", canEatCalorie: 0, createdDate: "", remindTime: "")
     var currentIndex = BehaviorRelay<Int>(value: 0)
     
     var nickname = BehaviorRelay<String>(value: "")
@@ -36,7 +36,7 @@ class OnboardingViewModel {
         print("Gender: \(String(describing: userProfile.gender))")
         print("Target Weight: \(String(describing: userProfile.targetWeight))")
         print("Target Date: \(String(describing: userProfile.targetDate))")
-        print("Reminder Time: \(String(describing: userProfile.reminderTime))")
+        print("Reminder Time: \(String(describing: userProfile.remindTime))")
         print("To Date: \(String(describing: userProfile.createdDate))")
     }
     
@@ -62,20 +62,26 @@ class OnboardingViewModel {
     
     func saveReminderData() {
         userProfile.createdDate = DateHelper.shared.formatDateToYearMonthDay(Date())
-        userProfile.reminderTime = reminderTime.value
+        
+        userProfile.remindTime = reminderTime.value
+        print("Reminder Time: \(userProfile.remindTime)")
         calculateCanEatCalorie()
     }
     
     func calculateCanEatCalorie() {
         var bmr: Double = 0.0
+        let weightValue = 10 * (Double(weight.value) ?? 0)
+        let heightValue = 6.25 * (Double(height.value) ?? 0)
+        let ageValue = 5 * Double(20)
+        
         if userProfile.gender == "남자" {
-            bmr = 10 * weight.value + 6.25 * height.value - 5 * Double(20) + 5
-            
+            bmr = weightValue + heightValue - ageValue + 5
         } else {
-            bmr = 10 * weight.value + 6.25 * height.value - 5 * Double(20) - 161
+            bmr = weightValue + heightValue - ageValue - 161
         }
+        
         print("\(userProfile.gender) BMR: \(bmr)")
-        userProfile.canEatCalorie = bmr
+        userProfile.canEatCalorie = Int(bmr)
     }
     
     func reminderValidateForm() -> Bool {
