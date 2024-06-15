@@ -184,6 +184,7 @@ class CalendarViewController: UIViewController {
             .receive(on: DispatchQueue.main)
             .print("캘린더 데이터 업데이트")
             .sink { [weak self] _ in
+                self?.calendar.selectedDates.forEach { self?.calendar.deselect($0) }
                 self?.calendar.reloadData()
                 if let today = self?.calendar.today {
                                self?.updateDiaryLabel(for: today)
@@ -267,6 +268,7 @@ extension CalendarViewController: FloatingPanelControllerDelegate {
         editDiaryFloatingPanelController.delegate = self
         
         let contentVC = DiaryRecordFloatingViewController()
+        contentVC.viewModel = viewModel
         editDiaryFloatingPanelController.set(contentViewController: contentVC)
         
         editDiaryFloatingPanelController.isRemovalInteractionEnabled = true
@@ -330,6 +332,7 @@ extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource, FSCa
     }
     
     func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
+        viewModel.selectedDate = date
         updateDiaryLabel(for: date)
     }
     
