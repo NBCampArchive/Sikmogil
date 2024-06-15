@@ -10,9 +10,12 @@ import Then
 import SnapKit
 import FSCalendar
 import FloatingPanel
-
+import Combine
 
 class CalendarViewController: UIViewController {
+    
+    private let viewModel = CalendarViewModel()
+    private var cancellables = Set<AnyCancellable>()
     
     var editDiaryFloatingPanelController: FloatingPanelController!
     var secondDimmingView: UIView!
@@ -51,7 +54,7 @@ class CalendarViewController: UIViewController {
     }
     
     private let diaryLabel = UILabel().then {
-        $0.text = "동해물과 백두산이 마르고닳도록"
+        $0.text = ""
         $0.font = Suite.regular.of(size: 16)
     }
     
@@ -70,8 +73,6 @@ class CalendarViewController: UIViewController {
     
     private var boldDates: [Date] = []
     
-    private var diaryRecords: [CalendarModel] = []
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -80,18 +81,18 @@ class CalendarViewController: UIViewController {
         calendar.delegate = self
         calendar.dataSource = self
         calendar.register(CalendarCell.self, forCellReuseIdentifier: CalendarCell.description())
-        diaryRecords = fetchDiaryRecords()
-        
-        // 예시 시작일과 목표일 설정
-        let startDate = createDate(from: "2024.06.11")
-        let endDate = createDate(from: "2024.06.30")
-        
-        // 볼드 날짜 배열 생성
-        boldDates = generateDates(from: startDate, to: endDate)
         
         setupViews()
         setupConstraints()
         setupDiaryPannel()
+        
+        bindViewModel()
+        viewModel.loadCalendarData()
+        viewModel.loadTargetData()
+        
+        let today = Date()
+            calendar.select(today)
+            updateDiaryLabel(for: today)
         
         detailButton.addTarget(self, action: #selector(tapDetailButton), for: .touchUpInside)
         writeButton.addTarget(self, action: #selector(tapWriteButton), for: .touchUpInside)
@@ -169,6 +170,67 @@ class CalendarViewController: UIViewController {
         }
     }
     
+    private func bindViewModel() {
+        viewModel.$errorMessage // 에러 메시지 출력
+            .receive(on: DispatchQueue.main)
+            .sink { errorMessage in
+                if let errorMessage = errorMessage {
+                    print(errorMessage)
+                }
+            }
+            .store(in: &cancellables)
+        
+        viewModel.$calendarListModels
+            .receive(on: DispatchQueue.main)
+            .print("캘린더 데이터 업데이트")
+            .sink { [weak self] _ in
+                self?.calendar.reloadData()
+                if let today = self?.calendar.today {
+                               self?.updateDiaryLabel(for: today)
+                           }
+            }
+            .store(in: &cancellables)
+        
+        viewModel.$createDate
+            .combineLatest(viewModel.$targetDate)
+            .receive(on: DispatchQueue.main)
+            .print("기간 업데이트")
+            .sink { [weak self] createDate, targetDate in
+                if let createDate = createDate, let targetDate = targetDate {
+                    self?.boldDates = self?.generateDates(from: createDate, to: targetDate) ?? []
+                    self?.calendar.reloadData()
+                }
+            }
+            .store(in: &cancellables)
+    }
+    
+    private func updateDiaryLabel(for date: Date) {
+        updateDayLabel(for: date)
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy.MM.dd"
+        let dateString = dateFormatter.string(from: date)
+        
+        if let record = viewModel.calendarListModels?.first(where: { $0.diaryDate == dateString }) {
+            diaryLabel.text = record.diaryText ?? "기록이 없습니다."
+            if record.diaryText != nil {
+                diaryLabel.textColor = .black
+            } else {
+                diaryLabel.textColor = .appDarkGray
+            }
+        } else {
+            diaryLabel.text = "기록이 없습니다."
+            diaryLabel.textColor = .appDarkGray
+        }
+    }
+    
+    private func updateDayLabel(for date: Date) {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "M.d EEEE" // "M.d EEEE" 형식으로 설정
+        dateFormatter.locale = Locale(identifier: "ko_KR") // 한국어 로케일로 설정
+        let dateString = dateFormatter.string(from: date)
+        dayLabel.text = dateString
+    }
+    
     @objc func tapDetailButton() {
         let nextView = DayViewController()
         
@@ -192,16 +254,6 @@ class CalendarViewController: UIViewController {
     @objc override func keyboardWillHide(notification: NSNotification) {
         editDiaryFloatingPanelController.move(to: .half, animated: true)
     }
-    
-    func fetchDiaryRecords() -> [CalendarModel] {
-            // 실제 API 호출을 통해 데이터를 가져오는 로직을 구현하세요.
-            // 여기서는 예시 데이터를 반환합니다.
-            return [
-                CalendarModel(diaryDate: "2024.06.11", diaryText: "동해물과 백두산이 마르고 닳도록",dietPictures: [CalendarDietPicture(dietPictureId: 1, foodPicture: "https://sikmogil.com/food1.jpg", dietDate: "2024.06.11")],workoutLists: [CalendarWorkoutList(workoutListId: 1, performedWorkout: "스쿼트", workoutTime: 30, workoutIntensity: 3, workoutPicture: "https://sikmogil.com/workout1.jpg", calorieBurned: 100)]),
-                CalendarModel(diaryDate: "2024.06.12", diaryText: "동해물과 백두산이 마르고 닳도록",dietPictures: [CalendarDietPicture(dietPictureId: 1, foodPicture: "https://sikmogil.com/food1.jpg", dietDate: "2024.06.11")],workoutLists: []),
-                CalendarModel(diaryDate: "2024.06.13", diaryText: "동해물과 백두산이 마르고 닳도록",dietPictures: [],workoutLists: [CalendarWorkoutList(workoutListId: 1, performedWorkout: "스쿼트", workoutTime: 30, workoutIntensity: 3, workoutPicture: "https://sikmogil.com/workout1.jpg", calorieBurned: 100)]),
-                ]
-        }
     
     deinit {
         NotificationCenter.default.removeObserver(self)
@@ -263,11 +315,11 @@ extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource, FSCa
         let dateString = dateFormatter.string(from: date)
         
         var colors: [UIColor] = []
-        if let record = diaryRecords.first(where: { $0.diaryDate == dateString }) {
-            if !record.dietPictures!.isEmpty {
+        if let record = viewModel.calendarListModels?.first(where: { $0.diaryDate == dateString }) {
+            if let dietPictures = record.dietPictures, !dietPictures.isEmpty {
                 colors.append(.appYellow)
             }
-            if !record.workoutLists!.isEmpty {
+            if let workoutLists = record.workoutLists, !workoutLists.isEmpty {
                 colors.append(.appGreen)
             }
         }
@@ -275,6 +327,10 @@ extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource, FSCa
         cell.configure(with: colors)
         
         return cell
+    }
+    
+    func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
+        updateDiaryLabel(for: date)
     }
     
     private func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, fillDefaultColorFor date: Date) -> UIFont? {
