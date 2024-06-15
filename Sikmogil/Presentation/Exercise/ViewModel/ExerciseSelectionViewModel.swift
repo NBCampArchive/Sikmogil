@@ -14,7 +14,6 @@ class ExerciseSelectionViewModel {
     @Published var selectedTime: String?
     @Published var selectedIntensity: Int?
     @Published var expectedCalories: Int = 0
-    @Published var exercises: [ExerciseListModel] = []
     
     private var cancellables = Set<AnyCancellable>()
     
@@ -61,7 +60,7 @@ class ExerciseSelectionViewModel {
         return ExerciseListModel(
             workoutListId: 0,
             performedWorkout: selectedExercise ?? "",
-            workoutTime: Int(selectedTime ?? "0") ?? 0,
+            workoutTime: Int(selectedTime?.dropLast(1) ?? "0") ?? 0, // ex) "30분" -> 30
             workoutIntensity: selectedIntensity ?? 0,
             workoutPicture: "",
             calorieBurned: expectedCalories
