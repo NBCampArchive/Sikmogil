@@ -151,13 +151,13 @@ class DietMainViewController: UIViewController {
         dietViewModel.getDietLogDate(for: DateHelper.shared.formatDateToYearMonthDay(Date())) {
             result in
             switch result {
-            case .success(let data):
-                print("식단 출력 성공: \(data)")
-                // waterIntake 값을 이용해 UI 업데이트
+            case .success(_):
+                // waterIntake 값을 이용해 WaterViewModel 업데이트
                 let waterIntake = self.dietViewModel.dietLog!.waterIntake
-                self.waterViewModel.addWaterAmount(waterIntake)
+                self.waterViewModel.setWaterAmount(waterIntake)
+                
             case .failure(let error):
-                print("식단 출력 실패: \(error)")
+                print("식단 출력 실패")
             }
         }
         

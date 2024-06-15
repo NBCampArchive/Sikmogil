@@ -79,10 +79,8 @@ class DietViewModel {
             switch result {
             case .success():
                 completion(.success(()))
-                print("식단 업데이트 성공")
             case .failure(let error):
                 completion(.failure(error))
-                print("식단 업데이트 실패: \(error)")
             }
         }
     }

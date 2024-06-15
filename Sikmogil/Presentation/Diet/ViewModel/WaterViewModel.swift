@@ -34,10 +34,26 @@ class WaterViewModel {
             .eraseToAnyPublisher()
     }
     
-    private init() {}
+    private init() {
+        // 초기화 시 서버의 값을 불러와서 todayWaterAmount에 설정
+        dietViewModel.getDietLogDate(for: DateHelper.shared.formatDateToYearMonthDay(Date())) { [weak self] result in
+            switch result {
+            case .success(let data):
+                let waterIntake = self!.dietViewModel.dietLog!.waterIntake
+                self?.todayWaterAmount = waterIntake
+            case .failure(let error):
+                print("식단 출력 실패: \(error)")
+            }
+        }
+    }
     
     func addWaterAmount(_ amount: Int) {
         todayWaterAmount += amount
+        updateDietLog()
+    }
+    
+    func setWaterAmount(_ amount: Int) {
+        todayWaterAmount = amount
         updateDietLog()
     }
     
