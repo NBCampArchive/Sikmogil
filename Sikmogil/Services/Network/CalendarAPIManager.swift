@@ -32,7 +32,6 @@ class CalendarAPIManager {
         
         let parameters: [String: Any] = [
             "diaryDate": calendarDate,
-            "diaryWeight": 0,
             "diaryText": diaryText,
             "dietPictures": [],
             "workoutLists": []
@@ -62,16 +61,16 @@ class CalendarAPIManager {
     }
     
     // MARK: - 특정 날짜 캘린더 데이터 출력
-    func getCalendarData(calendarDate: String) -> AnyPublisher<[CalendarModel], Error>{
+    func getCalendarData(calendarDate: String) -> AnyPublisher<CalendarModel, Error>{
         
-        let url = "\(baseURL)/api/calendar"
+        let url = "\(baseURL)/api/calendar/getCalendarDate"
         
         let parameters: [String: Any] = [
             "diaryDate": calendarDate
         ]
         
-        return AF.request(url, method: .get, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
-            .publishDecodable(type: [CalendarModel].self)
+        return AF.request(url, method: .get, parameters: parameters, encoding: URLEncoding.default, headers: headers)
+            .publishDecodable(type: CalendarModel.self)
             .value()
             .mapError { $0 as Error}
             .eraseToAnyPublisher()
