@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import DGCharts
 
 class MainViewModel: ObservableObject {
     
@@ -15,7 +16,7 @@ class MainViewModel: ObservableObject {
 //        let updateWeightData: AnyPublisher<(String, String), Never>
 //        let loadWeightData: AnyPublisher<(String, String), Never>
 //    }
-//    
+//
 //    //MARK: - Output
 //    struct Output {
 //        let targetModel: AnyPublisher<TargetModel?, Never>
@@ -32,7 +33,8 @@ class MainViewModel: ObservableObject {
     @Published var postSuccess: Bool = false
     @Published var progress: Float = 0.0
     @Published var remainingDays: Int = 0
-
+    @Published var chartDateEntries: [BarChartDataEntry] = []
+    @Published var dataUpdated: Bool = false
     
     private var cancellables = Set<AnyCancellable>()
     private let calendarService = CalendarAPIManager.shared
@@ -41,7 +43,7 @@ class MainViewModel: ObservableObject {
 //    init() {
 //        bindInputs()
 //    }
-//    
+//
 //    //MARK: - Binding
 //    private func bindInputs() {
 //        updateWeightDataSubject
@@ -62,6 +64,7 @@ class MainViewModel: ObservableObject {
                 self.targetModel = targetModel
                 self.calculateProgress()
                 self.calculateRemainingDays()
+                self.updateChartDataEntry()
             }
             .store(in: &cancellables)
     }
@@ -76,6 +79,7 @@ class MainViewModel: ObservableObject {
                 switch completion {
                 case .finished:
                     self.postSuccess = true
+                    self.loadWeightData()
                 case .failure(let error):
                     self.errorMessage = error.localizedDescription
                 }
@@ -126,4 +130,28 @@ class MainViewModel: ObservableObject {
         }
     }
     
+    //MARK: - 차트 데이터 업데이트
+    private func updateChartDataEntry() {
+        guard let targetModel = targetModel else { return }
+        
+//        let entries = targetModel.weekWeights.enumerated().map { index, weekWeight in
+//            return BarChartDataEntry(x: Double(index), y: weekWeight.weight)
+//        }
+        var entries: [BarChartDataEntry] = []
+        var labels: [String] = []
+        
+        for index in 0..<7 {
+            if targetModel.weekWeights.isEmpty {
+                entries.append(BarChartDataEntry(x: Double(index), y: Double(targetModel.weight) ?? 0.0))
+            }
+            else if index < targetModel.weekWeights.count {
+                let weekWeight = targetModel.weekWeights[index]
+                entries.append(BarChartDataEntry(x: Double(8 - index), y: weekWeight.weight))
+            } else {
+                entries.append(BarChartDataEntry(x: Double(index), y: 0))
+            }
+        }
+        
+        self.chartDateEntries = entries
+    }
 }
