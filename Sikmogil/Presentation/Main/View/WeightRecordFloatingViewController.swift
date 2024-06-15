@@ -52,6 +52,8 @@ class WeightRecordFloatingViewController: UIViewController {
         
         bindViewModel()
         
+        hideKeyboardWhenTappedAround()
+        
         doneButton.addTarget(self, action: #selector(tapDoneButton), for: .touchUpInside)
         print(#function)
     }

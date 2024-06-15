@@ -138,6 +138,10 @@ class MainViewController: UIViewController {
         setupViews()
         setupConstraints()
         setupFloatingPanel()
+        
+        hideKeyboardWhenTappedAround()
+        setKeyboardObserver()
+        
         calendarButton.addTarget(self, action: #selector(tapCalendarButton), for: .touchUpInside)
         recordButton.addTarget(self, action: #selector(tapRecordButton), for: .touchUpInside)
     }
@@ -318,6 +322,20 @@ class MainViewController: UIViewController {
     
     @objc func tapRecordButton() {
         self.present(recodingWeightPanel, animated: true)
+    }
+    
+    // 키보드가 나타날 때 호출되는 메서드
+    @objc override func keyboardWillShow(notification: NSNotification) {
+        guard let userInfo = notification.userInfo else { return }
+        if userInfo[UIResponder.keyboardFrameEndUserInfoKey] is CGRect {
+            // FloatingPanel 높이 수정
+            recodingWeightPanel.move(to: .full, animated: true)
+        }
+    }
+    
+    // 키보드가 사라질 때 호출되는 메서드
+    @objc override func keyboardWillHide(notification: NSNotification) {
+        recodingWeightPanel.move(to: .half, animated: true)
     }
 }
 
