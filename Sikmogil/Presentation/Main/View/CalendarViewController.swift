@@ -234,6 +234,7 @@ class CalendarViewController: UIViewController {
     
     @objc func tapDetailButton() {
         let nextView = DayViewController()
+        nextView.viewModel = viewModel
         
         self.present(nextView, animated: true)
     }
