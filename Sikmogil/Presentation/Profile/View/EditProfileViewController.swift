@@ -131,6 +131,7 @@ class EditProfileViewController: UIViewController {
         profileImageView.addGestureRecognizer(tapGestureRecognizer)
         
         bindViewModel()
+//        viewModel.fetchUserProfile()
         
         if let profile = userProfile {
             nickname.text = profile.nickname
@@ -147,7 +148,6 @@ class EditProfileViewController: UIViewController {
     }
     
     private func bindViewModel() {
-        // ViewModel에서 받은 데이터를 UI에 반영
         viewModel.nickname.accept(nickname.text ?? "")
         viewModel.height.accept(height.text ?? "")
         viewModel.weight.accept(weight.text ?? "")
