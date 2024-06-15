@@ -28,7 +28,7 @@ class ProfileTableViewCell: UITableViewCell {
     // MARK: - 초기화 메서드
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        setupUI()
+        setupConstraints()
     }
 
     required init?(coder: NSCoder) {
@@ -36,7 +36,7 @@ class ProfileTableViewCell: UITableViewCell {
     }
 
     // MARK: - 오토레이아웃 제약조건 설정
-    private func setupUI() {
+    private func setupConstraints() {
         contentView.addSubview(iconImageView)
         contentView.addSubview(titleLabel)
         contentView.addSubview(arrowImageView)

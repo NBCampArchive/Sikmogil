@@ -1,4 +1,3 @@
-//
 //  EditProfileViewController.swift
 //  Sikmogil
 //
@@ -9,7 +8,13 @@ import UIKit
 import SnapKit
 import Then
 
+extension NSNotification.Name {
+    static let profileDidChange = NSNotification.Name("profileDidChange")
+}
+
 class EditProfileViewController: UIViewController {
+    var userProfile: UserProfile?
+    
     // MARK: - UI 요소 설정
     let scrollView = UIScrollView().then {
         $0.backgroundColor = .white
@@ -50,7 +55,7 @@ class EditProfileViewController: UIViewController {
         $0.textColor = .appDarkGray
     }
     
-    let nicknameTextField = UITextField().then {
+    let nickname = UITextField().then {
         $0.text = "우주최강고양이"
         $0.font = Suite.regular.of(size: 16)
         $0.textColor = .appBlack
@@ -67,12 +72,11 @@ class EditProfileViewController: UIViewController {
         $0.textColor = .appDarkGray
     }
     
-    let heightTextField = UITextField().then {
+    let height = UITextField().then {
         $0.text = "000"
         $0.font = Suite.regular.of(size: 16)
         $0.textColor = .appBlack
     }
-    
     let heightUnitLabel = UILabel().then {
         $0.text = "cm"
         $0.font = Suite.regular.of(size: 16)
@@ -90,7 +94,7 @@ class EditProfileViewController: UIViewController {
         $0.textColor = .appDarkGray
     }
     
-    let weightTextField = UITextField().then {
+    let weight = UITextField().then {
         $0.text = "0.0"
         $0.font = Suite.regular.of(size: 16)
         $0.textColor = .appBlack
@@ -113,7 +117,6 @@ class EditProfileViewController: UIViewController {
     // MARK: - 생명주기 설정
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         self.view.backgroundColor = .white
         
         setupViews()
@@ -121,6 +124,20 @@ class EditProfileViewController: UIViewController {
         
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(profileImageTapped))
         profileImageView.addGestureRecognizer(tapGestureRecognizer)
+        
+        if let profile = userProfile {
+            nickname.text = profile.nickname
+            height.text = profile.height
+            weight.text = profile.weight
+        }
+        
+        // 키보드 이벤트 감지
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 }
 
@@ -129,23 +146,22 @@ extension EditProfileViewController {
     func setupViews() {
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
-        
         contentView.addSubview(profileImageView)
         contentView.addSubview(profileLabel)
         contentView.addSubview(profileSubLabel)
         
         contentView.addSubview(nicknameView)
         nicknameView.addSubview(nicknameLabel)
-        nicknameView.addSubview(nicknameTextField)
+        nicknameView.addSubview(nickname)
         
         contentView.addSubview(heightView)
         heightView.addSubview(heightLabel)
-        heightView.addSubview(heightTextField)
+        heightView.addSubview(height)
         heightView.addSubview(heightUnitLabel)
         
         contentView.addSubview(weightView)
         weightView.addSubview(weightLabel)
-        weightView.addSubview(weightTextField)
+        weightView.addSubview(weight)
         weightView.addSubview(weightUnitLabel)
         
         view.addSubview(saveButton)
@@ -157,9 +173,8 @@ extension EditProfileViewController {
         }
         
         contentView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
-            $0.width.equalToSuperview()
-            $0.height.equalTo(800) // 임의 스크롤 높이
+            $0.edges.equalTo(scrollView)
+            $0.width.equalTo(scrollView)
         }
         
         profileImageView.snp.makeConstraints {
@@ -190,7 +205,7 @@ extension EditProfileViewController {
             $0.leading.equalTo(nicknameView.snp.leading).offset(10)
         }
         
-        nicknameTextField.snp.makeConstraints {
+        nickname.snp.makeConstraints {
             $0.top.equalTo(nicknameLabel.snp.bottom).offset(5)
             $0.leading.equalTo(nicknameView.snp.leading).offset(10)
             $0.trailing.equalTo(nicknameView.snp.trailing).offset(-10)
@@ -208,14 +223,14 @@ extension EditProfileViewController {
             $0.leading.equalTo(heightView.snp.leading).offset(10)
         }
         
-        heightTextField.snp.makeConstraints {
+        height.snp.makeConstraints {
             $0.top.equalTo(heightLabel.snp.bottom).offset(5)
             $0.leading.equalTo(heightView.snp.leading).offset(10)
             $0.trailing.equalTo(heightUnitLabel.snp.leading).offset(-10)
         }
         
         heightUnitLabel.snp.makeConstraints {
-            $0.centerY.equalTo(heightTextField)
+            $0.centerY.equalTo(height)
             $0.trailing.equalTo(heightView.snp.trailing).offset(-10)
         }
         
@@ -231,26 +246,33 @@ extension EditProfileViewController {
             $0.leading.equalTo(weightView.snp.leading).offset(10)
         }
         
-        weightTextField.snp.makeConstraints {
+        weight.snp.makeConstraints {
             $0.top.equalTo(weightLabel.snp.bottom).offset(5)
             $0.leading.equalTo(weightView.snp.leading).offset(10)
             $0.trailing.equalTo(weightUnitLabel.snp.leading).offset(-50)
         }
-        
         weightUnitLabel.snp.makeConstraints {
-            $0.centerY.equalTo(weightTextField)
+            $0.centerY.equalTo(weight)
             $0.trailing.equalTo(weightView.snp.trailing).offset(-10)
         }
         
+        contentView.snp.makeConstraints {
+            $0.bottom.equalTo(weightView.snp.bottom).offset(100) // 모든 자식 뷰를 포함하도록 설정
+        }
+        
         saveButton.snp.makeConstraints {
-            $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-20)
-            $0.leading.equalToSuperview().offset(20)
-            $0.trailing.equalToSuperview().offset(-20)
-            $0.height.equalTo(50)
+            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottomMargin).inset(20)
+            $0.height.equalTo(60)
         }
     }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        profileImageView.layer.cornerRadius = profileImageView.frame.height / 2
+        profileImageView.layer.masksToBounds = true
+    }
 }
-
 // MARK: - 사용자 액션
 extension EditProfileViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     @objc func profileImageTapped() { // 이미지 피커
@@ -259,19 +281,49 @@ extension EditProfileViewController: UIImagePickerControllerDelegate, UINavigati
         imagePickerController.sourceType = .photoLibrary
         present(imagePickerController, animated: true, completion: nil)
     }
-    
-    func imagePickerController(_ picker:UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let pickedImage = info[.originalImage] as? UIImage {
             profileImageView.image = pickedImage
+            profileImageView.layer.cornerRadius = profileImageView.frame.height / 2
+            profileImageView.layer.masksToBounds = true
         }
         dismiss(animated: true, completion: nil)
     }
-    
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         dismiss(animated: true, completion: nil)
     }
-    
     @objc func saveButtonTapped() {
-        // TODO: 변경사항 저장 후 로그인 화면으로 이동
+        NotificationCenter.default.post(name: .profileDidChange, object: nil, userInfo: [
+            "nickname": nickname.text ?? "",
+            "height": height.text ?? "",
+            "weight": weight.text ?? "",
+            "gender": userProfile?.gender ?? "",
+            "profileImage": profileImageView.image ?? UIImage()
+        ])
+        navigationController?.popViewController(animated: true)
+    }
+    
+    @objc override func keyboardWillShow(notification: NSNotification) {
+        if let userInfo = notification.userInfo,
+           let keyboardFrame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect,
+           let animationDuration = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? TimeInterval {
+            
+            let keyboardHeight = keyboardFrame.height
+            UIView.animate(withDuration: animationDuration) {
+                self.scrollView.contentInset.bottom = keyboardHeight
+                self.scrollView.verticalScrollIndicatorInsets.bottom = keyboardHeight
+            }
+        }
+    }
+    
+    @objc override func keyboardWillHide(notification: NSNotification) {
+        if let userInfo = notification.userInfo,
+           let animationDuration = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? TimeInterval {
+            
+            UIView.animate(withDuration: animationDuration) {
+                self.scrollView.contentInset.bottom = 0
+                self.scrollView.verticalScrollIndicatorInsets.bottom = 0
+            }
+        }
     }
 }

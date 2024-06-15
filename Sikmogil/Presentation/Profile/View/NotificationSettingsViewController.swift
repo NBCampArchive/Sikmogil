@@ -8,6 +8,7 @@
 import UIKit
 import SnapKit
 import Then
+import UserNotifications
 
 class NotificationSettingsViewController: UIViewController {
     
@@ -21,30 +22,59 @@ class NotificationSettingsViewController: UIViewController {
     
     private let titleLabel = UILabel().then {
         $0.text = "알림 설정"
-        $0.font = Suite.bold.of(size: 24)
-        $0.textColor = .appBlack
+        $0.font = UIFont.boldSystemFont(ofSize: 24)
+        $0.textColor = .black
     }
     
     private let subtitleLabel = UILabel().then {
         $0.text = "알림/소리를 설정해보세요."
-        $0.font = Suite.regular.of(size: 14)
-        $0.textColor = .appDarkGray
+        $0.font = UIFont.systemFont(ofSize: 14)
+        $0.textColor = .darkGray
     }
     
     private let tableView = UITableView(frame: .zero, style: .grouped).then {
         $0.register(AlarmTableViewCell.self, forCellReuseIdentifier: AlarmTableViewCell.identifier)
-        $0.backgroundColor = .clear // 테이블 색상 클리어
-        $0.separatorStyle = .none // 테이블 눌리는 버튼색상 제거
+        $0.backgroundColor = .clear
+        $0.separatorStyle = .none
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupUI()
+        setupViews()
         setupConstraints()
+        
+        UNUserNotificationCenter.current().getPendingNotificationRequests { request in
+            print(request)
+        }
+    }
+    
+    private func saveNotificationSetting(isEnabled: Bool) {
+        UserDefaults.standard.set(isEnabled, forKey: "NotificationEnabled")
+        if isEnabled {
+            scheduleDailyNotification()
+        } else {
+            NotificationHelper.shared.clearAllNotifications()
+        }
+    }
+    
+    private func loadNotificationSetting() -> Bool {
+        return UserDefaults.standard.bool(forKey: "NotificationEnabled")
+    }
+    
+    private func scheduleDailyNotification() {
+        var dateComponents = DateComponents()
+        dateComponents.hour = 8 // 기본
+        NotificationHelper.shared.scheduleDailyNotification(at: dateComponents) { error in
+            if let error = error {
+                print("Failed to schedule notification: \(error)")
+            } else {
+                print("Notification scheduled successfully")
+            }
+        }
     }
     
     // MARK: - UI 설정
-    private func setupUI() {
+    private func setupViews() {
         view.backgroundColor = .white
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
@@ -63,9 +93,8 @@ class NotificationSettingsViewController: UIViewController {
         }
         
         contentView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
-            $0.width.equalToSuperview()
-            $0.height.equalTo(800) // 임의 스크롤 높이
+            $0.edges.equalTo(scrollView)
+            $0.width.equalTo(scrollView)
         }
         
         titleLabel.snp.makeConstraints {
@@ -80,7 +109,26 @@ class NotificationSettingsViewController: UIViewController {
         
         tableView.snp.makeConstraints {
             $0.top.equalTo(subtitleLabel.snp.bottom).offset(16)
-            $0.leading.trailing.bottom.equalToSuperview()
+            $0.leading.trailing.equalToSuperview()
+            $0.bottom.equalToSuperview().offset(-16)
+        }
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        tableView.layoutIfNeeded()
+        let tableViewHeight = tableView.contentSize.height
+        
+        tableView.snp.remakeConstraints {
+            $0.top.equalTo(subtitleLabel.snp.bottom).offset(16)
+            $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(tableViewHeight)
+        }
+        
+        contentView.snp.remakeConstraints {
+            $0.edges.equalTo(scrollView)
+            $0.width.equalTo(scrollView)
+            $0.bottom.equalTo(tableView.snp.bottom).offset(16)
         }
     }
 }
@@ -97,8 +145,9 @@ extension NotificationSettingsViewController: UITableViewDelegate, UITableViewDa
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: AlarmTableViewCell.identifier, for: indexPath) as! AlarmTableViewCell
-        
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: AlarmTableViewCell.identifier, for: indexPath) as? AlarmTableViewCell else {
+            return UITableViewCell()
+        }
         switch indexPath.section {
         case 0:
             cell.label.text = "리마인드 알림 시간 설정"
@@ -107,12 +156,15 @@ extension NotificationSettingsViewController: UITableViewDelegate, UITableViewDa
         case 1:
             cell.label.text = "Notification"
             cell.customSwitch.isHidden = false
+            cell.customSwitch.isOn = loadNotificationSetting()
             cell.showsAccessoryButton = false
-            cell.accessoryType = .none // 안눌리게 설정
+            cell.switchValueChanged = { [weak self] isOn in
+                self?.saveNotificationSetting(isEnabled: isOn)
+            }
         default:
             break
         }
-        cell.selectionStyle = .none // 버튼 누를 때 색상 제거
+        cell.selectionStyle = .none
         return cell
     }
     
@@ -125,7 +177,6 @@ extension NotificationSettingsViewController: UITableViewDelegate, UITableViewDa
         }
     }
     
-    // 테이블 뷰 푸터 설정 (간격설정)
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 80
     }
@@ -146,7 +197,6 @@ extension NotificationSettingsViewController: UITableViewDelegate, UITableViewDa
         return UIView(frame: .zero)
     }
     
-    // MARK: - 셀 선택 불가 설정
     func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
         return indexPath.section != 1
     }

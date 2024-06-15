@@ -21,7 +21,7 @@ class ProfileTableView: UIView {
     // MARK: - 초기화 메서드
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setupUI()
+        setupConstraints()
         setupTableView()
     }
     
@@ -29,8 +29,8 @@ class ProfileTableView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - UI 설정
-    private func setupUI() {
+    // MARK: - 제약조건
+    private func setupConstraints() {
         self.addSubview(tableView)
         tableView.snp.makeConstraints {
             $0.edges.equalToSuperview()

@@ -32,12 +32,13 @@ class AlarmTableViewCell: UITableViewCell {
         $0.setImage(UIImage(systemName: "chevron.right"), for: .normal)
         $0.tintColor = .appBlack
     }
-    
     var showsAccessoryButton: Bool = true {
         didSet {
             accessoryButton.isHidden = !showsAccessoryButton
         }
     }
+    
+    var switchValueChanged: ((Bool) -> Void)?
     
     // MARK: - 초기화 메서드
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -66,6 +67,12 @@ class AlarmTableViewCell: UITableViewCell {
             $0.centerY.equalToSuperview()
             $0.trailing.equalToSuperview().offset(-16)
         }
+        
+        customSwitch.addTarget(self, action: #selector(switchChanged), for: .valueChanged)
+    }
+    
+    @objc private func switchChanged() {
+        switchValueChanged?(customSwitch.isOn)
     }
     
     required init?(coder: NSCoder) {

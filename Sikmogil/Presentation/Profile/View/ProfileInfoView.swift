@@ -9,7 +9,7 @@ import UIKit
 import SnapKit
 import Then
 
-class ProfileInfoView: UIView { // 키 | 몸무게 | 성별
+class ProfileInfoView: UIView {
     
     // MARK: - 클래스의 속성(프로퍼티)들을 정의
     let weightStackView = createVerticalStackView()
@@ -20,16 +20,18 @@ class ProfileInfoView: UIView { // 키 | 몸무게 | 성별
     let separator2 = createSeparator()
     
     let weightTitleLabel = createTitleLabel(text: "몸무게")
-    let weightLabel = createDetailLabel(text: "0.0kg")
+    let weight = createDetailLabel(text: "0.0")
+    let weightUnitLabel = createUnitLabel(text: "kg")
     let heightTitleLabel = createTitleLabel(text: "키")
-    let heightLabel = createDetailLabel(text: "000cm")
+    let height = createDetailLabel(text: "000")
+    let heightUnitLabel = createUnitLabel(text: "cm")
     let genderTitleLabel = createTitleLabel(text: "성별")
-    let genderLabel = createDetailLabel(text: "남자")
+    let gender = createDetailLabel(text: "남자")
     
     // MARK: - 초기화 메서드를 정의
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setupUI()
+        setupViews()
         setupConstraints()
     }
     
@@ -38,7 +40,7 @@ class ProfileInfoView: UIView { // 키 | 몸무게 | 성별
     }
     
     // MARK: - 사용자 인터페이스(UI)를 설정하는 메서드를 정의
-    private func setupUI() {
+    private func setupViews() {
         self.backgroundColor = .white
         self.layer.cornerRadius = 12
         self.layer.shadowColor = UIColor.black.cgColor
@@ -46,14 +48,22 @@ class ProfileInfoView: UIView { // 키 | 몸무게 | 성별
         self.layer.shadowOffset = CGSize(width: 0, height: 1)
         self.layer.shadowRadius = 4
         
+        let weightStack = createHorizontalStackView()
+        weightStack.addArrangedSubview(weight)
+        weightStack.addArrangedSubview(weightUnitLabel)
+        
+        let heightStack = createHorizontalStackView()
+        heightStack.addArrangedSubview(height)
+        heightStack.addArrangedSubview(heightUnitLabel)
+        
         weightStackView.addArrangedSubview(weightTitleLabel)
-        weightStackView.addArrangedSubview(weightLabel)
+        weightStackView.addArrangedSubview(weightStack)
         
         heightStackView.addArrangedSubview(heightTitleLabel)
-        heightStackView.addArrangedSubview(heightLabel)
+        heightStackView.addArrangedSubview(heightStack)
         
         genderStackView.addArrangedSubview(genderTitleLabel)
-        genderStackView.addArrangedSubview(genderLabel)
+        genderStackView.addArrangedSubview(gender)
         
         self.addSubview(weightStackView)
         self.addSubview(heightStackView)
@@ -110,16 +120,31 @@ class ProfileInfoView: UIView { // 키 | 몸무게 | 성별
             $0.height.equalTo(30)
         }
         
-        weightLabel.snp.makeConstraints {
+        weight.snp.makeConstraints {
             $0.height.equalTo(30)
         }
         
-        heightLabel.snp.makeConstraints {
+        weightUnitLabel.snp.makeConstraints {
             $0.height.equalTo(30)
         }
-        genderLabel.snp.makeConstraints {
+        
+        height.snp.makeConstraints {
             $0.height.equalTo(30)
         }
+        
+        heightUnitLabel.snp.makeConstraints {
+            $0.height.equalTo(30)
+        }
+        
+        gender.snp.makeConstraints {
+            $0.height.equalTo(30)
+        }
+    }
+    
+    func updateInfo(height: String, weight: String, gender: String) {
+        self.height.text = height
+        self.weight.text = weight
+        self.gender.text = gender
     }
 }
 
@@ -128,6 +153,14 @@ private func createVerticalStackView() -> UIStackView {
     return UIStackView().then {
         $0.axis = .vertical
         $0.alignment = .center
+    }
+}
+
+private func createHorizontalStackView() -> UIStackView {
+    return UIStackView().then {
+        $0.axis = .horizontal
+        $0.alignment = .center
+        $0.spacing = 4
     }
 }
 
@@ -149,5 +182,13 @@ private func createDetailLabel(text: String) -> UILabel {
     return UILabel().then {
         $0.text = text
         $0.font = Suite.bold.of(size: 16)
+    }
+}
+
+private func createUnitLabel(text: String) -> UILabel {
+    return UILabel().then {
+        $0.text = text
+        $0.font = Suite.regular.of(size: 14)
+        $0.textColor = .appBlack
     }
 }
