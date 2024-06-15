@@ -56,6 +56,7 @@ class MainViewModel: ObservableObject {
     //MARK: - Get Target Data
     func loadWeightData() {
         calendarService.getWeightData()
+            .print("loadWeightData debug")
             .sink { completion in
                 if case .failure(let error) = completion {
                     self.errorMessage = error.localizedDescription
@@ -136,21 +137,11 @@ class MainViewModel: ObservableObject {
     private func updateChartDataEntry() {
         guard let targetModel = targetModel else { return }
         
-//        let entries = targetModel.weekWeights.enumerated().map { index, weekWeight in
-//            return BarChartDataEntry(x: Double(index), y: weekWeight.weight)
-//        }
         var entries: [BarChartDataEntry] = []
         
         for index in 0..<7 {
-            if targetModel.weekWeights.isEmpty {
-                entries.append(BarChartDataEntry(x: Double(index), y: Double(targetModel.weight) ?? 0.0))
-            }
-            else if index < targetModel.weekWeights.count {
-                let weekWeight = targetModel.weekWeights[index]
-                entries.append(BarChartDataEntry(x: Double(8 - index), y: weekWeight.weight))
-            } else {
-                entries.append(BarChartDataEntry(x: Double(index), y: 0))
-            }
+            let weight = (index < targetModel.weekWeights.count ? targetModel.weekWeights[index].weight : 0.0) ?? 0.0
+            entries.append(BarChartDataEntry(x: Double(index), y: weight))
         }
         
         self.chartDateEntries = entries
