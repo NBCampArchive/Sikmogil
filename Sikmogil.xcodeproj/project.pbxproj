@@ -119,6 +119,7 @@
 		F36105B32C1BE05800237572 /* ExerciseCategoryAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F36105B22C1BE05800237572 /* ExerciseCategoryAPIManager.swift */; };
 		F36105B52C1BFF6500237572 /* UILabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F36105B42C1BFF6500237572 /* UILabel.swift */; };
 		F36105B72C1BFF7600237572 /* Double.swift in Sources */ = {isa = PBXBuildFile; fileRef = F36105B62C1BFF7600237572 /* Double.swift */; };
+		F36105B92C1E00A700237572 /* ExerciseSelectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F36105B82C1E00A700237572 /* ExerciseSelectionViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -221,6 +222,7 @@
 		F36105B22C1BE05800237572 /* ExerciseCategoryAPIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseCategoryAPIManager.swift; sourceTree = "<group>"; };
 		F36105B42C1BFF6500237572 /* UILabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabel.swift; sourceTree = "<group>"; };
 		F36105B62C1BFF7600237572 /* Double.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Double.swift; sourceTree = "<group>"; };
+		F36105B82C1E00A700237572 /* ExerciseSelectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseSelectionViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -679,6 +681,7 @@
 			isa = PBXGroup;
 			children = (
 				F3094F0D2C19A1BE0099DE2C /* ExerciseViewModel.swift */,
+				F36105B82C1E00A700237572 /* ExerciseSelectionViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -807,6 +810,7 @@
 				B54AC00C2C0F48D1002E89DC /* SikmogilBundle++.swift in Sources */,
 				F3094F082C197AFA0099DE2C /* HalfCircleProgressView.swift in Sources */,
 				B52001EE2C1C5CD60083CBDF /* CalendarCell.swift in Sources */,
+				F36105B92C1E00A700237572 /* ExerciseSelectionViewModel.swift in Sources */,
 				B54ABFCF2C0CBB59002E89DC /* UIViewExtensions.swift in Sources */,
 				F3094F0E2C19A1BE0099DE2C /* ExerciseViewModel.swift in Sources */,
 				B54AC01A2C105646002E89DC /* Step1ViewController.swift in Sources */,
