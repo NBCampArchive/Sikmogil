@@ -11,41 +11,26 @@ import RxCocoa
 import Alamofire
 
 class ProfileViewModel {
-    //    var userProfile = UserProfile(nickname: "", height: "", weight: "", gender: "", targetWeight: "", toDate: "", targetDate: "", reminderTime: "", canEatCalorie: 0)
-    //    var nickname = BehaviorRelay<String>(value: "")
-    //    var height = BehaviorRelay<String>(value: "")
-    //    var weight = BehaviorRelay<String>(value: "")
-    //    var gender = BehaviorRelay<String>(value: "")
-    //    var targetWeight = BehaviorRelay<String>(value: "")
-    //    var targetDate = BehaviorRelay<Date>(value: Date())
-    //    var reminderTime = BehaviorRelay<String>(value: "")
-    var userProfile = UserProfile(nickname: "홍길동", height: "180", weight: "70", gender: "남성", targetWeight: "", toDate: "", targetDate: "", reminderTime: "", canEatCalorie: 0)
-    var nickname = BehaviorRelay<String>(value: "홍길동")
-    var height = BehaviorRelay<String>(value: "180")
-    var weight = BehaviorRelay<String>(value: "70")
-    var gender = BehaviorRelay<String>(value: "남성")
+    var userProfile = UserProfile(nickname: "", height: "", weight: "", gender: "", targetWeight: "", targetDate: "", canEatCalorie: 0, createdDate: "", remindTime: "")
+    var nickname = BehaviorRelay<String>(value: "")
+    var height = BehaviorRelay<String>(value: "")
+    var weight = BehaviorRelay<String>(value: "")
+    var gender = BehaviorRelay<String>(value: "")
     var targetWeight = BehaviorRelay<String>(value: "")
     var targetDate = BehaviorRelay<Date>(value: Date())
     var reminderTime = BehaviorRelay<String>(value: "")
     
-//    func fetchUserProfile() {
-//        UserAPIManager.shared.getUserInfo { result in
-//            switch result {
-//            case .success(let data):
-//                print(data)
-//                //                self.userProfile = data
-//                //                self.nickname.value = data.nickname
-//                //                self.height.value = data.height
-//                //                self.weight.value = data.weight
-//                //                self.gender.value = data.gender
-//                //                self.targetWeight.value = data.targetWeight
-//                //                self.targetDate.value = DateHelper.shared.parseDate(data.targetDate)
-//                //                self.reminderTime.value = data.reminderTime
-//            case .failure(_):
-//                print("error")
-//            }
-//        }
-//    }
+    func fetchUserProfile() {
+        UserAPIManager.shared.getUserInfo { result in
+            switch result {
+            case .success(let data):
+                self.userProfile = data.data
+                print(self.userProfile)
+            case .failure(_):
+                print("error")
+            }
+        }
+    }
     
     func saveProfileData() {
         userProfile.nickname = nickname.value
@@ -60,8 +45,8 @@ class ProfileViewModel {
     }
     
     func saveReminderData() {
-        userProfile.toDate = DateHelper.shared.formatDateToYearMonthDay(Date())
-        userProfile.reminderTime = reminderTime.value
+        userProfile.createdDate = DateHelper.shared.formatDateToYearMonthDay(Date())
+        userProfile.remindTime = reminderTime.value
     }
     
     func submitProfile(completion: @escaping (Result<Void, Error>) -> Void) {
