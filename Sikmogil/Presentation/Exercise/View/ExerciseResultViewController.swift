@@ -127,6 +127,7 @@ class ExerciseResultViewController: UIViewController {
         super.viewDidLoad()
         setupViews()
         setupConstraints()
+        setupButtons()
         bindViewModel()
     }
     
@@ -255,5 +256,33 @@ class ExerciseResultViewController: UIViewController {
             $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottomMargin).inset(26)
             $0.height.equalTo(60)
         }
+    }
+    
+    // MARK: - Setup Buttons
+    private func setupButtons() {
+        addButton.addTarget(self, action: #selector(addButtonTapped), for: .touchUpInside)
+    }
+    
+    @objc private func addButtonTapped() {
+        
+        let exerciseData = viewModel.saveExerciseData()
+        let day = DateHelper.shared.formatDateToYearMonthDay(Date())
+        
+        ExerciseAPIManager.shared.addExerciseListData(exerciseDay: day, exerciseList: exerciseData) { result in
+            switch result {
+            case .success:
+                print("운동 리스트 추가 성공")
+                self.showAlert(message: "운동 리스트 추가 성공")
+            case .failure(let error):
+                print("운동 리스트 추가 실패", error)
+            }
+        }
+    }
+    
+    private func showAlert(message: String) {
+        let alertController = UIAlertController(title: nil, message: message, preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "확인", style: .default, handler: nil)
+        alertController.addAction(okAction)
+        present(alertController, animated: true, completion: nil)
     }
 }
