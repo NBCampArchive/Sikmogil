@@ -114,7 +114,17 @@ class MainViewController: UIViewController {
     }
     
     private let graph = BarChartView().then {
-        $0.backgroundColor = .appLightGray
+        $0.backgroundColor = .clear
+        $0.xAxis.drawGridLinesEnabled = false
+        $0.leftAxis.drawGridLinesEnabled = false
+        $0.rightAxis.drawGridLinesEnabled = false
+        $0.xAxis.drawAxisLineEnabled = false
+        $0.leftAxis.drawAxisLineEnabled = false
+        $0.rightAxis.drawAxisLineEnabled = false
+        $0.xAxis.drawLabelsEnabled = false
+        $0.leftAxis.drawLabelsEnabled = false
+        $0.rightAxis.drawLabelsEnabled = false
+        $0.legend.enabled = false
     }
     
     override func viewDidLoad() {
@@ -262,13 +272,34 @@ class MainViewController: UIViewController {
                 self?.weightLabel.text = "목표까지 남은기간 \(remainingDays)일!"
             }
             .store(in: &cancellables)
+        
+        viewModel.$chartDateEntries
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] chartDateEntries in
+                self?.updateGraph(with: chartDateEntries)
+            }
+            .store(in: &cancellables)
+        
     }
     
     private func updateUI(with targetModel: TargetModel?) {
         guard let targetModel = targetModel else { return }
-        weightNowLabel.text = "현재 체중 \(targetModel.weekWeights.last?.weight ?? 0) Kg"
-        weightToGoalLabel.text = "목표까지 \(Double(targetModel.weekWeights.last?.weight ?? 0.0) - (Double(targetModel.targetWeight) ?? 0.0)) Kg"
+        weightNowLabel.text = "현재 체중 \(targetModel.weekWeights.first?.weight ?? 0) Kg"
+        weightToGoalLabel.text = "목표까지 \(Double(targetModel.weekWeights.first?.weight ?? 0.0) - (Double(targetModel.targetWeight) ?? 0.0)) Kg"
         progressLabel.text = "\(targetModel.createDate) ~ \(targetModel.targetDate)"
+    }
+    
+    private func updateGraph(with chartDateEntries: [BarChartDataEntry]) {
+        let dataSet = BarChartDataSet(entries: chartDateEntries)
+        dataSet.colors = [UIColor.appDarkGray]
+        dataSet.valueFont = Suite.semiBold.of(size: 12)
+        dataSet.valueFormatter = DefaultValueFormatter { value, _,_,_  in
+            return value == 0.0 ? "" : String(format: "%.2f", value)
+        }
+        
+        let data = BarChartData(dataSet: dataSet)
+        graph.data = data
+        
     }
     
     @objc func tapCalendarButton() {
