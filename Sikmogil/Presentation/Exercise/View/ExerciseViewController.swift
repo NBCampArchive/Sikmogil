@@ -145,8 +145,9 @@ class ExerciseViewController: UIViewController {
     }
     
     // MARK: - API
-    private func fetchExerciseList() {
+    func fetchExerciseList() {
         viewModel.fetchExerciseList(for: day)
+        self.tableView.reloadData()
     }
     
     // MARK: - Setup View
@@ -268,11 +269,14 @@ extension ExerciseViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        let reversedIndex = viewModel.exercises.count - 1 - indexPath.row
+        
         guard let cell = tableView.dequeueReusableCell(withIdentifier: ExerciseHistoryCell.identifier, for: indexPath) as? ExerciseHistoryCell else {
             return UITableViewCell()
         }
         
-        let exercise = viewModel.exercises[indexPath.row]
+        let exercise = viewModel.exercises[reversedIndex]
         cell.configure(with: UIImage.exercise, exercise: exercise)
         return cell
     }
