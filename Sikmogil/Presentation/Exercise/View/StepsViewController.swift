@@ -88,6 +88,9 @@ class StepsViewController: UIViewController {
         $0.textColor = .appBlack
     }
     
+    // MARK: - Properties
+    private var currentProgressPercentage: CGFloat = 0.0
+    
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -96,15 +99,32 @@ class StepsViewController: UIViewController {
         
         // HealthKit 권한 요청
         requestHealthKitAuthorization()
-        
-        // 걸음 수 데이터 가져오기
-        fetchStepCount { (steps) in
-            print("Total steps: \(steps)")}
+        updateStepsData()
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        updateProgress(0.8)
+    // MARK: - Steps Data
+    private func updateStepsData() {
+        // 걸음 수 데이터 가져오기
+        fetchStepCount { (steps) in
+            let formattedSteps = steps.formattedWithCommas()
+            self.stepsValueLabel.text = formattedSteps
+            
+            // 목표 달성률 업데이트
+            self.updateGoalProgress(steps: steps)
+            
+            // 현재 소모 칼로리 계산 (1걸음당 0.04kcal)
+            let kcalPerStep: Double = 0.04
+            let totalKcal = steps * kcalPerStep
+            let formattedKcal = String(format: "소모량 %.0fkcal", totalKcal) // 소수점 없이 표시
+            
+            // 메인 스레드에서 UI 업데이트
+            DispatchQueue.main.async {
+                self.kcalLabel.text = formattedKcal
+            }
+            
+            // 프로그레스 바 업데이트
+            self.updateProgress(self.currentProgressPercentage)
+        }
     }
     
     // MARK: - Setup Views
@@ -196,22 +216,12 @@ class StepsViewController: UIViewController {
             $0.bottom.equalTo(cardView.snp.bottom).offset(30)
         }
     }
-    
-    // MARK: - 프로그레스 바 업데이트
-    private func updateProgress(_ percentage: CGFloat) {
-        
-        let maxWidth = goalProgressView.frame.width
-        
-        let progressWidth = maxWidth * percentage // 달성률에 따른 너비 계산
-        
-        goalProgressValueView.snp.makeConstraints {
-            $0.width.equalTo(progressWidth)
-        }
-    }
-    
-    // MARK: - HealthKit
+}
+
+// MARK: - HealthKit
+extension StepsViewController {
     // HealthKit 권한 요청
-    func requestHealthKitAuthorization() {
+    private func requestHealthKitAuthorization() {
         let stepCountType = HKQuantityType.quantityType(forIdentifier: .stepCount)!
         let dataTypesToRead: Set<HKObjectType> = [stepCountType]
         
@@ -228,7 +238,7 @@ class StepsViewController: UIViewController {
     }
     
     // 걸음 수 데이터 가져오기
-    func fetchStepCount(completion: @escaping (Double) -> Void) {
+    private func fetchStepCount(completion: @escaping (Double) -> Void) {
         let stepCountType = HKQuantityType.quantityType(forIdentifier: .stepCount)!
         let startDate = Calendar.current.startOfDay(for: Date())
         let endDate = Date()
@@ -245,7 +255,39 @@ class StepsViewController: UIViewController {
                 completion(totalSteps)
             }
         }
-        
         healthStore.execute(query)
+    }
+}
+
+// MARK: - Goal
+extension StepsViewController {
+    // 목표 달성률 계산 및 업데이트
+    private func updateGoalProgress(steps: Double) {
+        let dailyGoalSteps: Double = 10000
+        
+        // 걸음 수 달성률 계산
+        let percentage = (steps / dailyGoalSteps) * 100
+        
+        // %로 표시할 문자열 생성
+        let formattedPercentage = String(format: "%.0f%% 달성", percentage) // 소수점 없이 표시
+        
+        // 현재 진행률 업데이트
+        currentProgressPercentage = CGFloat(percentage / 100)
+        
+        // 메인 스레드에서 UI 업데이트
+        DispatchQueue.main.async {
+            self.goalValueLabel.text = formattedPercentage
+        }
+    }
+    
+    // 프로그레스 바 업데이트
+    private func updateProgress(_ percentage: CGFloat) {
+        
+        let maxWidth = goalProgressView.frame.width
+        let progressWidth = maxWidth * percentage // 달성률에 따른 너비 계산
+        
+        goalProgressValueView.snp.makeConstraints {
+            $0.width.equalTo(progressWidth)
+        }
     }
 }

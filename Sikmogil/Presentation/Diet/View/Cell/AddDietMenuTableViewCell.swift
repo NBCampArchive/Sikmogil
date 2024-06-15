@@ -22,26 +22,30 @@ class AddDietMenuTableViewCell: UITableViewCell {
         $0.backgroundColor = .appLightGray
     }
     let cellTitleLabel = UILabel().then {
-        $0.text = "흰 쌀밥"
+        $0.text = "식품명"
         $0.textColor = .appBlack
         $0.font = Suite.semiBold.of(size: 18)
         $0.textAlignment = .left
     }
     let cellInfoLabel = UILabel().then {
-        $0.text = "1공기 (210g)"
+        $0.text = "제공량"
         $0.textColor = .appDarkGray
         $0.font = Suite.semiBold.of(size: 12)
         $0.textAlignment = .left
     }
     let plusButton = UIButton().then {
         $0.setImage(UIImage(named: "addRingDuotone"), for: .normal)
+        $0.addTarget(self, action: #selector(plusButtonTapped), for: .touchUpInside)
     }
     let cellKcalLabel = UILabel().then {
-        $0.text = "300kcal"
+        $0.text = "칼로리"
         $0.textColor = .appDarkGray
         $0.font = Suite.semiBold.of(size: 12)
         $0.textAlignment = .left
     }
+    
+    var foodItem: FoodItem?
+    var addMealAction: ((FoodItem) -> Void)?
     
     // MARK: - View Lifecycle
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -70,7 +74,6 @@ class AddDietMenuTableViewCell: UITableViewCell {
         }
         contentArea.snp.makeConstraints{
             $0.edges.equalToSuperview().inset(16)
-            $0.width.equalTo(332)
             $0.height.equalTo(46)
         }
         cellTitleLabel.snp.makeConstraints{
@@ -90,6 +93,14 @@ class AddDietMenuTableViewCell: UITableViewCell {
         cellKcalLabel.snp.makeConstraints{
             $0.bottom.equalTo(contentArea.snp.bottom)
             $0.trailing.equalTo(contentArea.snp.trailing)
+        }
+    }
+    
+    // MARK: - Action
+    @objc private func plusButtonTapped() {
+        if let foodItem = foodItem {
+            addMealAction?(foodItem)
+            print(foodItem.foodNmKr)
         }
     }
 }
