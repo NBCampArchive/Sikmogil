@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Combine
 import SnapKit
 import Then
 
@@ -65,7 +66,7 @@ class ExerciseResultViewController: UIViewController {
         $0.contentMode = .scaleAspectFit
     }
 
-    private let periodLable = UILabel().then {
+    private let periodLabel = UILabel().then {
         $0.text = "0:00 am - 0:00 am"
         $0.font = Suite.regular.of(size: 16)
         $0.textColor = .appDarkGray
@@ -117,11 +118,43 @@ class ExerciseResultViewController: UIViewController {
         $0.layer.cornerRadius = 16
     }
     
+    // MARK: - Properties
+    var viewModel = ExerciseSelectionViewModel()
+    private var cancellables = Set<AnyCancellable>()
+    
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
         setupConstraints()
+        bindViewModel()
+    }
+    
+    // MARK: - Setup Binding
+    private func bindViewModel() {
+        viewModel.$expectedCalories
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] calories in
+                self?.updateProgressLabel(calories: calories)
+                self?.kcalValueLabel.text = "\(calories)kcal"
+            }
+            .store(in: &cancellables)
+        
+        // TODO: - timeValueLabel 형식 수정
+        viewModel.$selectedTime
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] time in
+                self?.timeValueLabel.text = time
+            }
+            .store(in: &cancellables)
+    }
+    
+    private func updateProgressLabel(calories: Int) {
+        let fullText = "예상 소모 칼로리는\n\(calories)kcal 예요"
+        let changeText = "\(calories)kcal"
+        let font = Suite.semiBold.of(size: 20)
+        let color = UIColor.appGreen
+        progressLabel.setAttributedText(fullText: fullText, changeText: changeText, color: color, font: font)
     }
     
     // MARK: - Setup Views
@@ -189,6 +222,7 @@ class ExerciseResultViewController: UIViewController {
             $0.width.equalTo(32)
         }
         
+        // TODO: - periodLable 대신 운동 종목으로 바꾸기
 //        periodLable.snp.makeConstraints {
 //            $0.centerY.equalTo(runningImage)
 //            $0.leading.equalTo(runningImage.snp.trailing).offset(4)
