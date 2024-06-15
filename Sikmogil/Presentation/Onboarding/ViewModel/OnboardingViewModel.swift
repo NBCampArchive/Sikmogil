@@ -10,7 +10,7 @@ import RxSwift
 import RxCocoa
 
 class OnboardingViewModel {
-    var userProfile = UserProfile(nickname: "", height: "", weight: "", gender: "", targetWeight: "", toDate: "", targetDate: "", reminderTime: "", canEatCalorie: 0)
+    var userProfile = UserProfile(nickname: "", height: "", weight: "", gender: "", targetWeight: "", targetDate: "", canEatCalorie: 0, createdDate: "", reminderTime: "")
     var currentIndex = BehaviorRelay<Int>(value: 0)
     
     var nickname = BehaviorRelay<String>(value: "")
@@ -37,7 +37,7 @@ class OnboardingViewModel {
         print("Target Weight: \(String(describing: userProfile.targetWeight))")
         print("Target Date: \(String(describing: userProfile.targetDate))")
         print("Reminder Time: \(String(describing: userProfile.reminderTime))")
-        print("To Date: \(String(describing: userProfile.toDate))")
+        print("To Date: \(String(describing: userProfile.createdDate))")
     }
     
     func saveProfileData() {
@@ -61,8 +61,21 @@ class OnboardingViewModel {
     }
     
     func saveReminderData() {
-        userProfile.toDate = DateHelper.shared.formatDateToYearMonthDay(Date())
+        userProfile.createdDate = DateHelper.shared.formatDateToYearMonthDay(Date())
         userProfile.reminderTime = reminderTime.value
+        calculateCanEatCalorie()
+    }
+    
+    func calculateCanEatCalorie() {
+        var bmr: Double = 0.0
+        if userProfile.gender == "남자" {
+            bmr = 10 * weight.value + 6.25 * height.value - 5 * Double(20) + 5
+            
+        } else {
+            bmr = 10 * weight.value + 6.25 * height.value - 5 * Double(20) - 161
+        }
+        print("\(userProfile.gender) BMR: \(bmr)")
+        userProfile.canEatCalorie = bmr
     }
     
     func reminderValidateForm() -> Bool {
