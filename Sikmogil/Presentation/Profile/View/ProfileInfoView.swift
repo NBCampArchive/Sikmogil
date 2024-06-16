@@ -47,7 +47,7 @@ class ProfileInfoView: UIView {
     }
     
     var weightLabel = UILabel().then {
-        $0.text = "123"
+        $0.text = "0.0"
         $0.font = Suite.bold.of(size: 16)
     }
     
@@ -64,7 +64,7 @@ class ProfileInfoView: UIView {
     }
     
     var heightLabel = UILabel().then {
-        $0.text = ""
+        $0.text = "000"
         $0.font = Suite.bold.of(size: 16)
     }
     
@@ -75,7 +75,7 @@ class ProfileInfoView: UIView {
     }
     
     var genderLabel = UILabel().then {
-        $0.text = ""
+        $0.text = "남자"
         $0.font = Suite.bold.of(size: 16)
     }
     
@@ -176,11 +176,5 @@ class ProfileInfoView: UIView {
                 $0.height.equalTo(30)
             }
         }
-    }
-    
-    func updateInfo(height: String, weight: String, gender: String) {
-        self.heightLabel.text = height
-        self.weightLabel.text = weight
-        self.genderLabel.text = gender
     }
 }
