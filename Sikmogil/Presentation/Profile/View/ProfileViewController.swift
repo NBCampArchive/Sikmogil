@@ -52,6 +52,7 @@ class ProfileViewController: UIViewController {
     }
     
     let nicknameLabel = UILabel().then {
+        $0.text = "아무개"
         $0.font = Suite.bold.of(size: 24)
     }
     
@@ -71,6 +72,7 @@ class ProfileViewController: UIViewController {
         super.viewDidLoad()
         setupViews()
         bindViewModel()
+        viewModel.fetchUserProfile()
         
         settingsButton.addTarget(self, action: #selector(settingsButtonTapped(_:)), for: .touchUpInside)
         logoutButton.addTarget(self, action: #selector(logoutButtonTapped(_:)), for: .touchUpInside)
@@ -81,6 +83,16 @@ class ProfileViewController: UIViewController {
         
         profileImageView.layer.cornerRadius = 50
         profileImageView.layer.masksToBounds = true
+        
+        
+        updateUIWithFetchedData()
+    }
+    
+    private func updateUIWithFetchedData() {
+        viewModel.nickname.accept(viewModel.userProfile.nickname)
+        viewModel.height.accept(viewModel.userProfile.height)
+        viewModel.weight.accept(viewModel.userProfile.weight)
+        viewModel.gender.accept(viewModel.userProfile.gender)
     }
     
     private func bindViewModel() {
@@ -89,15 +101,15 @@ class ProfileViewController: UIViewController {
             .disposed(by: disposeBag)
         
         viewModel.height
-            .bind(to: profileInfoView.height.rx.text)
+            .bind(to: profileInfoView.heightLabel.rx.text)
             .disposed(by: disposeBag)
         
         viewModel.weight
-            .bind(to: profileInfoView.weight.rx.text)
+            .bind(to: profileInfoView.weightLabel.rx.text)
             .disposed(by: disposeBag)
         
         viewModel.gender
-            .bind(to: profileInfoView.gender.rx.text)
+            .bind(to: profileInfoView.genderLabel.rx.text)
             .disposed(by: disposeBag)
     }
     
@@ -125,7 +137,6 @@ class ProfileViewController: UIViewController {
         scrollView.snp.makeConstraints {
             $0.edges.equalTo(view.safeAreaLayoutGuide)
         }
-        
         contentView.snp.makeConstraints {
             $0.edges.equalTo(scrollView)
             $0.width.equalTo(scrollView)
@@ -229,6 +240,8 @@ class ProfileViewController: UIViewController {
             }
             profileImageView.layer.cornerRadius = profileImageView.frame.width / 2
             profileImageView.layer.masksToBounds = true
+            
+            viewModel.saveProfileData()
         }
     }
     
@@ -258,12 +271,10 @@ class ProfileViewController: UIViewController {
         let notificationSettingsVC = NotificationSettingsViewController()
         navigationController?.pushViewController(notificationSettingsVC, animated: true)
     }
-    
     private func showGoalSettings() {
         let goalSettingsVC = GoalSettingsViewController()
         navigationController?.pushViewController(goalSettingsVC, animated: true)
     }
-    
     @objc private func logoutButtonTapped(_ sender: UIButton) {
         let keychain = KeychainSwift()
         keychain.clear()
