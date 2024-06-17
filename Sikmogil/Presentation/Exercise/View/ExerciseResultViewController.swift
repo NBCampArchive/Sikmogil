@@ -66,9 +66,9 @@ class ExerciseResultViewController: UIViewController {
         $0.contentMode = .scaleAspectFit
     }
 
-    private let periodLabel = UILabel().then {
-        $0.text = "0:00 am - 0:00 am"
-        $0.font = Suite.regular.of(size: 16)
+    private let exerciseLabel = UILabel().then {
+        $0.text = "운동 이름"
+        $0.font = Suite.medium.of(size: 18)
         $0.textColor = .appDarkGray
     }
 
@@ -148,6 +148,14 @@ class ExerciseResultViewController: UIViewController {
                 self?.timeValueLabel.text = time
             }
             .store(in: &cancellables)
+        
+        
+        viewModel.$selectedExercise
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] exercise in
+                self?.exerciseLabel.text = exercise
+            }
+            .store(in: &cancellables)
     }
     
     private func updateProgressLabel(calories: Int) {
@@ -169,7 +177,7 @@ class ExerciseResultViewController: UIViewController {
         cardStackView.addArrangedSubviews(checkImage, completionLabel)
         cardView.addSubview(cardStackView)
         progressView.addSubviews(circularProgressBar, progressLabel)
-        resultView.addSubviews(runningImage, verticalLine, timeStackView, kcalStackView)
+        resultView.addSubviews(runningImage, exerciseLabel, verticalLine, timeStackView, kcalStackView)
         timeStackView.addArrangedSubviews(timeLabel, timeValueLabel)
         kcalStackView.addArrangedSubviews(kcalLabel, kcalValueLabel)
     }
@@ -223,11 +231,10 @@ class ExerciseResultViewController: UIViewController {
             $0.width.equalTo(32)
         }
         
-        // TODO: - periodLable 대신 운동 종목으로 바꾸기
-//        periodLable.snp.makeConstraints {
-//            $0.centerY.equalTo(runningImage)
-//            $0.leading.equalTo(runningImage.snp.trailing).offset(4)
-//        }
+        exerciseLabel.snp.makeConstraints {
+            $0.centerY.equalTo(runningImage)
+            $0.leading.equalTo(runningImage.snp.trailing).offset(8)
+        }
         
         verticalLine.snp.makeConstraints {
             $0.width.equalTo(1)
