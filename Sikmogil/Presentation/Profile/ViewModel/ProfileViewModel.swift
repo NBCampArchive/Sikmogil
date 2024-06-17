@@ -6,53 +6,105 @@
 //
 
 import Foundation
-import RxSwift
-import RxCocoa
-import Alamofire
+import Combine
 
-class ProfileViewModel {
-    var userProfile = UserProfile(nickname: "", height: "", weight: "", gender: "", targetWeight: "", targetDate: "", canEatCalorie: 0, createdDate: "", remindTime: "")
-    var nickname = BehaviorRelay<String>(value: "")
-    var height = BehaviorRelay<String>(value: "")
-    var weight = BehaviorRelay<String>(value: "")
-    var gender = BehaviorRelay<String>(value: "")
-    var targetWeight = BehaviorRelay<String>(value: "")
-    var targetDate = BehaviorRelay<Date>(value: Date())
-    var reminderTime = BehaviorRelay<String>(value: "")
+class ProfileViewModel: ObservableObject {
+    @Published var userProfile = UserProfile(nickname: "", height: "", weight: "", gender: "", targetWeight: "", targetDate: "", canEatCalorie: 0, createdDate: "", remindTime: "")
+    
+    @Published var nickname = ""
+    @Published var height = ""
+    @Published var weight = ""
+    @Published var gender = ""
+    @Published var targetWeight = ""
+    @Published var targetDate = Date()
+    @Published var reminderTime = ""
+    
+    private var cancellables = Set<AnyCancellable>()
+    
+    init() {
+        bindProfile()
+        fetchUserProfile()
+    }
     
     func fetchUserProfile() {
-        UserAPIManager.shared.getUserInfo { result in
-            switch result {
-            case .success(let data):
-                self.userProfile = data.data
-                print(self.userProfile)
-            case .failure(_):
-                print("error")
+        ProfileAPIManager.shared.getUserInfo()
+            .sink { completion in
+                switch completion {
+                case .failure(let error):
+                    print("Error fetching user profile: \(error)")
+                case .finished:
+                    break
+                }
+            } receiveValue: { [weak self] userProfile in
+                self?.updateFields(from: userProfile.data)
             }
-        }
+            .store(in: &cancellables)
     }
     
     func saveProfileData() {
-        userProfile.nickname = nickname.value
-        userProfile.height = height.value
-        userProfile.weight = weight.value
-        userProfile.gender = gender.value
+        userProfile.nickname = nickname
+        userProfile.height = height
+        userProfile.weight = weight
+        userProfile.gender = gender
     }
     
     func saveTargetData() {
-        userProfile.targetWeight = targetWeight.value
-        userProfile.targetDate = DateHelper.shared.formatDateToYearMonthDay(targetDate.value)
+        userProfile.targetWeight = targetWeight
+        userProfile.targetDate = DateHelper.shared.formatDateToYearMonthDay(targetDate)
     }
     
     func saveReminderData() {
         userProfile.createdDate = DateHelper.shared.formatDateToYearMonthDay(Date())
-        userProfile.remindTime = reminderTime.value
+        userProfile.remindTime = reminderTime
     }
     
     func submitProfile(completion: @escaping (Result<Void, Error>) -> Void) {
-        // 서버 통신 로직
-        UserAPIManager.shared.userProfileUpdate(userProfile: userProfile) { result in
-            completion(result)
-        }
+        ProfileAPIManager.shared.userProfileUpdate(userProfile: userProfile)
+            .sink { result in
+                switch result {
+                case .failure(let error):
+                    completion(.failure(error))
+                case .finished:
+                    completion(.success(()))
+                }
+            } receiveValue: { _ in }
+            .store(in: &cancellables)
+    }
+    
+    private func bindProfile() {
+        $nickname
+            .sink { [weak self] nickname in
+                self?.userProfile.nickname = nickname
+            }
+            .store(in: &cancellables)
+        
+        $height
+            .sink { [weak self] height in
+                self?.userProfile.height = height
+            }
+            .store(in: &cancellables)
+        
+        $weight
+            .sink { [weak self] weight in
+                self?.userProfile.weight = weight
+            }
+            .store(in: &cancellables)
+        
+        $gender
+            .sink { [weak self] gender in
+                self?.userProfile.gender = gender
+            }
+            .store(in: &cancellables)
+    }
+    
+    func updateFields(from userProfile: UserProfile) {
+        self.userProfile = userProfile
+        self.nickname = userProfile.nickname
+        self.height = userProfile.height
+        self.weight = userProfile.weight
+        self.gender = userProfile.gender
+        self.targetWeight = userProfile.targetWeight
+        self.targetDate = DateHelper.shared.dateFromServerString(userProfile.targetDate) ?? Date()
+        self.reminderTime = userProfile.remindTime
     }
 }
