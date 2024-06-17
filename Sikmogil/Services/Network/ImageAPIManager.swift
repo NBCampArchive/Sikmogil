@@ -44,14 +44,12 @@ class ImageAPIManager {
             // 이미지 배열 추가
             for (index, image) in images.enumerated() {
                 if let imageData = image.jpegData(compressionQuality: 1) {
-                    multipartFormData.append(imageData, withName: "image", fileName: "image\(index).jpg", mimeType: "image/jpeg")
+                    multipartFormData.append(imageData, withName: "image", fileName: "\(Date())\(index).jpg", mimeType: "image/jpeg")
                 }
             }
         }, to: url, headers: headers).responseDecodable(of: ImageModel.self) { response in
             switch response.result {
             case .success(let data):
-                print("uploadImage success")
-                print(data)
                 completion(.success(data))
             case .failure(let error):
                 completion(.failure(error))
@@ -61,15 +59,34 @@ class ImageAPIManager {
     }
 }
 
-//예시코드
-//let images = [UIImage(named: "calendar")!, UIImage(named: "calendar")!]
-//ImageAPIManager.shared.uploadImage(directory: "diet", images: images) { result in
-//    switch result {
-//    case .success:
-//        print("uploadImage success")
-//        이부분에 사진을 받은 이후 게시글 작성 api, 운동 api 등 추가하시면 됩니다 
-//    case .failure(let error):
-//        print("uploadImage failure")
-//        print(error)
-//    }
-//}
+//MARK: - 예시 코드
+//        let images = [UIImage(named: "calendar")!]
+//        ImageAPIManager.shared.uploadImage(directory: "diet", images: images) { result in
+//            switch result {
+//            case .success(let data):
+//                var imageURL = data.data
+//                print("uploadImage success\(imageURL)")
+//                //MARK: - 식단 사진 추가
+//                DietAPIManager.shared.addDietPicture(date: DateHelper.shared.formatDateToYearMonthDay(Date()), pictureData: imageURL[0]) { result in
+//                    switch result {
+//                    case .success:
+//                        print("success")
+//                    case .failure(_):
+//                        print("failure")
+//                    }
+//
+//                }
+//                //MARK: - 운동 리스트에 사진 추가(ExerciseAPIManager 에 사진 Parameter 주석 해제하시고 테스트해보셔야해요!)
+//                //API 내부(뷰모델 안에서 불러오면 다른식으로도 할 수 있을 것 같아요)
+//                self?.viewModel.expectedPicture = imageURL[0]
+//                //ViewModel
+//                @Published var expectedPicture: String = ""
+//                return ExerciseListModel(
+//                    workoutPicture: expectedPicture,
+//                    calorieBurned: expectedCalories
+//                )
+//            case .failure(let error):
+//                print("uploadImage failure")
+//                print(error)
+//            }
+//        }
