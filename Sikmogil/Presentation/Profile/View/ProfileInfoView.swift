@@ -5,13 +5,6 @@
 //  Created by Developer_P on 6/7/24.
 //
 
-//
-//  ProfileInfoView.swift
-//  Sikmogil
-//
-//  Created by Developer_P on 6/7/24.
-//
-
 import UIKit
 import SnapKit
 import Then
