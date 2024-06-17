@@ -10,5 +10,5 @@ import Foundation
 struct ImageModel: Decodable {
     var statusCode: Int
     var message: String
-    var data: String?
+    var data: [String]
 }
