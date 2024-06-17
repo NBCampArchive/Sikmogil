@@ -141,7 +141,6 @@ class ExerciseResultViewController: UIViewController {
             }
             .store(in: &cancellables)
         
-        // TODO: - timeValueLabel 형식 수정
         viewModel.$selectedTime
             .receive(on: DispatchQueue.main)
             .sink { [weak self] time in
@@ -248,7 +247,7 @@ class ExerciseResultViewController: UIViewController {
             $0.leading.equalTo(verticalLine).offset(20)
             $0.centerY.equalTo(verticalLine)
         }
-
+        
         kcalStackView.snp.makeConstraints {
             $0.trailing.equalTo(resultView).inset(16)
             $0.centerY.equalTo(verticalLine)
@@ -279,16 +278,22 @@ class ExerciseResultViewController: UIViewController {
             switch result {
             case .success:
                 print("운동 리스트 추가 성공")
-                self.showAlert(message: "운동 리스트 추가 성공")
+                self.showAlert(message: "운동 리스트 추가 성공") {
+                    // 네비게이션의 최상단 페이지로 이동
+                    self.navigationController?.popToRootViewController(animated: true)
+                }
+                
             case .failure(let error):
                 print("운동 리스트 추가 실패", error)
             }
         }
     }
     
-    private func showAlert(message: String) {
+    private func showAlert(message: String, completion: @escaping () -> Void) {
         let alertController = UIAlertController(title: nil, message: message, preferredStyle: .alert)
-        let okAction = UIAlertAction(title: "확인", style: .default, handler: nil)
+        let okAction = UIAlertAction(title: "확인", style: .default) { _ in
+            completion()
+        }
         alertController.addAction(okAction)
         present(alertController, animated: true, completion: nil)
     }
