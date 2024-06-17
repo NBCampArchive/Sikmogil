@@ -8,19 +8,15 @@
 import UIKit
 import SnapKit
 import Then
-import RxSwift
-import RxCocoa
-
-extension NSNotification.Name {
-    static let profileDidChange = NSNotification.Name("profileDidChange")
-}
+import Combine
 
 class EditProfileViewController: UIViewController {
-    var userProfile: UserProfile?
-    private let disposeBag = DisposeBag()
-    private let viewModel = ProfileViewModel()
     
-    // MARK: - UI 요소 설정
+    var userProfile: UserProfile?
+    var onProfileUpdate: ((UserProfile) -> Void)?
+    private var cancellables = Set<AnyCancellable>()
+    private var viewModel = ProfileViewModel()
+    
     let scrollView = UIScrollView().then {
         $0.backgroundColor = .white
     }
@@ -43,12 +39,11 @@ class EditProfileViewController: UIViewController {
         $0.textColor = .appBlack
     }
     
-    let profileSubLabel = UILabel().then {
+    let profileSubLabel = UILabel().then{
         $0.text = "프로필을 새롭게 수정해보세요."
         $0.font = Suite.regular.of(size: 14)
         $0.textColor = .appDarkGray
     }
-    
     let nicknameView = UIView().then {
         $0.backgroundColor = .appLightGray
         $0.layer.cornerRadius = 12
@@ -119,7 +114,6 @@ class EditProfileViewController: UIViewController {
         $0.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
     }
     
-    // MARK: - 생명주기 설정
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
@@ -131,38 +125,59 @@ class EditProfileViewController: UIViewController {
         profileImageView.addGestureRecognizer(tapGestureRecognizer)
         
         bindViewModel()
-//        viewModel.fetchUserProfile()
         
         if let profile = userProfile {
             nickname.text = profile.nickname
             height.text = profile.height
             weight.text = profile.weight
         }
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
-    }
-    
-    deinit {
-        NotificationCenter.default.removeObserver(self)
     }
     
     private func bindViewModel() {
-        viewModel.nickname.accept(nickname.text ?? "")
-        viewModel.height.accept(height.text ?? "")
-        viewModel.weight.accept(weight.text ?? "")
+        // Initial values
+        viewModel.nickname = nickname.text ?? ""
+        viewModel.height = height.text ?? ""
+        viewModel.weight = weight.text ?? ""
         
-        nickname.rx.text.orEmpty
-            .bind(to: viewModel.nickname)
-            .disposed(by: disposeBag)
+        // Bind nickname
+        NotificationCenter.default.publisher(for: UITextField.textDidChangeNotification, object: nickname)
+            .compactMap { ($0.object as? UITextField)?.text }
+            .assign(to: \.nickname, on: viewModel)
+            .store(in: &cancellables)
         
-        height.rx.text.orEmpty
-            .bind(to: viewModel.height)
-            .disposed(by: disposeBag)
+        // Bind height
+        NotificationCenter.default.publisher(for: UITextField.textDidChangeNotification, object: height)
+            .compactMap { ($0.object as? UITextField)?.text }
+            .assign(to: \.height, on: viewModel)
+            .store(in: &cancellables)
         
-        weight.rx.text.orEmpty
-            .bind(to: viewModel.weight)
-            .disposed(by: disposeBag)
+        // Bind weight
+        NotificationCenter.default.publisher(for: UITextField.textDidChangeNotification, object: weight)
+            .compactMap { ($0.object as? UITextField)?.text }
+            .assign(to: \.weight, on: viewModel)
+            .store(in: &cancellables)
+        
+        // Observe changes and update UI
+        viewModel.$nickname
+            .receive(on: RunLoop.main)
+            .sink { [weak self] nickname in
+                self?.nickname.text = nickname
+            }
+            .store(in: &cancellables)
+        
+        viewModel.$height
+            .receive(on: RunLoop.main)
+            .sink { [weak self] height in
+                self?.height.text = height
+            }
+            .store(in: &cancellables)
+        
+        viewModel.$weight
+            .receive(on: RunLoop.main)
+            .sink { [weak self] weight in
+                self?.weight.text = weight
+            }
+            .store(in: &cancellables)
     }
 }
 
@@ -174,7 +189,6 @@ extension EditProfileViewController {
         contentView.addSubview(profileImageView)
         contentView.addSubview(profileLabel)
         contentView.addSubview(profileSubLabel)
-        
         contentView.addSubview(nicknameView)
         nicknameView.addSubview(nicknameLabel)
         nicknameView.addSubview(nickname)
@@ -281,9 +295,8 @@ extension EditProfileViewController {
             $0.trailing.equalTo(weightView.snp.trailing).offset(-10)
         }
         contentView.snp.makeConstraints {
-            $0.bottom.equalTo(weightView.snp.bottom).offset(100) // 모든 자식 뷰를 포함하도록 설정
+            $0.bottom.equalTo(weightView.snp.bottom).offset(100)
         }
-        
         saveButton.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview().inset(20)
             $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottomMargin).inset(20)
@@ -320,25 +333,33 @@ extension EditProfileViewController: UIImagePickerControllerDelegate, UINavigati
     }
     
     @objc func saveButtonTapped() {
-        viewModel.nickname.accept(nickname.text ?? "")
-        viewModel.height.accept(height.text ?? "")
-        viewModel.weight.accept(weight.text ?? "")
-        viewModel.saveProfileData()
+        // UI와 ViewModel 동기화
+        viewModel.nickname = nickname.text ?? ""
+        viewModel.height = height.text ?? ""
+        viewModel.weight = weight.text ?? ""
         
-        NotificationCenter.default.post(name: .profileDidChange, object: nil, userInfo: [
-            "nickname": nickname.text ?? "",
-            "height": height.text ?? "",
-            "weight": weight.text ?? "",
-            "gender": userProfile?.gender ?? "",
-            "profileImage": profileImageView.image ?? UIImage()
-        ])
+        viewModel.saveProfileData()
+        let updatedProfile = UserProfile(
+            nickname: viewModel.nickname,
+            height: viewModel.height,
+            weight: viewModel.weight,
+            gender: userProfile?.gender ?? "",
+            targetWeight: userProfile?.targetWeight ?? "",
+            targetDate: userProfile?.targetDate ?? "",
+            canEatCalorie: userProfile?.canEatCalorie ?? 0,
+            createdDate: userProfile?.createdDate ?? "",
+            remindTime: userProfile?.remindTime ?? ""
+        )
         
         viewModel.submitProfile { [weak self] result in
-            switch result {
-            case .success:
-                self?.navigationController?.popViewController(animated: true)
-            case .failure(let error):
-                print("Error updating profile: \(error)")
+            DispatchQueue.main.async {
+                switch result {
+                case .success:
+                    self?.onProfileUpdate?(updatedProfile)
+                    self?.navigationController?.popViewController(animated: true)
+                case .failure(let error):
+                    print("Error updating profile: \(error)")
+                }
             }
         }
     }
