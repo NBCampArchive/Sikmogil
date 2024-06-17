@@ -237,6 +237,7 @@ class ExerciseSelectionViewController: UIViewController {
     }
     
     // MARK: -  Setup Binding
+    // TODO: - 임시 운동 종목 추가하기
     private func setupMenus() {
         let exercises = ["런닝", "수영", "자전거", "기타"]
         let times = ["15분", "30분", "60분", "90분"]
@@ -322,7 +323,6 @@ class ExerciseSelectionViewController: UIViewController {
         }
     }
     
-    // TODO: - 뷰모델 넘기는 방식 대신 옵져버블한 변수로 바꾸기
     private func navigateToTimerVC() {
         guard let time = viewModel.selectedTime else { return }
         // 시간 문자열을 초 단위로 변환 ("30분" -> 1800초)

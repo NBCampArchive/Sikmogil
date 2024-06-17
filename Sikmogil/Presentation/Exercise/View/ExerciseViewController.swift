@@ -158,6 +158,8 @@ class ExerciseViewController: UIViewController {
     // MARK: - Setup View
     private func setupViews() {
         view.backgroundColor = .white
+        
+        // TODO: - kcal 데이터 받아서 프로그레스바 업데이트
         customCircularProgressBar.progress = 0.6
         
         tableView.delegate = self
