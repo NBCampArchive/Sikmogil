@@ -102,8 +102,13 @@ class ExerciseViewController: UIViewController {
         setupConstraints()
         setupButtons()
         bindViewModel()
-        viewModel.fetchExerciseList(for: day)
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        fetchExerciseList()
+    }
+    
     
     // MARK: - Bind ViewModel
     private func bindViewModel() {
