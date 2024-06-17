@@ -41,7 +41,7 @@ class ExerciseResultViewController: UIViewController {
         $0.backgroundColor = .clear
     }
 
-    private let circularProgressBar = CircularProgressBar().then {
+    private let circularProgressBar = AnimationProgressBar().then {
         $0.backgroundColor = .clear
         $0.progressColor = .appGreen
         $0.trackColor = .appLightGray
@@ -131,6 +131,15 @@ class ExerciseResultViewController: UIViewController {
         bindViewModel()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        startProgressBarAnimation()
+    }
+    
+    private func startProgressBarAnimation() {
+        circularProgressBar.animateProgress(to: 1.0, duration: 3.0)
+    }
+    
     // MARK: - Setup Binding
     private func bindViewModel() {
         viewModel.$expectedCalories
@@ -168,8 +177,6 @@ class ExerciseResultViewController: UIViewController {
     // MARK: - Setup Views
     private func setupViews() {
         view.backgroundColor = .white
-        circularProgressBar.progress = 0.6
-        
         view.addSubviews(scrollView, addButton)
         scrollView.addSubview(contentView)
         contentView.addSubviews(cardView, progressView, resultView)
