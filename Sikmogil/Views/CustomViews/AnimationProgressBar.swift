@@ -30,13 +30,12 @@ class AnimationProgressBar: UIView {
         
         guard progress >= 0 && progress <= 1 else { return }
         
-        // Remove previous layers
         self.layer.sublayers?.forEach { $0.removeFromSuperlayer() }
         
         let center = CGPoint(x: rect.midX, y: rect.midY)
         let radius = min(rect.width, rect.height) / 2 - progressLineWidth / 2
         
-        // Track (full circle)
+        // 트랙 (전체 원) 그리기
         let trackPath = UIBezierPath(arcCenter: center, radius: radius, startAngle: 0, endAngle: 2 * CGFloat.pi, clockwise: true)
         trackLayer.path = trackPath.cgPath
         trackLayer.strokeColor = trackColor.cgColor
@@ -44,7 +43,7 @@ class AnimationProgressBar: UIView {
         trackLayer.lineWidth = trackLineWidth
         self.layer.addSublayer(trackLayer)
         
-        // Progress bar (progress circle)
+        // 프로그래스 바 (진행 원) 그리기
         let startAngle = -CGFloat.pi / 2
         let endAngle = startAngle + progress * 2 * CGFloat.pi
         let progressPath = UIBezierPath(arcCenter: center, radius: radius, startAngle: startAngle, endAngle: endAngle, clockwise: true)
@@ -57,20 +56,16 @@ class AnimationProgressBar: UIView {
     }
     
     func animateProgress(to value: CGFloat, duration: TimeInterval) {
-        // Ensure the value is within the range [0, 1]
+       
         let targetValue = max(0, min(1, value))
         
-        // Create a CABasicAnimation to animate the strokeEnd of progressLayer
         let animation = CABasicAnimation(keyPath: "strokeEnd")
         animation.fromValue = progress
         animation.toValue = targetValue
         animation.duration = duration
         animation.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
         
-        // Update progress property with the target value
         progress = targetValue
-        
-        // Add the animation to progressLayer
         progressLayer.add(animation, forKey: "progressAnimation")
     }
 }
