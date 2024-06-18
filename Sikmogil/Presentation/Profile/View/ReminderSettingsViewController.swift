@@ -3,7 +3,7 @@
 //  Sikmogil
 //
 //  Created by Developer_P on 6/6/24.
-//
+//  [리마인드] ⏰ 리마인드 시간 설정 ⏰
 
 import UIKit
 import SnapKit
@@ -14,7 +14,6 @@ class ReminderSettingsViewController: UIViewController {
     
     var viewModel: ProfileViewModel?
     private var cancellables = Set<AnyCancellable>()
-    
     private let scrollView = UIScrollView()
     private let contentView = UIView()
     
@@ -132,9 +131,15 @@ class ReminderSettingsViewController: UIViewController {
     }
     
     @objc private func completeButtonTapped() {
-        guard let viewModel = viewModel else { return }
-        
+        guard let viewModel = viewModel else {
+            print("ViewModel is nil")
+            return
+        }
+
+        viewModel.reminderTime = timeTextField.text ?? ""
+
         if viewModel.reminderValidateForm() {
+            print("Reminder time is valid")
             timeTextFieldWarningLabel.isHidden = true
             viewModel.saveReminderData()
             
@@ -146,21 +151,31 @@ class ReminderSettingsViewController: UIViewController {
                     self?.showAlertAndNavigateToProfile()
                 case .failure(let error):
                     print("Failed to submit profile: \(error)")
+                    self?.showErrorAlert(error: error)
                 }
             }
         } else {
+            print("Reminder time is invalid")
             view.shake()
             timeTextFieldWarningLabel.isHidden = false
         }
     }
+
+    private func showErrorAlert(error: Error) {
+        let alert = UIAlertController(title: "Error", message: "Failed to update profile. \(error.localizedDescription)", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
+    }
     
     private func showAlertAndNavigateToProfile() {
         let alert = UIAlertController(title: "성공", message: "리마인드 설정이 완료되었습니다.", preferredStyle: .alert)
-        let okAction = UIAlertAction(title: "확인", style: .default) { [weak self] _ in
-            self?.navigateToProfileViewController()
-        }
-        alert.addAction(okAction)
         present(alert, animated: true, completion: nil)
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
+            alert.dismiss(animated: true) {
+                self?.navigateToProfileViewController()
+            }
+        }
     }
     
     private func navigateToProfileViewController() {
@@ -178,11 +193,14 @@ class ReminderSettingsViewController: UIViewController {
 extension ReminderSettingsViewController: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         if let text = textField.text {
+            // 숫자 입력만 허용
             let allowedCharacters = CharacterSet.decimalDigits
             let characterSet = CharacterSet(charactersIn: string)
             if !allowedCharacters.isSuperset(of: characterSet) {
                 return false
             }
+            
+            // 현재 텍스트와 입력된 문자열 결합
             var newString = (text as NSString).replacingCharacters(in: range, with: string)
             newString = newString.replacingOccurrences(of: ":", with: "")
             
@@ -196,6 +214,7 @@ extension ReminderSettingsViewController: UITextFieldDelegate {
                 newString.insert(":", at: newString.index(newString.startIndex, offsetBy: 2))
             }
             
+            // 유효성 검사 (00:00 ~ 23:59)
             if newString.count == 5 {
                 let components = newString.split(separator: ":")
                 if let hours = Int(components[0]), let minutes = Int(components[1]) {
