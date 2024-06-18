@@ -3,7 +3,7 @@
 //  Sikmogil
 //
 //  Created by Developer_P on 6/5/24.
-//
+//  [알림설정] 🔔 알림설정 🔔
 
 import UIKit
 import SnapKit
@@ -11,6 +11,8 @@ import Then
 import UserNotifications
 
 class NotificationSettingsViewController: UIViewController {
+    
+    var viewModel: ProfileViewModel?
     
     private let scrollView = UIScrollView().then {
         $0.backgroundColor = .clear
@@ -173,6 +175,7 @@ extension NotificationSettingsViewController: UITableViewDelegate, UITableViewDa
         
         if indexPath.section == 0 {
             let reminderVC = ReminderSettingsViewController()
+            reminderVC.viewModel = self.viewModel
             navigationController?.pushViewController(reminderVC, animated: true)
         }
     }

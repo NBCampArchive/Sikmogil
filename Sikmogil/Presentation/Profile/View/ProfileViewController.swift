@@ -3,7 +3,7 @@
 //  Sikmogil
 //
 //  Created by Developer_P on 6/3/24.
-//
+//  [프로필] 🙍🏻 프로필 🙍🏻
 
 import UIKit
 import SnapKit
@@ -13,8 +13,7 @@ import KeychainSwift
 
 class ProfileViewController: UIViewController {
     
-    var coordinator: ProfileCoordinatorController?
-    var viewModel: ProfileViewModel?
+    var viewModel = ProfileViewModel()
     private var cancellables = Set<AnyCancellable>()
     
     let spacerView = UIView()
@@ -72,9 +71,7 @@ class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
-        
-        viewModel?.fetchUserProfile()
-        bindViewModel()
+        setupBindings()
         
         settingsButton.addTarget(self, action: #selector(settingsButtonTapped(_:)), for: .touchUpInside)
         logoutButton.addTarget(self, action: #selector(logoutButtonTapped(_:)), for: .touchUpInside)
@@ -85,26 +82,27 @@ class ProfileViewController: UIViewController {
         profileImageView.layer.masksToBounds = true
     }
     
-    private func bindViewModel() {
-        guard let viewModel = viewModel else { return }
+    func setupBindings() {
+        let nicknamePublisher = viewModel.$nickname
+            .receive(on: DispatchQueue.main)
+            .eraseToAnyPublisher()
         
-        viewModel.$nickname
-            .sink { [weak self] nickname in
+        let heightPublisher = viewModel.$height
+            .receive(on: DispatchQueue.main)
+            .eraseToAnyPublisher()
+        
+        let weightPublisher = viewModel.$weight
+            .receive(on: DispatchQueue.main)
+            .eraseToAnyPublisher()
+        
+        Publishers.CombineLatest3(nicknamePublisher, heightPublisher, weightPublisher)
+            .sink { [weak self] nickname, height, weight in
                 self?.nicknameLabel.text = nickname
-            }
-            .store(in: &cancellables)
-        
-        viewModel.$height
-            .sink { [weak self] height in
                 self?.profileInfoView.heightLabel.text = height
-            }
-            .store(in: &cancellables)
-        
-        viewModel.$weight
-            .sink { [weak self] weight in
                 self?.profileInfoView.weightLabel.text = weight
             }
             .store(in: &cancellables)
+        viewModel.fetchUserProfile()
     }
     
     private func setupViews() {
@@ -203,7 +201,6 @@ class ProfileViewController: UIViewController {
             $0.bottom.equalTo(contentView).offset(-20)
         }
     }
-    
     private func updateContentSize() {
         let contentHeight = contentView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
         contentView.snp.remakeConstraints {
@@ -213,17 +210,50 @@ class ProfileViewController: UIViewController {
         }
     }
     
+    // 각 셀을 인덱스 기반 클로저 배열 할당
+    func didSelectCell(at index: Int) {
+        if index < cellActions.count {
+            cellActions[index]()
+        }
+    }
+    
+    private lazy var cellActions: [() -> Void] = [
+        { [weak self] in
+            print("MedalViewController로 이동")
+            let medalViewController = MedalViewController()
+            self?.navigationController?.pushViewController(medalViewController, animated: true)
+        },
+        { [weak self] in
+            print("PostViewController로 이동")
+            let postViewController = PostViewController()
+            self?.navigationController?.pushViewController(postViewController, animated: true)
+        },
+        { [weak self] in
+            print("LikedPostViewController로 이동")
+            let likedPostViewController = LikedPostViewController()
+            self?.navigationController?.pushViewController(likedPostViewController, animated: true)
+        }
+    ]
+    
     @objc private func settingsButtonTapped(_ sender: UIButton) {
         let editProfileAction = UIAction(title: "프로필 수정", image: nil) { _ in
-            self.coordinator?.showEditProfile()
+            print("작동")
+            let editProfileVC = EditProfileViewController()
+            editProfileVC.viewModel = self.viewModel
+            self.navigationController?.pushViewController(editProfileVC, animated: true)
         }
         let notificationSettingsAction = UIAction(title: "알림 설정", image: nil) { _ in
-            self.coordinator?.showNotificationSettings()
+            print("작동")
+            let notificationSettingsVC = NotificationSettingsViewController()
+            notificationSettingsVC.viewModel = self.viewModel
+            self.navigationController?.pushViewController(notificationSettingsVC, animated: true)
         }
         let goalSettingsAction = UIAction(title: "목표 설정", image: nil) { _ in
-            self.coordinator?.showGoalSettings()
+            print("작동")
+            let goalSettingsVC = GoalSettingsViewController()
+            goalSettingsVC.viewModel = self.viewModel
+            self.navigationController?.pushViewController(goalSettingsVC, animated: true)
         }
-        
         let menu = UIMenu(title: "", children: [editProfileAction, notificationSettingsAction, goalSettingsAction])
         sender.menu = menu
         sender.showsMenuAsPrimaryAction = true
