@@ -3,7 +3,7 @@
 //  Sikmogil
 //
 //  Created by Developer_P on 6/6/24.
-//
+//  [프로필] ⚡️ 알림 셀 customSwitch 상세영역 ⚡️
 
 import UIKit
 import SnapKit
@@ -11,7 +11,7 @@ import Then
 
 class AlarmTableViewCell: UITableViewCell {
     
-    // MARK: - 속성정의
+    // MARK: - 속성
     static let identifier = "AlarmTableViewCell"
     
     let containerView = UIView().then {
@@ -40,7 +40,7 @@ class AlarmTableViewCell: UITableViewCell {
     
     var switchValueChanged: ((Bool) -> Void)?
     
-    // MARK: - 초기화 메서드
+    // MARK: - 초기화
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         

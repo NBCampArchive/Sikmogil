@@ -3,15 +3,13 @@
 //  Sikmogil
 //
 //  Created by Developer_P on 6/7/24.
-//
+//  [프로필] 💁🏻 키, 몸무게, 성별 💁🏻
 
 import UIKit
 import SnapKit
 import Then
 
 class ProfileInfoView: UIView {
-    
-    // MARK: - 클래스의 속성(프로퍼티)들을 정의
     private let weightStackView = UIStackView().then {
         $0.axis = .vertical
         $0.alignment = .center
@@ -80,7 +78,7 @@ class ProfileInfoView: UIView {
         $0.backgroundColor = .appDarkGray
     }
     
-    // MARK: - 초기화 메서드를 정의
+    // MARK: - 초기화
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupViews()
@@ -91,7 +89,7 @@ class ProfileInfoView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - 사용자 인터페이스(UI)를 설정하는 메서드를 정의
+    // MARK: - UI 설정
     private func setupViews() {
         self.backgroundColor = .white
         self.layer.cornerRadius = 12
@@ -128,7 +126,7 @@ class ProfileInfoView: UIView {
         self.addSubview(separator2)
     }
     
-    // MARK: - 제약조건을 설정하는 메서드를 정의
+    // MARK: - 제약조건
     private func setupConstraints() {
         weightStackView.snp.makeConstraints {
             $0.left.equalTo(self).offset(16)
