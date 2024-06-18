@@ -3,7 +3,7 @@
 //  Sikmogil
 //
 //  Created by Developer_P on 6/5/24.
-//
+//  [프로필수정] 🖋️ 프로필 수정 🖋️
 
 import UIKit
 import SnapKit
@@ -12,7 +12,6 @@ import Combine
 
 class EditProfileViewController: UIViewController {
     
-    var coordinator: ProfileCoordinatorController?
     var viewModel: ProfileViewModel?
     private var cancellables = Set<AnyCancellable>()
     
@@ -118,7 +117,7 @@ class EditProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
-        
+
         setupViews()
         setupConstraints()
         
@@ -127,46 +126,33 @@ class EditProfileViewController: UIViewController {
         
         bindViewModel()
         
-        nickname.text = viewModel?.nickname
-        height.text = viewModel?.height
-        weight.text = viewModel?.weight
+        // 초기값 설정
+        if let viewModel = viewModel {
+            nickname.text = viewModel.nickname
+            height.text = viewModel.height
+            weight.text = viewModel.weight
+        }
     }
-    
+
     private func bindViewModel() {
         guard let viewModel = viewModel else { return }
         
-        NotificationCenter.default.publisher(for: UITextField.textDidChangeNotification, object: nickname)
-            .compactMap { ($0.object as? UITextField)?.text }
-            .assign(to: \.nickname, on: viewModel)
-            .store(in: &cancellables)
+        let nicknamePublisher = viewModel.$nickname
+            .receive(on: DispatchQueue.main)
+            .eraseToAnyPublisher()
         
-        NotificationCenter.default.publisher(for: UITextField.textDidChangeNotification, object: height)
-            .compactMap { ($0.object as? UITextField)?.text }
-            .assign(to: \.height, on: viewModel)
-            .store(in: &cancellables)
+        let heightPublisher = viewModel.$height
+            .receive(on: DispatchQueue.main)
+            .eraseToAnyPublisher()
         
-        NotificationCenter.default.publisher(for: UITextField.textDidChangeNotification, object: weight)
-            .compactMap { ($0.object as? UITextField)?.text }
-            .assign(to: \.weight, on: viewModel)
-            .store(in: &cancellables)
+        let weightPublisher = viewModel.$weight
+            .receive(on: DispatchQueue.main)
+            .eraseToAnyPublisher()
         
-        viewModel.$nickname
-            .receive(on: RunLoop.main)
-            .sink { [weak self] nickname in
+        Publishers.CombineLatest3(nicknamePublisher, heightPublisher, weightPublisher)
+            .sink { [weak self] nickname, height, weight in
                 self?.nickname.text = nickname
-            }
-            .store(in: &cancellables)
-        
-        viewModel.$height
-            .receive(on: RunLoop.main)
-            .sink { [weak self] height in
                 self?.height.text = height
-            }
-            .store(in: &cancellables)
-        
-        viewModel.$weight
-            .receive(on: RunLoop.main)
-            .sink { [weak self] weight in
                 self?.weight.text = weight
             }
             .store(in: &cancellables)
@@ -309,15 +295,29 @@ class EditProfileViewController: UIViewController {
     }
     
     @objc func saveButtonTapped() {
-        viewModel?.saveProfileData()
-        
-        viewModel?.submitProfile { [weak self] result in
+        guard let viewModel = viewModel else {
+            print("ViewModel is nil")
+            return
+        }
+
+        viewModel.nickname = nickname.text ?? ""
+        viewModel.height = height.text ?? ""
+        viewModel.weight = weight.text ?? ""
+
+        viewModel.saveProfileData()
+        viewModel.debugPrint()
+
+        viewModel.submitProfile { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
                 case .success:
+                    print("Profile update successful")
                     self?.navigationController?.popViewController(animated: true)
                 case .failure(let error):
-                    print("Error updating profile: \(error)")
+                    print("업데이트 에러: \(error)")
+                    let alert = UIAlertController(title: "에러", message: "Failed to update profile. Please try again.", preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                    self?.present(alert, animated: true, completion: nil)
                 }
             }
         }
@@ -345,5 +345,12 @@ class EditProfileViewController: UIViewController {
                 self.scrollView.verticalScrollIndicatorInsets.bottom = 0
             }
         }
+    }
+}
+extension UITextField {
+    var textPublisher: AnyPublisher<String?, Never> {
+        NotificationCenter.default.publisher(for: UITextField.textDidChangeNotification, object: self)
+            .compactMap { ($0.object as? UITextField)?.text }
+            .eraseToAnyPublisher()
     }
 }

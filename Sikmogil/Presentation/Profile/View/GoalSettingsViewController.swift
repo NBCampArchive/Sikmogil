@@ -3,7 +3,7 @@
 //  Sikmogil
 //
 //  Created by Developer_P on 6/5/24.
-//
+//  [목표설정] 🚩 목표설정 🚩
 
 import UIKit
 import SnapKit
