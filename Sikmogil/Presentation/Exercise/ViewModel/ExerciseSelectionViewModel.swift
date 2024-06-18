@@ -34,11 +34,17 @@ class ExerciseSelectionViewModel {
     }
     
     private func calculateCalories(exercise: String, time: String, intensity: Int) -> Int {
+        // 운동에 대한 분당 소모 칼로리
         let caloriesPerMinute: [String: Int] = [
             "런닝": 10,
             "수영": 8,
             "자전거": 7,
-            "기타": 5
+            "등산": 9,
+            "걷기": 4,
+            "스쿼트": 12,
+            "요가": 3,
+            "줄넘기": 11,
+            "기타": 6
         ]
         
         let timeInMinutes = Int(time.dropLast(1)) ?? 0

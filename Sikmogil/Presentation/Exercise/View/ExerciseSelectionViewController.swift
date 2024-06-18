@@ -237,9 +237,8 @@ class ExerciseSelectionViewController: UIViewController {
     }
     
     // MARK: -  Setup Binding
-    // TODO: - 임시 운동 종목 추가하기
     private func setupMenus() {
-        let exercises = ["런닝", "수영", "자전거", "기타"]
+        let exercises = ["런닝", "수영", "자전거", "등산", "걷기", "스쿼트", "요가", "줄넘기", "필라테스", "기타"]
         let times = ["15분", "30분", "60분", "90분"]
         
         let exerciseActions = exercises.map { exercise in
