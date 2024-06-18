@@ -116,7 +116,7 @@ class ExerciseViewController: UIViewController {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
                 self?.tableView.reloadData()
-                self?.updateProgressLabel()
+                self?.updateProgress()
                 self?.updateTableViewHeight()
             }
             .store(in: &cancellables)
@@ -124,22 +124,27 @@ class ExerciseViewController: UIViewController {
         viewModel.$totalWorkoutTime
             .receive(on: DispatchQueue.main)
             .sink { [weak self] totalWorkoutTime in
-                self?.updateProgressLabel()
+                self?.updateProgress()
             }
             .store(in: &cancellables)
         
         viewModel.$totalCaloriesBurned
             .receive(on: DispatchQueue.main)
             .sink { [weak self] totalCaloriesBurned in
-                self?.updateProgressLabel()
+                self?.updateProgress()
             }
             .store(in: &cancellables)
     }
     
-    private func updateProgressLabel() {
+    private func updateProgress() {
         let totalTime = viewModel.totalWorkoutTime
         let totalCalories = viewModel.totalCaloriesBurned
         progressLabel.text = "활동시간 \(totalTime)분\n소모칼로리 \(totalCalories)kcal"
+        
+        // TODO: - 권장 소모 kcal 데이터 받아서 프로그레스바 업데이트
+        let recommendedCalories: CGFloat = 1000.0
+        let progress = min(CGFloat(totalCalories) / recommendedCalories, 1.0)
+        customCircularProgressBar.progress = progress
     }
     
     private func updateTableViewHeight() {
@@ -158,10 +163,6 @@ class ExerciseViewController: UIViewController {
     // MARK: - Setup View
     private func setupViews() {
         view.backgroundColor = .white
-        
-        // TODO: - kcal 데이터 받아서 프로그레스바 업데이트
-        customCircularProgressBar.progress = 0.6
-        
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(ExerciseHistoryCell.self, forCellReuseIdentifier: ExerciseHistoryCell.identifier)
