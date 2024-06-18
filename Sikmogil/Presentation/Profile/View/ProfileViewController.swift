@@ -13,6 +13,10 @@ import KeychainSwift
 
 class ProfileViewController: UIViewController {
     
+    var coordinator: ProfileCoordinatorController?
+    var viewModel: ProfileViewModel?
+    private var cancellables = Set<AnyCancellable>()
+    
     let spacerView = UIView()
     let scrollView = UIScrollView()
     let contentView = UIView()
@@ -65,15 +69,11 @@ class ProfileViewController: UIViewController {
         $0.titleLabel?.font = UIFont.systemFont(ofSize: 14)
     }
     
-    private var viewModel = ProfileViewModel()
-    private var cancellables = Set<AnyCancellable>()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
         
-        // 바인딩 설정을 viewDidLoad 후에 호출
-        viewModel.fetchUserProfile()
+        viewModel?.fetchUserProfile()
         bindViewModel()
         
         settingsButton.addTarget(self, action: #selector(settingsButtonTapped(_:)), for: .touchUpInside)
@@ -86,23 +86,22 @@ class ProfileViewController: UIViewController {
     }
     
     private func bindViewModel() {
+        guard let viewModel = viewModel else { return }
+        
         viewModel.$nickname
             .sink { [weak self] nickname in
-                print("닉네임 업데이트 내용 : \(nickname)")
                 self?.nicknameLabel.text = nickname
             }
             .store(in: &cancellables)
         
         viewModel.$height
             .sink { [weak self] height in
-                print("키 업데이트 내용 : \(height)")
                 self?.profileInfoView.heightLabel.text = height
             }
             .store(in: &cancellables)
         
         viewModel.$weight
             .sink { [weak self] weight in
-                print("몸무게 업데이트 내용 : \(weight)")
                 self?.profileInfoView.weightLabel.text = weight
             }
             .store(in: &cancellables)
@@ -216,38 +215,18 @@ class ProfileViewController: UIViewController {
     
     @objc private func settingsButtonTapped(_ sender: UIButton) {
         let editProfileAction = UIAction(title: "프로필 수정", image: nil) { _ in
-            self.showEditProfile()
+            self.coordinator?.showEditProfile()
         }
         let notificationSettingsAction = UIAction(title: "알림 설정", image: nil) { _ in
-            self.showNotificationSettings()
+            self.coordinator?.showNotificationSettings()
         }
         let goalSettingsAction = UIAction(title: "목표 설정", image: nil) { _ in
-            self.showGoalSettings()
+            self.coordinator?.showGoalSettings()
         }
         
         let menu = UIMenu(title: "", children: [editProfileAction, notificationSettingsAction, goalSettingsAction])
         sender.menu = menu
         sender.showsMenuAsPrimaryAction = true
-    }
-    
-    private func showEditProfile() {
-        let editProfileVC = EditProfileViewController()
-        editProfileVC.userProfile = viewModel.userProfile
-        editProfileVC.onProfileUpdate = { [weak self] updatedProfile in
-            self?.viewModel.userProfile = updatedProfile
-            // 추가: 프로필 업데이트 후 데이터를 다시 바인딩
-            self?.viewModel.updateFields(from: updatedProfile)
-        }
-        navigationController?.pushViewController(editProfileVC, animated: true)
-    }
-    private func showNotificationSettings() {
-        let notificationSettingsVC = NotificationSettingsViewController()
-        navigationController?.pushViewController(notificationSettingsVC, animated: true)
-    }
-    
-    private func showGoalSettings() {
-        let goalSettingsVC = GoalSettingsViewController()
-        navigationController?.pushViewController(goalSettingsVC, animated: true)
     }
     
     @objc private func logoutButtonTapped(_ sender: UIButton) {

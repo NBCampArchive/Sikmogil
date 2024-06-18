@@ -8,15 +8,15 @@
 import UIKit
 import SnapKit
 import Then
-import RxSwift
-import RxCocoa
+import Combine
 
 class ReminderSettingsViewController: UIViewController {
     
+    var viewModel: ProfileViewModel?
+    private var cancellables = Set<AnyCancellable>()
+    
     private let scrollView = UIScrollView()
     private let contentView = UIView()
-    private let notificationHelper = NotificationHelper.shared
-    private let disposeBag = DisposeBag()
     
     private let titleLabel = UILabel().then {
         $0.text = "리마인드 알림 시간 설정"
@@ -46,7 +46,7 @@ class ReminderSettingsViewController: UIViewController {
         $0.isHidden = true
     }
     
-    private let doneButton = UIButton(type: .system).then {
+    private let completeButton = UIButton(type: .system).then {
         $0.setTitle("완료", for: .normal)
         $0.setTitleColor(.white, for: .normal)
         $0.titleLabel?.font = Suite.bold.of(size: 22)
@@ -62,23 +62,40 @@ class ReminderSettingsViewController: UIViewController {
         setupAddTargets()
         hideKeyboardWhenTappedAround()
         setKeyboardObserver()
+        bindViewModel()
         timeTextField.delegate = self
     }
     
     private func setupAddTargets() {
-        doneButton.addTarget(self, action: #selector(doneButtonTapped), for: .touchUpInside)
+        completeButton.addTarget(self, action: #selector(completeButtonTapped), for: .touchUpInside)
+    }
+    
+    private func bindViewModel() {
+        guard let viewModel = viewModel else { return }
+        
+        viewModel.$reminderTime
+            .sink { [weak self] reminderTime in
+                self?.timeTextField.text = reminderTime
+            }
+            .store(in: &cancellables)
+        
+        timeTextField.addTarget(self, action: #selector(timeTextFieldChanged), for: .editingChanged)
+    }
+    
+    @objc private func timeTextFieldChanged(_ textField: UITextField) {
+        viewModel?.reminderTime = textField.text ?? ""
     }
     
     private func setupConstraints() {
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
         contentView.addSubviews(titleLabel, descriptionLabel, timeTextField, timeTextFieldWarningLabel)
-        view.addSubview(doneButton)
+        view.addSubview(completeButton)
         
         scrollView.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide)
             $0.leading.trailing.equalToSuperview()
-            $0.bottom.equalTo(doneButton.snp.top).offset(-16)
+            $0.bottom.equalTo(completeButton.snp.top).offset(-16)
         }
         
         contentView.snp.makeConstraints {
@@ -106,7 +123,7 @@ class ReminderSettingsViewController: UIViewController {
             $0.centerX.equalToSuperview()
         }
         
-        doneButton.snp.makeConstraints {
+        completeButton.snp.makeConstraints {
             $0.bottom.equalTo(view.safeAreaLayoutGuide).offset(-16)
             $0.leading.equalToSuperview().offset(16)
             $0.trailing.equalToSuperview().offset(-16)
@@ -114,53 +131,51 @@ class ReminderSettingsViewController: UIViewController {
         }
     }
     
-    @objc private func doneButtonTapped() {
-        guard let timeText = timeTextField.text, !timeText.isEmpty else {
+    @objc private func completeButtonTapped() {
+        guard let viewModel = viewModel else { return }
+        
+        if viewModel.reminderValidateForm() {
+            timeTextFieldWarningLabel.isHidden = true
+            viewModel.saveReminderData()
+            
+            viewModel.submitProfile { [weak self] result in
+                switch result {
+                case .success:
+                    viewModel.debugPrint()
+                    print("Profile submitted successfully")
+                    self?.showAlertAndNavigateToProfile()
+                case .failure(let error):
+                    print("Failed to submit profile: \(error)")
+                }
+            }
+        } else {
+            view.shake()
             timeTextFieldWarningLabel.isHidden = false
-            return
         }
-        
-        let timeComponents = timeText.split(separator: ":")
-        guard timeComponents.count == 2,
-              let hours = Int(timeComponents[0]),
-              let minutes = Int(timeComponents[1]),
-              hours >= 0, hours < 24,
-              minutes >= 0, minutes < 60 else {
-            timeTextFieldWarningLabel.isHidden = false
-            return
+    }
+    
+    private func showAlertAndNavigateToProfile() {
+        let alert = UIAlertController(title: "성공", message: "리마인드 설정이 완료되었습니다.", preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "확인", style: .default) { [weak self] _ in
+            self?.navigateToProfileViewController()
         }
-        
-        timeTextFieldWarningLabel.isHidden = true
-        
-        // 알림 스케줄링
-        var dateComponents = DateComponents()
-        dateComponents.hour = hours
-        dateComponents.minute = minutes
-        
-        notificationHelper.scheduleDailyNotification(at: dateComponents) { error in
-            if let error = error {
-                print("Failed to schedule notification: \(error)")
-                self.showAlert(title: "오류", message: "알림 설정에 실패했습니다.")
-            } else {
-                print("Notification scheduled successfully for \(hours):\(minutes)")
-                self.showAlert(title: "성공", message: "알림이 설정되었습니다.") {
-                    self.navigationController?.popViewController(animated: true)
+        alert.addAction(okAction)
+        present(alert, animated: true, completion: nil)
+    }
+    
+    private func navigateToProfileViewController() {
+        if let navigationController = self.navigationController {
+            for controller in navigationController.viewControllers {
+                if let profileVC = controller as? ProfileViewController {
+                    navigationController.popToViewController(profileVC, animated: true)
+                    return
                 }
             }
         }
     }
-    
-    private func showAlert(title: String, message: String, completion: (() -> Void)? = nil) {
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "확인", style: .default) { _ in
-            completion?()
-        })
-        present(alert, animated: true, completion: nil)
-    }
 }
 
 extension ReminderSettingsViewController: UITextFieldDelegate {
-    // UITextFieldDelegate 메서드
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         if let text = textField.text {
             let allowedCharacters = CharacterSet.decimalDigits

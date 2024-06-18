@@ -12,10 +12,9 @@ import Combine
 
 class EditProfileViewController: UIViewController {
     
-    var userProfile: UserProfile?
-    var onProfileUpdate: ((UserProfile) -> Void)?
+    var coordinator: ProfileCoordinatorController?
+    var viewModel: ProfileViewModel?
     private var cancellables = Set<AnyCancellable>()
-    private var viewModel = ProfileViewModel()
     
     let scrollView = UIScrollView().then {
         $0.backgroundColor = .white
@@ -44,6 +43,7 @@ class EditProfileViewController: UIViewController {
         $0.font = Suite.regular.of(size: 14)
         $0.textColor = .appDarkGray
     }
+    
     let nicknameView = UIView().then {
         $0.backgroundColor = .appLightGray
         $0.layer.cornerRadius = 12
@@ -77,6 +77,7 @@ class EditProfileViewController: UIViewController {
         $0.font = Suite.regular.of(size: 16)
         $0.textColor = .appBlack
     }
+    
     let heightUnitLabel = UILabel().then {
         $0.text = "cm"
         $0.font = Suite.regular.of(size: 16)
@@ -126,38 +127,29 @@ class EditProfileViewController: UIViewController {
         
         bindViewModel()
         
-        if let profile = userProfile {
-            nickname.text = profile.nickname
-            height.text = profile.height
-            weight.text = profile.weight
-        }
+        nickname.text = viewModel?.nickname
+        height.text = viewModel?.height
+        weight.text = viewModel?.weight
     }
     
     private func bindViewModel() {
-        // Initial values
-        viewModel.nickname = nickname.text ?? ""
-        viewModel.height = height.text ?? ""
-        viewModel.weight = weight.text ?? ""
+        guard let viewModel = viewModel else { return }
         
-        // Bind nickname
         NotificationCenter.default.publisher(for: UITextField.textDidChangeNotification, object: nickname)
             .compactMap { ($0.object as? UITextField)?.text }
             .assign(to: \.nickname, on: viewModel)
             .store(in: &cancellables)
         
-        // Bind height
         NotificationCenter.default.publisher(for: UITextField.textDidChangeNotification, object: height)
             .compactMap { ($0.object as? UITextField)?.text }
             .assign(to: \.height, on: viewModel)
             .store(in: &cancellables)
         
-        // Bind weight
         NotificationCenter.default.publisher(for: UITextField.textDidChangeNotification, object: weight)
             .compactMap { ($0.object as? UITextField)?.text }
             .assign(to: \.weight, on: viewModel)
             .store(in: &cancellables)
         
-        // Observe changes and update UI
         viewModel.$nickname
             .receive(on: RunLoop.main)
             .sink { [weak self] nickname in
@@ -179,11 +171,8 @@ class EditProfileViewController: UIViewController {
             }
             .store(in: &cancellables)
     }
-}
-
-// MARK: - 설정 메서드
-extension EditProfileViewController {
-    func setupViews() {
+    
+    private func setupViews() {
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
         contentView.addSubview(profileImageView)
@@ -206,7 +195,7 @@ extension EditProfileViewController {
         view.addSubview(saveButton)
     }
     
-    func setupConstraints() {
+    private func setupConstraints() {
         scrollView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
@@ -279,7 +268,6 @@ extension EditProfileViewController {
             $0.trailing.equalToSuperview().offset(-20)
             $0.height.equalTo(80)
         }
-        
         weightLabel.snp.makeConstraints {
             $0.top.equalTo(weightView.snp.top).offset(10)
             $0.leading.equalTo(weightView.snp.leading).offset(10)
@@ -288,15 +276,18 @@ extension EditProfileViewController {
         weight.snp.makeConstraints {
             $0.top.equalTo(weightLabel.snp.bottom).offset(5)
             $0.leading.equalTo(weightView.snp.leading).offset(10)
-            $0.trailing.equalTo(weightUnitLabel.snp.leading).offset(-50)
+            $0.trailing.equalTo(weightUnitLabel.snp.leading).offset(-10)
         }
+        
         weightUnitLabel.snp.makeConstraints {
             $0.centerY.equalTo(weight)
             $0.trailing.equalTo(weightView.snp.trailing).offset(-10)
         }
+        
         contentView.snp.makeConstraints {
             $0.bottom.equalTo(weightView.snp.bottom).offset(100)
         }
+        
         saveButton.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview().inset(20)
             $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottomMargin).inset(20)
@@ -309,53 +300,21 @@ extension EditProfileViewController {
         profileImageView.layer.cornerRadius = profileImageView.frame.height / 2
         profileImageView.layer.masksToBounds = true
     }
-}
-
-// MARK: - 사용자 액션
-extension EditProfileViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    @objc func profileImageTapped() { // 이미지 피커
+    
+    @objc func profileImageTapped() {
         let imagePickerController = UIImagePickerController()
-        imagePickerController.delegate = self
+        //        imagePickerController.delegate = self
         imagePickerController.sourceType = .photoLibrary
         present(imagePickerController, animated: true, completion: nil)
     }
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        if let pickedImage = info[.originalImage] as? UIImage {
-            profileImageView.image = pickedImage
-            profileImageView.layer.cornerRadius = profileImageView.frame.height / 2
-            profileImageView.layer.masksToBounds = true
-        }
-        dismiss(animated: true, completion: nil)
-    }
-    
-    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        dismiss(animated: true, completion: nil)
-    }
     
     @objc func saveButtonTapped() {
-        // UI와 ViewModel 동기화
-        viewModel.nickname = nickname.text ?? ""
-        viewModel.height = height.text ?? ""
-        viewModel.weight = weight.text ?? ""
+        viewModel?.saveProfileData()
         
-        viewModel.saveProfileData()
-        let updatedProfile = UserProfile(
-            nickname: viewModel.nickname,
-            height: viewModel.height,
-            weight: viewModel.weight,
-            gender: userProfile?.gender ?? "",
-            targetWeight: userProfile?.targetWeight ?? "",
-            targetDate: userProfile?.targetDate ?? "",
-            canEatCalorie: userProfile?.canEatCalorie ?? 0,
-            createdDate: userProfile?.createdDate ?? "",
-            remindTime: userProfile?.remindTime ?? ""
-        )
-        
-        viewModel.submitProfile { [weak self] result in
+        viewModel?.submitProfile { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
                 case .success:
-                    self?.onProfileUpdate?(updatedProfile)
                     self?.navigationController?.popViewController(animated: true)
                 case .failure(let error):
                     print("Error updating profile: \(error)")

@@ -28,6 +28,7 @@ class ProfileViewModel: ObservableObject {
     
     func fetchUserProfile() {
         ProfileAPIManager.shared.getUserInfo()
+            .print("userProfile")
             .sink { completion in
                 switch completion {
                 case .failure(let error):
@@ -37,6 +38,8 @@ class ProfileViewModel: ObservableObject {
                 }
             } receiveValue: { [weak self] userProfile in
                 self?.updateFields(from: userProfile.data)
+                self?.userProfile = userProfile.data
+                print("333\(self?.userProfile)")
             }
             .store(in: &cancellables)
     }
@@ -56,6 +59,14 @@ class ProfileViewModel: ObservableObject {
     func saveReminderData() {
         userProfile.createdDate = DateHelper.shared.formatDateToYearMonthDay(Date())
         userProfile.remindTime = reminderTime
+    }
+    
+    func targetValidateForm() -> Bool {
+        return !targetWeight.isEmpty
+    }
+    
+    func reminderValidateForm() -> Bool {
+        return !reminderTime.isEmpty
     }
     
     func submitProfile(completion: @escaping (Result<Void, Error>) -> Void) {
@@ -106,5 +117,17 @@ class ProfileViewModel: ObservableObject {
         self.targetWeight = userProfile.targetWeight
         self.targetDate = DateHelper.shared.dateFromServerString(userProfile.targetDate) ?? Date()
         self.reminderTime = userProfile.remindTime
+    }
+    
+    func debugPrint() {
+        print("Nickname: \(nickname)")
+        print("Height: \(height)")
+        print("Weight: \(weight)")
+        print("Gender: \(gender)")
+        print("Target Weight: \(targetWeight)")
+        print("Target Date: \(targetDate)")
+        print("Reminder Time: \(reminderTime)")
+        print("Created Date: \(userProfile.createdDate)")
+        print("Can Eat Calorie: \(userProfile.canEatCalorie)")
     }
 }
