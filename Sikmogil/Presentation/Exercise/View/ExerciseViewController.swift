@@ -146,8 +146,9 @@ class ExerciseViewController: UIViewController {
         let totalCalories = viewModel.totalCaloriesBurned
         progressLabel.text = "활동시간 \(totalTime)분\n소모칼로리 \(totalCalories)kcal"
         
-        if let recommendedCalories = viewModel.canEatCalorie {
-            let progress = min(CGFloat(totalCalories) / CGFloat(recommendedCalories), 1.0)
+        if let canEatCalorie = viewModel.canEatCalorie {
+            let recommendedCalories = CGFloat(canEatCalorie) * 0.5
+            let progress = min(CGFloat(totalCalories) / recommendedCalories, 1.0)
             customCircularProgressBar.progress = progress
         }
     }
