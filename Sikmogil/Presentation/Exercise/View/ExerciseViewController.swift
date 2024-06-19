@@ -288,7 +288,7 @@ class ExerciseViewController: UIViewController {
 }
 
 // MARK: - UITableView
-extension ExerciseViewController: UITableViewDelegate, UITableViewDataSource {
+extension ExerciseViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return viewModel.exercises.count
     }
@@ -308,5 +308,25 @@ extension ExerciseViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 88
+    }
+}
+extension ExerciseViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            let reversedIndex = viewModel.exercises.count - 1 - indexPath.row
+            let exercise = viewModel.exercises[reversedIndex]
+            let listId = exercise.workoutListId
+            
+            viewModel.deleteExerciseListData(for: day, exerciseListId: listId) { [weak self] result in
+                switch result {
+                case .success:
+                    DispatchQueue.main.async {
+                        self?.fetchExerciseData()
+                    }
+                case .failure(let error):
+                    print("운동 리스트 삭제 실패: \(error)")
+                }
+            }
+        }
     }
 }
