@@ -11,16 +11,27 @@ import Then
 
 class ExerciseTimerViewController: UIViewController {
     
-    // MARK: - Components
+    // MARK: - Properties
     var viewModel = ExerciseSelectionViewModel()
-   
-    private var isPaused: Bool = true
-    var selectedTime: TimeInterval = 30 // 선택한 시간을 저장할 변수: 30분(30 * 60 = 1800)
+    var initialTime: TimeInterval
+    var selectedTime: TimeInterval // 선택한 시간을 저장할 변수: 30분(30 * 60 = 1800)
     
+    private var isPaused: Bool = true
     private var timer: DispatchSourceTimer?
     private var backgroundTask: UIBackgroundTaskIdentifier = .invalid
     private var startTime: Date?
     
+    init(selectedTime: TimeInterval, initialTime: TimeInterval) {
+        self.selectedTime = selectedTime
+        self.initialTime = initialTime
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: - Components
     private let timeLabel = UILabel().then {
         $0.text = "00 : 00"
         $0.font = Suite.semiBold.of(size: 60)
@@ -43,6 +54,10 @@ class ExerciseTimerViewController: UIViewController {
         $0.tintColor = .white
         $0.layer.cornerRadius = 16
     }
+    
+    private let progressBar = UIView().then {
+        $0.backgroundColor = UIColor(red: 216/255, green: 240/255, blue: 227/255, alpha: 1.0)
+    }
 
     // MARK: - View Life Cycle
     override func viewDidLoad() {
@@ -56,10 +71,14 @@ class ExerciseTimerViewController: UIViewController {
     // MARK: - Setup Views
     private func setupViews() {
         view.backgroundColor = .white
-        view.addSubviews(timeLabel, stopPauseButton, statusLabel, recordButton)
+        view.addSubviews(progressBar, timeLabel, stopPauseButton, statusLabel, recordButton)
     }
     
     private func setupConstraints() {
+        progressBar.snp.makeConstraints {
+            $0.top.leading.bottom.equalToSuperview()
+            $0.width.equalTo(UIScreen.main.bounds.size.width)
+        }
         
         timeLabel.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide).offset(200)
@@ -84,7 +103,7 @@ class ExerciseTimerViewController: UIViewController {
         }
     }
     
-    // MARK: - Setup Buttons
+    // MARK: - Setup Timer
     private func setupButtons() {
         stopPauseButton.addTarget(self, action: #selector(stopPauseButtonTapped), for: .touchUpInside)
         recordButton.addTarget(self, action: #selector(recordButtonTapped), for: .touchUpInside)
@@ -131,6 +150,7 @@ class ExerciseTimerViewController: UIViewController {
             } else {
                 DispatchQueue.main.async {
                     self.updateTimeLabel() // 라벨 텍스트 업데이트
+                    self.updateProgressBar()
                 }
             }
         })
@@ -147,6 +167,16 @@ class ExerciseTimerViewController: UIViewController {
         stopPauseButton.setImage(UIImage.pause, for: .normal)
         statusLabel.text = "START"
         endBackgroundTask()
+    }
+    
+    private func updateProgressBar() {
+        let totalWidth = view.frame.width
+        let remainingTime = CGFloat(selectedTime)
+        let progressWidth = totalWidth * remainingTime / CGFloat(initialTime)
+        
+        progressBar.snp.updateConstraints {
+            $0.width.equalTo(progressWidth)
+        }
     }
     
     // MARK: - Background Task Handling
