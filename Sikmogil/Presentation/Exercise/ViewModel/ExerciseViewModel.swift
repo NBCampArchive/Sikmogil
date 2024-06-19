@@ -26,7 +26,7 @@ class ExerciseViewModel {
                     self?.updateTotals()
                 }
             case .failure(let error):
-                print("운동 데이터 불러오기 실패: \(error)")
+                print("운동 리스트 불러오기 실패: \(error)")
             }
         }
     }
@@ -40,11 +40,22 @@ class ExerciseViewModel {
         ExerciseAPIManager.shared.getExerciseData(exerciseDay: day) { [weak self] result in
             switch result {
             case .success(let exerciseData):
-                print("canEatCalorie: \(exerciseData.canEatCalorie ?? 0)")
                 self?.canEatCalorie = exerciseData.canEatCalorie
                 completion(.success(exerciseData))
             case .failure(let error):
                 print("운동 데이터 불러오기 실패:", error)
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    func deleteExerciseListData(for day: String, exerciseListId: Int, completion: @escaping (Result<Void, Error>) -> Void) {
+        ExerciseAPIManager.shared.deleteExerciseListData(exerciseDay: day, exerciseListId: exerciseListId) { result in
+            switch result {
+            case .success:
+                completion(.success(()))
+            case .failure(let error):
+                print("운동 리스트 삭제 실패 \(day): \(error)")
                 completion(.failure(error))
             }
         }
