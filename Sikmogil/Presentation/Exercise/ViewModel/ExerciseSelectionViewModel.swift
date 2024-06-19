@@ -43,6 +43,7 @@ class ExerciseSelectionViewModel {
             "걷기": 4,
             "스쿼트": 12,
             "요가": 3,
+            "필라테스": 5,
             "줄넘기": 11,
             "기타": 6
         ]
