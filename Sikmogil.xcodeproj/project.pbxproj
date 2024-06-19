@@ -107,6 +107,9 @@
 		B54AC01A2C105646002E89DC /* Step1ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54AC0192C105646002E89DC /* Step1ViewController.swift */; };
 		B54AC01C2C1056A4002E89DC /* Step2ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54AC01B2C1056A4002E89DC /* Step2ViewController.swift */; };
 		B54AC01E2C1056C3002E89DC /* Step3ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54AC01D2C1056C3002E89DC /* Step3ViewController.swift */; };
+		B5825BAA2C219A7100ADAA66 /* CommunityNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5825BA92C219A7100ADAA66 /* CommunityNavigationViewController.swift */; };
+		B5825BAD2C219C2B00ADAA66 /* BoardMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5825BAC2C219C2B00ADAA66 /* BoardMainViewController.swift */; };
+		B5825BAF2C219FE500ADAA66 /* CustomSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5825BAE2C219FE500ADAA66 /* CustomSegmentedControl.swift */; };
 		CACA65B82C1860CF0030D8D5 /* DietAlbumViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CACA65B72C1860CF0030D8D5 /* DietAlbumViewModel.swift */; };
 		CACA65BA2C19BBDF0030D8D5 /* SavedDietImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CACA65B92C19BBDF0030D8D5 /* SavedDietImage.swift */; };
 		CACA65C62C1B5CE20030D8D5 /* FoodDbAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CACA65C52C1B5CE20030D8D5 /* FoodDbAPIManager.swift */; };
@@ -217,6 +220,9 @@
 		B54AC0192C105646002E89DC /* Step1ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Step1ViewController.swift; sourceTree = "<group>"; };
 		B54AC01B2C1056A4002E89DC /* Step2ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Step2ViewController.swift; sourceTree = "<group>"; };
 		B54AC01D2C1056C3002E89DC /* Step3ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Step3ViewController.swift; sourceTree = "<group>"; };
+		B5825BA92C219A7100ADAA66 /* CommunityNavigationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityNavigationViewController.swift; sourceTree = "<group>"; };
+		B5825BAC2C219C2B00ADAA66 /* BoardMainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardMainViewController.swift; sourceTree = "<group>"; };
+		B5825BAE2C219FE500ADAA66 /* CustomSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSegmentedControl.swift; sourceTree = "<group>"; };
 		CACA65B72C1860CF0030D8D5 /* DietAlbumViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DietAlbumViewModel.swift; sourceTree = "<group>"; };
 		CACA65B92C19BBDF0030D8D5 /* SavedDietImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedDietImage.swift; sourceTree = "<group>"; };
 		CACA65C52C1B5CE20030D8D5 /* FoodDbAPIManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoodDbAPIManager.swift; sourceTree = "<group>"; };
@@ -485,6 +491,7 @@
 		B54ABFC02C0CB666002E89DC /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
+				B5825BA72C219A4000ADAA66 /* Community */,
 				62578CD82C0F3B16005035BB /* Main */,
 				B52001CF2C171B8C0083CBDF /* Diet */,
 				547A1BAA2C0DA9E8000A16BF /* Profile */,
@@ -674,6 +681,32 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		B5825BA72C219A4000ADAA66 /* Community */ = {
+			isa = PBXGroup;
+			children = (
+				B5825BA82C219A5600ADAA66 /* View */,
+			);
+			path = Community;
+			sourceTree = "<group>";
+		};
+		B5825BA82C219A5600ADAA66 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				B5825BAB2C219C0A00ADAA66 /* Board */,
+				B5825BA92C219A7100ADAA66 /* CommunityNavigationViewController.swift */,
+				B5825BAE2C219FE500ADAA66 /* CustomSegmentedControl.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		B5825BAB2C219C0A00ADAA66 /* Board */ = {
+			isa = PBXGroup;
+			children = (
+				B5825BAC2C219C2B00ADAA66 /* BoardMainViewController.swift */,
+			);
+			path = Board;
+			sourceTree = "<group>";
+		};
 		F3094EC22C0DB1730099DE2C /* Cell */ = {
 			isa = PBXGroup;
 			children = (
@@ -855,6 +888,7 @@
 				CACA65BA2C19BBDF0030D8D5 /* SavedDietImage.swift in Sources */,
 				546E32332C1078E600E94C2A /* NotificationSettingsViewController.swift in Sources */,
 				540768862C12EAB200543A72 /* ProfileInfoView.swift in Sources */,
+				B5825BAF2C219FE500ADAA66 /* CustomSegmentedControl.swift in Sources */,
 				B54ABFE92C0D69CD002E89DC /* Font.swift in Sources */,
 				B54AC00E2C105475002E89DC /* UserProfile.swift in Sources */,
 				546285CC2C1E4499002247BB /* ProfileViewModel.swift in Sources */,
@@ -886,6 +920,7 @@
 				F3094EC42C0DB1940099DE2C /* ExerciseHistoryCell.swift in Sources */,
 				B54AC0172C10560A002E89DC /* OnboardingPageViewController.swift in Sources */,
 				B54ABF8C2C09BD43002E89DC /* ViewController.swift in Sources */,
+				B5825BAA2C219A7100ADAA66 /* CommunityNavigationViewController.swift in Sources */,
 				62578CD42C0ED558005035BB /* CalendarViewController.swift in Sources */,
 				62578D002C15A487005035BB /* HeaderView.swift in Sources */,
 				B54ABF882C09BD43002E89DC /* AppDelegate.swift in Sources */,
@@ -906,6 +941,7 @@
 				B54ABFC52C0CB6AB002E89DC /* ViewModel.swift in Sources */,
 				62578CD12C0DAB92005035BB /* MainViewController.swift in Sources */,
 				62578D022C15E476005035BB /* DiaryRecordFloatingViewController.swift in Sources */,
+				B5825BAD2C219C2B00ADAA66 /* BoardMainViewController.swift in Sources */,
 				B52001E62C1972330083CBDF /* ImageAPIManager.swift in Sources */,
 				B52001D32C171B8C0083CBDF /* AddDietMenuViewController.swift in Sources */,
 				F36105B52C1BFF6500237572 /* UILabel.swift in Sources */,
