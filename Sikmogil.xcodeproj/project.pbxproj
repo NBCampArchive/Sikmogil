@@ -122,7 +122,6 @@
 		F3094F062C1841240099DE2C /* ExerciseMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3094F052C1841240099DE2C /* ExerciseMenuViewController.swift */; };
 		F3094F082C197AFA0099DE2C /* HalfCircleProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3094F072C197AFA0099DE2C /* HalfCircleProgressView.swift */; };
 		F3094F0E2C19A1BE0099DE2C /* ExerciseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3094F0D2C19A1BE0099DE2C /* ExerciseViewModel.swift */; };
-		F36105B12C1ADD7D00237572 /* APITestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F36105B02C1ADD7D00237572 /* APITestViewController.swift */; };
 		F36105B32C1BE05800237572 /* ExerciseCategoryAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F36105B22C1BE05800237572 /* ExerciseCategoryAPIManager.swift */; };
 		F36105B52C1BFF6500237572 /* UILabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F36105B42C1BFF6500237572 /* UILabel.swift */; };
 		F36105B72C1BFF7600237572 /* Double.swift in Sources */ = {isa = PBXBuildFile; fileRef = F36105B62C1BFF7600237572 /* Double.swift */; };
@@ -233,7 +232,6 @@
 		F3094F052C1841240099DE2C /* ExerciseMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseMenuViewController.swift; sourceTree = "<group>"; };
 		F3094F072C197AFA0099DE2C /* HalfCircleProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HalfCircleProgressView.swift; sourceTree = "<group>"; };
 		F3094F0D2C19A1BE0099DE2C /* ExerciseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseViewModel.swift; sourceTree = "<group>"; };
-		F36105B02C1ADD7D00237572 /* APITestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APITestViewController.swift; sourceTree = "<group>"; };
 		F36105B22C1BE05800237572 /* ExerciseCategoryAPIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseCategoryAPIManager.swift; sourceTree = "<group>"; };
 		F36105B42C1BFF6500237572 /* UILabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabel.swift; sourceTree = "<group>"; };
 		F36105B62C1BFF7600237572 /* Double.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Double.swift; sourceTree = "<group>"; };
@@ -703,7 +701,6 @@
 				F3094EC52C0E40040099DE2C /* ExerciseSelectionViewController.swift */,
 				F3094EEE2C0EEDA40099DE2C /* ExerciseTimerViewController.swift */,
 				F3094EF02C0EEDBA0099DE2C /* ExerciseResultViewController.swift */,
-				F36105B02C1ADD7D00237572 /* APITestViewController.swift */,
 				F3094EC22C0DB1730099DE2C /* Cell */,
 			);
 			path = View;
@@ -849,7 +846,6 @@
 				F3094F0E2C19A1BE0099DE2C /* ExerciseViewModel.swift in Sources */,
 				B54AC01A2C105646002E89DC /* Step1ViewController.swift in Sources */,
 				B54ABFCB2C0CB770002E89DC /* Extension.swift in Sources */,
-				F36105B12C1ADD7D00237572 /* APITestViewController.swift in Sources */,
 				62578CFE2C15A395005035BB /* PhotoCell.swift in Sources */,
 				B52001F02C1C8D7E0083CBDF /* TargetModel.swift in Sources */,
 				B52001E42C1971CD0083CBDF /* ImageModel.swift in Sources */,
