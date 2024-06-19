@@ -275,7 +275,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-<<<<<<< HEAD
 		540768822C12A53500543A72 /* Cell */ = {
 			isa = PBXGroup;
 			children = (
