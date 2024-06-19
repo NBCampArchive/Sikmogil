@@ -219,4 +219,21 @@ class DietAPIManager {
             }
         }
     }
+    
+    // MARK: - 식단 사진 출력
+    func getDietPicture(completion: @escaping (Result<[DietPicture], Error>) -> Void) {
+        
+        let url = "\(baseURL)/api/dietLog/findDietPictures"
+        
+        AF.request(url, method: .get, headers: headers).responseDecodable(of: [DietPicture].self,  emptyResponseCodes: [200]) { response in
+            switch response.result {
+            case .success(let data):
+                print("getDietPicture success")
+                completion(.success(data))
+            case .failure(let error):
+                print("getDietPicture failure")
+                completion(.failure(error))
+            }
+        }
+    }
 }

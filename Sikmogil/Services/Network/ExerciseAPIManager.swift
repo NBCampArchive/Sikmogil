@@ -171,5 +171,26 @@ class ExerciseAPIManager {
             }
         }
     }
+    
+    // MARK: - 운동 사진 출력
+    func getExercisePicture(completion: @escaping (Result<[ExerciseListModel], Error>) -> Void) {
+        let url = "\(baseURL)/api/workoutLog/findWorkoutPictures"
+        
+        let headers: HTTPHeaders = [
+            "Authorization": token,
+            "Accept": "application/json"
+        ]
+        
+        AF.request(url, method: .get, headers: headers).validate(statusCode: 200..<300).responseDecodable(of: [ExerciseListModel].self, emptyResponseCodes: [200]) { response in
+            switch response.result {
+            case .success(let data):
+                print("getExercisePicture success")
+                completion(.success(data))
+            case .failure(let error):
+                print("getExercisePicture failure")
+                completion(.failure(error))
+            }
+        }
+    }
 }
 
