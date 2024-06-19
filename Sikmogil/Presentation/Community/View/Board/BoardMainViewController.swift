@@ -15,9 +15,11 @@ class BoardMainViewController: UIViewController {
     //MARK: - Properties
     private var cancellables = Set<AnyCancellable>()
     
-    private let segmentedControl = UISegmentedControl(items: ["전체", "다이어트", "운동", "자유"]).then {
-        $0.selectedSegmentIndex = 0
-    }
+    private let customSegmentedControl = CustomSegmentedControl(frame: .zero, buttonTitles: ["전체", "다이어트", "운동", "자유"])
+    //        .then{
+    //        $0.selectedSegmentIndex = 0
+    //    }
+    
     
     private let pageViewController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal).then {
         $0.view.backgroundColor = .clear
@@ -32,15 +34,25 @@ class BoardMainViewController: UIViewController {
     }
     
     private func setupViews() {
-        view.addSubview(segmentedControl)
-        segmentedControl.addTarget(self, action: #selector(segmentChanged), for: .valueChanged)
+        view.addSubview(customSegmentedControl)
+        view.addSubview(pageViewController.view)
+        customSegmentedControl.onSelectSegment = { [weak self] index in
+            self?.segmentChanged(index: index)
+        }
+        //        customSegmentedControl.addTarget(self, action: #selector(segmentChanged), for: .valueChanged)
     }
     
     private func setupConstraints() {
-        segmentedControl.snp.makeConstraints {
+        customSegmentedControl.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide).offset(32)
             $0.leading.trailing.equalToSuperview().inset(16)
         }
+        
+        pageViewController.view.snp.makeConstraints {
+            $0.top.equalTo(customSegmentedControl.snp.bottom).offset(10)
+            $0.leading.trailing.bottom.equalToSuperview()
+        }
+        
     }
     
     private func setupPageViewController() {
@@ -48,13 +60,8 @@ class BoardMainViewController: UIViewController {
         pageViewController.dataSource = self
         
         addChild(pageViewController)
-        view.addSubview(pageViewController.view)
         pageViewController.didMove(toParent: self)
         
-        pageViewController.view.snp.makeConstraints {
-            $0.top.equalTo(segmentedControl.snp.bottom).offset(10)
-            $0.leading.trailing.bottom.equalToSuperview()
-        }
         
         // 초기 페이지 설정
         if let firstVC = viewControllerAtIndex(index: 0) {
@@ -62,8 +69,7 @@ class BoardMainViewController: UIViewController {
         }
     }
     
-    @objc private func segmentChanged() {
-        let index = segmentedControl.selectedSegmentIndex
+    private func segmentChanged(index: Int) {
         if let viewController = viewControllerAtIndex(index: index) {
             let direction: UIPageViewController.NavigationDirection = index > (pageViewController.viewControllers?.first?.view.tag ?? 0) ? .forward : .reverse
             pageViewController.setViewControllers([viewController], direction: direction, animated: true, completion: nil)
@@ -93,7 +99,7 @@ extension BoardMainViewController: UIPageViewControllerDelegate, UIPageViewContr
         index -= 1
         return viewControllerAtIndex(index: index)
     }
-
+    
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
         var index = viewController.view.tag
         index += 1
@@ -102,7 +108,8 @@ extension BoardMainViewController: UIPageViewControllerDelegate, UIPageViewContr
     
     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
         if completed, let currentViewController = pageViewController.viewControllers?.first {
-            segmentedControl.selectedSegmentIndex = currentViewController.view.tag
+            customSegmentedControl.setSelectedIndex(index: currentViewController.view.tag)
+            customSegmentedControl.updateButtonSelection()
         }
     }
 }
