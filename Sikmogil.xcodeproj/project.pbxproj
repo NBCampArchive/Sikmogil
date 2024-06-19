@@ -127,6 +127,7 @@
 		F36105B52C1BFF6500237572 /* UILabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F36105B42C1BFF6500237572 /* UILabel.swift */; };
 		F36105B72C1BFF7600237572 /* Double.swift in Sources */ = {isa = PBXBuildFile; fileRef = F36105B62C1BFF7600237572 /* Double.swift */; };
 		F36105B92C1E00A700237572 /* ExerciseSelectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F36105B82C1E00A700237572 /* ExerciseSelectionViewModel.swift */; };
+		F36105BD2C2056E100237572 /* AnimationProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = F36105BC2C2056E100237572 /* AnimationProgressBar.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -237,6 +238,7 @@
 		F36105B42C1BFF6500237572 /* UILabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabel.swift; sourceTree = "<group>"; };
 		F36105B62C1BFF7600237572 /* Double.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Double.swift; sourceTree = "<group>"; };
 		F36105B82C1E00A700237572 /* ExerciseSelectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseSelectionViewModel.swift; sourceTree = "<group>"; };
+		F36105BC2C2056E100237572 /* AnimationProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationProgressBar.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -586,6 +588,7 @@
 				B54ABFD62C0CC281002E89DC /* CustomCircularProgressBar.swift */,
 				B52001B12C1217DA0083CBDF /* WaveProgressView.swift */,
 				F3094F072C197AFA0099DE2C /* HalfCircleProgressView.swift */,
+				F36105BC2C2056E100237572 /* AnimationProgressBar.swift */,
 			);
 			path = CustomViews;
 			sourceTree = "<group>";
@@ -875,6 +878,7 @@
 				F3094EF12C0EEDBA0099DE2C /* ExerciseResultViewController.swift in Sources */,
 				B54ABFCD2C0CB78F002E89DC /* Helpers.swift in Sources */,
 				B52001D52C171B8C0083CBDF /* DietBottomSheetViewController.swift in Sources */,
+				F36105BD2C2056E100237572 /* AnimationProgressBar.swift in Sources */,
 				F3094F062C1841240099DE2C /* ExerciseMenuViewController.swift in Sources */,
 				B54ABFBD2C0CB60D002E89DC /* Network.swift in Sources */,
 				B52001D72C171B8C0083CBDF /* WaterBottomSheetViewController.swift in Sources */,
