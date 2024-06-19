@@ -106,9 +106,8 @@ class ExerciseViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        fetchExerciseList()
+        fetchExerciseData()
     }
-    
     
     // MARK: - Bind ViewModel
     private func bindViewModel() {
@@ -134,6 +133,12 @@ class ExerciseViewController: UIViewController {
                 self?.updateProgress()
             }
             .store(in: &cancellables)
+        
+        viewModel.$canEatCalorie
+            .sink { [weak self] _ in
+                self?.updateProgress()
+            }
+            .store(in: &cancellables)
     }
     
     private func updateProgress() {
@@ -141,10 +146,10 @@ class ExerciseViewController: UIViewController {
         let totalCalories = viewModel.totalCaloriesBurned
         progressLabel.text = "활동시간 \(totalTime)분\n소모칼로리 \(totalCalories)kcal"
         
-        // TODO: - 권장 소모 kcal 데이터 받아서 프로그레스바 업데이트
-        let recommendedCalories: CGFloat = 1000.0
-        let progress = min(CGFloat(totalCalories) / recommendedCalories, 1.0)
-        customCircularProgressBar.progress = progress
+        if let recommendedCalories = viewModel.canEatCalorie {
+            let progress = min(CGFloat(totalCalories) / CGFloat(recommendedCalories), 1.0)
+            customCircularProgressBar.progress = progress
+        }
     }
     
     private func updateTableViewHeight() {
@@ -155,9 +160,20 @@ class ExerciseViewController: UIViewController {
     }
     
     // MARK: - API
-    func fetchExerciseList() {
+    private func fetchExerciseData() {
         viewModel.fetchExerciseList(for: day)
         self.tableView.reloadData()
+        
+        viewModel.getExerciseData(for: day) { result in
+            switch result {
+            case .success(_):
+                DispatchQueue.main.async {
+                    self.updateProgress()
+                }
+            case .failure(let error):
+                print("운동 데이터 불러오기 실패:", error)
+            }
+        }
     }
     
     // MARK: - Setup View
