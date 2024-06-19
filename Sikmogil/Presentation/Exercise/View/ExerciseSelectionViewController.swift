@@ -328,8 +328,9 @@ class ExerciseSelectionViewController: UIViewController {
         let timeInMinutes = Int(time.dropLast(1)) ?? 0
         let timeInSeconds = TimeInterval(timeInMinutes * 60)
         
-        let exerciseTimerVC = ExerciseTimerViewController()
+        let exerciseTimerVC = ExerciseTimerViewController(selectedTime: timeInSeconds, initialTime: timeInSeconds)
         exerciseTimerVC.selectedTime = timeInSeconds
+        exerciseTimerVC.initialTime = timeInSeconds
         exerciseTimerVC.viewModel = self.viewModel
         navigationController?.pushViewController(exerciseTimerVC, animated: true)
     }
