@@ -9,6 +9,7 @@ import Foundation
 
 // MARK: - 특정 날짜 운동 총량
 struct ExerciseModel: Decodable {
+    let canEatCalorie: Int?
     let workoutDate: String?
     let steps: Int?
     let totalCaloriesBurned: Int?

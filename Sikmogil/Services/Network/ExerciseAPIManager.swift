@@ -89,7 +89,7 @@ class ExerciseAPIManager {
             "workoutListId": exerciseListId
         ]
         
-        AF.request(url, method: .delete, parameters: parameters, encoding: JSONEncoding.default, headers: headers).response { response in
+        AF.request(url, method: .post, parameters: parameters, encoding: URLEncoding.default, headers: headers).validate().response { response in
             switch response.result {
             case .success:
                 print("deleteExerciseListData success")

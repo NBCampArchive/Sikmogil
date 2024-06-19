@@ -10,14 +10,28 @@ import SnapKit
 import Then
 
 class ExerciseTimerViewController: UIViewController {
-  
+    
+    // MARK: - Properties
     var viewModel = ExerciseSelectionViewModel()
+    var initialTime: TimeInterval
+    var selectedTime: TimeInterval // 선택한 시간을 저장할 변수: 30분(30 * 60 = 1800)
+    
+    private var isPaused: Bool = true
+    private var timer: DispatchSourceTimer?
+    private var backgroundTask: UIBackgroundTaskIdentifier = .invalid
+    private var startTime: Date?
+    
+    init(selectedTime: TimeInterval, initialTime: TimeInterval) {
+        self.selectedTime = selectedTime
+        self.initialTime = initialTime
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     // MARK: - Components
-    private var isPaused: Bool = true
-    var selectedTime: TimeInterval = 30 // 선택한 시간을 저장할 변수: 30분(30 * 60 = 1800)
-    private var timer: Timer?
-
     private let timeLabel = UILabel().then {
         $0.text = "00 : 00"
         $0.font = Suite.semiBold.of(size: 60)
@@ -40,8 +54,11 @@ class ExerciseTimerViewController: UIViewController {
         $0.tintColor = .white
         $0.layer.cornerRadius = 16
     }
-
     
+    private let progressBar = UIView().then {
+        $0.backgroundColor = UIColor(red: 216/255, green: 240/255, blue: 227/255, alpha: 1.0)
+    }
+
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,18 +66,19 @@ class ExerciseTimerViewController: UIViewController {
         setupConstraints()
         setupButtons()
         updateTimeLabel()
-        
-        // NotificationCenter에 구독
-        NotificationCenter.default.addObserver(self, selector: #selector(handleSelectedTime(_:)), name: Notification.Name("SelectedTimeNotification"), object: nil)
     }
     
     // MARK: - Setup Views
     private func setupViews() {
         view.backgroundColor = .white
-        view.addSubviews(timeLabel, stopPauseButton, statusLabel, recordButton)
+        view.addSubviews(progressBar, timeLabel, stopPauseButton, statusLabel, recordButton)
     }
     
     private func setupConstraints() {
+        progressBar.snp.makeConstraints {
+            $0.top.leading.bottom.equalToSuperview()
+            $0.width.equalTo(UIScreen.main.bounds.size.width)
+        }
         
         timeLabel.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide).offset(200)
@@ -85,7 +103,7 @@ class ExerciseTimerViewController: UIViewController {
         }
     }
     
-    // MARK: - Setup Buttons
+    // MARK: - Setup Timer
     private func setupButtons() {
         stopPauseButton.addTarget(self, action: #selector(stopPauseButtonTapped), for: .touchUpInside)
         recordButton.addTarget(self, action: #selector(recordButtonTapped), for: .touchUpInside)
@@ -97,7 +115,7 @@ class ExerciseTimerViewController: UIViewController {
         if isPaused {
             stopPauseButton.setImage(.pause, for: .normal)
             statusLabel.text = "PAUSE"
-            timer?.invalidate() // 타이머 중지
+            timer?.cancel() // 타이머 중지
         } else {
             stopPauseButton.setImage(.stop, for: .normal)
             statusLabel.text = "STOP"
@@ -116,46 +134,66 @@ class ExerciseTimerViewController: UIViewController {
         timeLabel.text = "\(minutesString) : \(secondsString)"
     }
     
-    // 선택한 시간을 처리
-    @objc private func handleSelectedTime(_ notification: Notification) {
-        guard let userInfo = notification.userInfo,
-              let selectedTime = userInfo["selectedTime"] as? TimeInterval else {
-            return
-        }
-        self.selectedTime = selectedTime
-        // 타이머 시작
-        startTimer()
-    }
-    
-    // 타이머 시작
     private func startTimer() {
-        timer?.invalidate() // 이전에 실행중인 타이머가 있으면 중지시킴
-        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateTimerLabel), userInfo: nil, repeats: true)
-    }
-    
-    // 타이머 라벨 업데이트
-    @objc private func updateTimerLabel() {
-        guard selectedTime > 0 else {
-            timer?.invalidate() // 타이머가 종료되면 중지
-            handleTimerEnd()
-            return
-        }
-        
-        selectedTime -= 1
-        updateTimeLabel() // 라벨 텍스트 업데이트
+        startTime = Date()
+        timer?.cancel() // 이전에 실행중인 타이머가 있으면 중지시킴
+        timer = DispatchSource.makeTimerSource(queue: DispatchQueue.global())
+        timer?.schedule(deadline: .now(), repeating: 1.0)
+        timer?.setEventHandler(handler: { [weak self] in
+            guard let self = self else { return }
+            self.selectedTime -= 1
+            if self.selectedTime < 0 {
+                self.timer?.cancel() // 타이머가 종료되면 중지
+                DispatchQueue.main.async {
+                    self.handleTimerEnd()
+                }
+            } else {
+                DispatchQueue.main.async {
+                    self.updateTimeLabel() // 라벨 텍스트 업데이트
+                    self.updateProgressBar()
+                }
+            }
+        })
+        timer?.resume()
+        beginBackgroundTask()
     }
     
     private func handleTimerEnd() {
-        // 타이머 종료 시 처리
-        let alertController = UIAlertController(title: "타이머 종료", message: "설정된 시간이 종료되었습니다.", preferredStyle: .alert)
-        let okAction = UIAlertAction(title: "확인", style: .default, handler: nil)
-        alertController.addAction(okAction)
-        present(alertController, animated: true, completion: nil)
+        // 타이머 종료 시 알림 처리
+        NotificationHelper.shared.timerNotification()
         
         // 버튼 상태와 라벨 업데이트
         isPaused = true
-        stopPauseButton.setImage(.pause, for: .normal)
-        statusLabel.text = "START"
+        stopPauseButton.setImage(UIImage.pause, for: .normal)
+        stopPauseButton.isEnabled = false
+        statusLabel.text = "END"
+        endBackgroundTask()
+    }
+    
+    private func updateProgressBar() {
+        let totalWidth = view.frame.width
+        let remainingTime = CGFloat(selectedTime)
+        let progressWidth = totalWidth * remainingTime / CGFloat(initialTime)
+        
+        progressBar.snp.updateConstraints {
+            $0.width.equalTo(progressWidth)
+        }
+    }
+    
+    // MARK: - Background Task Handling
+    private func beginBackgroundTask() {
+        if backgroundTask == .invalid {
+            backgroundTask = UIApplication.shared.beginBackgroundTask(withName: "ExerciseTimer") { [weak self] in
+                self?.endBackgroundTask()
+            }
+        }
+    }
+    
+    private func endBackgroundTask() {
+        if backgroundTask != .invalid {
+            UIApplication.shared.endBackgroundTask(backgroundTask)
+            backgroundTask = .invalid
+        }
     }
     
     @objc private func recordButtonTapped() {

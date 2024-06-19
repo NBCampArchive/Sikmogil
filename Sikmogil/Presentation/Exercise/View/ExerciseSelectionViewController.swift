@@ -237,9 +237,8 @@ class ExerciseSelectionViewController: UIViewController {
     }
     
     // MARK: -  Setup Binding
-    // TODO: - 임시 운동 종목 추가하기
     private func setupMenus() {
-        let exercises = ["런닝", "수영", "자전거", "기타"]
+        let exercises = ["런닝", "수영", "자전거", "등산", "걷기", "스쿼트", "요가", "줄넘기", "필라테스", "기타"]
         let times = ["15분", "30분", "60분", "90분"]
         
         let exerciseActions = exercises.map { exercise in
@@ -329,8 +328,7 @@ class ExerciseSelectionViewController: UIViewController {
         let timeInMinutes = Int(time.dropLast(1)) ?? 0
         let timeInSeconds = TimeInterval(timeInMinutes * 60)
         
-        let exerciseTimerVC = ExerciseTimerViewController()
-        exerciseTimerVC.selectedTime = timeInSeconds
+        let exerciseTimerVC = ExerciseTimerViewController(selectedTime: timeInSeconds, initialTime: timeInSeconds)
         exerciseTimerVC.viewModel = self.viewModel
         navigationController?.pushViewController(exerciseTimerVC, animated: true)
     }

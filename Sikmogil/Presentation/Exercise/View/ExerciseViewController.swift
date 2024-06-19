@@ -106,9 +106,8 @@ class ExerciseViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        fetchExerciseList()
+        fetchExerciseData()
     }
-    
     
     // MARK: - Bind ViewModel
     private func bindViewModel() {
@@ -116,7 +115,7 @@ class ExerciseViewController: UIViewController {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
                 self?.tableView.reloadData()
-                self?.updateProgressLabel()
+                self?.updateProgress()
                 self?.updateTableViewHeight()
             }
             .store(in: &cancellables)
@@ -124,22 +123,34 @@ class ExerciseViewController: UIViewController {
         viewModel.$totalWorkoutTime
             .receive(on: DispatchQueue.main)
             .sink { [weak self] totalWorkoutTime in
-                self?.updateProgressLabel()
+                self?.updateProgress()
             }
             .store(in: &cancellables)
         
         viewModel.$totalCaloriesBurned
             .receive(on: DispatchQueue.main)
             .sink { [weak self] totalCaloriesBurned in
-                self?.updateProgressLabel()
+                self?.updateProgress()
+            }
+            .store(in: &cancellables)
+        
+        viewModel.$canEatCalorie
+            .sink { [weak self] _ in
+                self?.updateProgress()
             }
             .store(in: &cancellables)
     }
     
-    private func updateProgressLabel() {
+    private func updateProgress() {
         let totalTime = viewModel.totalWorkoutTime
         let totalCalories = viewModel.totalCaloriesBurned
         progressLabel.text = "활동시간 \(totalTime)분\n소모칼로리 \(totalCalories)kcal"
+        
+        if let canEatCalorie = viewModel.canEatCalorie {
+            let recommendedCalories = CGFloat(canEatCalorie) * 0.5
+            let progress = min(CGFloat(totalCalories) / recommendedCalories, 1.0)
+            customCircularProgressBar.progress = progress
+        }
     }
     
     private func updateTableViewHeight() {
@@ -150,18 +161,25 @@ class ExerciseViewController: UIViewController {
     }
     
     // MARK: - API
-    func fetchExerciseList() {
+    private func fetchExerciseData() {
         viewModel.fetchExerciseList(for: day)
         self.tableView.reloadData()
+        
+        viewModel.getExerciseData(for: day) { result in
+            switch result {
+            case .success(_):
+                DispatchQueue.main.async {
+                    self.updateProgress()
+                }
+            case .failure(let error):
+                print("운동 데이터 불러오기 실패:", error)
+            }
+        }
     }
     
     // MARK: - Setup View
     private func setupViews() {
         view.backgroundColor = .white
-        
-        // TODO: - kcal 데이터 받아서 프로그레스바 업데이트
-        customCircularProgressBar.progress = 0.6
-        
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(ExerciseHistoryCell.self, forCellReuseIdentifier: ExerciseHistoryCell.identifier)
@@ -270,7 +288,7 @@ class ExerciseViewController: UIViewController {
 }
 
 // MARK: - UITableView
-extension ExerciseViewController: UITableViewDelegate, UITableViewDataSource {
+extension ExerciseViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return viewModel.exercises.count
     }
@@ -290,5 +308,25 @@ extension ExerciseViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 88
+    }
+}
+extension ExerciseViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            let reversedIndex = viewModel.exercises.count - 1 - indexPath.row
+            let exercise = viewModel.exercises[reversedIndex]
+            let listId = exercise.workoutListId
+            
+            viewModel.deleteExerciseListData(for: day, exerciseListId: listId) { [weak self] result in
+                switch result {
+                case .success:
+                    DispatchQueue.main.async {
+                        self?.fetchExerciseData()
+                    }
+                case .failure(let error):
+                    print("운동 리스트 삭제 실패: \(error)")
+                }
+            }
+        }
     }
 }

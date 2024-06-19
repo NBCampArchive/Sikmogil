@@ -120,9 +120,7 @@
 		F3094EEF2C0EEDA40099DE2C /* ExerciseTimerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3094EEE2C0EEDA40099DE2C /* ExerciseTimerViewController.swift */; };
 		F3094EF12C0EEDBA0099DE2C /* ExerciseResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3094EF02C0EEDBA0099DE2C /* ExerciseResultViewController.swift */; };
 		F3094F062C1841240099DE2C /* ExerciseMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3094F052C1841240099DE2C /* ExerciseMenuViewController.swift */; };
-		F3094F082C197AFA0099DE2C /* HalfCircleProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3094F072C197AFA0099DE2C /* HalfCircleProgressView.swift */; };
 		F3094F0E2C19A1BE0099DE2C /* ExerciseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3094F0D2C19A1BE0099DE2C /* ExerciseViewModel.swift */; };
-		F36105B12C1ADD7D00237572 /* APITestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F36105B02C1ADD7D00237572 /* APITestViewController.swift */; };
 		F36105B32C1BE05800237572 /* ExerciseCategoryAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F36105B22C1BE05800237572 /* ExerciseCategoryAPIManager.swift */; };
 		F36105B52C1BFF6500237572 /* UILabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F36105B42C1BFF6500237572 /* UILabel.swift */; };
 		F36105B72C1BFF7600237572 /* Double.swift in Sources */ = {isa = PBXBuildFile; fileRef = F36105B62C1BFF7600237572 /* Double.swift */; };
@@ -231,9 +229,7 @@
 		F3094EEE2C0EEDA40099DE2C /* ExerciseTimerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseTimerViewController.swift; sourceTree = "<group>"; };
 		F3094EF02C0EEDBA0099DE2C /* ExerciseResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseResultViewController.swift; sourceTree = "<group>"; };
 		F3094F052C1841240099DE2C /* ExerciseMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseMenuViewController.swift; sourceTree = "<group>"; };
-		F3094F072C197AFA0099DE2C /* HalfCircleProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HalfCircleProgressView.swift; sourceTree = "<group>"; };
 		F3094F0D2C19A1BE0099DE2C /* ExerciseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseViewModel.swift; sourceTree = "<group>"; };
-		F36105B02C1ADD7D00237572 /* APITestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APITestViewController.swift; sourceTree = "<group>"; };
 		F36105B22C1BE05800237572 /* ExerciseCategoryAPIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseCategoryAPIManager.swift; sourceTree = "<group>"; };
 		F36105B42C1BFF6500237572 /* UILabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabel.swift; sourceTree = "<group>"; };
 		F36105B62C1BFF7600237572 /* Double.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Double.swift; sourceTree = "<group>"; };
@@ -587,7 +583,6 @@
 				B54ABFD42C0CBE86002E89DC /* CircularProgressBar.swift */,
 				B54ABFD62C0CC281002E89DC /* CustomCircularProgressBar.swift */,
 				B52001B12C1217DA0083CBDF /* WaveProgressView.swift */,
-				F3094F072C197AFA0099DE2C /* HalfCircleProgressView.swift */,
 				F36105BC2C2056E100237572 /* AnimationProgressBar.swift */,
 			);
 			path = CustomViews;
@@ -703,7 +698,6 @@
 				F3094EC52C0E40040099DE2C /* ExerciseSelectionViewController.swift */,
 				F3094EEE2C0EEDA40099DE2C /* ExerciseTimerViewController.swift */,
 				F3094EF02C0EEDBA0099DE2C /* ExerciseResultViewController.swift */,
-				F36105B02C1ADD7D00237572 /* APITestViewController.swift */,
 				F3094EC22C0DB1730099DE2C /* Cell */,
 			);
 			path = View;
@@ -842,14 +836,12 @@
 				CACA65B82C1860CF0030D8D5 /* DietAlbumViewModel.swift in Sources */,
 				CACA65C82C1B5D0C0030D8D5 /* FoodDbModel.swift in Sources */,
 				B54AC00C2C0F48D1002E89DC /* SikmogilBundle++.swift in Sources */,
-				F3094F082C197AFA0099DE2C /* HalfCircleProgressView.swift in Sources */,
 				B52001EE2C1C5CD60083CBDF /* CalendarCell.swift in Sources */,
 				F36105B92C1E00A700237572 /* ExerciseSelectionViewModel.swift in Sources */,
 				B54ABFCF2C0CBB59002E89DC /* UIViewExtensions.swift in Sources */,
 				F3094F0E2C19A1BE0099DE2C /* ExerciseViewModel.swift in Sources */,
 				B54AC01A2C105646002E89DC /* Step1ViewController.swift in Sources */,
 				B54ABFCB2C0CB770002E89DC /* Extension.swift in Sources */,
-				F36105B12C1ADD7D00237572 /* APITestViewController.swift in Sources */,
 				62578CFE2C15A395005035BB /* PhotoCell.swift in Sources */,
 				B52001F02C1C8D7E0083CBDF /* TargetModel.swift in Sources */,
 				B52001E42C1971CD0083CBDF /* ImageModel.swift in Sources */,
