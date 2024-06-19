@@ -165,7 +165,8 @@ class ExerciseTimerViewController: UIViewController {
         // 버튼 상태와 라벨 업데이트
         isPaused = true
         stopPauseButton.setImage(UIImage.pause, for: .normal)
-        statusLabel.text = "START"
+        stopPauseButton.isEnabled = false
+        statusLabel.text = "END"
         endBackgroundTask()
     }
     
