@@ -92,6 +92,7 @@ class AgreementViewController: UIViewController {
         if agreementPrivacyCheckBox.isChecked() {
             print("동의")
             //TODO: - Navigation Onboarding
+            navigationController?.pushViewController(OnboardingViewController(), animated: true)
         } else {
             print("동의해주세요")
             view.shake()

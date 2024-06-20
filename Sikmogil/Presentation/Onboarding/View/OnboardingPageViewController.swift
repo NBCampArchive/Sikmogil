@@ -47,6 +47,8 @@ class OnboardingViewController: UIViewController {
         if let firstViewController = orderedViewControllers.first {
             pageViewController.setViewControllers([firstViewController], direction: .forward, animated: false, completion: nil)
         }
+        
+        navigationController?.navigationBar.isHidden = true
     }
     
     private func setupLayout() {
