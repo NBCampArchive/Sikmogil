@@ -35,6 +35,8 @@
 		B52001B02C11D7FA0083CBDF /* UserAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001AF2C11D7FA0083CBDF /* UserAPIManager.swift */; };
 		B52001B22C1217DA0083CBDF /* WaveProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001B12C1217DA0083CBDF /* WaveProgressView.swift */; };
 		B52001B62C12F4570083CBDF /* StepsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001B52C12F4570083CBDF /* StepsViewController.swift */; };
+		B52001BB2C1325110083CBDF /* BoardListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001BA2C1325110083CBDF /* BoardListViewModel.swift */; };
+		B52001BD2C15A9860083CBDF /* BoardListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001BC2C15A9860083CBDF /* BoardListViewController.swift */; };
 		B52001BF2C15AC1E0083CBDF /* ExerciseAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001BE2C15AC1E0083CBDF /* ExerciseAPIManager.swift */; };
 		B52001C12C15ADA50083CBDF /* ExerciseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001C02C15ADA50083CBDF /* ExerciseModel.swift */; };
 		B52001D02C171B8C0083CBDF /* FloatingPanelControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001C22C171B8C0083CBDF /* FloatingPanelControllerDelegate.swift */; };
@@ -58,8 +60,6 @@
 		B52001EE2C1C5CD60083CBDF /* CalendarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001ED2C1C5CD60083CBDF /* CalendarCell.swift */; };
 		B52001F02C1C8D7E0083CBDF /* TargetModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001EF2C1C8D7E0083CBDF /* TargetModel.swift */; };
 		B52001F22C1DBAF70083CBDF /* CalendarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001F12C1DBAF70083CBDF /* CalendarViewModel.swift */; };
-		B52001BB2C1325110083CBDF /* BoardListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001BA2C1325110083CBDF /* BoardListViewModel.swift */; };
-		B52001BD2C15A9860083CBDF /* BoardListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001BC2C15A9860083CBDF /* BoardListViewController.swift */; };
 		B54ABF882C09BD43002E89DC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABF872C09BD43002E89DC /* AppDelegate.swift */; };
 		B54ABF8A2C09BD43002E89DC /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABF892C09BD43002E89DC /* SceneDelegate.swift */; };
 		B54ABF8C2C09BD43002E89DC /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABF8B2C09BD43002E89DC /* ViewController.swift */; };
@@ -111,12 +111,12 @@
 		B54AC01A2C105646002E89DC /* Step1ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54AC0192C105646002E89DC /* Step1ViewController.swift */; };
 		B54AC01C2C1056A4002E89DC /* Step2ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54AC01B2C1056A4002E89DC /* Step2ViewController.swift */; };
 		B54AC01E2C1056C3002E89DC /* Step3ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54AC01D2C1056C3002E89DC /* Step3ViewController.swift */; };
-		CA13FDE62C22E483007B3DBE /* BreakfastTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA13FDE52C22E483007B3DBE /* BreakfastTableViewCell.swift */; };
-		CA13FDE82C22E76C007B3DBE /* LunchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA13FDE72C22E76C007B3DBE /* LunchTableViewCell.swift */; };
-		CA13FDEA2C22E791007B3DBE /* DinnerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA13FDE92C22E791007B3DBE /* DinnerTableViewCell.swift */; };
 		B5825BAA2C219A7100ADAA66 /* CommunityNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5825BA92C219A7100ADAA66 /* CommunityNavigationViewController.swift */; };
 		B5825BAD2C219C2B00ADAA66 /* BoardMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5825BAC2C219C2B00ADAA66 /* BoardMainViewController.swift */; };
 		B5825BAF2C219FE500ADAA66 /* CustomSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5825BAE2C219FE500ADAA66 /* CustomSegmentedControl.swift */; };
+		CA13FDE62C22E483007B3DBE /* BreakfastTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA13FDE52C22E483007B3DBE /* BreakfastTableViewCell.swift */; };
+		CA13FDE82C22E76C007B3DBE /* LunchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA13FDE72C22E76C007B3DBE /* LunchTableViewCell.swift */; };
+		CA13FDEA2C22E791007B3DBE /* DinnerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA13FDE92C22E791007B3DBE /* DinnerTableViewCell.swift */; };
 		CACA65B82C1860CF0030D8D5 /* DietAlbumViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CACA65B72C1860CF0030D8D5 /* DietAlbumViewModel.swift */; };
 		CACA65BA2C19BBDF0030D8D5 /* SavedDietImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CACA65B92C19BBDF0030D8D5 /* SavedDietImage.swift */; };
 		CACA65C62C1B5CE20030D8D5 /* FoodDbAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CACA65C52C1B5CE20030D8D5 /* FoodDbAPIManager.swift */; };
@@ -165,6 +165,8 @@
 		B52001AF2C11D7FA0083CBDF /* UserAPIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAPIManager.swift; sourceTree = "<group>"; };
 		B52001B12C1217DA0083CBDF /* WaveProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaveProgressView.swift; sourceTree = "<group>"; };
 		B52001B52C12F4570083CBDF /* StepsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StepsViewController.swift; sourceTree = "<group>"; };
+		B52001BA2C1325110083CBDF /* BoardListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardListViewModel.swift; sourceTree = "<group>"; };
+		B52001BC2C15A9860083CBDF /* BoardListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardListViewController.swift; sourceTree = "<group>"; };
 		B52001BE2C15AC1E0083CBDF /* ExerciseAPIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseAPIManager.swift; sourceTree = "<group>"; };
 		B52001C02C15ADA50083CBDF /* ExerciseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseModel.swift; sourceTree = "<group>"; };
 		B52001C22C171B8C0083CBDF /* FloatingPanelControllerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatingPanelControllerDelegate.swift; sourceTree = "<group>"; };
@@ -188,8 +190,6 @@
 		B52001ED2C1C5CD60083CBDF /* CalendarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarCell.swift; sourceTree = "<group>"; };
 		B52001EF2C1C8D7E0083CBDF /* TargetModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TargetModel.swift; sourceTree = "<group>"; };
 		B52001F12C1DBAF70083CBDF /* CalendarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewModel.swift; sourceTree = "<group>"; };
-		B52001BA2C1325110083CBDF /* BoardListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardListViewModel.swift; sourceTree = "<group>"; };
-		B52001BC2C15A9860083CBDF /* BoardListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardListViewController.swift; sourceTree = "<group>"; };
 		B54ABF842C09BD43002E89DC /* Sikmogil.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sikmogil.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B54ABF872C09BD43002E89DC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B54ABF892C09BD43002E89DC /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -230,12 +230,12 @@
 		B54AC0192C105646002E89DC /* Step1ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Step1ViewController.swift; sourceTree = "<group>"; };
 		B54AC01B2C1056A4002E89DC /* Step2ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Step2ViewController.swift; sourceTree = "<group>"; };
 		B54AC01D2C1056C3002E89DC /* Step3ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Step3ViewController.swift; sourceTree = "<group>"; };
-		CA13FDE52C22E483007B3DBE /* BreakfastTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreakfastTableViewCell.swift; sourceTree = "<group>"; };
-		CA13FDE72C22E76C007B3DBE /* LunchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LunchTableViewCell.swift; sourceTree = "<group>"; };
-		CA13FDE92C22E791007B3DBE /* DinnerTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DinnerTableViewCell.swift; sourceTree = "<group>"; };
 		B5825BA92C219A7100ADAA66 /* CommunityNavigationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityNavigationViewController.swift; sourceTree = "<group>"; };
 		B5825BAC2C219C2B00ADAA66 /* BoardMainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardMainViewController.swift; sourceTree = "<group>"; };
 		B5825BAE2C219FE500ADAA66 /* CustomSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSegmentedControl.swift; sourceTree = "<group>"; };
+		CA13FDE52C22E483007B3DBE /* BreakfastTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreakfastTableViewCell.swift; sourceTree = "<group>"; };
+		CA13FDE72C22E76C007B3DBE /* LunchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LunchTableViewCell.swift; sourceTree = "<group>"; };
+		CA13FDE92C22E791007B3DBE /* DinnerTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DinnerTableViewCell.swift; sourceTree = "<group>"; };
 		CACA65B72C1860CF0030D8D5 /* DietAlbumViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DietAlbumViewModel.swift; sourceTree = "<group>"; };
 		CACA65B92C19BBDF0030D8D5 /* SavedDietImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedDietImage.swift; sourceTree = "<group>"; };
 		CACA65C52C1B5CE20030D8D5 /* FoodDbAPIManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoodDbAPIManager.swift; sourceTree = "<group>"; };
@@ -311,23 +311,6 @@
 				546E32322C1078E600E94C2A /* NotificationSettingsViewController.swift */,
 				546E32342C1078FA00E94C2A /* GoalSettingsViewController.swift */,
 				545AA5172C11F4760083D893 /* ReminderSettingsViewController.swift */,
-                );
-            path = View;
-            sourceTree = "<group>";
-        };
-		B52001B72C1324EE0083CBDF /* Board */ = {
-			isa = PBXGroup;
-			children = (
-				B52001B92C1325010083CBDF /* ViewModel */,
-				B52001B82C1324FC0083CBDF /* View */,
-			);
-			path = Board;
-			sourceTree = "<group>";
-		};
-		B52001B82C1324FC0083CBDF /* View */ = {
-			isa = PBXGroup;
-			children = (
-				B52001BC2C15A9860083CBDF /* BoardListViewController.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -370,10 +353,27 @@
 			children = (
 				62578CE82C107C7A005035BB /* MainViewModel.swift */,
 				B52001F12C1DBAF70083CBDF /* CalendarViewModel.swift */,
-                );
-            path = ViewModel;
-            sourceTree = "<group>";
-        };
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		B52001B72C1324EE0083CBDF /* Board */ = {
+			isa = PBXGroup;
+			children = (
+				B52001B92C1325010083CBDF /* ViewModel */,
+				B52001B82C1324FC0083CBDF /* View */,
+			);
+			path = Board;
+			sourceTree = "<group>";
+		};
+		B52001B82C1324FC0083CBDF /* View */ = {
+			isa = PBXGroup;
+			children = (
+				B52001BC2C15A9860083CBDF /* BoardListViewController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		B52001B92C1325010083CBDF /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
