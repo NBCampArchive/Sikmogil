@@ -2,7 +2,7 @@
 //  ProfileViewModel.swift
 //  Sikmogil
 //
-//  Created by Developer_P on 6/15/24.
+//  Created by 박준영 on 6/15/24.
 //  [프로필 뷰모델] 🔥 뷰 모델 🔥
 
 import Foundation
@@ -122,13 +122,13 @@ class ProfileViewModel: ObservableObject {
     }
     
     // MARK: - 이미지 업로드 요청
-    func uploadImage(_ image: UIImage, completion: @escaping (Result<URL, Error>) -> Void) {
+    func uploadImage(_ image: UIImage, completion: @escaping (Result<String, Error>) -> Void) {
         ImageAPIManager.shared.uploadImage(directory: "profile", images: [image]) { [weak self] result in
             switch result {
             case .success(let imageModel):
-                if let firstURLString = imageModel.data.first, let imageURL = URL(string: firstURLString) {
-                    self?.picture = imageURL.absoluteString
-                    completion(.success(imageURL))
+                if let firstURLString = imageModel.data.first{
+                    self?.picture = firstURLString
+                    completion(.success(firstURLString))
                 } else {
                     completion(.failure(NSError(domain: "Invalid URL", code: -1, userInfo: nil)))
                 }
