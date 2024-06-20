@@ -88,7 +88,7 @@ class DietMainViewController: UIViewController {
     }
     let waterLiterLabel = UILabel().then {
         $0.text = "000ml / 2L"
-        $0.textColor = .appBlack
+        $0.textColor = .appDarkGray
         $0.font = Suite.bold.of(size: 26)
         $0.textAlignment = .center
     }
@@ -146,20 +146,6 @@ class DietMainViewController: UIViewController {
         
         setupViews()
         setupConstraints()
-        
-        //뷰진입시 서버에 있는 값으로 ui업데이트해주기
-        dietViewModel.getDietLogDate(for: DateHelper.shared.formatDateToYearMonthDay(Date())) {
-            result in
-            switch result {
-            case .success(_):
-                // waterIntake 값을 이용해 WaterViewModel 업데이트
-                let waterIntake = self.dietViewModel.dietLog!.waterIntake
-                self.waterViewModel.setWaterAmount(waterIntake)
-                
-            case .failure(let error):
-                print("식단 출력 실패")
-            }
-        }
         
         view.backgroundColor = .white
         
@@ -304,7 +290,6 @@ class DietMainViewController: UIViewController {
         
         floatingPanelController.changePanelStyle()
         
-        // ContentViewController 설정
         let contentVC = DietBottomSheetViewController()
         floatingPanelController.set(contentViewController: contentVC)
         
@@ -321,10 +306,6 @@ class DietMainViewController: UIViewController {
         floatingPanelController.set(contentViewController: contentVC)
         
         floatingPanelController.addPanel(toParent: self)
-        
-        // 플로팅 패널의 초기 높이 설정
-        let initialHeight = self.view.bounds.height - 320 // 플로팅 패널의 초기 높이
-        floatingPanelController.surfaceLocation = CGPoint(x: self.view.bounds.midX, y: initialHeight)
     }
     
     @objc func fastingButtonButtonTapped() {
@@ -378,12 +359,18 @@ class DietMainViewController: UIViewController {
         
         //AddMealViewModel의 totalKcalPublisher를 구독하여 dietKcalLabel을 업데이트
         addMealViewModel.totalKcalPublisher
+            .combineLatest(waterViewModel.$todayCanEatCalorie)
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] value in
-                print("총 칼로리 업데이트됨:", value)
-                self?.dietKcalLabel.text = "\(value) / 2000Kcal"
-                let progress = Double(value) / 2000.0
-                self?.dietCircularProgressBar.progress = Double(progress)
+            .sink { [weak self] totalCalorie, canEatCalorie in
+                print("총 칼로리 업데이트됨:", totalCalorie)
+                self?.dietKcalLabel.text = "\(totalCalorie) / \(canEatCalorie) Kcal"
+                let progress = canEatCalorie > 0 ? Double(totalCalorie) / Double(canEatCalorie) : 0.0
+                self?.dietCircularProgressBar.progress = progress
+                if totalCalorie > canEatCalorie {
+                    self?.dietInfoLabel.text = "오늘의 권장 칼로리 섭취량을 달성했어요!"
+                } else {
+                    self?.dietInfoLabel.text = "아직 더 먹을 수 있어요!"
+                }
             }
             .store(in: &cancellables)
     }
