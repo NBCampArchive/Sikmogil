@@ -61,6 +61,8 @@
 		B53786C42C23D4DC007B362F /* AgreementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53786C32C23D4DC007B362F /* AgreementViewController.swift */; };
 		B53786C62C23F3CD007B362F /* PrivacyPolicyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53786C52C23F3CD007B362F /* PrivacyPolicyViewController.swift */; };
 		B53786C92C2405E1007B362F /* MarkdownView in Frameworks */ = {isa = PBXBuildFile; productRef = B53786C82C2405E1007B362F /* MarkdownView */; };
+		B53786CB2C24126D007B362F /* PermissionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53786CA2C24126D007B362F /* PermissionViewController.swift */; };
+		B53786CD2C245390007B362F /* UITextFieldExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53786CC2C245390007B362F /* UITextFieldExtension.swift */; };
 		B54ABF882C09BD43002E89DC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABF872C09BD43002E89DC /* AppDelegate.swift */; };
 		B54ABF8A2C09BD43002E89DC /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABF892C09BD43002E89DC /* SceneDelegate.swift */; };
 		B54ABF8C2C09BD43002E89DC /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABF8B2C09BD43002E89DC /* ViewController.swift */; };
@@ -188,6 +190,8 @@
 		B52001F12C1DBAF70083CBDF /* CalendarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewModel.swift; sourceTree = "<group>"; };
 		B53786C32C23D4DC007B362F /* AgreementViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgreementViewController.swift; sourceTree = "<group>"; };
 		B53786C52C23F3CD007B362F /* PrivacyPolicyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyPolicyViewController.swift; sourceTree = "<group>"; };
+		B53786CA2C24126D007B362F /* PermissionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionViewController.swift; sourceTree = "<group>"; };
+		B53786CC2C245390007B362F /* UITextFieldExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextFieldExtension.swift; sourceTree = "<group>"; };
 		B54ABF842C09BD43002E89DC /* Sikmogil.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sikmogil.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B54ABF872C09BD43002E89DC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B54ABF892C09BD43002E89DC /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -597,6 +601,7 @@
 				B52001AD2C11B99E0083CBDF /* UIViewControllerExtension.swift */,
 				F36105B42C1BFF6500237572 /* UILabel.swift */,
 				F36105B62C1BFF7600237572 /* Double.swift */,
+				B53786CC2C245390007B362F /* UITextFieldExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -713,6 +718,7 @@
 				B54AC01D2C1056C3002E89DC /* Step3ViewController.swift */,
 				B53786C32C23D4DC007B362F /* AgreementViewController.swift */,
 				B53786C52C23F3CD007B362F /* PrivacyPolicyViewController.swift */,
+				B53786CA2C24126D007B362F /* PermissionViewController.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -897,6 +903,7 @@
 				B53786C42C23D4DC007B362F /* AgreementViewController.swift in Sources */,
 				B52001BB2C1325110083CBDF /* BoardListViewModel.swift in Sources */,
 				B54ABFEE2C0D7370002E89DC /* UIColorExtension.swift in Sources */,
+				B53786CB2C24126D007B362F /* PermissionViewController.swift in Sources */,
 				B52001E22C1897C20083CBDF /* DietModel.swift in Sources */,
 				F3094EC62C0E40040099DE2C /* ExerciseSelectionViewController.swift in Sources */,
 				CACA65C62C1B5CE20030D8D5 /* FoodDbAPIManager.swift in Sources */,
@@ -995,6 +1002,7 @@
 				B54ABFF52C0DE1CD002E89DC /* LoginViewModel.swift in Sources */,
 				B54ABFD52C0CBE86002E89DC /* CircularProgressBar.swift in Sources */,
 				62578CE92C107C7A005035BB /* MainViewModel.swift in Sources */,
+				B53786CD2C245390007B362F /* UITextFieldExtension.swift in Sources */,
 				F3094EEF2C0EEDA40099DE2C /* ExerciseTimerViewController.swift in Sources */,
 				B52001C12C15ADA50083CBDF /* ExerciseModel.swift in Sources */,
 			);
