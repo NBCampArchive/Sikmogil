@@ -36,7 +36,10 @@ class Step1ViewController: UIViewController {
     }
     
     private let nicknameTextField = UITextField().then {
-        $0.borderStyle = .roundedRect
+        $0.layer.cornerRadius = 8
+        $0.layer.borderColor = UIColor.appDarkGray.cgColor
+        $0.layer.borderWidth = 1
+        $0.addLeftPadding()
     }
     
     private let nicknameWarningLabel = UILabel().then {
@@ -52,8 +55,11 @@ class Step1ViewController: UIViewController {
     }
     
     private let heightTextField = UITextField().then {
-        $0.borderStyle = .roundedRect
         $0.keyboardType = .numberPad
+        $0.layer.cornerRadius = 8
+        $0.layer.borderColor = UIColor.appDarkGray.cgColor
+        $0.layer.borderWidth = 1
+        $0.addLeftPadding()
     }
     
     private let heightWarningLabel = UILabel().then {
@@ -69,8 +75,11 @@ class Step1ViewController: UIViewController {
     }
     
     private let weightTextField = UITextField().then {
-        $0.borderStyle = .roundedRect
         $0.keyboardType = .numberPad
+        $0.layer.cornerRadius = 8
+        $0.layer.borderColor = UIColor.appDarkGray.cgColor
+        $0.layer.borderWidth = 1
+        $0.addLeftPadding()
     }
     
     private let weightWarningLabel = UILabel().then {
@@ -306,18 +315,39 @@ class Step1ViewController: UIViewController {
             return
         }
         
-        if viewModel.profileValidateForm() {
+        let nicknameValid = !(nicknameTextField.text ?? "").isEmpty
+        let heightValid = !(heightTextField.text ?? "").isEmpty
+        let weightValid = !(weightTextField.text ?? "").isEmpty
+        let genderValid = !viewModel.gender.value.isEmpty
+        
+        nicknameWarningLabel.isHidden = nicknameValid
+        heightWarningLabel.isHidden = heightValid
+        weightWarningLabel.isHidden = weightValid
+        genderWarningLabel.isHidden = genderValid
+        
+        if nicknameValid && heightValid && weightValid && genderValid {
             viewModel.saveProfileData()
             viewModel.moveToNextPage()
         } else {
-            nicknameWarningLabel.isHidden = !(nicknameTextField.text ?? "").isEmpty
-            heightWarningLabel.isHidden = !(heightTextField.text ?? "").isEmpty
-            weightWarningLabel.isHidden = !(weightTextField.text ?? "").isEmpty
-            genderWarningLabel.isHidden = !viewModel.gender.value.isEmpty
+            updateTextFieldBorders(isValid: nicknameValid, textField: nicknameTextField)
+            updateTextFieldBorders(isValid: heightValid, textField: heightTextField)
+            updateTextFieldBorders(isValid: weightValid, textField: weightTextField)
             
             view.shake()
         }
         
+    }
+    
+    private func updateTextFieldBorders(isValid: Bool, textField: UITextField) {
+        if isValid {
+            textField.layer.cornerRadius = 8
+            textField.layer.borderColor = UIColor.appDarkGray.cgColor
+            textField.layer.borderWidth = 1
+        } else {
+            textField.layer.cornerRadius = 8
+            textField.layer.borderColor = UIColor.red.cgColor
+            textField.layer.borderWidth = 1
+        }
     }
     
 }
