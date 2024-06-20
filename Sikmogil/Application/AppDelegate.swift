@@ -13,29 +13,7 @@ import UserNotifications
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
-    let notificationHelper = NotificationHelper.shared
-    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        UNUserNotificationCenter.current().delegate = self
-        notificationHelper.requestNotificationPermission { granted, error in
-            if let error = error {
-                print("Notification permission error: \(error)")
-            } else {
-                UserDefaults.standard.set(granted, forKey: "NotificationEnabled")
-                self.notificationHelper.checkNotificationSettings { status in
-                    switch status {
-                    case .authorized:
-                        print("알림 허용됨")
-                    case .denied:
-                        print("Notification denied")
-                    case .notDetermined:
-                        print("Notification not determined")
-                    default:
-                        break
-                    }
-                }
-            }
-        }
         // Override point for customization after application launch.
         // 네비게이션 바의 스타일을 전역적으로 설정
         let appearance = UINavigationBar.appearance()
@@ -76,12 +54,5 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
             }
         }
-    }
-}
-
-// UNUserNotificationCenterDelegate
-extension AppDelegate: UNUserNotificationCenterDelegate {
-    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        completionHandler([.alert, .sound])
     }
 }
