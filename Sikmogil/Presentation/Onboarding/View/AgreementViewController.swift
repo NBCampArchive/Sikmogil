@@ -26,6 +26,13 @@ class AgreementViewController: UIViewController {
     
     private let agreementPrivacyCheckBox = CheckBox(title: "개인정보 수집 및 이용동의(필수)")
     
+    private let detailButton = UIButton().then {
+        var config = UIButton.Configuration.plain()
+        config.image = UIImage(systemName: "chevron.right")
+        config.baseForegroundColor = .appDarkGray
+        $0.configuration = config
+    }
+    
     private let proceedButton = UIButton(type: .system).then {
         $0.setTitle("다음", for: .normal)
         $0.titleLabel?.font = Suite.bold.of(size: 22)
@@ -43,12 +50,13 @@ class AgreementViewController: UIViewController {
     
     private func addTarget() {
         proceedButton.addTarget(self, action: #selector(proceedButtonTapped), for: .touchUpInside)
+        detailButton.addTarget(self, action: #selector(navigationDetail), for: .touchUpInside)
     }
     
     private func setupLayout() {
         view.backgroundColor = .white
         
-        view.addSubviews(logoImageView, welcomeLabel, agreementPrivacyCheckBox, proceedButton)
+        view.addSubviews(logoImageView, welcomeLabel, agreementPrivacyCheckBox, detailButton, proceedButton)
         
         logoImageView.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(20)
@@ -64,6 +72,11 @@ class AgreementViewController: UIViewController {
         agreementPrivacyCheckBox.snp.makeConstraints {
             $0.bottom.equalTo(proceedButton.snp.top).offset(-32)
             $0.leading.equalToSuperview().offset(16)
+            $0.trailing.equalToSuperview().offset(-16)
+        }
+        
+        detailButton.snp.makeConstraints {
+            $0.centerY.equalTo(agreementPrivacyCheckBox)
             $0.trailing.equalToSuperview().offset(-16)
         }
         
@@ -94,6 +107,17 @@ class AgreementViewController: UIViewController {
             self?.proceedButton.backgroundColor = isChecked ? .appBlack : .appLightGray
         }
     }
+    
+    @objc private func navigationDetail() {
+        print("navigationDetail")
+        let privacyPolicyVC = PrivacyPolicyViewController()
+        privacyPolicyVC.onAgree = { [weak self] in
+            self?.agreementPrivacyCheckBox.setChecked(true)
+            self?.proceedButton.backgroundColor = .appBlack
+            self?.proceedButton.isEnabled = true
+        }
+        self.present(privacyPolicyVC, animated: true)
+    }
 }
 
 // CheckBox Custom View
@@ -112,13 +136,6 @@ class CheckBox: UIView {
         $0.configuration = config
     }
     
-    private let detailButton = UIButton().then {
-        var config = UIButton.Configuration.plain()
-        config.image = UIImage(systemName: "chevron.right")
-        config.baseForegroundColor = .appDarkGray
-        $0.configuration = config
-    }
-    
     var didToggleCheckBox: ((Bool) -> Void)?
     
     init(title: String) {
@@ -134,9 +151,8 @@ class CheckBox: UIView {
         titleLabel.text = title
         
         checkBoxButton.addTarget(self, action: #selector(toggleCheckBox), for: .touchUpInside)
-        detailButton.addTarget(self, action: #selector(navigationDetail), for: .touchUpInside)
         
-        addSubviews(checkBoxButton, titleLabel, detailButton)
+        addSubviews(checkBoxButton, titleLabel)
         
         checkBoxButton.snp.makeConstraints {
             $0.leading.top.bottom.equalToSuperview()
@@ -149,10 +165,6 @@ class CheckBox: UIView {
             $0.centerY.equalTo(checkBoxButton)
         }
         
-        detailButton.snp.makeConstraints {
-            $0.trailing.equalToSuperview()
-            $0.centerY.equalTo(checkBoxButton)
-        }
     }
     
     @objc private func toggleCheckBox() {
@@ -171,8 +183,9 @@ class CheckBox: UIView {
         return checkBoxButton.isSelected
     }
     
-    @objc private func navigationDetail() {
-        print("navigationDetail")
+    func setChecked(_ checked: Bool) {
+        checkBoxButton.isSelected = checked
+        updateCheckBoxImage()
     }
 }
 
