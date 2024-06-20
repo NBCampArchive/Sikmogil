@@ -8,13 +8,14 @@
 import UIKit
 import SnapKit
 import Then
-import Combine
+import RxSwift
+import RxCocoa
 
 class GoalSettingsViewController: UIViewController {
     
-    // MARK: - 속성 정의
-    var viewModel: ProfileViewModel?
-    private var cancellables = Set<AnyCancellable>()
+    var viewModel: OnboardingViewModel?
+    
+    private let disposeBag = DisposeBag()
     
     let scrollView = UIScrollView().then {
         $0.backgroundColor = .white
@@ -45,6 +46,13 @@ class GoalSettingsViewController: UIViewController {
         $0.keyboardType = .numberPad
     }
     
+    let goalWeightWarningLabel = UILabel().then {
+        $0.text = "목표 체중을 입력해주세요"
+        $0.font = Suite.regular.of(size: 12)
+        $0.textColor = .red
+        $0.isHidden = true
+    }
+    
     let goalDateLabel = UILabel().then {
         $0.text = "목표 날짜"
         $0.font = Suite.bold.of(size: 16)
@@ -64,64 +72,44 @@ class GoalSettingsViewController: UIViewController {
         $0.layer.cornerRadius = 8
     }
     
-    // MARK: - 생명 주기
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         setupViews()
         setupConstraints()
+        setupAddTargets()
         bindViewModel()
-        
+    }
+    
+    private func setupAddTargets() {
         saveButton.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
     }
     
-    // MARK: - 뷰 모델 바인딩
     private func bindViewModel() {
         guard let viewModel = viewModel else { return }
         
-        viewModel.$targetWeight
-            .sink { [weak self] targetWeight in
-                self?.goalWeightTextField.text = targetWeight
-            }
-            .store(in: &cancellables)
+        viewModel.targetWeight
+            .bind(to: goalWeightTextField.rx.text)
+            .disposed(by: disposeBag)
         
-        viewModel.$targetDate
-            .sink { [weak self] targetDate in
-                self?.goalDatePicker.date = targetDate
-            }
-            .store(in: &cancellables)
+        goalWeightTextField.rx.text
+            .orEmpty
+            .bind(to: viewModel.targetWeight)
+            .disposed(by: disposeBag)
         
-        goalWeightTextField.addTarget(self, action: #selector(goalWeightTextFieldChanged), for: .editingChanged)
-        goalDatePicker.addTarget(self, action: #selector(goalDatePickerChanged), for: .valueChanged)
+        goalDatePicker.rx.date
+            .bind(to: viewModel.targetDate)
+            .disposed(by: disposeBag)
     }
     
-    @objc private func goalWeightTextFieldChanged(_ textField: UITextField) {
-        viewModel?.targetWeight = textField.text ?? ""
-    }
-    
-    @objc private func goalDatePickerChanged(_ datePicker: UIDatePicker) {
-        viewModel?.targetDate = datePicker.date
-    }
-    
-    // MARK: - 제약 조건 설정
-    func setupViews() {
+    private func setupViews() {
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
-        contentView.addSubview(goalSettingLabel)
-        contentView.addSubview(descriptionLabel)
-        contentView.addSubview(goalWeightLabel)
-        contentView.addSubview(goalWeightTextField)
-        contentView.addSubview(goalDateLabel)
-        contentView.addSubview(goalDatePicker)
+        contentView.addSubviews(goalSettingLabel, descriptionLabel, goalWeightLabel, goalWeightTextField, goalWeightWarningLabel, goalDateLabel, goalDatePicker)
         view.addSubview(saveButton)
     }
     
     private func setupConstraints() {
-        view.addSubview(scrollView)
-        scrollView.addSubview(contentView)
-        contentView.addSubviews(goalSettingLabel, descriptionLabel, goalWeightLabel, goalWeightTextField, goalDateLabel, goalDatePicker)
-        view.addSubview(saveButton)
-        
         scrollView.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide)
             $0.leading.trailing.equalToSuperview()
@@ -155,6 +143,11 @@ class GoalSettingsViewController: UIViewController {
             $0.height.equalTo(50)
         }
         
+        goalWeightWarningLabel.snp.makeConstraints {
+            $0.top.equalTo(goalWeightTextField.snp.bottom).offset(8)
+            $0.leading.equalToSuperview().offset(16)
+        }
+        
         goalDateLabel.snp.makeConstraints {
             $0.top.equalTo(goalWeightTextField.snp.bottom).offset(32)
             $0.leading.equalToSuperview().offset(16)
@@ -181,10 +174,22 @@ class GoalSettingsViewController: UIViewController {
         
         if viewModel.targetValidateForm() {
             viewModel.saveTargetData()
-            navigationController?.popViewController(animated: true)
+            viewModel.moveToNextPage()
+            showAlertAndNavigateBack()
         } else {
-            // 유효성 검사를 통과하지 못한 경우 경고 표시 등을 추가하세요
-            print("목표 체중과 날짜를 모두 입력해주세요.")
+            goalWeightWarningLabel.isHidden = !(goalWeightTextField.text ?? "").isEmpty
+            view.shake()
+        }
+    }
+    
+    private func showAlertAndNavigateBack() {
+        let alert = UIAlertController(title: "성공", message: "목표 설정이 완료되었습니다.", preferredStyle: .alert)
+        present(alert, animated: true, completion: nil)
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
+            alert.dismiss(animated: true) {
+                self?.navigationController?.popViewController(animated: true)
+            }
         }
     }
 }
