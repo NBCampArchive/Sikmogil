@@ -2,7 +2,7 @@
 //  ProfileViewController.swift
 //  Sikmogil
 //
-//  Created by Developer_P on 6/3/24.
+//  Created by 박준영 on 6/3/24.
 //  [프로필] 🙍🏻 프로필 🙍🏻
 
 import UIKit
@@ -10,6 +10,7 @@ import SnapKit
 import Then
 import Combine
 import KeychainSwift
+import Kingfisher
 
 class ProfileViewController: UIViewController {
     
@@ -69,6 +70,7 @@ class ProfileViewController: UIViewController {
         $0.titleLabel?.font = UIFont.systemFont(ofSize: 14)
     }
     
+    // MARK: - viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
@@ -92,6 +94,7 @@ class ProfileViewController: UIViewController {
         setupBindings()
     }
 
+    // MARK: - Binding
     func setupBindings() {
         let nicknamePublisher = viewModel.$nickname
         let heightPublisher = viewModel.$height
@@ -115,29 +118,14 @@ class ProfileViewController: UIViewController {
     }
 
     // URL로부터 이미지를 로드하여 profileImageView에 뿌려주는 부분
-    private func loadImage(from urlString: String) {
-        guard !urlString.isEmpty, let url = URL(string: urlString) else {
-            print("URL 문자열이 비어 있습니다.")
-            DispatchQueue.main.async {
-                self.profileImageView.image = UIImage(named: "profile")
-            }
+    private func loadImage(from urlString: String?) {
+        guard let urlString = urlString else {
             return
         }
-        URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
-            guard let self = self else { return }
-            guard let data = data, error == nil else {
-                print("이미지 로드 실패: \(error?.localizedDescription ?? "오류 설명 없음")")
-                DispatchQueue.main.async {
-                    self.profileImageView.image = UIImage(named: "profile")
-                }
-                return
-            }
-            DispatchQueue.main.async {
-                self.profileImageView.image = UIImage(data: data)
-            }
-        }.resume()
+        profileImageView.kf.setImage(with: URL(string: urlString))
     }
     
+    // MARK: - setupViews
     private func setupViews() {
         view.backgroundColor = .white
         view.addSubview(scrollView)
@@ -158,6 +146,7 @@ class ProfileViewController: UIViewController {
         setupConstraints()
     }
     
+    // MARK: - setupConstraints
     private func setupConstraints() {
         scrollView.snp.makeConstraints {
             $0.edges.equalTo(view.safeAreaLayoutGuide)
@@ -236,31 +225,48 @@ class ProfileViewController: UIViewController {
         }
     }
     
+    // MARK: - didSelectCell
     // 각 셀을 인덱스 기반 클로저 배열 할당
     func didSelectCell(at index: Int) {
         if index < cellActions.count {
             cellActions[index]()
         }
     }
-    
+
     private lazy var cellActions: [() -> Void] = [
         { [weak self] in
-            print("메달확인 페이지로 이동")
-//            let medalViewController = MedalViewController()
-//            self?.navigationController?.pushViewController(medalViewController, animated: true)
+//            self?.showMedalView()
         },
         { [weak self] in
-            print("게시글 목록페이지로 이동")
-//            let postViewController = PostViewController()
-//            self?.navigationController?.pushViewController(postViewController, animated: true)
+//            self?.showPostListView()
         },
         { [weak self] in
-            print("공감한 게시글 목록페이지 로 이동")
-//            let likedPostViewController = LikedPostViewController()
-//            self?.navigationController?.pushViewController(likedPostViewController, animated: true)
+//            self?.showLikedPostListView()
         }
     ]
     
+    // 메달 확인 뷰로 이동하는 메서드
+    private func showMedalView() {
+        print("메달확인 페이지로 이동")
+//        let medalViewController = MedalViewController()
+//        self.navigationController?.pushViewController(medalViewController, animated: true)
+    }
+
+    // 작성한 게시글 뷰로 이동하는 메서드
+    private func showPostListView() {
+        print("게시글 목록페이지로 이동")
+//        let postViewController = PostViewController()
+//        self.navigationController?.pushViewController(postViewController, animated: true)
+    }
+
+    // 공감한 게시글 뷰로 이동하는 메서드
+    private func showLikedPostListView() {
+        print("공감한 게시글 목록페이지로 이동")
+//        let likedPostViewController = LikedPostViewController()
+//        self.navigationController?.pushViewController(likedPostViewController, animated: true)
+    }
+    
+    // MARK: - UIMenu
     @objc private func settingsButtonTapped(_ sender: UIButton) {
         let editProfileAction = UIAction(title: "프로필 수정", image: nil) { [weak self] _ in
             guard let self = self else { return }
@@ -288,6 +294,7 @@ class ProfileViewController: UIViewController {
         sender.showsMenuAsPrimaryAction = true
     }
     
+    // MARK: - logout
     @objc private func logoutButtonTapped(_ sender: UIButton) {
         let keychain = KeychainSwift()
         keychain.clear()
