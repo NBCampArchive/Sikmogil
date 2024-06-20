@@ -61,7 +61,7 @@ class ExerciseResultViewController: UIViewController {
 
     private let resultView = UIView()
 
-    private let runningImage = UIImageView().then {
+    private let exerciseImage = UIImageView().then {
         $0.image = .running
         $0.contentMode = .scaleAspectFit
     }
@@ -157,11 +157,11 @@ class ExerciseResultViewController: UIViewController {
             }
             .store(in: &cancellables)
         
-        
         viewModel.$selectedExercise
             .receive(on: DispatchQueue.main)
             .sink { [weak self] exercise in
                 self?.exerciseLabel.text = exercise
+                self?.updateExerciseImage(exercise: exercise ?? "기타")
             }
             .store(in: &cancellables)
     }
@@ -174,6 +174,11 @@ class ExerciseResultViewController: UIViewController {
         progressLabel.setAttributedText(fullText: fullText, changeText: changeText, color: color, font: font)
     }
     
+    private func updateExerciseImage(exercise: String) {
+        let iconName = viewModel.iconName(for: exercise)
+        exerciseImage.image = UIImage(named: iconName)
+    }
+    
     // MARK: - Setup Views
     private func setupViews() {
         view.backgroundColor = .white
@@ -183,7 +188,7 @@ class ExerciseResultViewController: UIViewController {
         cardStackView.addArrangedSubviews(checkImage, completionLabel)
         cardView.addSubview(cardStackView)
         progressView.addSubviews(circularProgressBar, progressLabel)
-        resultView.addSubviews(runningImage, exerciseLabel, verticalLine, timeStackView, kcalStackView)
+        resultView.addSubviews(exerciseImage, exerciseLabel, verticalLine, timeStackView, kcalStackView)
         timeStackView.addArrangedSubviews(timeLabel, timeValueLabel)
         kcalStackView.addArrangedSubviews(kcalLabel, kcalValueLabel)
     }
@@ -232,21 +237,21 @@ class ExerciseResultViewController: UIViewController {
             $0.top.equalTo(progressView.snp.bottom).offset(40)
         }
         
-        runningImage.snp.makeConstraints {
+        exerciseImage.snp.makeConstraints {
             $0.top.leading.equalToSuperview()
             $0.width.equalTo(32)
         }
         
         exerciseLabel.snp.makeConstraints {
-            $0.centerY.equalTo(runningImage)
-            $0.leading.equalTo(runningImage.snp.trailing).offset(8)
+            $0.centerY.equalTo(exerciseImage)
+            $0.leading.equalTo(exerciseImage.snp.trailing).offset(8)
         }
         
         verticalLine.snp.makeConstraints {
             $0.width.equalTo(1)
             $0.height.equalTo(76)
-            $0.centerX.equalTo(runningImage)
-            $0.top.equalTo(runningImage.snp.bottom).offset(20)
+            $0.centerX.equalTo(exerciseImage)
+            $0.top.equalTo(exerciseImage.snp.bottom).offset(20)
             $0.bottom.equalTo(resultView).inset(20)
         }
         
