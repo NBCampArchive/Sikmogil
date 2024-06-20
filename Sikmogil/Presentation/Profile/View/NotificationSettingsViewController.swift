@@ -45,34 +45,48 @@ class NotificationSettingsViewController: UIViewController {
         setupViews()
         setupConstraints()
         
-        UNUserNotificationCenter.current().getPendingNotificationRequests { request in
-            print(request)
+        UNUserNotificationCenter.current().getPendingNotificationRequests { requests in
+            print(requests)
         }
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        loadReminderTime() // 리마인드 시간 로드
+    }
+    
+    private func loadReminderTime() {
+        guard let reminderTime = viewModel?.reminderTime else { return }
+        viewModel?.reminderTime = reminderTime
+        tableView.reloadData()
+    }
+    
     private func saveNotificationSetting(isEnabled: Bool) {
+        print("알림 설정 저장 호출됨: \(isEnabled)")
         UserDefaults.standard.set(isEnabled, forKey: "NotificationEnabled")
         if isEnabled {
-            scheduleDailyNotification()
+            let defaultTime = viewModel?.reminderTime ?? ":"
+            print("기본 알림 시간: \(defaultTime)")
+            let components = defaultTime.split(separator: ":").map { Int($0) ?? 0 }
+            var dateComponents = DateComponents()
+            dateComponents.hour = components[0]
+            dateComponents.minute = components[1]
+            
+            NotificationHelper.shared.scheduleDailyNotification(at: dateComponents) { error in
+                if let error = error {
+                    print("알림 예약 실패: \(error)")
+                } else {
+                    print("알림 예약 성공")
+                }
+            }
         } else {
             NotificationHelper.shared.clearAllNotifications()
+            print("모든 알림이 취소되었습니다.")
         }
     }
     
     private func loadNotificationSetting() -> Bool {
         return UserDefaults.standard.bool(forKey: "NotificationEnabled")
-    }
-    
-    private func scheduleDailyNotification() {
-        var dateComponents = DateComponents()
-        dateComponents.hour = 8 // 기본
-        NotificationHelper.shared.scheduleDailyNotification(at: dateComponents) { error in
-            if let error = error {
-                print("Failed to schedule notification: \(error)")
-            } else {
-                print("Notification scheduled successfully")
-            }
-        }
     }
     
     // MARK: - UI 설정
@@ -161,6 +175,7 @@ extension NotificationSettingsViewController: UITableViewDelegate, UITableViewDa
             cell.customSwitch.isOn = loadNotificationSetting()
             cell.showsAccessoryButton = false
             cell.switchValueChanged = { [weak self] isOn in
+                print("스위치 값 변경됨: \(isOn)")
                 self?.saveNotificationSetting(isEnabled: isOn)
             }
         default:
@@ -175,7 +190,9 @@ extension NotificationSettingsViewController: UITableViewDelegate, UITableViewDa
         
         if indexPath.section == 0 {
             let reminderVC = ReminderSettingsViewController()
-            reminderVC.viewModel = self.viewModel
+            if let viewModel = viewModel {
+                reminderVC.viewModel = viewModel // viewModel 전달
+            }
             navigationController?.pushViewController(reminderVC, animated: true)
         }
     }
