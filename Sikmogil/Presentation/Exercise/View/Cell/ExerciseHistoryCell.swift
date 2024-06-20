@@ -14,6 +14,23 @@ class ExerciseHistoryCell: UITableViewCell {
 
     static let identifier = "ExerciseHistoryCell"
     
+    // 아이콘 파일 이름 매핑
+    private let exerciseIconMapping: [String: String] = [
+        "런닝": "runningIcon",
+        "수영": "swimmingIcon",
+        "자전거": "bicycleIcon",
+        "등산": "hikingIcon",
+        "걷기": "walkingIcon",
+        "요가": "yogaIcon",
+        "줄넘기": "jumpingIcon",
+        "필라테스": "pilatesIcon",
+        "웨이트 트레이닝": "weightIcon",
+        "복합 유산소 운동": "aerobicsIcon",
+        "고강도 인터벌 트레이닝": "HIITIcon",
+        "근력 강화 운동": "strengthIcon",
+        "기타": "exerciseIcon"
+    ]
+    
     // MARK: - Components
     private let cardView = UIView().then {
         $0.layer.cornerRadius = 16
@@ -49,8 +66,13 @@ class ExerciseHistoryCell: UITableViewCell {
     }
     
     // MARK: - Configure
-    func configure(with image: UIImage, exercise: ExerciseListModel) {
-        exerciseImageView.image = image
+    func configure(exercise: ExerciseListModel) {
+        if let iconName = exerciseIconMapping[exercise.performedWorkout],
+           let image = UIImage(named: iconName) {
+            exerciseImageView.image = image
+        } else {
+            exerciseImageView.image = UIImage.exerciseIcon
+        }
         exerciseLabel.text = exercise.performedWorkout
         caloriesLabel.text = "\(exercise.calorieBurned) kcal"
     }
