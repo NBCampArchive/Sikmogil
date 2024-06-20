@@ -113,7 +113,7 @@ class MainViewController: UIViewController {
         $0.font = Suite.bold.of(size: 28)
     }
     
-    private let graph = BarChartView().then {
+    private let graph = LineChartView().then {
         $0.backgroundColor = .clear
         $0.xAxis.drawGridLinesEnabled = false
         $0.leftAxis.drawGridLinesEnabled = false
@@ -121,10 +121,12 @@ class MainViewController: UIViewController {
         $0.xAxis.drawAxisLineEnabled = false
         $0.leftAxis.drawAxisLineEnabled = false
         $0.rightAxis.drawAxisLineEnabled = false
-        $0.xAxis.drawLabelsEnabled = false
+        //        $0.xAxis.drawLabelsEnabled = false
         $0.leftAxis.drawLabelsEnabled = false
         $0.rightAxis.drawLabelsEnabled = false
         $0.legend.enabled = false
+        $0.extraLeftOffset = 16
+        $0.extraRightOffset = 16
     }
     
     override func viewDidLoad() {
@@ -279,8 +281,9 @@ class MainViewController: UIViewController {
         
         viewModel.$chartDateEntries
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] chartDateEntries in
-                self?.updateGraph(with: chartDateEntries)
+            .combineLatest(viewModel.$chartDates)
+            .sink { [weak self] entries, dates in
+                self?.updateGraph(with: entries, dates: dates)
             }
             .store(in: &cancellables)
         
@@ -301,17 +304,27 @@ class MainViewController: UIViewController {
         progressLabel.text = "\(targetModel.createDate) ~ \(targetModel.targetDate)"
     }
     
-    private func updateGraph(with chartDateEntries: [BarChartDataEntry]) {
-        let dataSet = BarChartDataSet(entries: chartDateEntries)
+    private func updateGraph(with chartDateEntries: [ChartDataEntry], dates: [String]) {
+        let dataSet = LineChartDataSet(entries: chartDateEntries)
+        dataSet.mode = .horizontalBezier
+        dataSet.drawCirclesEnabled = true
+        dataSet.circleRadius = 5
+        dataSet.circleHoleColor = UIColor.appGreen
+        dataSet.circleColors = [UIColor.appGreen]
         dataSet.colors = [UIColor.appDarkGray]
         dataSet.valueFont = Suite.semiBold.of(size: 12)
-        dataSet.valueFormatter = DefaultValueFormatter { value, _,_,_  in
-            return "\(value)Kg"
-        }
+        dataSet.fillColor = .appGreen.withAlphaComponent(0.3)
+                dataSet.drawFilledEnabled = true
+        dataSet.valueFormatter = IntegerValueFormatter()
         
-        let data = BarChartData(dataSet: dataSet)
+        graph.xAxis.valueFormatter = IndexAxisValueFormatter(values: dates)
+        graph.xAxis.labelPosition = .bottom
+        graph.xAxis.granularity = 1
+        graph.xAxis.labelTextColor = .black
+        graph.xAxis.labelFont = Suite.semiBold.of(size: 10)
+        
+        let data = LineChartData(dataSet: dataSet)
         graph.data = data
-        
     }
     
     @objc func tapCalendarButton() {
@@ -354,4 +367,10 @@ extension MainViewController: FloatingPanelControllerDelegate {
         recodingWeightPanel.delegate = self
     }
     
+}
+
+class IntegerValueFormatter: ValueFormatter {
+    func stringForValue(_ value: Double, entry: DGCharts.ChartDataEntry, dataSetIndex: Int, viewPortHandler: DGCharts.ViewPortHandler?) -> String {
+        return String(format: "%.0fKg", value)
+    }
 }
