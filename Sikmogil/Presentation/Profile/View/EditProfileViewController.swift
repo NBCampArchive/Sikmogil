@@ -2,13 +2,14 @@
 //  EditProfileViewController.swift
 //  Sikmogil
 //
-//  Created by Developer_P on 6/5/24.
+//  Created by 박준영 on 6/5/24.
 //  [프로필수정] 🖋️ 프로필 수정 🖋️
 
 import UIKit
 import SnapKit
 import Then
 import Combine
+import Kingfisher
 
 class EditProfileViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
@@ -118,6 +119,7 @@ class EditProfileViewController: UIViewController, UIImagePickerControllerDelega
         $0.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
     }
     
+    // MARK: - viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
@@ -139,6 +141,12 @@ class EditProfileViewController: UIViewController, UIImagePickerControllerDelega
         weight.addTarget(self, action: #selector(weightDidChange(_:)), for: .editingChanged)
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        profileImageView.layer.cornerRadius = profileImageView.frame.height / 2
+        profileImageView.layer.masksToBounds = true
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         viewModel?.fetchUserProfile()
@@ -156,6 +164,7 @@ class EditProfileViewController: UIViewController, UIImagePickerControllerDelega
         viewModel?.weight = textField.text ?? ""
     }
     
+    // MARK: - binding
     private func bindViewModel() {
         guard let viewModel = viewModel else { return }
         
@@ -189,32 +198,15 @@ class EditProfileViewController: UIViewController, UIImagePickerControllerDelega
             .store(in: &cancellables)
     }
     
-    // URL로부터 이미지를 비동기적으로 로드하여 profileImageView에 뿌려주는 부분
-    private func loadImage(from urlString: String) {
-        guard !urlString.isEmpty, let url = URL(string: urlString) else {
-            print("URL 문자열이 비어 있습니다.")
-            DispatchQueue.main.async {
-                self.profileImageView.image = UIImage(named: "profile")
-            }
+    // profileImageView에 뿌려주는 부분
+    private func loadImage(from urlString: String?) {
+        guard let urlString = urlString else {
             return
         }
-        
-        URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
-            guard let self = self else { return }
-            guard let data = data, error == nil else {
-                print("이미지 로드 실패: \(error?.localizedDescription ?? "오류 설명 없음")")
-                DispatchQueue.main.async {
-                    self.profileImageView.image = UIImage(named: "profile")
-                }
-                return
-            }
-            DispatchQueue.main.async {
-                self.profileImageView.image = UIImage(data: data)
-            }
-        }.resume()
+        profileImageView.kf.setImage(with: URL(string: urlString))
     }
     
-    // 데이터를 저장하는 부분 (이미지 업로드 및 URL 할당)
+    // 데이터를 저장하는 부분
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         picker.dismiss(animated: true, completion: nil)
         
@@ -232,11 +224,11 @@ class EditProfileViewController: UIViewController, UIImagePickerControllerDelega
         
         // 업로드할 이미지가 있는지 확인하고 업로드
         if let selectedImage = self.selectedImage {
-            viewModel.uploadImage(selectedImage) { [weak self] (result: Result<URL, Error>) in
+            viewModel.uploadImage(selectedImage) { [weak self] result in
                 switch result {
                 case .success(let url):
                     DispatchQueue.main.async {
-                        viewModel.picture = url.absoluteString
+                        viewModel.picture = url
                         // URL이 성공적으로 설정된 후 프로필 저장
                         self?.finalizeProfileSave()
                     }
@@ -267,6 +259,13 @@ class EditProfileViewController: UIViewController, UIImagePickerControllerDelega
         }
     }
     
+    private func showErrorAlert(message: String) {
+        let alert = UIAlertController(title: "에러", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    // MARK: - setupViews
     private func setupViews() {
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
@@ -383,18 +382,6 @@ class EditProfileViewController: UIViewController, UIImagePickerControllerDelega
             $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottomMargin).inset(20)
             $0.height.equalTo(60)
         }
-    }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        profileImageView.layer.cornerRadius = profileImageView.frame.height / 2
-        profileImageView.layer.masksToBounds = true
-    }
-    
-    private func showErrorAlert(message: String) {
-        let alert = UIAlertController(title: "에러", message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-        self.present(alert, animated: true, completion: nil)
     }
     
     @objc func profileImageTapped() {

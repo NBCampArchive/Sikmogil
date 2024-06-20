@@ -2,7 +2,7 @@
 //  ProfileTableViewCell.swift
 //  Sikmogil
 //
-//  Created by Developer_P on 6/3/24.
+//  Created by 박준영 on 6/3/24.
 //  [프로필] ✨ 각각의 테이블 셀 아이콘 ✨
 
 import UIKit

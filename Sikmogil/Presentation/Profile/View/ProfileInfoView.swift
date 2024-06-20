@@ -2,7 +2,7 @@
 //  ProfileInfoView.swift
 //  Sikmogil
 //
-//  Created by Developer_P on 6/7/24.
+//  Created by 박준영 on 6/7/24.
 //  [프로필] 💁🏻 키, 몸무게, 성별 💁🏻
 
 import UIKit
@@ -10,6 +10,7 @@ import SnapKit
 import Then
 
 class ProfileInfoView: UIView {
+    
     private let weightStackView = UIStackView().then {
         $0.axis = .vertical
         $0.alignment = .center
@@ -78,7 +79,7 @@ class ProfileInfoView: UIView {
         $0.backgroundColor = .appDarkGray
     }
     
-    // MARK: - 초기화
+    // MARK: - init
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupViews()
@@ -89,7 +90,7 @@ class ProfileInfoView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - UI 설정
+    // MARK: - setupViews
     private func setupViews() {
         self.backgroundColor = .white
         self.layer.cornerRadius = 12
@@ -126,7 +127,7 @@ class ProfileInfoView: UIView {
         self.addSubview(separator2)
     }
     
-    // MARK: - 제약조건
+    // MARK: - setupConstraints
     private func setupConstraints() {
         weightStackView.snp.makeConstraints {
             $0.left.equalTo(self).offset(16)

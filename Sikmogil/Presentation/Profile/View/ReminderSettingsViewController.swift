@@ -2,7 +2,7 @@
 //  ReminderSettingsViewController.swift
 //  Sikmogil
 //
-//  Created by Developer_P on 6/6/24.
+//  Created by 박준영 on 6/6/24.
 //  [리마인드] ⏰ 리마인드 시간 설정 ⏰
 
 import UIKit
@@ -13,6 +13,7 @@ import Combine
 class ReminderSettingsViewController: UIViewController {
     
     var viewModel: ProfileViewModel?
+    
     private var cancellables = Set<AnyCancellable>()
     private let scrollView = UIScrollView()
     private let contentView = UIView()
@@ -69,15 +70,18 @@ class ReminderSettingsViewController: UIViewController {
         completeButton.addTarget(self, action: #selector(completeButtonTapped), for: .touchUpInside)
     }
     
+    // MARK: - binding
     private func bindViewModel() {
         guard let viewModel = viewModel else { return }
         
+        // 뷰모델의 reminderTime과 timeTextField를 바인딩
         viewModel.$reminderTime
             .sink { [weak self] reminderTime in
                 self?.timeTextField.text = reminderTime
             }
             .store(in: &cancellables)
         
+        // timeTextField의 값이 변경될 때 뷰모델의 reminderTime을 업데이트
         timeTextField.addTarget(self, action: #selector(timeTextFieldChanged), for: .editingChanged)
     }
     
@@ -85,6 +89,7 @@ class ReminderSettingsViewController: UIViewController {
         viewModel?.reminderTime = textField.text ?? ""
     }
     
+    // MARK: - setupConstraints
     private func setupConstraints() {
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
@@ -135,35 +140,33 @@ class ReminderSettingsViewController: UIViewController {
             print("ViewModel is nil")
             return
         }
-
+        
+        // timeTextField의 값을 뷰모델에 업데이트
         viewModel.reminderTime = timeTextField.text ?? ""
-
+        
+        // 유효성 검사 후 저장 및 프로필 업데이트
         if viewModel.reminderValidateForm() {
-            print("Reminder time is valid")
             timeTextFieldWarningLabel.isHidden = true
             viewModel.saveReminderData()
             
+            // 데이터를 저장하는 부분 (submitProfile 호출)
             viewModel.submitProfile { [weak self] result in
                 switch result {
                 case .success:
                     viewModel.debugPrint()
-                    print("Profile submitted successfully")
                     self?.showAlertAndNavigateToProfile()
                 case .failure(let error):
-                    print("Failed to submit profile: \(error)")
                     self?.showErrorAlert(error: error)
                 }
             }
         } else {
-            print("Reminder time is invalid")
             view.shake()
             timeTextFieldWarningLabel.isHidden = false
         }
     }
-
     private func showErrorAlert(error: Error) {
-        let alert = UIAlertController(title: "Error", message: "Failed to update profile. \(error.localizedDescription)", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        let alert = UIAlertController(title: "에러", message: "프로필 업데이트 실패: \(error.localizedDescription)", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
         self.present(alert, animated: true, completion: nil)
     }
     
@@ -173,7 +176,7 @@ class ReminderSettingsViewController: UIViewController {
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
             alert.dismiss(animated: true) {
-                self?.navigateToProfileViewController()
+                self?.navigationController?.popViewController(animated: true)
             }
         }
     }

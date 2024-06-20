@@ -2,7 +2,7 @@
 //  NotificationSettingsViewController.swift
 //  Sikmogil
 //
-//  Created by Developer_P on 6/5/24.
+//  Created by 박준영 on 6/5/24.
 //  [알림설정] 🔔 알림설정 🔔
 
 import UIKit
@@ -89,7 +89,7 @@ class NotificationSettingsViewController: UIViewController {
         return UserDefaults.standard.bool(forKey: "NotificationEnabled")
     }
     
-    // MARK: - UI 설정
+    // MARK: - setupViews
     private func setupViews() {
         view.backgroundColor = .white
         view.addSubview(scrollView)
@@ -102,7 +102,7 @@ class NotificationSettingsViewController: UIViewController {
         tableView.dataSource = self
     }
     
-    // MARK: - 제약 조건 설정
+    // MARK: - setupConstraints
     private func setupConstraints() {
         scrollView.snp.makeConstraints {
             $0.edges.equalToSuperview()

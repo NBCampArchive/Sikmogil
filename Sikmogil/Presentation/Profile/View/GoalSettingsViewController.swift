@@ -2,7 +2,7 @@
 //  GoalSettingsViewController.swift
 //  Sikmogil
 //
-//  Created by Developer_P on 6/5/24.
+//  Created by 박준영 on 6/5/24.
 //  [목표설정] 🚩 목표설정 🚩
 
 import UIKit
@@ -72,6 +72,7 @@ class GoalSettingsViewController: UIViewController {
         $0.layer.cornerRadius = 8
     }
     
+    // MARK: - viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
@@ -85,6 +86,7 @@ class GoalSettingsViewController: UIViewController {
         saveButton.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
     }
     
+    // MARK: - binding
     private func bindViewModel() {
         guard let viewModel = viewModel else { return }
         
@@ -102,6 +104,7 @@ class GoalSettingsViewController: UIViewController {
             .disposed(by: disposeBag)
     }
     
+    // MARK: - setupViews
     private func setupViews() {
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
@@ -109,6 +112,7 @@ class GoalSettingsViewController: UIViewController {
         view.addSubview(saveButton)
     }
     
+    // MARK: - setupConstraints
     private func setupConstraints() {
         scrollView.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide)

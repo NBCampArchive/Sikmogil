@@ -2,7 +2,7 @@
 //  AlarmTableViewCell.swift
 //  Sikmogil
 //
-//  Created by Developer_P on 6/6/24.
+//  Created by 박준영 on 6/6/24.
 //  [프로필] ⚡️ 알림 셀 customSwitch 상세영역 ⚡️
 
 import UIKit
