@@ -302,7 +302,7 @@ extension ExerciseViewController: UITableViewDataSource {
         }
         
         let exercise = viewModel.exercises[reversedIndex]
-        cell.configure(with: UIImage.exercise, exercise: exercise)
+        cell.configure(exercise: exercise)
         return cell
     }
     
