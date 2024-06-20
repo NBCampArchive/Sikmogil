@@ -104,19 +104,14 @@ class WaterBottomSheetViewController: UIViewController {
         if let userInfo = notification.userInfo,
            let keyboardFrame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect,
            let fpc = parent as? FloatingPanelController {
-            let keyboardHeight = keyboardFrame.height
-            let initialHeight = self.view.bounds.height - 460
-            fpc.surfaceLocation = CGPoint(x: self.view.bounds.midX, y: initialHeight)
-            fpc.surfaceView.containerMargins.bottom = keyboardHeight
+            fpc.move(to: .full, animated: true)
         }
     }
     
     @objc override func keyboardWillHide(notification: NSNotification) {
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
         if let fpc = parent as? FloatingPanelController {
-            let initialHeight = self.view.bounds.height + 100
-            fpc.surfaceLocation = CGPoint(x: self.view.bounds.midX, y: initialHeight)
-            fpc.surfaceView.containerMargins.bottom = 0
+            fpc.move(to: .half, animated: true)
         }
     }
     

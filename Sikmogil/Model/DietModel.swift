@@ -11,6 +11,7 @@ struct DietLog: Decodable {
     var waterIntake: Int
     var totalCalorieEaten: Int
     var dietDate: String
+    var canEatCalorie: Int?
 }
 
 struct DietList: Decodable {

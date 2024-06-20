@@ -102,7 +102,11 @@ class ExerciseViewController: UIViewController {
         setupConstraints()
         setupButtons()
         bindViewModel()
-        viewModel.fetchExerciseList(for: day)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        fetchExerciseData()
     }
     
     // MARK: - Bind ViewModel
@@ -111,7 +115,7 @@ class ExerciseViewController: UIViewController {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
                 self?.tableView.reloadData()
-                self?.updateProgressLabel()
+                self?.updateProgress()
                 self?.updateTableViewHeight()
             }
             .store(in: &cancellables)
@@ -119,22 +123,34 @@ class ExerciseViewController: UIViewController {
         viewModel.$totalWorkoutTime
             .receive(on: DispatchQueue.main)
             .sink { [weak self] totalWorkoutTime in
-                self?.updateProgressLabel()
+                self?.updateProgress()
             }
             .store(in: &cancellables)
         
         viewModel.$totalCaloriesBurned
             .receive(on: DispatchQueue.main)
             .sink { [weak self] totalCaloriesBurned in
-                self?.updateProgressLabel()
+                self?.updateProgress()
+            }
+            .store(in: &cancellables)
+        
+        viewModel.$canEatCalorie
+            .sink { [weak self] _ in
+                self?.updateProgress()
             }
             .store(in: &cancellables)
     }
     
-    private func updateProgressLabel() {
+    private func updateProgress() {
         let totalTime = viewModel.totalWorkoutTime
         let totalCalories = viewModel.totalCaloriesBurned
         progressLabel.text = "활동시간 \(totalTime)분\n소모칼로리 \(totalCalories)kcal"
+        
+        if let canEatCalorie = viewModel.canEatCalorie {
+            let recommendedCalories = CGFloat(canEatCalorie) * 0.5
+            let progress = min(CGFloat(totalCalories) / recommendedCalories, 1.0)
+            customCircularProgressBar.progress = progress
+        }
     }
     
     private func updateTableViewHeight() {
@@ -145,16 +161,25 @@ class ExerciseViewController: UIViewController {
     }
     
     // MARK: - API
-    func fetchExerciseList() {
+    private func fetchExerciseData() {
         viewModel.fetchExerciseList(for: day)
         self.tableView.reloadData()
+        
+        viewModel.getExerciseData(for: day) { result in
+            switch result {
+            case .success(_):
+                DispatchQueue.main.async {
+                    self.updateProgress()
+                }
+            case .failure(let error):
+                print("운동 데이터 불러오기 실패:", error)
+            }
+        }
     }
     
     // MARK: - Setup View
     private func setupViews() {
         view.backgroundColor = .white
-        customCircularProgressBar.progress = 0.6
-        
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(ExerciseHistoryCell.self, forCellReuseIdentifier: ExerciseHistoryCell.identifier)
@@ -263,7 +288,7 @@ class ExerciseViewController: UIViewController {
 }
 
 // MARK: - UITableView
-extension ExerciseViewController: UITableViewDelegate, UITableViewDataSource {
+extension ExerciseViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return viewModel.exercises.count
     }
@@ -277,11 +302,56 @@ extension ExerciseViewController: UITableViewDelegate, UITableViewDataSource {
         }
         
         let exercise = viewModel.exercises[reversedIndex]
-        cell.configure(with: UIImage.exercise, exercise: exercise)
+        cell.configure(exercise: exercise)
         return cell
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 88
+    }
+}
+extension ExerciseViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let deleteAction = UIContextualAction(style: .destructive, title: "") { [weak self] (action, view, completion) in
+            guard let self = self else { return }
+            
+            let alertController = UIAlertController(title: "운동 삭제", message: "이 운동을 삭제하시겠습니까?", preferredStyle: .alert)
+            let cancelAction = UIAlertAction(title: "취소", style: .cancel) { _ in
+                completion(false)
+            }
+            let confirmAction = UIAlertAction(title: "삭제", style: .destructive) { _ in
+                let reversedIndex = self.viewModel.exercises.count - 1 - indexPath.row
+                let exercise = self.viewModel.exercises[reversedIndex]
+                let listId = exercise.workoutListId
+                
+                self.viewModel.deleteExerciseListData(for: self.day, exerciseListId: listId) { result in
+                    switch result {
+                    case .success:
+                        DispatchQueue.main.async {
+                            self.viewModel.exercises.remove(at: reversedIndex)
+                            tableView.deleteRows(at: [indexPath], with: .fade)
+                            self.fetchExerciseData()
+                        }
+                    case .failure(let error):
+                        print("운동 리스트 삭제 실패: \(error)")
+                    }
+                }
+                completion(true)
+            }
+            
+            alertController.addAction(cancelAction)
+            alertController.addAction(confirmAction)
+            
+            self.present(alertController, animated: true, completion: nil)
+        }
+        
+        // 배경색, 삭제 아이콘
+        deleteAction.backgroundColor = UIColor.white
+        let trashImage = UIImage(systemName: "trash")?.withTintColor(UIColor.darkGray, renderingMode: .alwaysOriginal)
+        deleteAction.image = trashImage
+        
+        // 삭제 액션 추가
+        let configuration = UISwipeActionsConfiguration(actions: [deleteAction])
+        return configuration
     }
 }

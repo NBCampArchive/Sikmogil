@@ -63,7 +63,7 @@ class ExerciseAPIManager {
             
         ]
         
-        AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).response { response in
+        AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).validate().response { response in
             switch response.result {
             case .success:
                 print("addExerciseListData success")
@@ -89,7 +89,7 @@ class ExerciseAPIManager {
             "workoutListId": exerciseListId
         ]
         
-        AF.request(url, method: .delete, parameters: parameters, encoding: JSONEncoding.default, headers: headers).response { response in
+        AF.request(url, method: .post, parameters: parameters, encoding: URLEncoding.default, headers: headers).validate().response { response in
             switch response.result {
             case .success:
                 print("deleteExerciseListData success")
@@ -167,6 +167,27 @@ class ExerciseAPIManager {
                 completion(.success(data))
             case .failure(let error):
                 print("getExerciseList failure")
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    // MARK: - 운동 사진 출력
+    func getExercisePicture(completion: @escaping (Result<[ExerciseListModel], Error>) -> Void) {
+        let url = "\(baseURL)/api/workoutLog/findWorkoutPictures"
+        
+        let headers: HTTPHeaders = [
+            "Authorization": token,
+            "Accept": "application/json"
+        ]
+        
+        AF.request(url, method: .get, headers: headers).validate(statusCode: 200..<300).responseDecodable(of: [ExerciseListModel].self, emptyResponseCodes: [200]) { response in
+            switch response.result {
+            case .success(let data):
+                print("getExercisePicture success")
+                completion(.success(data))
+            case .failure(let error):
+                print("getExercisePicture failure")
                 completion(.failure(error))
             }
         }

@@ -41,7 +41,7 @@ class ExerciseResultViewController: UIViewController {
         $0.backgroundColor = .clear
     }
 
-    private let circularProgressBar = CircularProgressBar().then {
+    private let circularProgressBar = AnimationProgressBar().then {
         $0.backgroundColor = .clear
         $0.progressColor = .appGreen
         $0.trackColor = .appLightGray
@@ -61,14 +61,14 @@ class ExerciseResultViewController: UIViewController {
 
     private let resultView = UIView()
 
-    private let runningImage = UIImageView().then {
+    private let exerciseImage = UIImageView().then {
         $0.image = .running
         $0.contentMode = .scaleAspectFit
     }
 
-    private let periodLabel = UILabel().then {
-        $0.text = "0:00 am - 0:00 am"
-        $0.font = Suite.regular.of(size: 16)
+    private let exerciseLabel = UILabel().then {
+        $0.text = "운동 이름"
+        $0.font = Suite.medium.of(size: 18)
         $0.textColor = .appDarkGray
     }
 
@@ -131,6 +131,15 @@ class ExerciseResultViewController: UIViewController {
         bindViewModel()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        startProgressBarAnimation()
+    }
+    
+    private func startProgressBarAnimation() {
+        circularProgressBar.animateProgress(to: 1.0, duration: 3.0)
+    }
+    
     // MARK: - Setup Binding
     private func bindViewModel() {
         viewModel.$expectedCalories
@@ -141,11 +150,18 @@ class ExerciseResultViewController: UIViewController {
             }
             .store(in: &cancellables)
         
-        // TODO: - timeValueLabel 형식 수정
         viewModel.$selectedTime
             .receive(on: DispatchQueue.main)
             .sink { [weak self] time in
                 self?.timeValueLabel.text = time
+            }
+            .store(in: &cancellables)
+        
+        viewModel.$selectedExercise
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] exercise in
+                self?.exerciseLabel.text = exercise
+                self?.updateExerciseImage(exercise: exercise ?? "기타")
             }
             .store(in: &cancellables)
     }
@@ -158,18 +174,21 @@ class ExerciseResultViewController: UIViewController {
         progressLabel.setAttributedText(fullText: fullText, changeText: changeText, color: color, font: font)
     }
     
+    private func updateExerciseImage(exercise: String) {
+        let iconName = viewModel.iconName(for: exercise)
+        exerciseImage.image = UIImage(named: iconName)
+    }
+    
     // MARK: - Setup Views
     private func setupViews() {
         view.backgroundColor = .white
-        circularProgressBar.progress = 0.6
-        
         view.addSubviews(scrollView, addButton)
         scrollView.addSubview(contentView)
         contentView.addSubviews(cardView, progressView, resultView)
         cardStackView.addArrangedSubviews(checkImage, completionLabel)
         cardView.addSubview(cardStackView)
         progressView.addSubviews(circularProgressBar, progressLabel)
-        resultView.addSubviews(runningImage, verticalLine, timeStackView, kcalStackView)
+        resultView.addSubviews(exerciseImage, exerciseLabel, verticalLine, timeStackView, kcalStackView)
         timeStackView.addArrangedSubviews(timeLabel, timeValueLabel)
         kcalStackView.addArrangedSubviews(kcalLabel, kcalValueLabel)
     }
@@ -218,22 +237,21 @@ class ExerciseResultViewController: UIViewController {
             $0.top.equalTo(progressView.snp.bottom).offset(40)
         }
         
-        runningImage.snp.makeConstraints {
+        exerciseImage.snp.makeConstraints {
             $0.top.leading.equalToSuperview()
             $0.width.equalTo(32)
         }
         
-        // TODO: - periodLable 대신 운동 종목으로 바꾸기
-//        periodLable.snp.makeConstraints {
-//            $0.centerY.equalTo(runningImage)
-//            $0.leading.equalTo(runningImage.snp.trailing).offset(4)
-//        }
+        exerciseLabel.snp.makeConstraints {
+            $0.centerY.equalTo(exerciseImage)
+            $0.leading.equalTo(exerciseImage.snp.trailing).offset(8)
+        }
         
         verticalLine.snp.makeConstraints {
             $0.width.equalTo(1)
             $0.height.equalTo(76)
-            $0.centerX.equalTo(runningImage)
-            $0.top.equalTo(runningImage.snp.bottom).offset(20)
+            $0.centerX.equalTo(exerciseImage)
+            $0.top.equalTo(exerciseImage.snp.bottom).offset(20)
             $0.bottom.equalTo(resultView).inset(20)
         }
         
@@ -241,7 +259,7 @@ class ExerciseResultViewController: UIViewController {
             $0.leading.equalTo(verticalLine).offset(20)
             $0.centerY.equalTo(verticalLine)
         }
-
+        
         kcalStackView.snp.makeConstraints {
             $0.trailing.equalTo(resultView).inset(16)
             $0.centerY.equalTo(verticalLine)
@@ -272,16 +290,22 @@ class ExerciseResultViewController: UIViewController {
             switch result {
             case .success:
                 print("운동 리스트 추가 성공")
-                self.showAlert(message: "운동 리스트 추가 성공")
+                self.showAlert(message: "운동 리스트 추가 성공") {
+                    // 네비게이션의 최상단 페이지로 이동
+                    self.navigationController?.popToRootViewController(animated: true)
+                }
+                
             case .failure(let error):
                 print("운동 리스트 추가 실패", error)
             }
         }
     }
     
-    private func showAlert(message: String) {
+    private func showAlert(message: String, completion: @escaping () -> Void) {
         let alertController = UIAlertController(title: nil, message: message, preferredStyle: .alert)
-        let okAction = UIAlertAction(title: "확인", style: .default, handler: nil)
+        let okAction = UIAlertAction(title: "확인", style: .default) { _ in
+            completion()
+        }
         alertController.addAction(okAction)
         present(alertController, animated: true, completion: nil)
     }
