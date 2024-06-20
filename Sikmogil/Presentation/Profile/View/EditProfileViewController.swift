@@ -124,6 +124,8 @@ class EditProfileViewController: UIViewController, UIImagePickerControllerDelega
         
         setupViews()
         setupConstraints()
+        hideKeyboardWhenTappedAround()
+        setKeyboardObserver()
         bindViewModel()
         
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(profileImageTapped))
