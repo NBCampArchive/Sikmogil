@@ -14,7 +14,6 @@ class ExerciseHistoryCell: UITableViewCell {
 
     static let identifier = "ExerciseHistoryCell"
     
-    // 아이콘 파일 이름 매핑
     private let exerciseIconMapping: [String: String] = [
         "런닝": "runningIcon",
         "수영": "swimmingIcon",
@@ -48,13 +47,6 @@ class ExerciseHistoryCell: UITableViewCell {
         $0.font = Suite.bold.of(size: 16)
     }
 
-    private let addButton = UIButton(type: .system).then {
-        if let plusImage = UIImage(systemName: "plus") {
-            $0.setImage(plusImage, for: .normal)
-        }
-        $0.tintColor = .appBlack
-    }
-    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupViews()
@@ -80,7 +72,7 @@ class ExerciseHistoryCell: UITableViewCell {
     // MARK: - Setup Views
     private func setupViews() {
         contentView.addSubview(cardView)
-        cardView.addSubviews(exerciseImageView, exerciseLabel, caloriesLabel, addButton)
+        cardView.addSubviews(exerciseImageView, exerciseLabel, caloriesLabel)
         contentView.backgroundColor = .clear
         selectionStyle = .none
         cardView.backgroundColor = .appLightGray
@@ -103,13 +95,8 @@ class ExerciseHistoryCell: UITableViewCell {
             $0.centerY.equalToSuperview()
         }
         
-        addButton.snp.makeConstraints {
-            $0.trailing.equalToSuperview().inset(16)
-            $0.centerY.equalToSuperview()
-        }
-        
         caloriesLabel.snp.makeConstraints {
-            $0.trailing.equalTo(addButton.snp.leading).offset(-16)
+            $0.trailing.equalToSuperview().inset(24)
             $0.centerY.equalToSuperview()
         }
     }
