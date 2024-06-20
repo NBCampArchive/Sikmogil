@@ -127,7 +127,14 @@ class WaterBottomSheetViewController: UIViewController {
         // 싱글톤 인스턴스를 통해 데이터 업데이트
         WaterViewModel.shared.addWaterAmount(waterAmount)
         
-        self.dismiss(animated: true)
+        if let fpc = parent as? FloatingPanelController {
+            fpc.move(to: .hidden, animated: true)
+            fpc.hide(animated: true){
+                self.tabBarController?.tabBar.isHidden = false
+                fpc.view.removeFromSuperview()
+                fpc.removeFromParent()
+            }
+        }
     }
 }
 

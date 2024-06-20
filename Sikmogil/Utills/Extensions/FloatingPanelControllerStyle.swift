@@ -10,7 +10,6 @@ import FloatingPanel
 
 extension FloatingPanelController {
     
-    
     func changePanelStyle() {
         let appearance = SurfaceAppearance()
         let shadow = SurfaceAppearance.Shadow()
@@ -36,4 +35,3 @@ extension FloatingPanelController {
         backdropView.backgroundColor = UIColor.black
     }
 }
-
