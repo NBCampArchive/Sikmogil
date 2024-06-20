@@ -73,6 +73,7 @@ class ProfileAPIManager {
             "height": userProfile.height,
             "weight": userProfile.weight,
             "gender": userProfile.gender,
+            "picture": userProfile.picture ?? "",
             "targetWeight": userProfile.targetWeight,
             "targetDate": userProfile.targetDate,
             "createdDate": userProfile.createdDate,
