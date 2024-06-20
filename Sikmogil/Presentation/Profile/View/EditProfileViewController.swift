@@ -134,9 +134,9 @@ class EditProfileViewController: UIViewController, UIImagePickerControllerDelega
         // 데이터를 받아오는 부분
         viewModel?.fetchUserProfile()
         
-        nickname.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
-        height.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
-        weight.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
+        nickname.addTarget(self, action: #selector(nicknameDidChange(_:)), for: .editingChanged)
+        height.addTarget(self, action: #selector(heightDidChange(_:)), for: .editingChanged)
+        weight.addTarget(self, action: #selector(weightDidChange(_:)), for: .editingChanged)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -144,18 +144,16 @@ class EditProfileViewController: UIViewController, UIImagePickerControllerDelega
         viewModel?.fetchUserProfile()
     }
     
-    // 텍스트 필드 및 프로필 이미지 변경 액션
-    @objc private func textFieldDidChange(_ textField: UITextField) {
-        switch textField.tag {
-        case 1:
-            viewModel?.nickname = textField.text ?? ""
-        case 2:
-            viewModel?.height = textField.text ?? ""
-        case 3:
-            viewModel?.weight = textField.text ?? ""
-        default:
-            break
-        }
+    @objc private func nicknameDidChange(_ textField: UITextField) {
+        viewModel?.nickname = textField.text ?? ""
+    }
+    
+    @objc private func heightDidChange(_ textField: UITextField) {
+        viewModel?.height = textField.text ?? ""
+    }
+    
+    @objc private func weightDidChange(_ textField: UITextField) {
+        viewModel?.weight = textField.text ?? ""
     }
     
     private func bindViewModel() {
@@ -190,7 +188,7 @@ class EditProfileViewController: UIViewController, UIImagePickerControllerDelega
             }
             .store(in: &cancellables)
     }
-
+    
     // URL로부터 이미지를 비동기적으로 로드하여 profileImageView에 뿌려주는 부분
     private func loadImage(from urlString: String) {
         guard !urlString.isEmpty, let url = URL(string: urlString) else {
