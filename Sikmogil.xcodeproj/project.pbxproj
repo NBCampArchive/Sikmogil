@@ -109,6 +109,9 @@
 		B54AC01A2C105646002E89DC /* Step1ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54AC0192C105646002E89DC /* Step1ViewController.swift */; };
 		B54AC01C2C1056A4002E89DC /* Step2ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54AC01B2C1056A4002E89DC /* Step2ViewController.swift */; };
 		B54AC01E2C1056C3002E89DC /* Step3ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54AC01D2C1056C3002E89DC /* Step3ViewController.swift */; };
+		CA13FDE62C22E483007B3DBE /* BreakfastTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA13FDE52C22E483007B3DBE /* BreakfastTableViewCell.swift */; };
+		CA13FDE82C22E76C007B3DBE /* LunchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA13FDE72C22E76C007B3DBE /* LunchTableViewCell.swift */; };
+		CA13FDEA2C22E791007B3DBE /* DinnerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA13FDE92C22E791007B3DBE /* DinnerTableViewCell.swift */; };
 		B5825BAA2C219A7100ADAA66 /* CommunityNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5825BA92C219A7100ADAA66 /* CommunityNavigationViewController.swift */; };
 		B5825BAD2C219C2B00ADAA66 /* BoardMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5825BAC2C219C2B00ADAA66 /* BoardMainViewController.swift */; };
 		B5825BAF2C219FE500ADAA66 /* CustomSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5825BAE2C219FE500ADAA66 /* CustomSegmentedControl.swift */; };
@@ -223,6 +226,9 @@
 		B54AC0192C105646002E89DC /* Step1ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Step1ViewController.swift; sourceTree = "<group>"; };
 		B54AC01B2C1056A4002E89DC /* Step2ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Step2ViewController.swift; sourceTree = "<group>"; };
 		B54AC01D2C1056C3002E89DC /* Step3ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Step3ViewController.swift; sourceTree = "<group>"; };
+		CA13FDE52C22E483007B3DBE /* BreakfastTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreakfastTableViewCell.swift; sourceTree = "<group>"; };
+		CA13FDE72C22E76C007B3DBE /* LunchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LunchTableViewCell.swift; sourceTree = "<group>"; };
+		CA13FDE92C22E791007B3DBE /* DinnerTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DinnerTableViewCell.swift; sourceTree = "<group>"; };
 		B5825BA92C219A7100ADAA66 /* CommunityNavigationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityNavigationViewController.swift; sourceTree = "<group>"; };
 		B5825BAC2C219C2B00ADAA66 /* BoardMainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardMainViewController.swift; sourceTree = "<group>"; };
 		B5825BAE2C219FE500ADAA66 /* CustomSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSegmentedControl.swift; sourceTree = "<group>"; };
@@ -385,6 +391,9 @@
 			children = (
 				B52001C42C171B8C0083CBDF /* AddDietMenuTableViewCell.swift */,
 				B52001C52C171B8C0083CBDF /* DietAlbumCollectionViewCell.swift */,
+				CA13FDE52C22E483007B3DBE /* BreakfastTableViewCell.swift */,
+				CA13FDE72C22E76C007B3DBE /* LunchTableViewCell.swift */,
+				CA13FDE92C22E791007B3DBE /* DinnerTableViewCell.swift */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -924,6 +933,7 @@
 				547A1BAC2C0DAA78000A16BF /* ProfileViewController.swift in Sources */,
 				B52001DC2C171F9D0083CBDF /* FloatingPanelControllerStyle.swift in Sources */,
 				B52001E02C18922D0083CBDF /* DietAPIManager.swift in Sources */,
+				CA13FDE62C22E483007B3DBE /* BreakfastTableViewCell.swift in Sources */,
 				545AA5162C11E6540083D893 /* AlarmTableViewCell.swift in Sources */,
 				B52001D62C171B8C0083CBDF /* DietMainViewController.swift in Sources */,
 				B54ABF922C09BD43002E89DC /* Sikmogil.xcdatamodeld in Sources */,
@@ -953,6 +963,7 @@
 				62578D002C15A487005035BB /* HeaderView.swift in Sources */,
 				B54ABF882C09BD43002E89DC /* AppDelegate.swift in Sources */,
 				B54ABF8A2C09BD43002E89DC /* SceneDelegate.swift in Sources */,
+				CA13FDE82C22E76C007B3DBE /* LunchTableViewCell.swift in Sources */,
 				B52001D22C171B8C0083CBDF /* DietAlbumCollectionViewCell.swift in Sources */,
 				546E32352C1078FA00E94C2A /* GoalSettingsViewController.swift in Sources */,
 				B54ABFD12C0CBC55002E89DC /* DateHelper.swift in Sources */,
@@ -979,6 +990,7 @@
 				B52001D42C171B8C0083CBDF /* DietAlbumViewController.swift in Sources */,
 				B52001EA2C19865E0083CBDF /* CalendarModel.swift in Sources */,
 				F3094EC12C0D91310099DE2C /* ExerciseViewController.swift in Sources */,
+				CA13FDEA2C22E791007B3DBE /* DinnerTableViewCell.swift in Sources */,
 				B52001B62C12F4570083CBDF /* StepsViewController.swift in Sources */,
 				B54ABFF52C0DE1CD002E89DC /* LoginViewModel.swift in Sources */,
 				B54ABFD52C0CBE86002E89DC /* CircularProgressBar.swift in Sources */,

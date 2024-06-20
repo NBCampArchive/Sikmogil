@@ -11,15 +11,25 @@ import Combine
 class WaterViewModel {
     
     let dietViewModel = DietViewModel()
+    let addMealViewModel = AddMealViewModel.shared
+    
+    private var cancellables = Set<AnyCancellable>()
     
     static let shared = WaterViewModel()
     
     @Published var todayWaterAmount: Int = 0
+    //@Published var todayTotalCalorie: Int = 0
+    @Published var todayCanEatCalorie: Int = 0
     
     var waterLiterLabelTextPublisher: AnyPublisher<String, Never> {
         return $todayWaterAmount
             .map { amount -> String in
-                return "\(amount)ml / 2L"
+                if amount < 1000 {
+                    return "\(amount)ml / 2L"
+                } else {
+                    let liters = Double(amount) / 1000.0
+                    return String(format: "%.2fL / 2L", liters) //소수점 둘째자리 까지 값을 생성
+                }
             }
             .replaceError(with: "waterLiterLabelTextPublisher 에러발생")
             .eraseToAnyPublisher()
@@ -35,12 +45,13 @@ class WaterViewModel {
     }
     
     private init() {
-        // 초기화 시 서버의 값을 불러와서 todayWaterAmount에 설정
+        // 초기화 시 서버의 값을 불러와서 설정
         dietViewModel.getDietLogDate(for: DateHelper.shared.formatDateToYearMonthDay(Date())) { [weak self] result in
             switch result {
             case .success(let data):
-                let waterIntake = self!.dietViewModel.dietLog!.waterIntake
-                self?.todayWaterAmount = waterIntake
+                self?.todayWaterAmount = self!.dietViewModel.dietLog!.waterIntake
+                self?.todayCanEatCalorie = self!.dietViewModel.dietLog!.canEatCalorie ?? 0
+                print("식단 출력 성공: todayWaterAmount: \(self?.todayWaterAmount), todayCanEatCalorie: \(self?.todayCanEatCalorie)")
             case .failure(let error):
                 print("식단 출력 실패: \(error)")
             }
@@ -52,20 +63,14 @@ class WaterViewModel {
         updateDietLog()
     }
     
-    func setWaterAmount(_ amount: Int) {
-        todayWaterAmount = amount
-        updateDietLog()
-    }
-    
     func updateDietLog() {
         dietViewModel.updateDietLog(for: DateHelper.shared.formatDateToYearMonthDay(Date()), water: todayWaterAmount, totalCalorieEaten: 0) { result in
             switch result {
             case .success():
-                print("식단 업데이트 성공")
+                print("식단 업데이트 성공😇😇😇")
             case .failure(let error):
                 print("식단 업데이트 실패: \(error)")
             }
         }
     }
-    
 }
