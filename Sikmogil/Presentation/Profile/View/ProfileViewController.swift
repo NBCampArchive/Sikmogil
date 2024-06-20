@@ -245,19 +245,19 @@ class ProfileViewController: UIViewController {
     
     private lazy var cellActions: [() -> Void] = [
         { [weak self] in
-            print("MedalViewController로 이동")
-            let medalViewController = MedalViewController()
-            self?.navigationController?.pushViewController(medalViewController, animated: true)
+            print("메달확인 페이지로 이동")
+//            let medalViewController = MedalViewController()
+//            self?.navigationController?.pushViewController(medalViewController, animated: true)
         },
         { [weak self] in
-            print("PostViewController로 이동")
-            let postViewController = PostViewController()
-            self?.navigationController?.pushViewController(postViewController, animated: true)
+            print("게시글 목록페이지로 이동")
+//            let postViewController = PostViewController()
+//            self?.navigationController?.pushViewController(postViewController, animated: true)
         },
         { [weak self] in
-            print("LikedPostViewController로 이동")
-            let likedPostViewController = LikedPostViewController()
-            self?.navigationController?.pushViewController(likedPostViewController, animated: true)
+            print("공감한 게시글 목록페이지 로 이동")
+//            let likedPostViewController = LikedPostViewController()
+//            self?.navigationController?.pushViewController(likedPostViewController, animated: true)
         }
     ]
     
@@ -279,7 +279,7 @@ class ProfileViewController: UIViewController {
         let goalSettingsAction = UIAction(title: "목표 설정", image: nil) { [weak self] _ in
             guard let self = self else { return }
             let goalSettingsVC = GoalSettingsViewController()
-            goalSettingsVC.viewModel = self.viewModel
+            goalSettingsVC.viewModel = OnboardingViewModel()
             self.navigationController?.pushViewController(goalSettingsVC, animated: true)
         }
         
