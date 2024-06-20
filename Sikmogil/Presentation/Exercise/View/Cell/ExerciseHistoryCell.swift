@@ -14,6 +14,22 @@ class ExerciseHistoryCell: UITableViewCell {
 
     static let identifier = "ExerciseHistoryCell"
     
+    private let exerciseIconMapping: [String: String] = [
+        "런닝": "runningIcon",
+        "수영": "swimmingIcon",
+        "자전거": "bicycleIcon",
+        "등산": "hikingIcon",
+        "걷기": "walkingIcon",
+        "요가": "yogaIcon",
+        "줄넘기": "jumpingIcon",
+        "필라테스": "pilatesIcon",
+        "웨이트 트레이닝": "weightIcon",
+        "복합 유산소 운동": "aerobicsIcon",
+        "고강도 인터벌 트레이닝": "HIITIcon",
+        "근력 강화 운동": "strengthIcon",
+        "기타": "exerciseIcon"
+    ]
+    
     // MARK: - Components
     private let cardView = UIView().then {
         $0.layer.cornerRadius = 16
@@ -31,13 +47,6 @@ class ExerciseHistoryCell: UITableViewCell {
         $0.font = Suite.bold.of(size: 16)
     }
 
-    private let addButton = UIButton(type: .system).then {
-        if let plusImage = UIImage(systemName: "plus") {
-            $0.setImage(plusImage, for: .normal)
-        }
-        $0.tintColor = .appBlack
-    }
-    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupViews()
@@ -49,8 +58,13 @@ class ExerciseHistoryCell: UITableViewCell {
     }
     
     // MARK: - Configure
-    func configure(with image: UIImage, exercise: ExerciseListModel) {
-        exerciseImageView.image = image
+    func configure(exercise: ExerciseListModel) {
+        if let iconName = exerciseIconMapping[exercise.performedWorkout],
+           let image = UIImage(named: iconName) {
+            exerciseImageView.image = image
+        } else {
+            exerciseImageView.image = UIImage.exerciseIcon
+        }
         exerciseLabel.text = exercise.performedWorkout
         caloriesLabel.text = "\(exercise.calorieBurned) kcal"
     }
@@ -58,7 +72,7 @@ class ExerciseHistoryCell: UITableViewCell {
     // MARK: - Setup Views
     private func setupViews() {
         contentView.addSubview(cardView)
-        cardView.addSubviews(exerciseImageView, exerciseLabel, caloriesLabel, addButton)
+        cardView.addSubviews(exerciseImageView, exerciseLabel, caloriesLabel)
         contentView.backgroundColor = .clear
         selectionStyle = .none
         cardView.backgroundColor = .appLightGray
@@ -81,13 +95,8 @@ class ExerciseHistoryCell: UITableViewCell {
             $0.centerY.equalToSuperview()
         }
         
-        addButton.snp.makeConstraints {
-            $0.trailing.equalToSuperview().inset(16)
-            $0.centerY.equalToSuperview()
-        }
-        
         caloriesLabel.snp.makeConstraints {
-            $0.trailing.equalTo(addButton.snp.leading).offset(-16)
+            $0.trailing.equalToSuperview().inset(24)
             $0.centerY.equalToSuperview()
         }
     }

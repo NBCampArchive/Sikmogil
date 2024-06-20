@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "jumpingIcon.svg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

@@ -238,7 +238,13 @@ class ExerciseSelectionViewController: UIViewController {
     
     // MARK: -  Setup Binding
     private func setupMenus() {
-        let exercises = ["런닝", "수영", "자전거", "등산", "걷기", "스쿼트", "요가", "줄넘기", "필라테스", "기타"]
+        let exercises = [
+            "런닝", "수영", "자전거", "등산",
+            "걷기", "요가", "줄넘기", "필라테스",
+            "웨이트 트레이닝", "복합 유산소 운동",
+            "고강도 인터벌 트레이닝", "근력 강화 운동", "기타"
+        ]
+
         let times = ["15분", "30분", "60분", "90분"]
         
         let exerciseActions = exercises.map { exercise in

@@ -302,7 +302,7 @@ extension ExerciseViewController: UITableViewDataSource {
         }
         
         let exercise = viewModel.exercises[reversedIndex]
-        cell.configure(with: UIImage.exercise, exercise: exercise)
+        cell.configure(exercise: exercise)
         return cell
     }
     
@@ -311,22 +311,47 @@ extension ExerciseViewController: UITableViewDataSource {
     }
 }
 extension ExerciseViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            let reversedIndex = viewModel.exercises.count - 1 - indexPath.row
-            let exercise = viewModel.exercises[reversedIndex]
-            let listId = exercise.workoutListId
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let deleteAction = UIContextualAction(style: .destructive, title: "") { [weak self] (action, view, completion) in
+            guard let self = self else { return }
             
-            viewModel.deleteExerciseListData(for: day, exerciseListId: listId) { [weak self] result in
-                switch result {
-                case .success:
-                    DispatchQueue.main.async {
-                        self?.fetchExerciseData()
-                    }
-                case .failure(let error):
-                    print("운동 리스트 삭제 실패: \(error)")
-                }
+            let alertController = UIAlertController(title: "운동 삭제", message: "이 운동을 삭제하시겠습니까?", preferredStyle: .alert)
+            let cancelAction = UIAlertAction(title: "취소", style: .cancel) { _ in
+                completion(false)
             }
+            let confirmAction = UIAlertAction(title: "삭제", style: .destructive) { _ in
+                let reversedIndex = self.viewModel.exercises.count - 1 - indexPath.row
+                let exercise = self.viewModel.exercises[reversedIndex]
+                let listId = exercise.workoutListId
+                
+                self.viewModel.deleteExerciseListData(for: self.day, exerciseListId: listId) { result in
+                    switch result {
+                    case .success:
+                        DispatchQueue.main.async {
+                            self.viewModel.exercises.remove(at: reversedIndex)
+                            tableView.deleteRows(at: [indexPath], with: .fade)
+                            self.fetchExerciseData()
+                        }
+                    case .failure(let error):
+                        print("운동 리스트 삭제 실패: \(error)")
+                    }
+                }
+                completion(true)
+            }
+            
+            alertController.addAction(cancelAction)
+            alertController.addAction(confirmAction)
+            
+            self.present(alertController, animated: true, completion: nil)
         }
+        
+        // 배경색, 삭제 아이콘
+        deleteAction.backgroundColor = UIColor.white
+        let trashImage = UIImage(systemName: "trash")?.withTintColor(UIColor.darkGray, renderingMode: .alwaysOriginal)
+        deleteAction.image = trashImage
+        
+        // 삭제 액션 추가
+        let configuration = UISwipeActionsConfiguration(actions: [deleteAction])
+        return configuration
     }
 }

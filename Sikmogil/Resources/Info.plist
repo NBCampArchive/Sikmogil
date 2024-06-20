@@ -8,9 +8,9 @@
 		<true/>
 	</dict>
 	<key>NSHealthShareUsageDescription</key>
-	<string>some string value stating the reason</string>
+	<string>걷기 데이터를 얻기 위해 건강 라이브러리에 접근합니다.</string>
 	<key>NSHealthUpdateUsageDescription</key>
-	<string>some string value stating the reason</string>
+	<string>걷기 데이터를 얻기 위해 건강 라이브러리에 접근합니다.</string>
 	<key>GIDClientID</key>
 	<string>670305186445-c8akon865t2rl4gqg4fp0so4qku7edda.apps.googleusercontent.com</string>
 	<key>CFBundleURLTypes</key>
