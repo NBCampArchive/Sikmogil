@@ -8,64 +8,65 @@
 import UIKit
 import SnapKit
 import Then
-import RxSwift
-import RxCocoa
+import Combine
 
 class GoalSettingsViewController: UIViewController {
     
-    var viewModel: OnboardingViewModel?
+    var viewModel: ProfileViewModel?
     
-    private let disposeBag = DisposeBag()
+    private var cancellables = Set<AnyCancellable>()
     
-    let scrollView = UIScrollView().then {
+    private let scrollView = UIScrollView().then {
         $0.backgroundColor = .white
     }
     
-    let contentView = UIView()
+    private let contentView = UIView()
     
-    let goalSettingLabel = UILabel().then {
+    private let goalSettingLabel = UILabel().then {
         $0.text = "목표 설정"
         $0.font = Suite.bold.of(size: 24)
         $0.textColor = .appBlack
     }
     
-    let descriptionLabel = UILabel().then {
+    private let descriptionLabel = UILabel().then {
         $0.text = "목표로 하는 체중과 기간을 설정해주세요."
         $0.font = Suite.regular.of(size: 14)
         $0.textColor = .appDarkGray
     }
     
-    let goalWeightLabel = UILabel().then {
+    private let goalWeightLabel = UILabel().then {
         $0.text = "목표 체중"
         $0.font = Suite.bold.of(size: 16)
         $0.textColor = .appBlack
     }
     
-    let goalWeightTextField = UITextField().then {
+    private let goalWeightTextField = UITextField().then {
         $0.borderStyle = .roundedRect
         $0.keyboardType = .numberPad
     }
     
-    let goalWeightWarningLabel = UILabel().then {
+    private let goalWeightWarningLabel = UILabel().then {
         $0.text = "목표 체중을 입력해주세요"
         $0.font = Suite.regular.of(size: 12)
         $0.textColor = .red
         $0.isHidden = true
     }
     
-    let goalDateLabel = UILabel().then {
+    private let goalDateLabel = UILabel().then {
         $0.text = "목표 날짜"
         $0.font = Suite.bold.of(size: 16)
         $0.textColor = .appBlack
     }
     
-    let goalDatePicker = UIDatePicker().then {
+    private let goalDatePicker = UIDatePicker().then {
         $0.datePickerMode = .date
-        $0.preferredDatePickerStyle = .wheels
+        $0.preferredDatePickerStyle = .inline
         $0.locale = Locale(identifier: "ko_KR")
+        $0.minimumDate = Date()
+        $0.tintColor = .appBlack
     }
     
-    let saveButton = UIButton().then {
+    private let saveButton = UIButton().then {
         $0.setTitle("저장하기", for: .normal)
         $0.backgroundColor = .appBlack
         $0.setTitleColor(.white, for: .normal)
@@ -89,21 +90,34 @@ class GoalSettingsViewController: UIViewController {
     // MARK: - binding
     private func bindViewModel() {
         guard let viewModel = viewModel else { return }
-        
-        viewModel.targetWeight
-            .bind(to: goalWeightTextField.rx.text)
-            .disposed(by: disposeBag)
-        
-        goalWeightTextField.rx.text
-            .orEmpty
-            .bind(to: viewModel.targetWeight)
-            .disposed(by: disposeBag)
-        
-        goalDatePicker.rx.date
-            .bind(to: viewModel.targetDate)
-            .disposed(by: disposeBag)
+
+        // goalWeightTextField 바인딩
+        viewModel.$targetWeight
+            .sink { [weak self] text in
+                self?.goalWeightTextField.text = text
+            }
+            .store(in: &cancellables)
+
+        goalWeightTextField.addTarget(self, action: #selector(goalWeightTextFieldDidChange), for: .editingChanged)
+
+        // goalDatePicker 바인딩
+        viewModel.$targetDate
+            .sink { [weak self] date in
+                self?.goalDatePicker.date = date
+            }
+            .store(in: &cancellables)
+
+        goalDatePicker.addTarget(self, action: #selector(goalDatePickerDidChange), for: .valueChanged)
     }
-    
+
+    @objc private func goalWeightTextFieldDidChange(_ textField: UITextField) {
+        viewModel?.targetWeight = textField.text ?? ""
+    }
+
+    @objc private func goalDatePickerDidChange(_ datePicker: UIDatePicker) {
+        viewModel?.targetDate = datePicker.date
+    }
+
     // MARK: - setupViews
     private func setupViews() {
         view.addSubview(scrollView)
@@ -161,7 +175,6 @@ class GoalSettingsViewController: UIViewController {
             $0.top.equalTo(goalDateLabel.snp.bottom).offset(16)
             $0.leading.equalToSuperview().offset(16)
             $0.trailing.equalToSuperview().offset(-16)
-            $0.height.equalTo(200)
             $0.bottom.equalToSuperview().offset(-16)
         }
         
@@ -175,14 +188,19 @@ class GoalSettingsViewController: UIViewController {
     
     @objc private func saveButtonTapped() {
         guard let viewModel = viewModel else { return }
-        
+
         if viewModel.targetValidateForm() {
             viewModel.saveTargetData()
-            viewModel.moveToNextPage()
-            showAlertAndNavigateBack()
-        } else {
-            goalWeightWarningLabel.isHidden = !(goalWeightTextField.text ?? "").isEmpty
-            view.shake()
+            viewModel.submitProfile { [weak self] result in
+                switch result {
+                case .success:
+                    self?.showAlertAndNavigateBack()
+                    print("목표 설정이 성공적으로 저장되었습니다.")
+                case .failure(let error):
+                    self?.showError(error)
+                    print("목표 설정 저장 실패: \(error.localizedDescription)")
+                }
+            }
         }
     }
     
@@ -195,5 +213,11 @@ class GoalSettingsViewController: UIViewController {
                 self?.navigationController?.popViewController(animated: true)
             }
         }
+    }
+    
+    private func showError(_ error: Error) {
+        let alert = UIAlertController(title: "에러", message: error.localizedDescription, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
+        present(alert, animated: true, completion: nil)
     }
 }

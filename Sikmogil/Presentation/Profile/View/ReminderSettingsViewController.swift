@@ -205,9 +205,11 @@ extension ReminderSettingsViewController: UITextFieldDelegate {
             
             // 현재 텍스트와 입력된 문자열 결합
             var newString = (text as NSString).replacingCharacters(in: range, with: string)
+            
+            // : 추가 로직
             newString = newString.replacingOccurrences(of: ":", with: "")
             
-            if newString.count > 4 {
+            if newString.count > 5 {
                 return false
             }
             

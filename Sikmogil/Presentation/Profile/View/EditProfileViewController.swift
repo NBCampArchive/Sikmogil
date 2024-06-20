@@ -27,7 +27,7 @@ class EditProfileViewController: UIViewController, UIImagePickerControllerDelega
     }
     
     let profileImageView = UIImageView().then {
-        $0.image = UIImage(named: "default_profile")
+        $0.image = UIImage(named: "profile")
         $0.layer.cornerRadius = 75
         $0.layer.masksToBounds = true
         $0.backgroundColor = .gray
@@ -135,6 +135,13 @@ class EditProfileViewController: UIViewController, UIImagePickerControllerDelega
         
         // 데이터를 받아오는 부분
         viewModel?.fetchUserProfile()
+        
+        // 프로필 이미지 초기화
+        if let profileImageURL = viewModel?.picture {
+            loadImage(from: profileImageURL)
+        } else {
+            profileImageView.image = UIImage(named: "profile")
+        }
         
         nickname.addTarget(self, action: #selector(nicknameDidChange(_:)), for: .editingChanged)
         height.addTarget(self, action: #selector(heightDidChange(_:)), for: .editingChanged)

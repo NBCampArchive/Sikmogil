@@ -109,7 +109,7 @@ class ProfileViewController: UIViewController {
                 self?.profileInfoView.heightLabel.text = height
                 self?.profileInfoView.weightLabel.text = weight
                 if !picture.isEmpty {
-                    self?.loadImage(from: picture)  // 비동기 이미지 로드
+                    self?.loadImage(from: picture)
                 } else {
                     self?.profileImageView.image = UIImage(named: "profile")
                 }
@@ -285,7 +285,7 @@ class ProfileViewController: UIViewController {
         let goalSettingsAction = UIAction(title: "목표 설정", image: nil) { [weak self] _ in
             guard let self = self else { return }
             let goalSettingsVC = GoalSettingsViewController()
-            goalSettingsVC.viewModel = OnboardingViewModel()
+            goalSettingsVC.viewModel = self.viewModel
             self.navigationController?.pushViewController(goalSettingsVC, animated: true)
         }
         
