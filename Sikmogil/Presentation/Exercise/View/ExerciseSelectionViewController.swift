@@ -238,7 +238,7 @@ class ExerciseSelectionViewController: UIViewController {
     
     // MARK: -  Setup Binding
     private func setupMenus() {
-        let exercises = ["런닝", "수영", "자전거", "기타"]
+        let exercises = ["런닝", "수영", "자전거", "등산", "걷기", "스쿼트", "요가", "줄넘기", "필라테스", "기타"]
         let times = ["15분", "30분", "60분", "90분"]
         
         let exerciseActions = exercises.map { exercise in
@@ -322,15 +322,13 @@ class ExerciseSelectionViewController: UIViewController {
         }
     }
     
-    // TODO: - 뷰모델 넘기는 방식 대신 옵져버블한 변수로 바꾸기
     private func navigateToTimerVC() {
         guard let time = viewModel.selectedTime else { return }
         // 시간 문자열을 초 단위로 변환 ("30분" -> 1800초)
         let timeInMinutes = Int(time.dropLast(1)) ?? 0
         let timeInSeconds = TimeInterval(timeInMinutes * 60)
         
-        let exerciseTimerVC = ExerciseTimerViewController()
-        exerciseTimerVC.selectedTime = timeInSeconds
+        let exerciseTimerVC = ExerciseTimerViewController(selectedTime: timeInSeconds, initialTime: timeInSeconds)
         exerciseTimerVC.viewModel = self.viewModel
         navigationController?.pushViewController(exerciseTimerVC, animated: true)
     }

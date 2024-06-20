@@ -55,6 +55,28 @@ class NotificationHelper {
         }
     }
     
+    // MARK: - 타이머 알림 메서드
+    func timerNotification() {
+        let content = UNMutableNotificationContent().then {
+            $0.title = "Sikmogil"
+            $0.body = "운동이 끝났습니다!"
+            $0.sound = .default
+        }
+        
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
+        let request = UNNotificationRequest(identifier: "timerNotification", content: content, trigger: trigger)
+        
+        UNUserNotificationCenter.current().add(request) { error in
+            DispatchQueue.main.async {
+                if let error = error {
+                    print("알림 설정 실패: \(error.localizedDescription)")
+                } else {
+                    print("즉시 알림이 성공적으로 설정되었습니다.")
+                }
+            }
+        }
+    }
+    
     // MARK: - 모든 알림 제거 메서드
     // 모든 예약된 알림을 제거
     func clearAllNotifications() {

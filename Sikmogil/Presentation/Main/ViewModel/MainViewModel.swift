@@ -11,48 +11,49 @@ import DGCharts
 
 class MainViewModel: ObservableObject {
     
-//    //MARK: - Input
-//    struct Input {
-//        let updateWeightData: AnyPublisher<(String, String), Never>
-//        let loadWeightData: AnyPublisher<(String, String), Never>
-//    }
-//
-//    //MARK: - Output
-//    struct Output {
-//        let targetModel: AnyPublisher<TargetModel?, Never>
-//        let errorMessage: AnyPublisher<String?, Never>
-//        let postSuccess: AnyPublisher<Bool, Never>
-//    }
+    //    //MARK: - Input
+    //    struct Input {
+    //        let updateWeightData: AnyPublisher<(String, String), Never>
+    //        let loadWeightData: AnyPublisher<(String, String), Never>
+    //    }
+    //
+    //    //MARK: - Output
+    //    struct Output {
+    //        let targetModel: AnyPublisher<TargetModel?, Never>
+    //        let errorMessage: AnyPublisher<String?, Never>
+    //        let postSuccess: AnyPublisher<Bool, Never>
+    //    }
     
     //MARK: - Properties
-//    private let updateWeightDataSubject = PassthroughSubject<(String, String), Never>()
-//    private let loadWeightDataSubject = PassthroughSubject<(String, String), Never>()
+    //    private let updateWeightDataSubject = PassthroughSubject<(String, String), Never>()
+    //    private let loadWeightDataSubject = PassthroughSubject<(String, String), Never>()
     
     @Published var targetModel: TargetModel?
     @Published var errorMessage: String?
     @Published var postSuccess: Bool = false
     @Published var progress: Float = 0.0
     @Published var remainingDays: Int = 0
-    @Published var chartDateEntries: [BarChartDataEntry] = []
+    @Published var chartDateEntries: [ChartDataEntry] = []
+    @Published var chartDates: [String] = []
     @Published var dataUpdated: Bool = false
     @Published var weight: String = ""
     
     private var cancellables = Set<AnyCancellable>()
     private let calendarService = CalendarAPIManager.shared
     
-//    //MARK: - Init
-//    init() {
-//        bindInputs()
-//    }
-//
-//    //MARK: - Binding
-//    private func bindInputs() {
-//        updateWeightDataSubject
-//            .sink { weightDate, weight in
-//                self.updateWeightData(weightDate: weightDate, weight: weight)
-//            }
-//            .store(in: &cancellables)
-//    }
+    //    //MARK: - Init
+    //    init() {
+    //        bindInputs()
+    //    }
+    //
+    //    //MARK: - Binding
+    //    private func bindInputs() {
+    //        updateWeightDataSubject
+    //            .sink { weightDate, weight in
+    //                self.updateWeightData(weightDate: weightDate, weight: weight)
+    //            }
+    //            .store(in: &cancellables)
+    //    }
     //MARK: - Get Target Data
     func loadWeightData() {
         calendarService.getWeightData()
@@ -70,7 +71,7 @@ class MainViewModel: ObservableObject {
             }
             .store(in: &cancellables)
     }
-
+    
     //MARK: - Update Target Data
     func updateWeightData(weightDate: String ,weight: String) {
         print("updateWeightData")
@@ -137,13 +138,27 @@ class MainViewModel: ObservableObject {
     private func updateChartDataEntry() {
         guard let targetModel = targetModel else { return }
         
-        var entries: [BarChartDataEntry] = []
+        var entries: [ChartDataEntry] = []
+        var dates: [String] = []
         
-        for index in 0..<7 {
-            let weight = (index < targetModel.weekWeights.count ? targetModel.weekWeights[index].weight : 0.0) ?? 0.0
-            entries.append(BarChartDataEntry(x: Double(index), y: weight))
+        let inputDateFormatter = DateFormatter()
+        inputDateFormatter.dateFormat = "yyyy.MM.dd"
+        
+        let outputDateFormatter = DateFormatter()
+        outputDateFormatter.dateFormat = "MM.dd"
+        
+        for index in 0..<targetModel.weekWeights.count {
+            let weight = targetModel.weekWeights[index].weight ?? 0.0
+            entries.append(ChartDataEntry(x: Double(index), y: weight))
+            if let date = inputDateFormatter.date(from: targetModel.weekWeights[index].date) {
+                let formattedDate = outputDateFormatter.string(from: date)
+                dates.append(formattedDate)
+            } else {
+                dates.append("") // 변환에 실패하면 빈 문자열 추가
+            }
         }
         
         self.chartDateEntries = entries
+        self.chartDates = dates
     }
 }
