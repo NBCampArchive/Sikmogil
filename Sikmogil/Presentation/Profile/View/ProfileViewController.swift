@@ -14,6 +14,7 @@ import KeychainSwift
 class ProfileViewController: UIViewController {
     
     var viewModel = ProfileViewModel()
+    
     private var cancellables = Set<AnyCancellable>()
     
     let spacerView = UIView()
@@ -32,7 +33,7 @@ class ProfileViewController: UIViewController {
     }
     
     let profileImageView = UIImageView().then {
-        $0.image = UIImage(systemName: "person.crop.circle.fill")
+        $0.image = UIImage(named: "profile")
         $0.contentMode = .scaleAspectFill
         $0.clipsToBounds = true
     }
@@ -76,33 +77,65 @@ class ProfileViewController: UIViewController {
         settingsButton.addTarget(self, action: #selector(settingsButtonTapped(_:)), for: .touchUpInside)
         logoutButton.addTarget(self, action: #selector(logoutButtonTapped(_:)), for: .touchUpInside)
         
-        updateContentSize()
-        
         profileImageView.layer.cornerRadius = 50
         profileImageView.layer.masksToBounds = true
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        profileImageView.layer.cornerRadius = profileImageView.frame.width / 2
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.fetchUserProfile()
+        setupBindings()
+    }
+
     func setupBindings() {
         let nicknamePublisher = viewModel.$nickname
-            .receive(on: DispatchQueue.main)
-            .eraseToAnyPublisher()
-        
         let heightPublisher = viewModel.$height
-            .receive(on: DispatchQueue.main)
-            .eraseToAnyPublisher()
-        
         let weightPublisher = viewModel.$weight
+        let picturePublisher = viewModel.$picture
+
+        // 뷰모델의 프로퍼티와 뷰를 바인딩하여 데이터를 뿌려주는 부분
+        Publishers.CombineLatest4(nicknamePublisher, heightPublisher, weightPublisher, picturePublisher)
             .receive(on: DispatchQueue.main)
-            .eraseToAnyPublisher()
-        
-        Publishers.CombineLatest3(nicknamePublisher, heightPublisher, weightPublisher)
-            .sink { [weak self] nickname, height, weight in
+            .sink { [weak self] nickname, height, weight, picture in
                 self?.nicknameLabel.text = nickname
                 self?.profileInfoView.heightLabel.text = height
                 self?.profileInfoView.weightLabel.text = weight
+                if !picture.isEmpty {
+                    self?.loadImage(from: picture)  // 비동기 이미지 로드
+                } else {
+                    self?.profileImageView.image = UIImage(named: "profile")
+                }
             }
             .store(in: &cancellables)
-        viewModel.fetchUserProfile()
+    }
+
+    // URL로부터 이미지를 로드하여 profileImageView에 뿌려주는 부분
+    private func loadImage(from urlString: String) {
+        guard !urlString.isEmpty, let url = URL(string: urlString) else {
+            print("URL 문자열이 비어 있습니다.")
+            DispatchQueue.main.async {
+                self.profileImageView.image = UIImage(named: "profile")
+            }
+            return
+        }
+        URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
+            guard let self = self else { return }
+            guard let data = data, error == nil else {
+                print("이미지 로드 실패: \(error?.localizedDescription ?? "오류 설명 없음")")
+                DispatchQueue.main.async {
+                    self.profileImageView.image = UIImage(named: "profile")
+                }
+                return
+            }
+            DispatchQueue.main.async {
+                self.profileImageView.image = UIImage(data: data)
+            }
+        }.resume()
     }
     
     private func setupViews() {
@@ -129,6 +162,7 @@ class ProfileViewController: UIViewController {
         scrollView.snp.makeConstraints {
             $0.edges.equalTo(view.safeAreaLayoutGuide)
         }
+        
         contentView.snp.makeConstraints {
             $0.edges.equalTo(scrollView)
             $0.width.equalTo(scrollView)
@@ -201,14 +235,6 @@ class ProfileViewController: UIViewController {
             $0.bottom.equalTo(contentView).offset(-20)
         }
     }
-    private func updateContentSize() {
-        let contentHeight = contentView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
-        contentView.snp.remakeConstraints {
-            $0.edges.equalTo(scrollView)
-            $0.width.equalTo(scrollView)
-            $0.height.equalTo(contentHeight)
-        }
-    }
     
     // 각 셀을 인덱스 기반 클로저 배열 할당
     func didSelectCell(at index: Int) {
@@ -236,24 +262,27 @@ class ProfileViewController: UIViewController {
     ]
     
     @objc private func settingsButtonTapped(_ sender: UIButton) {
-        let editProfileAction = UIAction(title: "프로필 수정", image: nil) { _ in
-            print("작동")
+        let editProfileAction = UIAction(title: "프로필 수정", image: nil) { [weak self] _ in
+            guard let self = self else { return }
             let editProfileVC = EditProfileViewController()
             editProfileVC.viewModel = self.viewModel
             self.navigationController?.pushViewController(editProfileVC, animated: true)
         }
-        let notificationSettingsAction = UIAction(title: "알림 설정", image: nil) { _ in
-            print("작동")
+        
+        let notificationSettingsAction = UIAction(title: "알림 설정", image: nil) { [weak self] _ in
+            guard let self = self else { return }
             let notificationSettingsVC = NotificationSettingsViewController()
             notificationSettingsVC.viewModel = self.viewModel
             self.navigationController?.pushViewController(notificationSettingsVC, animated: true)
         }
-        let goalSettingsAction = UIAction(title: "목표 설정", image: nil) { _ in
-            print("작동")
+        
+        let goalSettingsAction = UIAction(title: "목표 설정", image: nil) { [weak self] _ in
+            guard let self = self else { return }
             let goalSettingsVC = GoalSettingsViewController()
             goalSettingsVC.viewModel = self.viewModel
             self.navigationController?.pushViewController(goalSettingsVC, animated: true)
         }
+        
         let menu = UIMenu(title: "", children: [editProfileAction, notificationSettingsAction, goalSettingsAction])
         sender.menu = menu
         sender.showsMenuAsPrimaryAction = true
@@ -264,7 +293,7 @@ class ProfileViewController: UIViewController {
         keychain.clear()
         if let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate {
             let loginVC = LoginViewController()
-            let navController = UINavigationController(rootViewController: loginVC)
+            let navController = UINavigationController(rootViewController:loginVC)
             sceneDelegate.window?.rootViewController = navController
             sceneDelegate.window?.makeKeyAndVisible()
         }
