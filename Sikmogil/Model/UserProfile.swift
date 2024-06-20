@@ -23,4 +23,5 @@ struct UserProfile: Decodable {
     var canEatCalorie: Int
     var createdDate: String
     var remindTime: String
+    var picture: String?
 }
