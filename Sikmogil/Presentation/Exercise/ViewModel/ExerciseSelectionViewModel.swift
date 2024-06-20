@@ -17,6 +17,26 @@ class ExerciseSelectionViewModel {
     
     private var cancellables = Set<AnyCancellable>()
     
+    let exerciseIconMapping: [String: String] = [
+        "런닝": "runningIcon",
+        "수영": "swimmingIcon",
+        "자전거": "bicycleIcon",
+        "등산": "hikingIcon",
+        "걷기": "walkingIcon",
+        "요가": "yogaIcon",
+        "줄넘기": "jumpingIcon",
+        "필라테스": "pilatesIcon",
+        "웨이트 트레이닝": "weightIcon",
+        "복합 유산소 운동": "aerobicsIcon",
+        "고강도 인터벌 트레이닝": "HIITIcon",
+        "근력 강화 운동": "strengthIcon",
+        "기타": "exerciseIcon"
+    ]
+    
+    func iconName(for exercise: String) -> String {
+        return exerciseIconMapping[exercise] ?? "exerciseIcon"
+    }
+    
     init() {
         Publishers.CombineLatest3($selectedExercise, $selectedTime, $selectedIntensity)
             .sink { [weak self] exercise, time, intensity in
