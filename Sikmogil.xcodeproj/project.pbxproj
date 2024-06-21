@@ -63,6 +63,7 @@
 		B53786C92C2405E1007B362F /* MarkdownView in Frameworks */ = {isa = PBXBuildFile; productRef = B53786C82C2405E1007B362F /* MarkdownView */; };
 		B53786CB2C24126D007B362F /* PermissionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53786CA2C24126D007B362F /* PermissionViewController.swift */; };
 		B53786CD2C245390007B362F /* UITextFieldExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53786CC2C245390007B362F /* UITextFieldExtension.swift */; };
+		B53786CF2C25AE08007B362F /* BagelFatOne-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B53786CE2C25AE08007B362F /* BagelFatOne-Regular.ttf */; };
 		B54ABF882C09BD43002E89DC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABF872C09BD43002E89DC /* AppDelegate.swift */; };
 		B54ABF8A2C09BD43002E89DC /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABF892C09BD43002E89DC /* SceneDelegate.swift */; };
 		B54ABF8C2C09BD43002E89DC /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABF8B2C09BD43002E89DC /* ViewController.swift */; };
@@ -192,6 +193,7 @@
 		B53786C52C23F3CD007B362F /* PrivacyPolicyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyPolicyViewController.swift; sourceTree = "<group>"; };
 		B53786CA2C24126D007B362F /* PermissionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionViewController.swift; sourceTree = "<group>"; };
 		B53786CC2C245390007B362F /* UITextFieldExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextFieldExtension.swift; sourceTree = "<group>"; };
+		B53786CE2C25AE08007B362F /* BagelFatOne-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "BagelFatOne-Regular.ttf"; sourceTree = "<group>"; };
 		B54ABF842C09BD43002E89DC /* Sikmogil.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sikmogil.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B54ABF872C09BD43002E89DC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B54ABF892C09BD43002E89DC /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -639,6 +641,7 @@
 		B54ABFD82C0D6892002E89DC /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
+				B53786CE2C25AE08007B362F /* BagelFatOne-Regular.ttf */,
 				B54ABFDA2C0D68CF002E89DC /* SUITE-Bold.ttf */,
 				B54ABFDE2C0D68CF002E89DC /* SUITE-ExtraBold.ttf */,
 				B54ABFDD2C0D68CF002E89DC /* SUITE-Heavy.ttf */,
@@ -882,6 +885,7 @@
 				B54ABFE32C0D68CF002E89DC /* SUITE-Regular.ttf in Resources */,
 				B54ABFE52C0D68CF002E89DC /* SUITE-ExtraBold.ttf in Resources */,
 				B54ABFE42C0D68CF002E89DC /* SUITE-Heavy.ttf in Resources */,
+				B53786CF2C25AE08007B362F /* BagelFatOne-Regular.ttf in Resources */,
 				B54ABFE22C0D68CF002E89DC /* SUITE-SemiBold.ttf in Resources */,
 				B54ABFE62C0D68CF002E89DC /* SUITE-Medium.ttf in Resources */,
 				B54ABFE12C0D68CF002E89DC /* SUITE-Bold.ttf in Resources */,
