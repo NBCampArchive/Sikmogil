@@ -43,15 +43,8 @@ class ExerciseViewController: UIViewController {
         $0.progressColor = .appGreen
         $0.trackColor = .appLightGray
     }
-
-    private let exerciseCircleView = UIView().then {
-        $0.backgroundColor = .appGreen
-        $0.layer.cornerRadius = 40
-    }
-
-    private let activeImage = UIImageView().then {
-        $0.image = .active
-        $0.contentMode = .scaleAspectFit
+    private let exerciseProgressBarIcon = UIImageView().then {
+        $0.image = UIImage.exerciseIconFill
     }
 
     private let progressLabel = UILabel().then {
@@ -186,9 +179,8 @@ class ExerciseViewController: UIViewController {
         
         view.addSubviews(scrollView, startExerciseButton)
         scrollView.addSubview(contentView)
-        contentView.addSubviews(descriptionLabel, progressView, historyLabel, albumButton, tableView)
-        progressView.addSubviews(customCircularProgressBar, exerciseCircleView, progressLabel)
-        exerciseCircleView.addSubview(activeImage)
+        contentView.addSubviews(descriptionLabel, progressView, historyLabel, tableView)
+        progressView.addSubviews(customCircularProgressBar, exerciseProgressBarIcon, progressLabel)
     }
     
     private func setupConstraints() {
@@ -216,20 +208,15 @@ class ExerciseViewController: UIViewController {
             $0.edges.equalToSuperview()
         }
         
-        exerciseCircleView.snp.makeConstraints {
+        exerciseProgressBarIcon.snp.makeConstraints {
             $0.centerX.equalToSuperview()
             $0.width.height.equalTo(80)
             $0.top.equalToSuperview().inset(60)
         }
         
-        activeImage.snp.makeConstraints{
-            $0.center.equalToSuperview()
-            $0.width.equalTo(30)
-        }
-        
         progressLabel.snp.makeConstraints {
             $0.centerX.equalToSuperview()
-            $0.top.equalTo(exerciseCircleView.snp.bottom).offset(16)
+            $0.top.equalTo(exerciseProgressBarIcon.snp.bottom).offset(16)
         }
         
         historyLabel.snp.makeConstraints {
@@ -237,12 +224,12 @@ class ExerciseViewController: UIViewController {
             $0.top.equalTo(progressView.snp.bottom)
         }
         
-        albumButton.snp.makeConstraints {
-            $0.trailing.equalTo(contentView).inset(16)
-            $0.width.equalTo(90)
-            $0.height.equalTo(30)
-            $0.centerY.equalTo(historyLabel)
-        }
+//        albumButton.snp.makeConstraints {
+//            $0.trailing.equalTo(contentView).inset(16)
+//            $0.width.equalTo(90)
+//            $0.height.equalTo(30)
+//            $0.centerY.equalTo(historyLabel)
+//        }
         
         tableView.snp.makeConstraints {
             $0.top.equalTo(historyLabel.snp.bottom).offset(16)
