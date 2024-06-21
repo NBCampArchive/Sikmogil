@@ -60,6 +60,11 @@
 		B52001EE2C1C5CD60083CBDF /* CalendarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001ED2C1C5CD60083CBDF /* CalendarCell.swift */; };
 		B52001F02C1C8D7E0083CBDF /* TargetModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001EF2C1C8D7E0083CBDF /* TargetModel.swift */; };
 		B52001F22C1DBAF70083CBDF /* CalendarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001F12C1DBAF70083CBDF /* CalendarViewModel.swift */; };
+		B53786C42C23D4DC007B362F /* AgreementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53786C32C23D4DC007B362F /* AgreementViewController.swift */; };
+		B53786C62C23F3CD007B362F /* PrivacyPolicyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53786C52C23F3CD007B362F /* PrivacyPolicyViewController.swift */; };
+		B53786C92C2405E1007B362F /* MarkdownView in Frameworks */ = {isa = PBXBuildFile; productRef = B53786C82C2405E1007B362F /* MarkdownView */; };
+		B53786CB2C24126D007B362F /* PermissionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53786CA2C24126D007B362F /* PermissionViewController.swift */; };
+		B53786CD2C245390007B362F /* UITextFieldExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53786CC2C245390007B362F /* UITextFieldExtension.swift */; };
 		B54ABF882C09BD43002E89DC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABF872C09BD43002E89DC /* AppDelegate.swift */; };
 		B54ABF8A2C09BD43002E89DC /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABF892C09BD43002E89DC /* SceneDelegate.swift */; };
 		B54ABF8C2C09BD43002E89DC /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABF8B2C09BD43002E89DC /* ViewController.swift */; };
@@ -102,7 +107,6 @@
 		B54AC0012C0F1CA3002E89DC /* RxRelay in Frameworks */ = {isa = PBXBuildFile; productRef = B54AC0002C0F1CA3002E89DC /* RxRelay */; };
 		B54AC0032C0F1CA3002E89DC /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = B54AC0022C0F1CA3002E89DC /* RxSwift */; };
 		B54AC0082C0F45DF002E89DC /* KeychainSwift in Frameworks */ = {isa = PBXBuildFile; productRef = B54AC0072C0F45DF002E89DC /* KeychainSwift */; };
-		B54AC00A2C0F48A5002E89DC /* SikmogilPlist.plist in Resources */ = {isa = PBXBuildFile; fileRef = B54AC0092C0F48A5002E89DC /* SikmogilPlist.plist */; };
 		B54AC00C2C0F48D1002E89DC /* SikmogilBundle++.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54AC00B2C0F48D1002E89DC /* SikmogilBundle++.swift */; };
 		B54AC00E2C105475002E89DC /* UserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54AC00D2C105475002E89DC /* UserProfile.swift */; };
 		B54AC0122C1054B1002E89DC /* OnboardingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54AC0112C1054B0002E89DC /* OnboardingViewModel.swift */; };
@@ -190,6 +194,10 @@
 		B52001ED2C1C5CD60083CBDF /* CalendarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarCell.swift; sourceTree = "<group>"; };
 		B52001EF2C1C8D7E0083CBDF /* TargetModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TargetModel.swift; sourceTree = "<group>"; };
 		B52001F12C1DBAF70083CBDF /* CalendarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewModel.swift; sourceTree = "<group>"; };
+		B53786C32C23D4DC007B362F /* AgreementViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgreementViewController.swift; sourceTree = "<group>"; };
+		B53786C52C23F3CD007B362F /* PrivacyPolicyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyPolicyViewController.swift; sourceTree = "<group>"; };
+		B53786CA2C24126D007B362F /* PermissionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionViewController.swift; sourceTree = "<group>"; };
+		B53786CC2C245390007B362F /* UITextFieldExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextFieldExtension.swift; sourceTree = "<group>"; };
 		B54ABF842C09BD43002E89DC /* Sikmogil.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sikmogil.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B54ABF872C09BD43002E89DC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B54ABF892C09BD43002E89DC /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -221,7 +229,6 @@
 		B54ABFF42C0DE1CD002E89DC /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		B54ABFF72C0F0DC7002E89DC /* LoginAPIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginAPIManager.swift; sourceTree = "<group>"; };
 		B54ABFF92C0F0F65002E89DC /* LoginModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginModel.swift; sourceTree = "<group>"; };
-		B54AC0092C0F48A5002E89DC /* SikmogilPlist.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = SikmogilPlist.plist; sourceTree = "<group>"; };
 		B54AC00B2C0F48D1002E89DC /* SikmogilBundle++.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SikmogilBundle++.swift"; sourceTree = "<group>"; };
 		B54AC00D2C105475002E89DC /* UserProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfile.swift; sourceTree = "<group>"; };
 		B54AC0112C1054B0002E89DC /* OnboardingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewModel.swift; sourceTree = "<group>"; };
@@ -272,6 +279,7 @@
 				62578CD72C0ED5F1005035BB /* FSCalendar in Frameworks */,
 				62578CEC2C117181005035BB /* Lottie in Frameworks */,
 				B54AC0032C0F1CA3002E89DC /* RxSwift in Frameworks */,
+				B53786C92C2405E1007B362F /* MarkdownView in Frameworks */,
 				B54ABFA02C0CB41A002E89DC /* DGCharts in Frameworks */,
 				B54ABFA92C0CB447002E89DC /* Then in Frameworks */,
 				B54ABFAC2C0CB459002E89DC /* SnapKit in Frameworks */,
@@ -578,7 +586,6 @@
 				B54ABF932C09BD47002E89DC /* Assets.xcassets */,
 				62578CED2C117333005035BB /* The_Scale.json */,
 				B54ABF982C09BD47002E89DC /* Info.plist */,
-				B54AC0092C0F48A5002E89DC /* SikmogilPlist.plist */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -606,6 +613,7 @@
 				F36105B42C1BFF6500237572 /* UILabel.swift */,
 				F36105B62C1BFF7600237572 /* Double.swift */,
 				54C282FB2C22F42100DDEA08 /* UITextField.swift */,
+				B53786CC2C245390007B362F /* UITextFieldExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -720,6 +728,9 @@
 				B54AC0192C105646002E89DC /* Step1ViewController.swift */,
 				B54AC01B2C1056A4002E89DC /* Step2ViewController.swift */,
 				B54AC01D2C1056C3002E89DC /* Step3ViewController.swift */,
+				B53786C32C23D4DC007B362F /* AgreementViewController.swift */,
+				B53786C52C23F3CD007B362F /* PrivacyPolicyViewController.swift */,
+				B53786CA2C24126D007B362F /* PermissionViewController.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -822,6 +833,7 @@
 				B54AC0002C0F1CA3002E89DC /* RxRelay */,
 				B54AC0022C0F1CA3002E89DC /* RxSwift */,
 				B54AC0072C0F45DF002E89DC /* KeychainSwift */,
+				B53786C82C2405E1007B362F /* MarkdownView */,
 			);
 			productName = Sikmogil;
 			productReference = B54ABF842C09BD43002E89DC /* Sikmogil.app */;
@@ -863,6 +875,7 @@
 				62578CEA2C117181005035BB /* XCRemoteSwiftPackageReference "lottie-ios" */,
 				B54ABFFB2C0F1CA3002E89DC /* XCRemoteSwiftPackageReference "RxSwift" */,
 				B54AC0062C0F45DF002E89DC /* XCRemoteSwiftPackageReference "keychain-swift" */,
+				B53786C72C2405E1007B362F /* XCRemoteSwiftPackageReference "MarkdownView" */,
 			);
 			productRefGroup = B54ABF852C09BD43002E89DC /* Products */;
 			projectDirPath = "";
@@ -887,7 +900,6 @@
 				62578CEE2C117333005035BB /* The_Scale.json in Resources */,
 				B54ABFE02C0D68CF002E89DC /* SUITE-Light.ttf in Resources */,
 				B54ABF942C09BD47002E89DC /* Assets.xcassets in Resources */,
-				B54AC00A2C0F48A5002E89DC /* SikmogilPlist.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -899,8 +911,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				62578CF02C11793C005035BB /* DayViewController.swift in Sources */,
+				B53786C42C23D4DC007B362F /* AgreementViewController.swift in Sources */,
 				B52001BB2C1325110083CBDF /* BoardListViewModel.swift in Sources */,
 				B54ABFEE2C0D7370002E89DC /* UIColorExtension.swift in Sources */,
+				B53786CB2C24126D007B362F /* PermissionViewController.swift in Sources */,
 				B52001E22C1897C20083CBDF /* DietModel.swift in Sources */,
 				F3094EC62C0E40040099DE2C /* ExerciseSelectionViewController.swift in Sources */,
 				CACA65C62C1B5CE20030D8D5 /* FoodDbAPIManager.swift in Sources */,
@@ -941,6 +955,7 @@
 				B52001E02C18922D0083CBDF /* DietAPIManager.swift in Sources */,
 				CA13FDE62C22E483007B3DBE /* BreakfastTableViewCell.swift in Sources */,
 				545AA5162C11E6540083D893 /* AlarmTableViewCell.swift in Sources */,
+				B53786C62C23F3CD007B362F /* PrivacyPolicyViewController.swift in Sources */,
 				B52001D62C171B8C0083CBDF /* DietMainViewController.swift in Sources */,
 				B54ABF922C09BD43002E89DC /* Sikmogil.xcdatamodeld in Sources */,
 				5485F0882C0DFE2D00A2A71E /* ProfileTableViewCell.swift in Sources */,
@@ -1003,6 +1018,7 @@
 				B54ABFF52C0DE1CD002E89DC /* LoginViewModel.swift in Sources */,
 				B54ABFD52C0CBE86002E89DC /* CircularProgressBar.swift in Sources */,
 				62578CE92C107C7A005035BB /* MainViewModel.swift in Sources */,
+				B53786CD2C245390007B362F /* UITextFieldExtension.swift in Sources */,
 				F3094EEF2C0EEDA40099DE2C /* ExerciseTimerViewController.swift in Sources */,
 				B52001C12C15ADA50083CBDF /* ExerciseModel.swift in Sources */,
 			);
@@ -1138,7 +1154,7 @@
 				CODE_SIGN_ENTITLEMENTS = Sikmogil/Sikmogil.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = T7U9UX39U3;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Sikmogil/Resources/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -1172,7 +1188,7 @@
 				CODE_SIGN_ENTITLEMENTS = Sikmogil/Sikmogil.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = T7U9UX39U3;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Sikmogil/Resources/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -1236,6 +1252,14 @@
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 4.4.3;
+			};
+		};
+		B53786C72C2405E1007B362F /* XCRemoteSwiftPackageReference "MarkdownView" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/keitaoouchi/MarkdownView";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.9.1;
 			};
 		};
 		B54ABF9E2C0CB41A002E89DC /* XCRemoteSwiftPackageReference "Charts" */ = {
@@ -1322,6 +1346,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 62578CEA2C117181005035BB /* XCRemoteSwiftPackageReference "lottie-ios" */;
 			productName = Lottie;
+		};
+		B53786C82C2405E1007B362F /* MarkdownView */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B53786C72C2405E1007B362F /* XCRemoteSwiftPackageReference "MarkdownView" */;
+			productName = MarkdownView;
 		};
 		B54ABF9F2C0CB41A002E89DC /* DGCharts */ = {
 			isa = XCSwiftPackageProductDependency;
