@@ -89,7 +89,7 @@ class PermissionViewController: UIViewController {
     
     private func setupConstraints() {
         mainStackView.snp.makeConstraints {
-            $0.centerY.equalToSuperview()
+            $0.centerY.equalToSuperview().offset(-48)
             $0.leading.equalToSuperview().offset(32)
             $0.trailing.equalToSuperview().offset(-32)
         }
