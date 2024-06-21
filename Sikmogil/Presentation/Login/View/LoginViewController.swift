@@ -16,15 +16,21 @@ class LoginViewController: UIViewController {
     private let viewModel: LoginViewModelIO = LoginViewModel()
     private let disposeBag = DisposeBag()
     
+    private let backgroundImageView = UIImageView().then {
+        $0.image = UIImage(named: "backgroundImage")
+        $0.contentMode = .scaleAspectFill
+    }
+    
     private let appleSignInButton = UIButton(type: .system).then {
         var configuration = UIButton.Configuration.plain()
         configuration.title = "Sign up with Apple"
         configuration.image = UIImage(systemName: "applelogo")
         configuration.imagePlacement = .leading
         configuration.imagePadding = 10
+        configuration.background.backgroundColor = .white
         configuration.baseBackgroundColor = .white
         configuration.baseForegroundColor = .black
-        configuration.cornerStyle = .medium
+        configuration.cornerStyle = .large
         configuration.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 20, bottom: 10, trailing: 20)
         
         let title = AttributedString("Sign up with Apple", attributes: AttributeContainer([
@@ -34,9 +40,6 @@ class LoginViewController: UIViewController {
         configuration.attributedTitle = title
         
         $0.configuration = configuration
-        $0.layer.borderWidth = 1
-        $0.layer.borderColor = UIColor.customDarkGray?.cgColor
-        $0.layer.cornerRadius = 15
     }
     
     private let googleSignInButton = UIButton(type: .system).then {
@@ -45,9 +48,10 @@ class LoginViewController: UIViewController {
         configuration.image = UIImage(named: "googleLogo")
         configuration.imagePlacement = .leading
         configuration.imagePadding = 10
+        configuration.background.backgroundColor = .white
         configuration.baseBackgroundColor = .white
         configuration.baseForegroundColor = .black
-        configuration.cornerStyle = .medium
+        configuration.cornerStyle = .large
         configuration.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 20, bottom: 10, trailing: 20)
         
         let title = AttributedString("Sign up with Google", attributes: AttributeContainer([
@@ -57,9 +61,12 @@ class LoginViewController: UIViewController {
         configuration.attributedTitle = title
         
         $0.configuration = configuration
-        $0.layer.borderWidth = 1
-        $0.layer.borderColor = UIColor.customDarkGray?.cgColor
-        $0.layer.cornerRadius = 15
+    }
+    
+    private let logoLabel = UILabel().then {
+        $0.text = "식목일"
+        $0.font = BagelFatOne.regular.of(size: 24)
+        $0.textColor = .appBlack
     }
     
     private let buttonStackView = UIStackView().then {
@@ -72,25 +79,27 @@ class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .white
-        
         setupViews()
         setupConstraints()
         setupBindings()
     }
     
     private func setupViews() {
-        view.addSubview(buttonStackView)
+        view.addSubviews(backgroundImageView, buttonStackView, logoLabel)
         buttonStackView.addArrangedSubviews(appleSignInButton, googleSignInButton)
         appleSignInButton.addTarget(self, action: #selector(didTapAppleSignIn), for: .touchUpInside)
         googleSignInButton.addTarget(self, action: #selector(didTapGoogleSignIn), for: .touchUpInside)
     }
     
     private func setupConstraints() {
+        backgroundImageView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+        
         buttonStackView.snp.makeConstraints {
             $0.width.equalToSuperview().inset(32)
             $0.centerX.equalToSuperview()
-            $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).inset(150)
+            $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).inset(130)
         }
         
         appleSignInButton.snp.makeConstraints {
@@ -101,6 +110,11 @@ class LoginViewController: UIViewController {
         googleSignInButton.snp.makeConstraints {
             $0.width.equalToSuperview()
             $0.height.equalTo(60)
+        }
+        
+        logoLabel.snp.makeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.top.equalTo(buttonStackView.snp.bottom).offset(32)
         }
     }
     

@@ -18,11 +18,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         guard let windowScene = (scene as? UIWindowScene) else { return }
-        
-        // MARK: - API Test 시 아래 코드를 주석 처리하고 진행해주세요 (간단한 UI 수정시에만 사용해주세요)
         let window = UIWindow(windowScene: windowScene)
         
-        let viewController = LoginViewController()
+        // MARK: - API Test 시 아래 코드를 주석 처리하고 진행해주세요 (간단한 UI 수정시에만 사용해주세요)
+        let viewController = OnboardingViewController()
         let navigationController = UINavigationController(rootViewController: viewController)
         
         window.rootViewController = navigationController
@@ -56,15 +55,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     private func showLoginScreen() {
         let loginViewController = LoginViewController()
-        let navigationController = UINavigationController(rootViewController: loginViewController)
-        window?.rootViewController = navigationController
+        window?.rootViewController = loginViewController
         window?.makeKeyAndVisible()
     }
     
     private func showMainScreen() {
         let mainViewController = BottomTabBarController()
-        let navigationController = UINavigationController(rootViewController: mainViewController)
-        window?.rootViewController = navigationController
+        window?.rootViewController = mainViewController
         window?.makeKeyAndVisible()
     }
     

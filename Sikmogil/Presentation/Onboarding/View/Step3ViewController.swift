@@ -31,13 +31,10 @@ class Step3ViewController: UIViewController {
         $0.textColor = .customDarkGray
     }
     
-    private let timeTextField = UITextField().then {
-        $0.placeholder = "12:00"
-        $0.font = UIFont.systemFont(ofSize: 48, weight: .medium)
-        $0.textColor = .lightGray
-        $0.textAlignment = .center
-        $0.keyboardType = .numberPad
-        $0.borderStyle = .none
+    private let timePicker = UIDatePicker().then {
+        $0.datePickerMode = .time
+        $0.locale = Locale(identifier: "ko_KR")
+        $0.preferredDatePickerStyle = .wheels
     }
     
     private let timeTextFieldWarningLabel = UILabel().then {
@@ -63,7 +60,6 @@ class Step3ViewController: UIViewController {
         hideKeyboardWhenTappedAround()
         setKeyboardObserver()
         bindViewModel()
-        timeTextField.delegate = self
     }
     
     private func setupAddTargets() {
@@ -73,20 +69,32 @@ class Step3ViewController: UIViewController {
     private func bindViewModel() {
         guard let viewModel = viewModel else { return }
         
-        viewModel.reminderTime
-            .bind(to: timeTextField.rx.text)
+        timePicker.rx.date
+            .map { date -> String in
+                let formatter = DateFormatter()
+                formatter.dateFormat = "HH:mm"
+                return formatter.string(from: date)
+            }
+            .bind(to: viewModel.reminderTime)
             .disposed(by: disposeBag)
         
-        timeTextField.rx.text
-            .orEmpty
-            .bind(to: viewModel.reminderTime)
+        viewModel.reminderTime
+            .skip(1)
+            .subscribe(onNext: { [weak self] time in
+                guard let self = self else { return }
+                let formatter = DateFormatter()
+                formatter.dateFormat = "HH:mm"
+                if let date = formatter.date(from: time) {
+                    self.timePicker.date = date
+                }
+            })
             .disposed(by: disposeBag)
     }
     
     private func setupConstraints() {
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
-        contentView.addSubviews(titleLabel, descriptionLabel, timeTextField, timeTextFieldWarningLabel)
+        contentView.addSubviews(titleLabel, descriptionLabel, timePicker, timeTextFieldWarningLabel)
         view.addSubview(doneButton)
         
         scrollView.snp.makeConstraints {
@@ -111,12 +119,12 @@ class Step3ViewController: UIViewController {
             $0.leading.equalToSuperview().offset(16)
         }
         
-        timeTextField.snp.makeConstraints {
+        timePicker.snp.makeConstraints {
             $0.center.equalToSuperview()
         }
         
         timeTextFieldWarningLabel.snp.makeConstraints {
-            $0.top.equalTo(timeTextField.snp.bottom).offset(4)
+            $0.top.equalTo(timePicker.snp.bottom).offset(4)
             $0.centerX.equalToSuperview()
         }
         

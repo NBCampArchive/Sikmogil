@@ -25,3 +25,14 @@ enum Suite: String{
         return font
     }
 }
+
+enum BagelFatOne: String {
+    case regular = "BagelFatOne-Regular"
+    
+    func of(size: CGFloat) -> UIFont {
+        guard let font = UIFont(name: self.rawValue, size: size) else {
+            fatalError("Failed to load font: \(self.rawValue)")
+        }
+        return font
+    }
+}
