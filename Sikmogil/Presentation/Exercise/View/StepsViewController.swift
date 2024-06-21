@@ -17,15 +17,9 @@ class StepsViewController: UIViewController {
     
     private let scrollView = UIScrollView()
     private let contentView = UIView()
-    
-    private let circleView = UIView().then {
-        $0.backgroundColor = .appLightGray
-        $0.layer.cornerRadius = 100
-    }
 
-    private let stepsImage = UIImageView().then {
-        $0.image = .steps
-        $0.contentMode = .scaleAspectFit
+    private let stepsIconImage = UIImageView().then {
+        $0.image = UIImage.stepsIcon
     }
 
     private let stepsLabel = UILabel().then {
@@ -129,11 +123,10 @@ class StepsViewController: UIViewController {
     
     // MARK: - Setup Views
     private func setupViews() {
-        view.backgroundColor = .white
+        view.backgroundColor = .appLightGreen
         view.addSubviews(scrollView)
         scrollView.addSubview(contentView)
-        contentView.addSubviews(circleView, stepsLabel, stepsValueLabel, cardView)
-        circleView.addSubview(stepsImage)
+        contentView.addSubviews(stepsLabel, stepsValueLabel, stepsIconImage,cardView)
         cardView.addSubviews(goalLabel, goalValueView, goalProgressView, subCardView)
         goalValueView.addSubview(goalValueLabel)
         goalProgressView.addSubview(goalProgressValueView)
@@ -150,18 +143,8 @@ class StepsViewController: UIViewController {
             $0.width.equalTo(scrollView)
         }
         
-        circleView.snp.makeConstraints {
-            $0.width.height.equalTo(200)
-            $0.centerX.equalToSuperview()
-            $0.top.equalToSuperview().offset(44)
-        }
-        
-        stepsImage.snp.makeConstraints {
-            $0.center.equalToSuperview()
-        }
-        
         stepsLabel.snp.makeConstraints {
-            $0.top.equalTo(circleView.snp.bottom).offset(20)
+            $0.top.equalToSuperview().offset(40)
             $0.centerX.equalToSuperview()
         }
         
@@ -170,8 +153,15 @@ class StepsViewController: UIViewController {
             $0.centerX.equalToSuperview()
         }
         
+        stepsIconImage.snp.makeConstraints {
+            $0.width.equalTo(240)
+            $0.height.equalTo(290)
+            $0.centerX.equalToSuperview()
+            $0.top.equalTo(stepsValueLabel.snp.bottom).offset(18)
+        }
+        
         cardView.snp.makeConstraints {
-            $0.top.equalTo(stepsValueLabel.snp.bottom).offset(64)
+            $0.top.equalTo(stepsIconImage.snp.bottom).offset(18)
             $0.leading.trailing.equalTo(contentView).inset(16)
             $0.height.equalTo(160)
         }
