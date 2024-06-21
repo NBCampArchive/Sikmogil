@@ -1,5 +1,5 @@
 {
-  "originHash" : "e1f0787f9280aacfb5ef51b4d97240bbf5b2bc8d0cb1adc15ac8f23cf5d943bd",
+  "originHash" : "a97e8827960fc1b8cdf5100438723cc933d15c9b8bb93de0ffdc9dd6cc32ecc3",
   "pins" : [
     {
       "identity" : "alamofire",
@@ -98,6 +98,15 @@
       "state" : {
         "revision" : "769b88d83a42ca8d5572b020c96f47e3690b3796",
         "version" : "4.4.3"
+      }
+    },
+    {
+      "identity" : "markdownview",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/keitaoouchi/MarkdownView",
+      "state" : {
+        "revision" : "5e62a27f1002cd63c350ef1a4c640ddcd1f1ed48",
+        "version" : "1.9.1"
       }
     },
     {

@@ -47,6 +47,8 @@ class OnboardingViewController: UIViewController {
         if let firstViewController = orderedViewControllers.first {
             pageViewController.setViewControllers([firstViewController], direction: .forward, animated: false, completion: nil)
         }
+        
+        navigationController?.navigationBar.isHidden = true
     }
     
     private func setupLayout() {
@@ -84,6 +86,22 @@ class OnboardingViewController: UIViewController {
                 self.setViewcontrollersFromIndex(index: index)
             })
             .disposed(by: disposeBag)
+        
+        viewModel.reminderTime
+            .skip(1) // 초기값을 무시하고 이후 변경된 값만 받기 위해 사용
+            .subscribe(onNext: { [weak self] reminderTime in
+                guard let self = self else { return }
+                if !reminderTime.isEmpty {
+                    print("Reminder Time Navigation: \(reminderTime)")
+                    self.navigateToPermissionViewController()
+                }
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    private func navigateToPermissionViewController() {
+        let permissionVC = PermissionViewController()
+        self.navigationController?.pushViewController(permissionVC, animated: true)
     }
     
     private func setViewcontrollersFromIndex(index: Int) {
@@ -115,6 +133,7 @@ extension OnboardingViewController: UIPageViewControllerDataSource, UIPageViewCo
             return nil
         }
         return orderedViewControllers[index + 1]
+//        return nil
     }
     
     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {

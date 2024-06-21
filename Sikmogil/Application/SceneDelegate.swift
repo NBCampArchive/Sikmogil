@@ -19,47 +19,52 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         guard let windowScene = (scene as? UIWindowScene) else { return }
         
-        window = UIWindow(windowScene: windowScene)
-        
         // MARK: - API Test 시 아래 코드를 주석 처리하고 진행해주세요 (간단한 UI 수정시에만 사용해주세요)
-//        let viewController = LoginViewController()
-//        window?.rootViewController = viewController
-//        window?.makeKeyAndVisible()
+        let window = UIWindow(windowScene: windowScene)
+        
+        let viewController = LoginViewController()
+        let navigationController = UINavigationController(rootViewController: viewController)
+        
+        window.rootViewController = navigationController
+        self.window = window
+        window.makeKeyAndVisible()
         
         // MARK: - API Test 시 아래 코드를 활성화 하고 진행해주세요
         // 토큰 유효성 검사
-        if KeychainSwift().get("refreshToken") != nil {
-            // Refresh 토큰이 있으면 토큰 갱신 시도
-            LoginAPIManager.shared.refreshToken { result in
-                switch result {
-                case .success:
-                    // 토큰 갱신 성공, 메인 화면으로 이동
-                    DispatchQueue.main.async {
-                        self.showMainScreen()
-                    }
-                case .failure:
-                    // 토큰 갱신 실패, 로그인 화면으로 이동
-                    DispatchQueue.main.async {
-                        self.showLoginScreen()
-                    }
-                }
-            }
-        } else {
-            // Refresh 토큰이 없으면 로그인 화면으로 이동
-            showLoginScreen()
-        }
+//        if KeychainSwift().get("refreshToken") != nil {
+//            // Refresh 토큰이 있으면 토큰 갱신 시도
+//            LoginAPIManager.shared.refreshToken { result in
+//                switch result {
+//                case .success:
+//                    // 토큰 갱신 성공, 메인 화면으로 이동
+//                    DispatchQueue.main.async {
+//                        self.showMainScreen()
+//                    }
+//                case .failure:
+//                    // 토큰 갱신 실패, 로그인 화면으로 이동
+//                    DispatchQueue.main.async {
+//                        self.showLoginScreen()
+//                    }
+//                }
+//            }
+//        } else {
+//            // Refresh 토큰이 없으면 로그인 화면으로 이동
+//            showLoginScreen()
+//        }
         //여기까지 주석 처리
     }
     
     private func showLoginScreen() {
         let loginViewController = LoginViewController()
-        window?.rootViewController = loginViewController
+        let navigationController = UINavigationController(rootViewController: loginViewController)
+        window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
     }
     
     private func showMainScreen() {
         let mainViewController = BottomTabBarController()
-        window?.rootViewController = mainViewController
+        let navigationController = UINavigationController(rootViewController: mainViewController)
+        window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
     }
     

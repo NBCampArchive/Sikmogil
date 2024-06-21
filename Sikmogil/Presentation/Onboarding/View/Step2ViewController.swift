@@ -37,7 +37,10 @@ class Step2ViewController: UIViewController {
     }
     
     private let targetWeightTextField = UITextField().then {
-        $0.borderStyle = .roundedRect
+        $0.layer.cornerRadius = 8
+        $0.layer.borderColor = UIColor.appDarkGray.cgColor
+        $0.layer.borderWidth = 1
+        $0.addLeftPadding()
         $0.keyboardType = .numberPad
     }
     
@@ -56,7 +59,9 @@ class Step2ViewController: UIViewController {
     private let targetDatePicker = UIDatePicker().then {
         $0.datePickerMode = .date
         $0.locale = Locale(identifier: "ko_KR")
-        $0.preferredDatePickerStyle = .wheels
+        $0.preferredDatePickerStyle = .inline
+        $0.minimumDate = Date()
+        $0.tintColor = .appBlack
     }
     
     private let nextButton = UIButton(type: .system).then {
@@ -151,7 +156,6 @@ class Step2ViewController: UIViewController {
             $0.top.equalTo(targetDateLabel.snp.bottom).offset(16)
             $0.leading.equalToSuperview().offset(16)
             $0.trailing.equalToSuperview().offset(-16)
-            $0.height.equalTo(200)
             $0.bottom.equalToSuperview().offset(-16)
         }
         
@@ -166,14 +170,35 @@ class Step2ViewController: UIViewController {
     @objc private func nextButtonTapped() {
         guard let viewModel = viewModel else { return }
         
-        if viewModel.targetValidateForm() {
+        let dateValid = isDateSelected(targetDatePicker.date)
+        print(dateValid)
+        let targetWeightValid = !(targetWeightTextField.text ?? "").isEmpty
+        
+        if viewModel.targetValidateForm() && dateValid {
             viewModel.saveTargetData()
             viewModel.moveToNextPage()
         } else {
-            targetWeightWarningLabel.isHidden = !(targetWeightTextField.text ?? "").isEmpty
+            updateTextFieldBorders(isValid: targetWeightValid, textField: targetWeightTextField)
+            targetDatePicker.tintColor = dateValid ? .appBlack : .red
             
             view.shake()
         }
     }
     
+    private func isDateSelected(_ date: Date) -> Bool {
+        let now = Date()
+        return date > now
+    }
+    
+    private func updateTextFieldBorders(isValid: Bool, textField: UITextField) {
+        if isValid {
+            textField.layer.cornerRadius = 8
+            textField.layer.borderColor = UIColor.appDarkGray.cgColor
+            textField.layer.borderWidth = 1
+        } else {
+            textField.layer.cornerRadius = 8
+            textField.layer.borderColor = UIColor.red.cgColor
+            textField.layer.borderWidth = 1
+        }
+    }
 }

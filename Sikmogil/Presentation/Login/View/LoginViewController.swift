@@ -109,7 +109,7 @@ class LoginViewController: UIViewController {
         viewModel.firstLoginSuccess
             .subscribe(onNext: {
                 print("첫 로그인 성공")
-                self.navigateToOnboarding()
+                self.navigateToAgreeVC()
             })
             .disposed(by: disposeBag)
         
@@ -137,10 +137,10 @@ class LoginViewController: UIViewController {
         viewModel.signInWithGoogle(presentingViewController: self)
     }
     
-    private func navigateToOnboarding() {
+    private func navigateToAgreeVC() {
         print("로그인 성공, 온보딩 화면으로 이동")
         modalPresentationStyle = .fullScreen
-        present(OnboardingViewController(), animated: true, completion: nil)
+        navigationController?.pushViewController(AgreementViewController(), animated: true)
     }
     
     private func navigateToMainScreen() {
