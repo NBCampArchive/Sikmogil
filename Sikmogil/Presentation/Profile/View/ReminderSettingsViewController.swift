@@ -197,8 +197,8 @@ class ReminderSettingsViewController: UIViewController {
         if validateTime(viewModel.reminderTime) {
             timeTextFieldWarningLabel.isHidden = true
             viewModel.saveReminderData()
-            saveReminderTime(viewModel.reminderTime) // Save to UserDefaults before updating notification
-            updateNotification(time: viewModel.reminderTime) // 알림 업데이트
+            saveReminderTime(viewModel.reminderTime)
+            updateNotification(time: viewModel.reminderTime)
             
             // 데이터를 저장하는 부분 (submitProfile 호출)
             viewModel.submitProfile { [weak self] result in
