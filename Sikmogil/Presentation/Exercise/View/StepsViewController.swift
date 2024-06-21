@@ -115,9 +115,6 @@ class StepsViewController: UIViewController {
             DispatchQueue.main.async {
                 self.kcalLabel.text = formattedKcal
             }
-            
-            // 프로그레스 바 업데이트
-            self.updateProgress(self.currentProgressPercentage)
         }
     }
     
@@ -256,7 +253,7 @@ extension StepsViewController {
         let dailyGoalSteps: Double = 10000
         
         // 걸음 수 달성률 계산
-        let percentage = (steps / dailyGoalSteps) * 100
+        let percentage = min((steps / dailyGoalSteps) * 100, 100) // 100%를 초과하지 않도록 제한
         
         // %로 표시할 문자열 생성
         let formattedPercentage = String(format: "%.0f%% 달성", percentage) // 소수점 없이 표시
@@ -264,9 +261,10 @@ extension StepsViewController {
         // 현재 진행률 업데이트
         currentProgressPercentage = CGFloat(percentage / 100)
         
-        // 메인 스레드에서 UI 업데이트
+        // 메인 스레드에서 UI 업데이트 (달성률, 프로그레스 바)
         DispatchQueue.main.async {
             self.goalValueLabel.text = formattedPercentage
+            self.updateProgress(self.currentProgressPercentage)
         }
     }
     
@@ -274,7 +272,7 @@ extension StepsViewController {
     private func updateProgress(_ percentage: CGFloat) {
         
         let maxWidth = goalProgressView.frame.width
-        let progressWidth = maxWidth * percentage // 달성률에 따른 너비 계산
+        let progressWidth = min(maxWidth * percentage, maxWidth)// 달성률에 따른 너비 계산
         
         goalProgressValueView.snp.makeConstraints {
             $0.width.equalTo(progressWidth)
