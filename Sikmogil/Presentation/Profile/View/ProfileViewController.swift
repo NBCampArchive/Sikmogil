@@ -2,17 +2,22 @@
 //  ProfileViewController.swift
 //  Sikmogil
 //
-//  Created by Developer_P on 6/3/24.
-//
+//  Created by 박준영 on 6/3/24.
+//  [프로필] 🙍🏻 프로필 🙍🏻
 
 import UIKit
 import SnapKit
 import Then
-import RxSwift
-import RxCocoa
+import Combine
 import KeychainSwift
+import Kingfisher
 
 class ProfileViewController: UIViewController {
+    
+    var viewModel = ProfileViewModel()
+    
+    private var cancellables = Set<AnyCancellable>()
+    
     let spacerView = UIView()
     let scrollView = UIScrollView()
     let contentView = UIView()
@@ -29,7 +34,7 @@ class ProfileViewController: UIViewController {
     }
     
     let profileImageView = UIImageView().then {
-        $0.image = UIImage(systemName: "person.crop.circle.fill")
+        $0.image = UIImage(named: "profile")
         $0.contentMode = .scaleAspectFill
         $0.clipsToBounds = true
     }
@@ -51,7 +56,8 @@ class ProfileViewController: UIViewController {
         $0.spacing = 4
     }
     
-    let nicknameLabel = UILabel().then {
+    var nicknameLabel = UILabel().then {
+        $0.text = "아무개"
         $0.font = Suite.bold.of(size: 24)
     }
     
@@ -64,43 +70,62 @@ class ProfileViewController: UIViewController {
         $0.titleLabel?.font = UIFont.systemFont(ofSize: 14)
     }
     
-    private let disposeBag = DisposeBag()
-    private let viewModel = ProfileViewModel()
-    
+    // MARK: - viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
-        bindViewModel()
+        setupBindings()
         
         settingsButton.addTarget(self, action: #selector(settingsButtonTapped(_:)), for: .touchUpInside)
         logoutButton.addTarget(self, action: #selector(logoutButtonTapped(_:)), for: .touchUpInside)
-        
-        updateContentSize()
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(profileDidChange(_:)), name: .profileDidChange, object: nil)
         
         profileImageView.layer.cornerRadius = 50
         profileImageView.layer.masksToBounds = true
     }
     
-    private func bindViewModel() {
-        viewModel.nickname
-            .bind(to: nicknameLabel.rx.text)
-            .disposed(by: disposeBag)
-        
-        viewModel.height
-            .bind(to: profileInfoView.height.rx.text)
-            .disposed(by: disposeBag)
-        
-        viewModel.weight
-            .bind(to: profileInfoView.weight.rx.text)
-            .disposed(by: disposeBag)
-        
-        viewModel.gender
-            .bind(to: profileInfoView.gender.rx.text)
-            .disposed(by: disposeBag)
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        profileImageView.layer.cornerRadius = profileImageView.frame.width / 2
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.fetchUserProfile()
+        setupBindings()
+    }
+
+    // MARK: - Binding
+    func setupBindings() {
+        let nicknamePublisher = viewModel.$nickname
+        let heightPublisher = viewModel.$height
+        let weightPublisher = viewModel.$weight
+        let picturePublisher = viewModel.$picture
+
+        // 뷰모델의 프로퍼티와 뷰를 바인딩하여 데이터를 뿌려주는 부분
+        Publishers.CombineLatest4(nicknamePublisher, heightPublisher, weightPublisher, picturePublisher)
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] nickname, height, weight, picture in
+                self?.nicknameLabel.text = nickname
+                self?.profileInfoView.heightLabel.text = height
+                self?.profileInfoView.weightLabel.text = weight
+                if !picture.isEmpty {
+                    self?.loadImage(from: picture)
+                } else {
+                    self?.profileImageView.image = UIImage(named: "profile")
+                }
+            }
+            .store(in: &cancellables)
+    }
+
+    // URL로부터 이미지를 로드하여 profileImageView에 뿌려주는 부분
+    private func loadImage(from urlString: String?) {
+        guard let urlString = urlString else {
+            return
+        }
+        profileImageView.kf.setImage(with: URL(string: urlString))
+    }
+    
+    // MARK: - setupViews
     private func setupViews() {
         view.backgroundColor = .white
         view.addSubview(scrollView)
@@ -121,6 +146,7 @@ class ProfileViewController: UIViewController {
         setupConstraints()
     }
     
+    // MARK: - setupConstraints
     private func setupConstraints() {
         scrollView.snp.makeConstraints {
             $0.edges.equalTo(view.safeAreaLayoutGuide)
@@ -199,77 +225,81 @@ class ProfileViewController: UIViewController {
         }
     }
     
-    private func updateContentSize() {
-        let contentHeight = contentView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
-        contentView.snp.remakeConstraints {
-            $0.edges.equalTo(scrollView)
-            $0.width.equalTo(scrollView)
-            $0.height.equalTo(contentHeight)
+    // MARK: - didSelectCell
+    // 각 셀을 인덱스 기반 클로저 배열 할당
+    func didSelectCell(at index: Int) {
+        if index < cellActions.count {
+            cellActions[index]()
         }
     }
-    
-    @objc private func profileDidChange(_ notification: Notification) {
-        if let userInfo = notification.userInfo {
-            if let nickname = userInfo["nickname"] as? String {
-                viewModel.nickname.accept(nickname)
-            }
-            if let height = userInfo["height"] as? String {
-                viewModel.height.accept(height)
-            }
-            if let weight = userInfo["weight"] as? String {
-                viewModel.weight.accept(weight)
-            }
-            if let gender = userInfo["gender"] as? String {
-                viewModel.gender.accept(gender)
-            }
-            if let profileImage = userInfo["profileImage"] as? UIImage {
-                profileImageView.image = profileImage
-            } else {
-                profileImageView.image = UIImage(systemName: "person.crop.circle.fill")
-            }
-            profileImageView.layer.cornerRadius = profileImageView.frame.width / 2
-            profileImageView.layer.masksToBounds = true
+
+    private lazy var cellActions: [() -> Void] = [
+        { [weak self] in
+//            self?.showMedalView()
+        },
+        { [weak self] in
+//            self?.showPostListView()
+        },
+        { [weak self] in
+//            self?.showLikedPostListView()
         }
+    ]
+    
+    // 메달 확인 뷰로 이동하는 메서드
+    private func showMedalView() {
+        print("메달확인 페이지로 이동")
+//        let medalViewController = MedalViewController()
+//        self.navigationController?.pushViewController(medalViewController, animated: true)
+    }
+
+    // 작성한 게시글 뷰로 이동하는 메서드
+    private func showPostListView() {
+        print("게시글 목록페이지로 이동")
+//        let postViewController = PostViewController()
+//        self.navigationController?.pushViewController(postViewController, animated: true)
+    }
+
+    // 공감한 게시글 뷰로 이동하는 메서드
+    private func showLikedPostListView() {
+        print("공감한 게시글 목록페이지로 이동")
+//        let likedPostViewController = LikedPostViewController()
+//        self.navigationController?.pushViewController(likedPostViewController, animated: true)
     }
     
+    // MARK: - UIMenu
     @objc private func settingsButtonTapped(_ sender: UIButton) {
-        let editProfileAction = UIAction(title: "프로필 수정", image: nil) { _ in
-            self.showEditProfile()
-        }
-        let notificationSettingsAction = UIAction(title: "알림 설정", image: nil) { _ in
-            self.showNotificationSettings()
+        let editProfileAction = UIAction(title: "프로필 수정", image: nil) { [weak self] _ in
+            guard let self = self else { return }
+            let editProfileVC = EditProfileViewController()
+            editProfileVC.viewModel = self.viewModel
+            self.navigationController?.pushViewController(editProfileVC, animated: true)
         }
         
-        let goalSettingsAction = UIAction(title: "목표 설정", image: nil) { _ in
-            self.showGoalSettings()
+        let notificationSettingsAction = UIAction(title: "알림 설정", image: nil) { [weak self] _ in
+            guard let self = self else { return }
+            let notificationSettingsVC = NotificationSettingsViewController()
+            self.navigationController?.pushViewController(notificationSettingsVC, animated: true)
         }
+        
+        let goalSettingsAction = UIAction(title: "목표 설정", image: nil) { [weak self] _ in
+            guard let self = self else { return }
+            let goalSettingsVC = GoalSettingsViewController()
+            goalSettingsVC.viewModel = self.viewModel
+            self.navigationController?.pushViewController(goalSettingsVC, animated: true)
+        }
+        
         let menu = UIMenu(title: "", children: [editProfileAction, notificationSettingsAction, goalSettingsAction])
         sender.menu = menu
         sender.showsMenuAsPrimaryAction = true
     }
     
-    private func showEditProfile() {
-        let editProfileVC = EditProfileViewController()
-        editProfileVC.userProfile = viewModel.userProfile
-        navigationController?.pushViewController(editProfileVC, animated: true)
-    }
-    
-    private func showNotificationSettings() {
-        let notificationSettingsVC = NotificationSettingsViewController()
-        navigationController?.pushViewController(notificationSettingsVC, animated: true)
-    }
-    
-    private func showGoalSettings() {
-        let goalSettingsVC = GoalSettingsViewController()
-        navigationController?.pushViewController(goalSettingsVC, animated: true)
-    }
-    
+    // MARK: - logout
     @objc private func logoutButtonTapped(_ sender: UIButton) {
         let keychain = KeychainSwift()
         keychain.clear()
         if let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate {
             let loginVC = LoginViewController()
-            let navController = UINavigationController(rootViewController: loginVC)
+            let navController = UINavigationController(rootViewController:loginVC)
             sceneDelegate.window?.rootViewController = navController
             sceneDelegate.window?.makeKeyAndVisible()
         }

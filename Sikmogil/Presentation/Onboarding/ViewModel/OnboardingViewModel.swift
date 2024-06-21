@@ -91,7 +91,12 @@ class OnboardingViewModel {
     func submitProfile(completion: @escaping (Result<Void, Error>) -> Void) {
         // 서버 통신 로직
         UserAPIManager.shared.userProfileUpdate(userProfile: userProfile) { result in
-            completion(result)
+            switch result {
+            case .success():
+                print("프로필 업데이트 성공")
+            case .failure(_):
+                print("프로필 업데이트 실패")
+            }
         }
     }
 }

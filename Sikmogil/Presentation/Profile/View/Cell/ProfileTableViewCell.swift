@@ -2,8 +2,8 @@
 //  ProfileTableViewCell.swift
 //  Sikmogil
 //
-//  Created by Developer_P on 6/3/24.
-//
+//  Created by 박준영 on 6/3/24.
+//  [프로필] ✨ 각각의 테이블 셀 아이콘 ✨
 
 import UIKit
 import SnapKit
@@ -11,7 +11,7 @@ import Then
 
 class ProfileTableViewCell: UITableViewCell {
 
-    // MARK: - 속성정의
+    // MARK: - 속성
     let iconImageView = UIImageView()
     let titleLabel = UILabel().then {
         $0.font = Suite.regular.of(size: 16)
@@ -25,7 +25,7 @@ class ProfileTableViewCell: UITableViewCell {
         $0.backgroundColor = .appDarkGray
     }
 
-    // MARK: - 초기화 메서드
+    // MARK: - 초기화
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupConstraints()
@@ -35,7 +35,7 @@ class ProfileTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    // MARK: - 오토레이아웃 제약조건 설정
+    // MARK: - 제약조건
     private func setupConstraints() {
         contentView.addSubview(iconImageView)
         contentView.addSubview(titleLabel)
