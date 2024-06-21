@@ -100,4 +100,39 @@ class UserAPIManager {
             }
     }
     
+    //MARK: - 닉네임 중복 확인
+    func checkNickname(nickname: String, completion: @escaping (Result<Void, Error>) -> Void) {
+        
+        let url = "\(baseURL)/api/members/nickname"
+        
+        let parameters: [String: Any] = [
+            "nickname": nickname
+        ]
+        
+        AF.request(url, method: .get, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
+            .validate()
+            .response { response in
+                switch response.result {
+                case .success:
+                    completion(.success(()))
+                case .failure(let error):
+                    print("닉네임 중복 확인 에러")
+                    if let responseCode = error.responseCode, responseCode == 401 {
+                        // 401 Unauthorized - Access token expired
+                        LoginAPIManager.shared.refreshToken { result in
+                            switch result {
+                            case .success:
+                                // 토큰 갱신 성공 후 다시 요청
+                                self.checkNickname(nickname: nickname, completion: completion)
+                            case .failure(let refreshError):
+                                completion(.failure(refreshError))
+                            }
+                        }
+                    } else {
+                        completion(.failure(error))
+                    }
+                }
+            }
+    }
+    
 }
