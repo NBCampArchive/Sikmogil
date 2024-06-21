@@ -56,7 +56,7 @@ class ExerciseTimerViewController: UIViewController {
     }
     
     private let progressBar = UIView().then {
-        $0.backgroundColor = UIColor(red: 216/255, green: 240/255, blue: 227/255, alpha: 1.0)
+        $0.backgroundColor = UIColor.appLightGreen
     }
 
     // MARK: - View Life Cycle
