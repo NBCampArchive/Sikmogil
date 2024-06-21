@@ -12,16 +12,17 @@ import Then
 class AgreementViewController: UIViewController {
     
     //MARK: - UI Components
-    private let logoImageView = UIImageView().then {
-        $0.image = UIImage(named: "logo")
-        $0.contentMode = .scaleAspectFit
+    private let backgroundImageView = UIImageView().then {
+        $0.image = UIImage(named: "backgroundImage")
+        $0.contentMode = .scaleAspectFill
     }
-    
+
     private let welcomeLabel = UILabel().then {
-        $0.text = "식목일 어쩌고\n환영합니다!"
+        $0.text = "식목일 회원가입을\n환영합니다!"
         $0.textAlignment = .center
         $0.numberOfLines = 2
-        $0.font = Suite.bold.of(size: 24)
+        $0.textColor = .appBlack
+        $0.font = BagelFatOne.regular.of(size: 24)
     }
     
     private let agreementPrivacyCheckBox = CheckBox(title: "개인정보 수집 및 이용동의(필수)")
@@ -29,7 +30,7 @@ class AgreementViewController: UIViewController {
     private let detailButton = UIButton().then {
         var config = UIButton.Configuration.plain()
         config.image = UIImage(systemName: "chevron.right")
-        config.baseForegroundColor = .appDarkGray
+        config.baseForegroundColor = .white
         $0.configuration = config
     }
     
@@ -54,18 +55,14 @@ class AgreementViewController: UIViewController {
     }
     
     private func setupLayout() {
-        view.backgroundColor = .white
+        view.addSubviews(backgroundImageView, welcomeLabel, agreementPrivacyCheckBox, detailButton, proceedButton)
         
-        view.addSubviews(logoImageView, welcomeLabel, agreementPrivacyCheckBox, detailButton, proceedButton)
-        
-        logoImageView.snp.makeConstraints {
-            $0.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(20)
-            $0.centerX.equalToSuperview()
-            $0.width.height.equalTo(100)
+        backgroundImageView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
         }
         
         welcomeLabel.snp.makeConstraints {
-            $0.top.equalTo(logoImageView.snp.bottom).offset(20)
+            $0.bottom.equalTo(agreementPrivacyCheckBox.snp.top).offset(-32)
             $0.centerX.equalToSuperview()
         }
         
@@ -131,8 +128,7 @@ class CheckBox: UIView {
     private let checkBoxButton = UIButton().then {
         var config = UIButton.Configuration.plain()
         config.image = UIImage(systemName: "square")
-        config.baseForegroundColor = .appDarkGray
-        config.imagePadding = 8
+        config.baseForegroundColor = .white
         config.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration(pointSize: 24)
         $0.configuration = config
     }
