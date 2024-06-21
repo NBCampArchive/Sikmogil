@@ -476,15 +476,17 @@ extension DietBottomSheetViewController : UITableViewDelegate, UITableViewDataSo
     }
     
     // 테이블뷰 셀 삭제 액션
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let deleteAction = UIContextualAction(style: .destructive, title: nil) { [weak self] (action, view, completion) in
+            guard let self = self else { return }
+            
             switch tableView {
-            case breakfastTableView:
-                let item = addMealViewModel.breakfastDietLists[indexPath.row]
+            case self.breakfastTableView:
+                let item = self.addMealViewModel.breakfastDietLists[indexPath.row]
                 let dietListId = item.dietListId // 삭제할 데이터의 ID 가져오기
                 
                 // 서버에서 데이터 삭제
-                addMealViewModel.deleteDietList(for: DateHelper.shared.formatDateToYearMonthDay(Date()), dietListId: dietListId) { result in
+                self.addMealViewModel.deleteDietList(for: DateHelper.shared.formatDateToYearMonthDay(Date()), dietListId: dietListId) { result in
                     switch result {
                     case .success:
                         // 데이터 소스에서 삭제
@@ -497,12 +499,12 @@ extension DietBottomSheetViewController : UITableViewDelegate, UITableViewDataSo
                     }
                 }
                 
-            case lunchTableView:
-                let item = addMealViewModel.lunchDietLists[indexPath.row]
+            case self.lunchTableView:
+                let item = self.addMealViewModel.lunchDietLists[indexPath.row]
                 let dietListId = item.dietListId // 삭제할 데이터의 ID 가져오기
                 
                 // 서버에서 데이터 삭제
-                addMealViewModel.deleteDietList(for: DateHelper.shared.formatDateToYearMonthDay(Date()), dietListId: dietListId) { result in
+                self.addMealViewModel.deleteDietList(for: DateHelper.shared.formatDateToYearMonthDay(Date()), dietListId: dietListId) { result in
                     switch result {
                     case .success:
                         // 데이터 소스에서 삭제
@@ -515,12 +517,12 @@ extension DietBottomSheetViewController : UITableViewDelegate, UITableViewDataSo
                     }
                 }
                 
-            case dinnerTableView:
-                let item = addMealViewModel.dinnerDietLists[indexPath.row]
+            case self.dinnerTableView:
+                let item = self.addMealViewModel.dinnerDietLists[indexPath.row]
                 let dietListId = item.dietListId // 삭제할 데이터의 ID 가져오기
                 
                 // 서버에서 데이터 삭제
-                addMealViewModel.deleteDietList(for: DateHelper.shared.formatDateToYearMonthDay(Date()), dietListId: dietListId) { result in
+                self.addMealViewModel.deleteDietList(for: DateHelper.shared.formatDateToYearMonthDay(Date()), dietListId: dietListId) { result in
                     switch result {
                     case .success:
                         // 데이터 소스에서 삭제
@@ -536,6 +538,17 @@ extension DietBottomSheetViewController : UITableViewDelegate, UITableViewDataSo
             default:
                 fatalError("Unknown table view")
             }
+            
+            
+            completion(true)
         }
+        
+        // 배경색 및 이미지 설정
+        deleteAction.backgroundColor = UIColor.white
+        let trashImage = UIImage(systemName: "trash")?.withTintColor(UIColor.darkGray, renderingMode: .alwaysOriginal)
+        deleteAction.image = trashImage
+        
+        let swipeConfiguration = UISwipeActionsConfiguration(actions: [deleteAction])
+        return swipeConfiguration
     }
 }
