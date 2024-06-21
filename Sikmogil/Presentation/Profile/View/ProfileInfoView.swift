@@ -2,8 +2,8 @@
 //  ProfileInfoView.swift
 //  Sikmogil
 //
-//  Created by Developer_P on 6/7/24.
-//
+//  Created by 박준영 on 6/7/24.
+//  [프로필] 💁🏻 키, 몸무게, 성별 💁🏻
 
 import UIKit
 import SnapKit
@@ -11,24 +11,75 @@ import Then
 
 class ProfileInfoView: UIView {
     
-    // MARK: - 클래스의 속성(프로퍼티)들을 정의
-    let weightStackView = createVerticalStackView()
-    let heightStackView = createVerticalStackView()
-    let genderStackView = createVerticalStackView()
+    private let weightStackView = UIStackView().then {
+        $0.axis = .vertical
+        $0.alignment = .center
+    }
     
-    let separator1 = createSeparator()
-    let separator2 = createSeparator()
+    private let heightStackView = UIStackView().then {
+        $0.axis = .vertical
+        $0.alignment = .center
+    }
     
-    let weightTitleLabel = createTitleLabel(text: "몸무게")
-    let weight = createDetailLabel(text: "0.0")
-    let weightUnitLabel = createUnitLabel(text: "kg")
-    let heightTitleLabel = createTitleLabel(text: "키")
-    let height = createDetailLabel(text: "000")
-    let heightUnitLabel = createUnitLabel(text: "cm")
-    let genderTitleLabel = createTitleLabel(text: "성별")
-    let gender = createDetailLabel(text: "남자")
+    private let genderStackView = UIStackView().then {
+        $0.axis = .vertical
+        $0.alignment = .center
+    }
     
-    // MARK: - 초기화 메서드를 정의
+    private let weightTitleLabel = UILabel().then {
+        $0.text = "몸무게"
+        $0.font = Suite.regular.of(size: 14)
+        $0.textColor = .appBlack
+    }
+    
+    private let weightUnitLabel = UILabel().then {
+        $0.text = "kg"
+        $0.font = Suite.regular.of(size: 14)
+        $0.textColor = .appBlack
+    }
+    
+    var weightLabel = UILabel().then {
+        $0.text = "0.0"
+        $0.font = Suite.bold.of(size: 16)
+    }
+    
+    private let heightTitleLabel = UILabel().then {
+        $0.text = "키"
+        $0.font = Suite.regular.of(size: 14)
+        $0.textColor = .appBlack
+    }
+    
+    private let heightUnitLabel = UILabel().then {
+        $0.text = "cm"
+        $0.font = Suite.regular.of(size: 14)
+        $0.textColor = .appBlack
+    }
+    
+    var heightLabel = UILabel().then {
+        $0.text = "000"
+        $0.font = Suite.bold.of(size: 16)
+    }
+    
+    private let genderTitleLabel = UILabel().then {
+        $0.text = "성별"
+        $0.font = Suite.regular.of(size: 14)
+        $0.textColor = .appBlack
+    }
+    
+    var genderLabel = UILabel().then {
+        $0.text = "남자"
+        $0.font = Suite.bold.of(size: 16)
+    }
+    
+    private let separator1 = UIView().then {
+        $0.backgroundColor = .appDarkGray
+    }
+    
+    private let separator2 = UIView().then {
+        $0.backgroundColor = .appDarkGray
+    }
+    
+    // MARK: - init
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupViews()
@@ -39,7 +90,7 @@ class ProfileInfoView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - 사용자 인터페이스(UI)를 설정하는 메서드를 정의
+    // MARK: - setupViews
     private func setupViews() {
         self.backgroundColor = .white
         self.layer.cornerRadius = 12
@@ -48,13 +99,17 @@ class ProfileInfoView: UIView {
         self.layer.shadowOffset = CGSize(width: 0, height: 1)
         self.layer.shadowRadius = 4
         
-        let weightStack = createHorizontalStackView()
-        weightStack.addArrangedSubview(weight)
-        weightStack.addArrangedSubview(weightUnitLabel)
+        let weightStack = UIStackView(arrangedSubviews: [weightLabel, weightUnitLabel]).then {
+            $0.axis = .horizontal
+            $0.spacing = 4
+            $0.alignment = .center
+        }
         
-        let heightStack = createHorizontalStackView()
-        heightStack.addArrangedSubview(height)
-        heightStack.addArrangedSubview(heightUnitLabel)
+        let heightStack = UIStackView(arrangedSubviews: [heightLabel, heightUnitLabel]).then {
+            $0.axis = .horizontal
+            $0.spacing = 4
+            $0.alignment = .center
+        }
         
         weightStackView.addArrangedSubview(weightTitleLabel)
         weightStackView.addArrangedSubview(weightStack)
@@ -63,7 +118,7 @@ class ProfileInfoView: UIView {
         heightStackView.addArrangedSubview(heightStack)
         
         genderStackView.addArrangedSubview(genderTitleLabel)
-        genderStackView.addArrangedSubview(gender)
+        genderStackView.addArrangedSubview(genderLabel)
         
         self.addSubview(weightStackView)
         self.addSubview(heightStackView)
@@ -72,7 +127,7 @@ class ProfileInfoView: UIView {
         self.addSubview(separator2)
     }
     
-    // MARK: - 제약조건을 설정하는 메서드를 정의
+    // MARK: - setupConstraints
     private func setupConstraints() {
         weightStackView.snp.makeConstraints {
             $0.left.equalTo(self).offset(16)
@@ -108,87 +163,10 @@ class ProfileInfoView: UIView {
             $0.height.equalTo(30)
         }
         
-        weightTitleLabel.snp.makeConstraints {
-            $0.height.equalTo(30)
+        [weightTitleLabel, weightLabel, weightUnitLabel, heightTitleLabel, heightLabel, heightUnitLabel, genderTitleLabel, genderLabel].forEach { label in
+            label.snp.makeConstraints {
+                $0.height.equalTo(30)
+            }
         }
-        
-        heightTitleLabel.snp.makeConstraints {
-            $0.height.equalTo(30)
-        }
-        
-        genderTitleLabel.snp.makeConstraints {
-            $0.height.equalTo(30)
-        }
-        
-        weight.snp.makeConstraints {
-            $0.height.equalTo(30)
-        }
-        
-        weightUnitLabel.snp.makeConstraints {
-            $0.height.equalTo(30)
-        }
-        
-        height.snp.makeConstraints {
-            $0.height.equalTo(30)
-        }
-        
-        heightUnitLabel.snp.makeConstraints {
-            $0.height.equalTo(30)
-        }
-        
-        gender.snp.makeConstraints {
-            $0.height.equalTo(30)
-        }
-    }
-    
-    func updateInfo(height: String, weight: String, gender: String) {
-        self.height.text = height
-        self.weight.text = weight
-        self.gender.text = gender
-    }
-}
-
-// MARK: - 헬퍼 함수들을 정의
-private func createVerticalStackView() -> UIStackView {
-    return UIStackView().then {
-        $0.axis = .vertical
-        $0.alignment = .center
-    }
-}
-
-private func createHorizontalStackView() -> UIStackView {
-    return UIStackView().then {
-        $0.axis = .horizontal
-        $0.alignment = .center
-        $0.spacing = 4
-    }
-}
-
-private func createSeparator() -> UIView {
-    return UIView().then {
-        $0.backgroundColor = .appDarkGray
-    }
-}
-
-private func createTitleLabel(text: String) -> UILabel {
-    return UILabel().then {
-        $0.text = text
-        $0.font = Suite.regular.of(size: 14)
-        $0.textColor = .appBlack
-    }
-}
-
-private func createDetailLabel(text: String) -> UILabel {
-    return UILabel().then {
-        $0.text = text
-        $0.font = Suite.bold.of(size: 16)
-    }
-}
-
-private func createUnitLabel(text: String) -> UILabel {
-    return UILabel().then {
-        $0.text = text
-        $0.font = Suite.regular.of(size: 14)
-        $0.textColor = .appBlack
     }
 }

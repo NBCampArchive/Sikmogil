@@ -2,8 +2,8 @@
 //  ProfileTableView.swift
 //  Sikmogil
 //
-//  Created by Developer_P on 6/7/24.
-//
+//  Created by 박준영 on 6/7/24.
+//  [프로필 테이블] 🏅(메달), 📝(게시글), ❤️(공감)
 
 import UIKit
 import SnapKit
@@ -11,14 +11,15 @@ import Then
 
 class ProfileTableView: UIView {
     
-    // MARK: - 테이블 속성정의
     let tableView = UITableView().then {
         $0.register(ProfileTableViewCell.self, forCellReuseIdentifier: "ProfileCell")
-        $0.separatorStyle = .none // 구분선 제거
-        $0.rowHeight = 60 // 커뮤니티 각 셀별 높이 지정
+        $0.separatorStyle = .none
+        $0.rowHeight = 60
     }
     
-    // MARK: - 초기화 메서드
+    private let titles = ["메달 확인", "작성한 게시글", "공감한 게시글"]
+    private let iconNames = ["cup", "pencilline", "heart"]
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupConstraints()
@@ -29,7 +30,7 @@ class ProfileTableView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - 제약조건
+    // MARK: - setupConstraints
     private func setupConstraints() {
         self.addSubview(tableView)
         tableView.snp.makeConstraints {
@@ -37,34 +38,48 @@ class ProfileTableView: UIView {
         }
     }
     
-    // MARK: - 테이블뷰 설정
+    // MARK: - setupTableView
     private func setupTableView() {
         tableView.delegate = self
         tableView.dataSource = self
     }
 }
 
-// MARK: - UITableViewDataSource
 extension ProfileTableView: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
+        return titles.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "ProfileCell", for: indexPath) as? ProfileTableViewCell else {
             return UITableViewCell()
         }
-        let titles = ["메달 확인", "작성한 게시글", "공감한 게시글"]
-        let icons = ["cup", "pencilline", "heart"]
-        cell.configure(with: titles[indexPath.row], iconName: icons[indexPath.row])
+        let title = titles[indexPath.row]
+        let iconName = iconNames[indexPath.row]
+        cell.configure(with: title, iconName: iconName)
         
         return cell
     }
 }
 
-// MARK: - UITableViewDelegate
 extension ProfileTableView: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        if let parentVC = self.parentViewController as? ProfileViewController {
+            parentVC.didSelectCell(at: indexPath.row)
+        }
+    }
+}
+
+extension UIView {
+    var parentViewController: UIViewController? {
+        var parentResponder: UIResponder? = self
+        while let responder = parentResponder {
+            parentResponder = responder.next
+            if let viewController = parentResponder as? UIViewController {
+                return viewController
+            }
+        }
+        return nil
     }
 }
