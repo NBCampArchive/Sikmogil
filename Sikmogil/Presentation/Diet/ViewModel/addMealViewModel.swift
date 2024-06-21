@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-class AddMealViewModel {
+class AddMealViewModel: ObservableObject {
     
     static let shared = AddMealViewModel()
     let dietAPIManager = DietAPIManager.shared
@@ -17,8 +17,12 @@ class AddMealViewModel {
     @Published var totalLunchKcal: Int = 0
     @Published var totalDinnerKcal: Int = 0
     
+    private var previousBreakfastCount = 0
+    private var previousDinnerCount = 0
+    
     init() {
         getDietListByDate(for: DateHelper.shared.formatDateToYearMonthDay(Date())) { _ in }
+        self.setupDietListListeners()
     }
     
     private var cancellables = Set<AnyCancellable>()
@@ -30,6 +34,40 @@ class AddMealViewModel {
                 return breakfast + lunch + dinner
             }
             .eraseToAnyPublisher()
+    }
+    
+    private func setupDietListListeners() {
+        // 아침 식사 추가 감지
+        $breakfastDietLists
+            .sink { [weak self] lists in
+                guard let self = self else { return }
+                let currentCount = lists.count
+                if self.previousBreakfastCount == 0 && currentCount == 1 {
+                    self.postBreakfastAlert()
+                }
+                self.previousBreakfastCount = currentCount
+            }
+            .store(in: &cancellables)
+        
+        // 저녁 식사 추가 감지
+        $dinnerDietLists
+            .sink { [weak self] lists in
+                guard let self = self else { return }
+                let currentCount = lists.count
+                if self.previousDinnerCount == 0 && currentCount == 1 {
+                    self.postDinnerAlert()
+                }
+                self.previousDinnerCount = currentCount
+            }
+            .store(in: &cancellables)
+    }
+    
+    private func postBreakfastAlert() {
+        NotificationCenter.default.post(name: .showBreakfastAlert, object: nil, userInfo: ["isForBreakfast": true])
+    }
+    
+    private func postDinnerAlert() {
+        NotificationCenter.default.post(name: .showDinnerAlert, object: nil, userInfo: ["isForBreakfast": false])
     }
     
     // MARK: - DietList
@@ -104,4 +142,9 @@ class AddMealViewModel {
             }
         }
     }
+}
+
+extension Notification.Name {
+    static let showBreakfastAlert = Notification.Name("showBreakfastAlert")
+    static let showDinnerAlert = Notification.Name("showDinnerAlert")
 }
