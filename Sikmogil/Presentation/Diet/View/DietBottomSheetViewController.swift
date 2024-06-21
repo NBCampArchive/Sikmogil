@@ -41,7 +41,8 @@ class DietBottomSheetViewController: UIViewController {
         $0.clipsToBounds = true
     }
     let breakfastIcon = UIImageView().then {
-        $0.image = UIImage(named: "dietIcon")
+        $0.image = UIImage(named: "dietIconb")
+        $0.contentMode = .scaleAspectFit
     }
     let breakfastTitleLabel = UILabel().then {
         $0.text = "아침"
@@ -69,7 +70,8 @@ class DietBottomSheetViewController: UIViewController {
         $0.clipsToBounds = true
     }
     let lunchIcon = UIImageView().then {
-        $0.image = UIImage(named: "dietIcon")
+        $0.image = UIImage(named: "dietIconl")
+        $0.contentMode = .scaleAspectFit
     }
     let lunchTitleLabel = UILabel().then {
         $0.text = "점심"
@@ -98,6 +100,7 @@ class DietBottomSheetViewController: UIViewController {
     }
     let dinnerIcon = UIImageView().then {
         $0.image = UIImage(named: "dietIcon")
+        $0.contentMode = .scaleAspectFit
     }
     let dinnerTitleLabel = UILabel().then {
         $0.text = "저녁"
