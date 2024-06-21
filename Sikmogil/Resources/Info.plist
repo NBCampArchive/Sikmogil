@@ -45,6 +45,7 @@
 		<string>SUITE-Medium.ttf</string>
 		<string>SUITE-Regular.ttf</string>
 		<string>SUITE-SemiBold.ttf</string>
+		<string>BagelFatOne-Regular.ttf</string>
 	</array>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
