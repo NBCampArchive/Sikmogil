@@ -309,8 +309,8 @@
 				540768852C12EAB200543A72 /* ProfileInfoView.swift */,
 				540768872C12EAD900543A72 /* ProfileTableView.swift */,
 				546E32322C1078E600E94C2A /* NotificationSettingsViewController.swift */,
-				546E32342C1078FA00E94C2A /* GoalSettingsViewController.swift */,
 				545AA5172C11F4760083D893 /* ReminderSettingsViewController.swift */,
+				546E32342C1078FA00E94C2A /* GoalSettingsViewController.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
