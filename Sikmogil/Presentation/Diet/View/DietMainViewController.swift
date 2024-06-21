@@ -118,27 +118,28 @@ class DietMainViewController: UIViewController {
         $0.image = UIImage(named: "fastingTimerIconFill")
     }
     let fastingTimerInfoLabel = UILabel().then {
-        $0.text = "N시간 단식중!"
+        $0.text = "공복시간을 측정하세요"
         $0.textColor = .appDarkGray
-        $0.font = Suite.bold.of(size: 22)
+        $0.font = Suite.bold.of(size: 20)
         $0.textAlignment = .center
     }
-    let FastingButton = UIButton().then{
+    let fastingTimerStartStopButton = UIButton().then{
         $0.setTitle("공복 시작", for: .normal)
-        $0.setTitle("공복 종료", for: .selected)
         $0.backgroundColor = .appLightGray
         $0.setTitleColor(.appBlack, for: .normal)
         $0.titleLabel?.font = Suite.semiBold.of(size: 16)
         $0.layer.cornerRadius = 14
         $0.clipsToBounds = true
-        $0.addTarget(self, action: #selector(fastingButtonButtonTapped), for: .touchUpInside)
+        $0.addTarget(self, action: #selector(startStopButtonTapped), for: .touchUpInside)
     }
     
-    // Timer properties
-    var timer: Timer?
-    var isTimerRunning = false
-    var startTime: Date?
-    var elapsedTime: TimeInterval = 0
+    // MARK: - Properties
+    private var startTime: Date?
+    private var timer: Timer?
+    private var isTimerRunning: Bool {
+        get { return UserDefaults.standard.bool(forKey: "isTimerRunning") }
+        set { UserDefaults.standard.set(newValue, forKey: "isTimerRunning") }
+    }
     
     // MARK: - View Lifecycle
     override func viewDidLoad() {
@@ -150,6 +151,20 @@ class DietMainViewController: UIViewController {
         view.backgroundColor = .white
         
         subscribeToViewModel()
+        
+        updateButtonTitle()
+        
+        if isTimerRunning {
+            if let savedStartTime = UserDefaults.standard.object(forKey: "startTime") as? Date {
+                startTime = savedStartTime
+                startTimer(resuming: true)
+            }
+        } else {
+            stopTimer()
+        }
+        
+        setupBreakfastNotificationObserver()
+        setupDinnerNotificationObserver()
         
         dietAddTabButton.addTarget(self, action: #selector(showDietBottomSheet), for: .touchUpInside)
         waterAddTabButton.addTarget(self, action: #selector(showWaterBottomSheet), for: .touchUpInside)
@@ -165,7 +180,7 @@ class DietMainViewController: UIViewController {
         // 💦 Water
         waterTitleView.addSubviews(waterTitleLabel,waterTitleSubLabel,waterAddTabButton,waterCircularProgressBar,waterLiterLabel)
         // 🤤 FastingTimer
-        fastingTimerTitleView.addSubviews(fastingTimerTitleLabel,fastingTimerTitleSubLabel,fastingTimerCircularProgressBar,fastingTimerProgressBarIcon, fastingTimerInfoLabel, FastingButton)
+        fastingTimerTitleView.addSubviews(fastingTimerTitleLabel,fastingTimerTitleSubLabel,fastingTimerCircularProgressBar,fastingTimerProgressBarIcon, fastingTimerInfoLabel, fastingTimerStartStopButton)
     }
     
     private func setupConstraints() {
@@ -247,10 +262,10 @@ class DietMainViewController: UIViewController {
         }
         // 🤤 FastingTimer
         fastingTimerTitleView.snp.makeConstraints{
-            $0.top.equalTo(waterTitleView.snp.bottom).offset(32)
+            $0.top.equalTo(waterTitleView.snp.bottom).offset(48)
             $0.leading.equalToSuperview().offset(16)
             $0.trailing.equalToSuperview().inset(16)
-            $0.height.equalTo(480)
+            $0.height.equalTo(500)
         }
         fastingTimerTitleLabel.snp.makeConstraints{
             $0.top.equalToSuperview()
@@ -275,7 +290,7 @@ class DietMainViewController: UIViewController {
             $0.centerX.equalTo(fastingTimerCircularProgressBar)
             $0.top.equalTo(fastingTimerProgressBarIcon.snp.bottom).offset(16)
         }
-        FastingButton.snp.makeConstraints {
+        fastingTimerStartStopButton.snp.makeConstraints {
             $0.top.equalTo(fastingTimerCircularProgressBar.snp.bottom).offset(16)
             $0.centerX.equalToSuperview()
             $0.width.equalTo(180)
@@ -308,36 +323,108 @@ class DietMainViewController: UIViewController {
         floatingPanelController.addPanel(toParent: self)
     }
     
-    @objc func fastingButtonButtonTapped() {
-        FastingButton.isSelected.toggle()
-        
-        if FastingButton.isSelected {
-            // Start timer
-            startTime = Date()
-            timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateTimer), userInfo: nil, repeats: true)
-            RunLoop.current.add(timer!, forMode: .common)
-            isTimerRunning = true
-        } else {
-            // Stop timer
-            timer?.invalidate()
-            timer = nil
-            isTimerRunning = false
-        }
+    // MARK: - Timer Management
+    private func updateButtonTitle() {
+        let title = isTimerRunning ? "공복 종료" : "공복 시작"
+        fastingTimerStartStopButton.setTitle(title, for: .normal)
     }
     
-    @objc func updateTimer() {
-        guard let startTime = startTime else { return }
-        elapsedTime = Date().timeIntervalSince(startTime)
+    @objc private func startStopButtonTapped() {
+        if isTimerRunning {
+            stopTimer()
+        } else {
+            startTimer()
+        }
+        updateButtonTitle()
+    }
+    
+    private func startTimer(resuming: Bool = false) {
+        if !resuming {
+            startTime = Date()
+            UserDefaults.standard.set(startTime, forKey: "startTime")
+            print("타이머 시작 시간: \(startTime!)") // 디버깅용 print문
+        }
         
-        // Update circular progress bar
-        let maxTime: TimeInterval = 24 * 60 * 60 // 24 hours in seconds
-        let progress = Float(elapsedTime / maxTime)
+        isTimerRunning = true
+        
+        timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(updateTimer), userInfo: nil, repeats: true)
+    }
+    
+    private func stopTimer() {
+        timer?.invalidate()
+        timer = nil
+        isTimerRunning = false
+        
+        if let startTime = startTime {
+            let elapsedTime = Date().timeIntervalSince(startTime)
+            print("타이머 정지 시간: \(Date())") // 디버깅용 print문
+            print("경과 시간: \(elapsedTime)초") // 디버깅용 print문
+        }
+        
+        UserDefaults.standard.removeObject(forKey: "startTime")
+        updateTimer() // 타이머 리셋
+    }
+    
+    @objc private func updateTimer() {
+        guard let startTime = startTime else {
+            fastingTimerInfoLabel.text = "공복시간을 측정하세요"
+            fastingTimerCircularProgressBar.progress = 0.0
+            return
+        }
+        let elapsedTime = Date().timeIntervalSince(startTime)
+        
+        let hours = Int(elapsedTime) / 3600
+        let minutes = (Int(elapsedTime) % 3600) / 60
+        
+        fastingTimerInfoLabel.text = String(format: "%d시간 %d분", hours, minutes)
+        
+        // 프로그래스바 업데이트 단위: 1시간
+        let maxTime: TimeInterval = 60 * 60 // 1 hour in seconds
+        let progress = Float((elapsedTime.truncatingRemainder(dividingBy: maxTime)) / maxTime)
         fastingTimerCircularProgressBar.progress = CGFloat(progress)
+    }
+    
+    //공복타이머 알럿 (아침,저녁 식사추가시 알럿)
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    //알림 관련 옵저버 설정
+    private func setupBreakfastNotificationObserver() {
+        NotificationCenter.default.addObserver(self, selector: #selector(showBreakfastAlert(_:)), name: .showBreakfastAlert, object: nil)
+    }
+    private func setupDinnerNotificationObserver() {
+        NotificationCenter.default.addObserver(self, selector: #selector(showDinnerAlert(_:)), name: .showDinnerAlert, object: nil)
+    }
+    
+    @objc private func showBreakfastAlert(_ notification: Notification) {
+        guard let isForBreakfast = notification.userInfo?["isForBreakfast"] as? Bool, isForBreakfast else { return }
         
-        // Update elapsed time label
-        let hours = Int(elapsedTime / 3600)
-        let minutes = Int((elapsedTime.truncatingRemainder(dividingBy: 3600)) / 60)
-        fastingTimerInfoLabel.text = String(format: "경과 시간: %d시간 %d분", hours, minutes)
+        if !isTimerRunning {
+            return
+        }
+        
+        let alert = UIAlertController(title: "아침 식사가 처음으로 추가되었습니다.", message: "공복 타이머를 멈추시겠습니까?", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "네", style: .default, handler: { _ in
+            self.startStopButtonTapped()
+        }))
+        alert.addAction(UIAlertAction(title: "아니오", style: .cancel, handler: nil))
+        present(alert, animated: true, completion: nil)
+    }
+    
+    @objc private func showDinnerAlert(_ notification: Notification) {
+        guard let isForBreakfast = notification.userInfo?["isForBreakfast"] as? Bool, !isForBreakfast else { return }
+        
+        if isTimerRunning {
+            return
+        }
+        
+        let alert = UIAlertController(title: "저녁 식사가 처음으로 추가되었습니다.", message: "공복 타이머를 시작하시겠습니까?", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "네", style: .default, handler: { _ in
+            self.startStopButtonTapped()
+        }))
+        alert.addAction(UIAlertAction(title: "아니오", style: .cancel, handler: nil))
+        present(alert, animated: true, completion: nil)
     }
     
     // MARK: - ViewModel
@@ -367,7 +454,7 @@ class DietMainViewController: UIViewController {
                 let progress = canEatCalorie > 0 ? Double(totalCalorie) / Double(canEatCalorie) : 0.0
                 self?.dietCircularProgressBar.progress = progress
                 if totalCalorie > canEatCalorie {
-                    self?.dietInfoLabel.text = "오늘의 권장 칼로리 섭취량을 달성했어요!"
+                    self?.dietInfoLabel.text = "오늘의 권장 칼로리 섭취량을 달성했어요."
                 } else {
                     self?.dietInfoLabel.text = "아직 더 먹을 수 있어요!"
                 }

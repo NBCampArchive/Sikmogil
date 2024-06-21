@@ -32,6 +32,7 @@ class BreakfastTableViewCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupViews()
         setupConstraints()
+        self.selectionStyle = .none
     }
     
     required init?(coder: NSCoder) {

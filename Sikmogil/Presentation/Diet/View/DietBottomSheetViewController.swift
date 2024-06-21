@@ -41,7 +41,8 @@ class DietBottomSheetViewController: UIViewController {
         $0.clipsToBounds = true
     }
     let breakfastIcon = UIImageView().then {
-        $0.image = UIImage(named: "dietIcon")
+        $0.image = UIImage(named: "dietIconb")
+        $0.contentMode = .scaleAspectFit
     }
     let breakfastTitleLabel = UILabel().then {
         $0.text = "아침"
@@ -69,7 +70,8 @@ class DietBottomSheetViewController: UIViewController {
         $0.clipsToBounds = true
     }
     let lunchIcon = UIImageView().then {
-        $0.image = UIImage(named: "dietIcon")
+        $0.image = UIImage(named: "dietIconl")
+        $0.contentMode = .scaleAspectFit
     }
     let lunchTitleLabel = UILabel().then {
         $0.text = "점심"
@@ -98,6 +100,7 @@ class DietBottomSheetViewController: UIViewController {
     }
     let dinnerIcon = UIImageView().then {
         $0.image = UIImage(named: "dietIcon")
+        $0.contentMode = .scaleAspectFit
     }
     let dinnerTitleLabel = UILabel().then {
         $0.text = "저녁"
@@ -142,7 +145,7 @@ class DietBottomSheetViewController: UIViewController {
         breakfastAddTabButton.addTarget(self, action: #selector(breakfastAddTabButtonTapped), for: .touchUpInside)
         lunchAddTabButton.addTarget(self, action: #selector(lunchAddTabButtonTapped), for: .touchUpInside)
         dinnerAddTabButton.addTarget(self, action: #selector(dinnerAddTabButtonTapped), for: .touchUpInside)
-        albumButton.addTarget(self, action: #selector(albumButtonTapped), for: .touchUpInside)
+        //albumButton.addTarget(self, action: #selector(albumButtonTapped), for: .touchUpInside)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -153,7 +156,7 @@ class DietBottomSheetViewController: UIViewController {
     // MARK: - Setup Methods
     private func setupViews() {
         view.addSubview(contentView)
-        contentView.addSubviews(titleLabel,albumButton,breakfastView,lunchView,dinnerView)
+        contentView.addSubviews(titleLabel,breakfastView,lunchView,dinnerView) //albumButton 제외처리
         breakfastView.addSubviews(breakfastIcon,breakfastTitleLabel,breakfastKcalLabel,breakfastAddTabButton,breakfastTableView)
         lunchView.addSubviews(lunchIcon,lunchTitleLabel,lunchKcalLabel,lunchAddTabButton,lunchTableView)
         dinnerView.addSubviews(dinnerIcon,dinnerTitleLabel,dinnerKcalLabel,dinnerAddTabButton,dinnerTableView)
@@ -179,12 +182,12 @@ class DietBottomSheetViewController: UIViewController {
             $0.top.equalToSuperview().offset(40)
             $0.leading.equalToSuperview().offset(16)
         }
-        albumButton.snp.makeConstraints{
-            $0.top.equalTo(titleLabel)
-            $0.trailing.equalToSuperview().inset(16)
-            $0.height.equalTo(30)
-            $0.width.equalTo(91)
-        }
+//        albumButton.snp.makeConstraints{
+//            $0.top.equalTo(titleLabel)
+//            $0.trailing.equalToSuperview().inset(16)
+//            $0.height.equalTo(30)
+//            $0.width.equalTo(91)
+//        }
         // 🍎 breakfastView
         breakfastView.snp.makeConstraints{
             $0.top.equalTo(titleLabel.snp.bottom).offset(24)
@@ -476,15 +479,17 @@ extension DietBottomSheetViewController : UITableViewDelegate, UITableViewDataSo
     }
     
     // 테이블뷰 셀 삭제 액션
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let deleteAction = UIContextualAction(style: .destructive, title: nil) { [weak self] (action, view, completion) in
+            guard let self = self else { return }
+            
             switch tableView {
-            case breakfastTableView:
-                let item = addMealViewModel.breakfastDietLists[indexPath.row]
+            case self.breakfastTableView:
+                let item = self.addMealViewModel.breakfastDietLists[indexPath.row]
                 let dietListId = item.dietListId // 삭제할 데이터의 ID 가져오기
                 
                 // 서버에서 데이터 삭제
-                addMealViewModel.deleteDietList(for: DateHelper.shared.formatDateToYearMonthDay(Date()), dietListId: dietListId) { result in
+                self.addMealViewModel.deleteDietList(for: DateHelper.shared.formatDateToYearMonthDay(Date()), dietListId: dietListId) { result in
                     switch result {
                     case .success:
                         // 데이터 소스에서 삭제
@@ -497,12 +502,12 @@ extension DietBottomSheetViewController : UITableViewDelegate, UITableViewDataSo
                     }
                 }
                 
-            case lunchTableView:
-                let item = addMealViewModel.lunchDietLists[indexPath.row]
+            case self.lunchTableView:
+                let item = self.addMealViewModel.lunchDietLists[indexPath.row]
                 let dietListId = item.dietListId // 삭제할 데이터의 ID 가져오기
                 
                 // 서버에서 데이터 삭제
-                addMealViewModel.deleteDietList(for: DateHelper.shared.formatDateToYearMonthDay(Date()), dietListId: dietListId) { result in
+                self.addMealViewModel.deleteDietList(for: DateHelper.shared.formatDateToYearMonthDay(Date()), dietListId: dietListId) { result in
                     switch result {
                     case .success:
                         // 데이터 소스에서 삭제
@@ -515,12 +520,12 @@ extension DietBottomSheetViewController : UITableViewDelegate, UITableViewDataSo
                     }
                 }
                 
-            case dinnerTableView:
-                let item = addMealViewModel.dinnerDietLists[indexPath.row]
+            case self.dinnerTableView:
+                let item = self.addMealViewModel.dinnerDietLists[indexPath.row]
                 let dietListId = item.dietListId // 삭제할 데이터의 ID 가져오기
                 
                 // 서버에서 데이터 삭제
-                addMealViewModel.deleteDietList(for: DateHelper.shared.formatDateToYearMonthDay(Date()), dietListId: dietListId) { result in
+                self.addMealViewModel.deleteDietList(for: DateHelper.shared.formatDateToYearMonthDay(Date()), dietListId: dietListId) { result in
                     switch result {
                     case .success:
                         // 데이터 소스에서 삭제
@@ -536,6 +541,17 @@ extension DietBottomSheetViewController : UITableViewDelegate, UITableViewDataSo
             default:
                 fatalError("Unknown table view")
             }
+            
+            
+            completion(true)
         }
+        
+        // 배경색 및 이미지 설정
+        deleteAction.backgroundColor = UIColor.white
+        let trashImage = UIImage(systemName: "trash")?.withTintColor(UIColor.darkGray, renderingMode: .alwaysOriginal)
+        deleteAction.image = trashImage
+        
+        let swipeConfiguration = UISwipeActionsConfiguration(actions: [deleteAction])
+        return swipeConfiguration
     }
 }

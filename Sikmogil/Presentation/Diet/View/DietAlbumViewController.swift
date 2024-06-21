@@ -91,16 +91,6 @@ class DietAlbumViewController: UIViewController, UINavigationControllerDelegate 
     }
     
     // MARK: - Actions
-    
-    /*앨범없이 카메라만 바로 연결
-    @objc func albumAddPhotoButtonTapped() {
-        print("시도 imagePicker")
-        let imagePicker = UIImagePickerController()
-        imagePicker.sourceType = .camera
-        imagePicker.delegate = self
-        present(imagePicker, animated: true, completion: nil)
-    }*/
-    
    // 카메라/앨범 중 선택
     @objc func albumAddPhotoButtonTapped() {
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)

@@ -25,7 +25,7 @@ class AddDietMenuViewController: UIViewController {
         $0.searchTextField.layer.cornerRadius = 10
     }
     let searchResultTableView = UITableView().then {
-        $0.backgroundColor = .appLightGray
+        $0.backgroundColor = .clear
         $0.register(AddDietMenuTableViewCell.self, forCellReuseIdentifier: "AddDietMenuTableViewCell")
         $0.separatorStyle = .none
     }
