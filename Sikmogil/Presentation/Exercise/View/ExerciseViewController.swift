@@ -155,14 +155,13 @@ class ExerciseViewController: UIViewController {
     
     // MARK: - API
     private func fetchExerciseData() {
-        viewModel.fetchExerciseList(for: day)
-        self.tableView.reloadData()
-        
         viewModel.getExerciseData(for: day) { result in
             switch result {
             case .success(_):
                 DispatchQueue.main.async {
                     self.updateProgress()
+                    self.viewModel.fetchExerciseList(for: self.day)
+                    self.tableView.reloadData()
                 }
             case .failure(let error):
                 print("운동 데이터 불러오기 실패:", error)
