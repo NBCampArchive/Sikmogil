@@ -278,7 +278,6 @@ class ProfileViewController: UIViewController {
         let notificationSettingsAction = UIAction(title: "알림 설정", image: nil) { [weak self] _ in
             guard let self = self else { return }
             let notificationSettingsVC = NotificationSettingsViewController()
-            notificationSettingsVC.viewModel = self.viewModel
             self.navigationController?.pushViewController(notificationSettingsVC, animated: true)
         }
         

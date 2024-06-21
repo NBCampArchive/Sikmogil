@@ -12,8 +12,6 @@ import UserNotifications
 
 class NotificationSettingsViewController: UIViewController {
     
-    var viewModel: ProfileViewModel?
-    
     private let scrollView = UIScrollView().then {
         $0.backgroundColor = .clear
     }
@@ -44,47 +42,46 @@ class NotificationSettingsViewController: UIViewController {
         super.viewDidLoad()
         setupViews()
         setupConstraints()
-        
-        UNUserNotificationCenter.current().getPendingNotificationRequests { requests in
-            print(requests)
-        }
+        checkAndRegisterNotification()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        loadReminderTime() // 리마인드 시간 로드
-    }
-    
-    private func loadReminderTime() {
-        guard let reminderTime = viewModel?.reminderTime else { return }
-        viewModel?.reminderTime = reminderTime
-        tableView.reloadData()
-    }
-    
+    // MARK: - 알림설정 저장 및 예약제거
     private func saveNotificationSetting(isEnabled: Bool) {
         print("알림 설정 저장 호출됨: \(isEnabled)")
         UserDefaults.standard.set(isEnabled, forKey: "NotificationEnabled")
         if isEnabled {
-            let defaultTime = viewModel?.reminderTime ?? ":"
-            print("기본 알림 시간: \(defaultTime)")
-            let components = defaultTime.split(separator: ":").map { Int($0) ?? 0 }
-            var dateComponents = DateComponents()
-            dateComponents.hour = components[0]
-            dateComponents.minute = components[1]
-            
-            NotificationHelper.shared.scheduleDailyNotification(at: dateComponents) { error in
-                if let error = error {
-                    print("알림 예약 실패: \(error)")
-                } else {
-                    print("알림 예약 성공")
-                }
-            }
+            registerNotification()
         } else {
             NotificationHelper.shared.clearAllNotifications()
             print("모든 알림이 취소되었습니다.")
         }
     }
     
+    private func registerNotification() {
+        let defaultTime = UserDefaults.standard.string(forKey: "ReminderTime") ?? "08:00"
+        print("기본 알림 시간: \(defaultTime)")
+        let components = defaultTime.split(separator: ":").map { Int($0) ?? 0 }
+        var dateComponents = DateComponents()
+        dateComponents.hour = components[0]
+        dateComponents.minute = components[1]
+        
+        NotificationHelper.shared.scheduleDailyNotification(at: dateComponents) { error in
+            if let error = error {
+                print("알림 예약 실패: \(error)")
+            } else {
+                print("알림 예약 성공")
+            }
+        }
+    }
+    
+    private func checkAndRegisterNotification() {
+        let isEnabled = loadNotificationSetting()
+        if isEnabled {
+            registerNotification()
+        }
+    }
+    
+    // 알림 설정 로드
     private func loadNotificationSetting() -> Bool {
         return UserDefaults.standard.bool(forKey: "NotificationEnabled")
     }
@@ -148,13 +145,10 @@ class NotificationSettingsViewController: UIViewController {
         }
     }
 }
-
 // MARK: - UITableViewDataSource & UITableViewDelegate
-extension NotificationSettingsViewController: UITableViewDelegate, UITableViewDataSource {
-    
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
-    }
+extension NotificationSettingsViewController: UITableViewDelegate, UITableViewDataSource {func numberOfSections(in tableView: UITableView) -> Int {
+    return 2
+}
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1
@@ -170,12 +164,12 @@ extension NotificationSettingsViewController: UITableViewDelegate, UITableViewDa
             cell.customSwitch.isHidden = true
             cell.showsAccessoryButton = true
         case 1:
-            cell.label.text = "Notification"
+            cell.label.text = "알림 On/Off"
             cell.customSwitch.isHidden = false
             cell.customSwitch.isOn = loadNotificationSetting()
             cell.showsAccessoryButton = false
             cell.switchValueChanged = { [weak self] isOn in
-                print("스위치 값 변경됨: \(isOn)")
+                print("알림 ON : \(isOn)")
                 self?.saveNotificationSetting(isEnabled: isOn)
             }
         default:
@@ -190,9 +184,7 @@ extension NotificationSettingsViewController: UITableViewDelegate, UITableViewDa
         
         if indexPath.section == 0 {
             let reminderVC = ReminderSettingsViewController()
-            if let viewModel = viewModel {
-                reminderVC.viewModel = viewModel // viewModel 전달
-            }
+            reminderVC.viewModel = ProfileViewModel()
             navigationController?.pushViewController(reminderVC, animated: true)
         }
     }
