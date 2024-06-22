@@ -69,17 +69,7 @@ class Step3ViewController: UIViewController {
     private func bindViewModel() {
         guard let viewModel = viewModel else { return }
         
-        timePicker.rx.date
-            .map { date -> String in
-                let formatter = DateFormatter()
-                formatter.dateFormat = "HH:mm"
-                return formatter.string(from: date)
-            }
-            .bind(to: viewModel.reminderTime)
-            .disposed(by: disposeBag)
-        
         viewModel.reminderTime
-            .skip(1)
             .subscribe(onNext: { [weak self] time in
                 guard let self = self else { return }
                 let formatter = DateFormatter()
@@ -139,14 +129,22 @@ class Step3ViewController: UIViewController {
     @objc private func doneButtonTapped() {
         guard let viewModel = viewModel else { return }
         
+        let formatter = DateFormatter()
+        formatter.dateFormat = "HH:mm"
+        let selectedTime = formatter.string(from: timePicker.date)
+        
+        viewModel.reminderTime.accept(selectedTime)
+        
         if viewModel.reminderValidateForm() {
             timeTextFieldWarningLabel.isHidden = true
+            
             viewModel.saveReminderData()
             
             viewModel.submitProfile { result in
                 switch result {
                 case .success:
                     print("Profile submitted successfully\(viewModel.debugPrint())")
+                    self.registerNotification(time: selectedTime)
                 case .failure(let error):
                     print("Failed to submit profile: \(error)")
                     // 에러 처리
@@ -157,6 +155,20 @@ class Step3ViewController: UIViewController {
             timeTextFieldWarningLabel.isHidden = false
         }
         
+    }
+    
+    private func registerNotification(time: String) {
+        let components = time.split(separator: ":").map { Int($0) ?? 0 }
+        var dateComponents = DateComponents()
+        dateComponents.hour = components[0]
+        dateComponents.minute = components[1]
+        NotificationHelper.shared.scheduleDailyNotification(at: dateComponents) { error in
+            if let error = error {
+                print("알림 예약 실패: \(error)")
+            } else {
+                print("알림 예약 성공")
+            }
+        }
     }
     
     
