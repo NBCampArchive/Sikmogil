@@ -15,7 +15,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        // 네비게이션 바의 스타일을 전역적으로 설정
+        
+        //MARK: - 포그라운드 알림 설정
+        UNUserNotificationCenter.current().delegate = self
+        
+        //MARK: - 네비게이션 바의 스타일을 전역적으로 설정
         let appearance = UINavigationBar.appearance()
         appearance.tintColor = .black // 버튼의 색상
         
@@ -55,4 +59,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
     }
+}
+
+extension AppDelegate: UNUserNotificationCenterDelegate {
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        completionHandler([.banner, .sound])
+    }
+    
 }
