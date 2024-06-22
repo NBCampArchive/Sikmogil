@@ -32,7 +32,7 @@ class NotificationSettingsViewController: UIViewController {
         $0.textColor = .darkGray
     }
     
-    private let tableView = UITableView(frame: .zero, style: .grouped).then {
+    private let tableView = UITableView(frame: .zero).then {
         $0.register(AlarmTableViewCell.self, forCellReuseIdentifier: AlarmTableViewCell.identifier)
         $0.backgroundColor = .clear
         $0.separatorStyle = .none
@@ -43,42 +43,26 @@ class NotificationSettingsViewController: UIViewController {
         setupViews()
         setupConstraints()
         checkAndRegisterNotification()
+        navigationController?.navigationBar.isHidden = false
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setTabBar(hidden: true, animated: true)
     }
     
     // MARK: - 알림설정 저장 및 예약제거
     private func saveNotificationSetting(isEnabled: Bool) {
         print("알림 설정 저장 호출됨: \(isEnabled)")
         UserDefaults.standard.set(isEnabled, forKey: "NotificationEnabled")
-        if isEnabled {
-            registerNotification()
-        } else {
+        if !isEnabled {
             NotificationHelper.shared.clearAllNotifications()
             print("모든 알림이 취소되었습니다.")
         }
     }
     
-    private func registerNotification() {
-        let defaultTime = UserDefaults.standard.string(forKey: "ReminderTime") ?? "08:00"
-        print("기본 알림 시간: \(defaultTime)")
-        let components = defaultTime.split(separator: ":").map { Int($0) ?? 0 }
-        var dateComponents = DateComponents()
-        dateComponents.hour = components[0]
-        dateComponents.minute = components[1]
-        
-        NotificationHelper.shared.scheduleDailyNotification(at: dateComponents) { error in
-            if let error = error {
-                print("알림 예약 실패: \(error)")
-            } else {
-                print("알림 예약 성공")
-            }
-        }
-    }
-    
     private func checkAndRegisterNotification() {
         let isEnabled = loadNotificationSetting()
-        if isEnabled {
-            registerNotification()
-        }
     }
     
     // 알림 설정 로드
@@ -106,8 +90,8 @@ class NotificationSettingsViewController: UIViewController {
         }
         
         contentView.snp.makeConstraints {
-            $0.edges.equalTo(scrollView)
-            $0.width.equalTo(scrollView)
+            $0.edges.equalToSuperview()
+            $0.width.equalToSuperview()
         }
         
         titleLabel.snp.makeConstraints {
@@ -123,32 +107,17 @@ class NotificationSettingsViewController: UIViewController {
         tableView.snp.makeConstraints {
             $0.top.equalTo(subtitleLabel.snp.bottom).offset(16)
             $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(300)
             $0.bottom.equalToSuperview().offset(-16)
-        }
-    }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        tableView.layoutIfNeeded()
-        let tableViewHeight = tableView.contentSize.height
-        
-        tableView.snp.remakeConstraints {
-            $0.top.equalTo(subtitleLabel.snp.bottom).offset(16)
-            $0.leading.trailing.equalToSuperview()
-            $0.height.equalTo(tableViewHeight)
-        }
-        
-        contentView.snp.remakeConstraints {
-            $0.edges.equalTo(scrollView)
-            $0.width.equalTo(scrollView)
-            $0.bottom.equalTo(tableView.snp.bottom).offset(16)
         }
     }
 }
 // MARK: - UITableViewDataSource & UITableViewDelegate
-extension NotificationSettingsViewController: UITableViewDelegate, UITableViewDataSource {func numberOfSections(in tableView: UITableView) -> Int {
-    return 2
-}
+extension NotificationSettingsViewController: UITableViewDelegate, UITableViewDataSource {
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 2
+    }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1
@@ -191,25 +160,5 @@ extension NotificationSettingsViewController: UITableViewDelegate, UITableViewDa
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 80
-    }
-    
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return section == 1 ? 4 : 0
-    }
-    
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        return UIView(frame: .zero)
-    }
-    
-    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return 4
-    }
-    
-    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        return UIView(frame: .zero)
-    }
-    
-    func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
-        return indexPath.section != 1
     }
 }
