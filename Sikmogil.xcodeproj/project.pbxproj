@@ -66,6 +66,7 @@
 		B53786CB2C24126D007B362F /* PermissionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53786CA2C24126D007B362F /* PermissionViewController.swift */; };
 		B53786CD2C245390007B362F /* UITextFieldExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53786CC2C245390007B362F /* UITextFieldExtension.swift */; };
 		B53786CF2C25AE08007B362F /* BagelFatOne-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B53786CE2C25AE08007B362F /* BagelFatOne-Regular.ttf */; };
+		B53786D12C25EB7E007B362F /* SikmogilPlist.plist in Resources */ = {isa = PBXBuildFile; fileRef = B53786D02C25EB7E007B362F /* SikmogilPlist.plist */; };
 		B54ABF882C09BD43002E89DC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABF872C09BD43002E89DC /* AppDelegate.swift */; };
 		B54ABF8A2C09BD43002E89DC /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABF892C09BD43002E89DC /* SceneDelegate.swift */; };
 		B54ABF8C2C09BD43002E89DC /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABF8B2C09BD43002E89DC /* ViewController.swift */; };
@@ -116,6 +117,7 @@
 		B54AC01A2C105646002E89DC /* Step1ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54AC0192C105646002E89DC /* Step1ViewController.swift */; };
 		B54AC01C2C1056A4002E89DC /* Step2ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54AC01B2C1056A4002E89DC /* Step2ViewController.swift */; };
 		B54AC01E2C1056C3002E89DC /* Step3ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54AC01D2C1056C3002E89DC /* Step3ViewController.swift */; };
+		B566DF292C2772990050CF60 /* UITabBarExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B566DF282C2772990050CF60 /* UITabBarExtension.swift */; };
 		B5825BAA2C219A7100ADAA66 /* CommunityNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5825BA92C219A7100ADAA66 /* CommunityNavigationViewController.swift */; };
 		B5825BAD2C219C2B00ADAA66 /* BoardMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5825BAC2C219C2B00ADAA66 /* BoardMainViewController.swift */; };
 		B5825BAF2C219FE500ADAA66 /* CustomSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5825BAE2C219FE500ADAA66 /* CustomSegmentedControl.swift */; };
@@ -199,6 +201,7 @@
 		B53786CA2C24126D007B362F /* PermissionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionViewController.swift; sourceTree = "<group>"; };
 		B53786CC2C245390007B362F /* UITextFieldExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextFieldExtension.swift; sourceTree = "<group>"; };
 		B53786CE2C25AE08007B362F /* BagelFatOne-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "BagelFatOne-Regular.ttf"; sourceTree = "<group>"; };
+		B53786D02C25EB7E007B362F /* SikmogilPlist.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = SikmogilPlist.plist; path = Sikmogil/Resources/SikmogilPlist.plist; sourceTree = SOURCE_ROOT; };
 		B54ABF842C09BD43002E89DC /* Sikmogil.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sikmogil.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B54ABF872C09BD43002E89DC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B54ABF892C09BD43002E89DC /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -238,6 +241,7 @@
 		B54AC0192C105646002E89DC /* Step1ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Step1ViewController.swift; sourceTree = "<group>"; };
 		B54AC01B2C1056A4002E89DC /* Step2ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Step2ViewController.swift; sourceTree = "<group>"; };
 		B54AC01D2C1056C3002E89DC /* Step3ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Step3ViewController.swift; sourceTree = "<group>"; };
+		B566DF282C2772990050CF60 /* UITabBarExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITabBarExtension.swift; sourceTree = "<group>"; };
 		B5825BA92C219A7100ADAA66 /* CommunityNavigationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityNavigationViewController.swift; sourceTree = "<group>"; };
 		B5825BAC2C219C2B00ADAA66 /* BoardMainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardMainViewController.swift; sourceTree = "<group>"; };
 		B5825BAE2C219FE500ADAA66 /* CustomSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSegmentedControl.swift; sourceTree = "<group>"; };
@@ -585,6 +589,7 @@
 				B54ABF932C09BD47002E89DC /* Assets.xcassets */,
 				62578CED2C117333005035BB /* The_Scale.json */,
 				B54ABF982C09BD47002E89DC /* Info.plist */,
+				B53786D02C25EB7E007B362F /* SikmogilPlist.plist */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -613,6 +618,7 @@
 				F36105B62C1BFF7600237572 /* Double.swift */,
 				54C282FB2C22F42100DDEA08 /* UITextField.swift */,
 				B53786CC2C245390007B362F /* UITextFieldExtension.swift */,
+				B566DF282C2772990050CF60 /* UITabBarExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -898,6 +904,7 @@
 				B54ABFE22C0D68CF002E89DC /* SUITE-SemiBold.ttf in Resources */,
 				B54ABFE62C0D68CF002E89DC /* SUITE-Medium.ttf in Resources */,
 				B54ABFE12C0D68CF002E89DC /* SUITE-Bold.ttf in Resources */,
+				B53786D12C25EB7E007B362F /* SikmogilPlist.plist in Resources */,
 				62578CEE2C117333005035BB /* The_Scale.json in Resources */,
 				B54ABFE02C0D68CF002E89DC /* SUITE-Light.ttf in Resources */,
 				B54ABF942C09BD47002E89DC /* Assets.xcassets in Resources */,
@@ -985,6 +992,7 @@
 				62578CD42C0ED558005035BB /* CalendarViewController.swift in Sources */,
 				62578D002C15A487005035BB /* HeaderView.swift in Sources */,
 				B54ABF882C09BD43002E89DC /* AppDelegate.swift in Sources */,
+				B566DF292C2772990050CF60 /* UITabBarExtension.swift in Sources */,
 				B54ABF8A2C09BD43002E89DC /* SceneDelegate.swift in Sources */,
 				CA13FDE82C22E76C007B3DBE /* LunchTableViewCell.swift in Sources */,
 				B52001D22C171B8C0083CBDF /* DietAlbumCollectionViewCell.swift in Sources */,
