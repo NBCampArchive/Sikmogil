@@ -113,10 +113,10 @@ class EditProfileViewController: UIViewController, UIImagePickerControllerDelega
     
     let saveButton = UIButton(type: .system).then {
         $0.setTitle("저장하기", for: .normal)
-        $0.backgroundColor = .appBlack
         $0.setTitleColor(.white, for: .normal)
-        $0.layer.cornerRadius = 5
-        $0.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
+        $0.titleLabel?.font = Suite.bold.of(size: 22)
+        $0.backgroundColor = .appBlack
+        $0.layer.cornerRadius = 8
     }
     
     // MARK: - viewDidLoad
@@ -136,6 +136,8 @@ class EditProfileViewController: UIViewController, UIImagePickerControllerDelega
         // 데이터를 받아오는 부분
         viewModel?.fetchUserProfile()
         
+        navigationController?.navigationBar.isHidden = false
+        
         // 프로필 이미지 초기화
         if let profileImageURL = viewModel?.picture {
             loadImage(from: profileImageURL)
@@ -146,6 +148,7 @@ class EditProfileViewController: UIViewController, UIImagePickerControllerDelega
         nickname.addTarget(self, action: #selector(nicknameDidChange(_:)), for: .editingChanged)
         height.addTarget(self, action: #selector(heightDidChange(_:)), for: .editingChanged)
         weight.addTarget(self, action: #selector(weightDidChange(_:)), for: .editingChanged)
+        saveButton.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
     }
     
     override func viewDidLayoutSubviews() {
@@ -157,6 +160,12 @@ class EditProfileViewController: UIViewController, UIImagePickerControllerDelega
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         viewModel?.fetchUserProfile()
+        setTabBar(hidden: true, animated: true)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        setTabBar(hidden: false, animated: true)
     }
     
     @objc private func nicknameDidChange(_ textField: UITextField) {
