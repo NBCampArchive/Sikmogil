@@ -77,6 +77,44 @@ class NotificationHelper {
         }
     }
     
+    // MARK: - 단식 14시간 알림
+    func fastingNotification() {
+        guard let startTime = UserDefaults.standard.object(forKey: "startTime") as? Date else {
+            print("Start time not found")
+            return
+        }
+        
+        let content = UNMutableNotificationContent().then {
+            $0.title = "Sikmogil"
+            $0.body = "단식 시간이 끝났습니다!"
+            $0.sound = .default
+        }
+        
+        let calendar = Calendar.current
+        let notificationTime = calendar.date(byAdding: .hour, value: 14, to: startTime) ?? Date().addingTimeInterval(14 * 60 * 60)
+        let notificationComponents = calendar.dateComponents([.year, .month, .day, .hour, .minute, .second], from: notificationTime)
+        
+        let trigger = UNCalendarNotificationTrigger(dateMatching: notificationComponents, repeats: false)
+        let request = UNNotificationRequest(identifier: "fastingNotification", content: content, trigger: trigger)
+        
+        UNUserNotificationCenter.current().add(request) { error in
+            DispatchQueue.main.async {
+                if let error = error {
+                    print("알림 설정 실패: \(error.localizedDescription)")
+                } else {
+                    print("14시간 알림이 성공적으로 설정되었습니다.")
+                }
+            }
+        }
+    }
+    
+    //MARK: - 공복 알림 제거
+    func removeFastingNotification() {
+        let identifiers = ["fastingNotification"]
+        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: identifiers)
+        print("fastingNotification 알림이 성공적으로 제거되었습니다.")
+    }
+    
     // MARK: - 모든 알림 제거 메서드
     // 모든 예약된 알림을 제거
     func clearAllNotifications() {
