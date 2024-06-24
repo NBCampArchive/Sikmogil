@@ -170,7 +170,7 @@ class MainViewModel: ObservableObject {
             }
         }
         else {
-            for index in (0..<targetModel.weekWeights.count).reversed() {
+            for index in 0..<targetModel.weekWeights.count {
                 let weight = targetModel.weekWeights[index].weight ?? 0.0
                 entries.append(ChartDataEntry(x: Double(index), y: weight))
                 if let date = inputDateFormatter.date(from: targetModel.weekWeights[index].date) {
