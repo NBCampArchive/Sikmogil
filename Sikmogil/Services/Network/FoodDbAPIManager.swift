@@ -40,7 +40,7 @@ class FoodDbAPIManager {
             return
         }
 
-        sessionManager.request(url, method: .get).responseDecodable(of: [FoodItem].self) { response in
+        sessionManager.request(url, method: .get).responseJSON { response in
             //debugPrint(response) // 응답 정보 디버깅용
 
             switch response.result {
