@@ -119,6 +119,7 @@
 		B54AC01E2C1056C3002E89DC /* Step3ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54AC01D2C1056C3002E89DC /* Step3ViewController.swift */; };
 		B566DF292C2772990050CF60 /* UITabBarExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B566DF282C2772990050CF60 /* UITabBarExtension.swift */; };
 		B566DF2C2C277C910050CF60 /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B566DF2B2C277C910050CF60 /* SplashViewController.swift */; };
+		B566DF2E2C29E8530050CF60 /* CustomNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B566DF2D2C29E8530050CF60 /* CustomNavigationController.swift */; };
 		B5825BAA2C219A7100ADAA66 /* CommunityNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5825BA92C219A7100ADAA66 /* CommunityNavigationViewController.swift */; };
 		B5825BAD2C219C2B00ADAA66 /* BoardMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5825BAC2C219C2B00ADAA66 /* BoardMainViewController.swift */; };
 		B5825BAF2C219FE500ADAA66 /* CustomSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5825BAE2C219FE500ADAA66 /* CustomSegmentedControl.swift */; };
@@ -244,6 +245,7 @@
 		B54AC01D2C1056C3002E89DC /* Step3ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Step3ViewController.swift; sourceTree = "<group>"; };
 		B566DF282C2772990050CF60 /* UITabBarExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITabBarExtension.swift; sourceTree = "<group>"; };
 		B566DF2B2C277C910050CF60 /* SplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
+		B566DF2D2C29E8530050CF60 /* CustomNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationController.swift; sourceTree = "<group>"; };
 		B5825BA92C219A7100ADAA66 /* CommunityNavigationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityNavigationViewController.swift; sourceTree = "<group>"; };
 		B5825BAC2C219C2B00ADAA66 /* BoardMainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardMainViewController.swift; sourceTree = "<group>"; };
 		B5825BAE2C219FE500ADAA66 /* CustomSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSegmentedControl.swift; sourceTree = "<group>"; };
@@ -683,6 +685,7 @@
 			isa = PBXGroup;
 			children = (
 				B54ABFEB2C0D6BA6002E89DC /* BottomTabBarController.swift */,
+				B566DF2D2C29E8530050CF60 /* CustomNavigationController.swift */,
 			);
 			path = TabBar;
 			sourceTree = "<group>";
@@ -948,6 +951,7 @@
 				CACA65B82C1860CF0030D8D5 /* DietAlbumViewModel.swift in Sources */,
 				CACA65C82C1B5D0C0030D8D5 /* FoodDbModel.swift in Sources */,
 				B54AC00C2C0F48D1002E89DC /* SikmogilBundle++.swift in Sources */,
+				B566DF2E2C29E8530050CF60 /* CustomNavigationController.swift in Sources */,
 				B52001EE2C1C5CD60083CBDF /* CalendarCell.swift in Sources */,
 				F36105B92C1E00A700237572 /* ExerciseSelectionViewModel.swift in Sources */,
 				B54ABFCF2C0CBB59002E89DC /* UIViewExtensions.swift in Sources */,
