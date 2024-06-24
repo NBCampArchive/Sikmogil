@@ -29,7 +29,7 @@ class WeightRecordFloatingViewController: UIViewController {
     }
     
     private let gramLabel = UILabel().then {
-        $0.text = "KG"
+        $0.text = "Kg"
         $0.font = Suite.bold.of(size: 48)
         $0.textAlignment = .left
         $0.textColor = .appDarkGray
