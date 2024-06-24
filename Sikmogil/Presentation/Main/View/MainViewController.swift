@@ -121,12 +121,17 @@ class MainViewController: UIViewController {
         $0.xAxis.drawAxisLineEnabled = false
         $0.leftAxis.drawAxisLineEnabled = false
         $0.rightAxis.drawAxisLineEnabled = false
-        //        $0.xAxis.drawLabelsEnabled = false
         $0.leftAxis.drawLabelsEnabled = false
         $0.rightAxis.drawLabelsEnabled = false
         $0.legend.enabled = false
         $0.extraLeftOffset = 16
         $0.extraRightOffset = 16
+        $0.scaleXEnabled = false // X축 확대/축소 비활성화
+        $0.scaleYEnabled = false // Y축 확대/축소 비활성화
+        $0.isUserInteractionEnabled = false // 사용자 상호작용 비활성화
+        $0.highlightPerTapEnabled = false // 데이터 항목 클릭 시 강조 비활성화
+        $0.dragEnabled = false // 드래그 비활성화
+        $0.pinchZoomEnabled = false // 핀치 줌 비활성화
     }
     
     override func viewDidLoad() {
@@ -325,6 +330,7 @@ class MainViewController: UIViewController {
         
         let data = LineChartData(dataSet: dataSet)
         graph.data = data
+        graph.notifyDataSetChanged()
     }
     
     @objc func tapCalendarButton() {
