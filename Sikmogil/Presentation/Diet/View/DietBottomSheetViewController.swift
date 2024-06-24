@@ -193,21 +193,20 @@ class DietBottomSheetViewController: UIViewController {
             $0.top.equalTo(titleLabel.snp.bottom).offset(24)
             $0.leading.equalToSuperview().offset(16)
             $0.trailing.equalToSuperview().inset(16)
-            self.breakfastViewHeightConstraint = $0.height.equalTo(80).constraint
+            self.breakfastViewHeightConstraint = $0.height.equalTo(64).constraint
         }
         breakfastIcon.snp.makeConstraints{
-//            $0.top.equalTo(breakfastView).offset(12)
-            $0.leading.equalTo(breakfastView).offset(16)
-            $0.centerY.equalToSuperview()
+            $0.top.equalToSuperview().offset(16)
+            $0.leading.equalToSuperview().offset(16)
             $0.width.equalTo(32)
             $0.height.equalTo(32)
         }
         breakfastTitleLabel.snp.makeConstraints{
-            $0.centerY.equalToSuperview()
+            $0.centerY.equalTo(breakfastIcon)
             $0.leading.equalTo(breakfastIcon.snp.trailing).offset(16)
         }
         breakfastAddTabButton.snp.makeConstraints{
-            $0.centerY.equalToSuperview()
+            $0.centerY.equalTo(breakfastIcon)
             $0.trailing.equalTo(breakfastView).inset(20)
         }
         breakfastKcalLabel.snp.makeConstraints{
@@ -226,20 +225,20 @@ class DietBottomSheetViewController: UIViewController {
             $0.top.equalTo(breakfastView.snp.bottom).offset(16)
             $0.leading.equalToSuperview().offset(16)
             $0.trailing.equalToSuperview().inset(16)
-            self.lunchViewHeightConstraint = $0.height.equalTo(80).constraint
+            self.lunchViewHeightConstraint = $0.height.equalTo(64).constraint
         }
         lunchIcon.snp.makeConstraints{
+            $0.top.equalTo(lunchView).offset(16)
             $0.leading.equalTo(lunchView).offset(16)
-            $0.centerY.equalToSuperview()
             $0.width.equalTo(32)
             $0.height.equalTo(32)
         }
         lunchTitleLabel.snp.makeConstraints{
-            $0.centerY.equalToSuperview()
+            $0.centerY.equalTo(lunchIcon)
             $0.leading.equalTo(lunchIcon.snp.trailing).offset(16)
         }
         lunchAddTabButton.snp.makeConstraints{
-            $0.centerY.equalToSuperview()
+            $0.centerY.equalTo(lunchIcon)
             $0.trailing.equalTo(lunchView).inset(20)
         }
         lunchKcalLabel.snp.makeConstraints{
@@ -258,20 +257,20 @@ class DietBottomSheetViewController: UIViewController {
             $0.top.equalTo(lunchView.snp.bottom).offset(16)
             $0.leading.equalToSuperview().offset(16)
             $0.trailing.equalToSuperview().inset(16)
-            self.dinnerViewHeightConstraint = $0.height.equalTo(80).constraint
+            self.dinnerViewHeightConstraint = $0.height.equalTo(64).constraint
         }
         dinnerIcon.snp.makeConstraints{
             $0.leading.equalTo(dinnerView).offset(16)
-            $0.centerY.equalToSuperview()
+            $0.top.equalToSuperview().offset(16)
             $0.width.equalTo(32)
             $0.height.equalTo(32)
         }
         dinnerTitleLabel.snp.makeConstraints{
-            $0.centerY.equalToSuperview()
+            $0.centerY.equalTo(dinnerIcon)
             $0.leading.equalTo(dinnerIcon.snp.trailing).offset(16)
         }
         dinnerAddTabButton.snp.makeConstraints{
-            $0.centerY.equalToSuperview()
+            $0.centerY.equalTo(dinnerIcon)
             $0.trailing.equalTo(dinnerView).inset(20)
         }
         dinnerKcalLabel.snp.makeConstraints{
