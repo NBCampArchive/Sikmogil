@@ -30,7 +30,7 @@ class AgreementViewController: UIViewController {
     private let detailButton = UIButton().then {
         var config = UIButton.Configuration.plain()
         config.image = UIImage(systemName: "chevron.right")
-        config.baseForegroundColor = .white
+        config.baseForegroundColor = .appBlack
         $0.configuration = config
     }
     
@@ -122,13 +122,14 @@ class AgreementViewController: UIViewController {
 class CheckBox: UIView {
     
     private let titleLabel = UILabel().then {
-        $0.font = UIFont.systemFont(ofSize: 16)
+        $0.font = Suite.regular.of(size: 16)
+        $0.textColor = .appBlack
     }
     
     private let checkBoxButton = UIButton().then {
         var config = UIButton.Configuration.plain()
         config.image = UIImage(systemName: "square")
-        config.baseForegroundColor = .white
+        config.baseForegroundColor = .appBlack
         config.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration(pointSize: 24)
         $0.configuration = config
     }
