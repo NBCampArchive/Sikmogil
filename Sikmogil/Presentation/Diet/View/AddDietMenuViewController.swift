@@ -115,6 +115,32 @@ extension AddDietMenuViewController: UITableViewDelegate, UITableViewDataSource 
         }
         return cell
     }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        // 테이블뷰의 끝에 도달했을 때 추가 데이터 로드
+        let contentOffsetY = scrollView.contentOffset.y
+        let contentHeight = scrollView.contentSize.height
+        let frameHeight = scrollView.frame.size.height
+        
+        if contentOffsetY > contentHeight - frameHeight {
+            // 스크롤이 끝에 도달했을 때 추가 데이터를 로드
+            loadMoreData()
+        }
+    }
+    
+    private func loadMoreData() {
+        // scrollIndex를 10 증가시킴
+        if scrollIndex < 50 {
+            scrollIndex += 10
+        }
+        
+        // 현재 검색어에 맞는 추가 데이터를 로드
+        guard let searchText = searchBar.text?.trimmingCharacters(in: .whitespacesAndNewlines) else {
+            return
+        }
+        
+        fetchFoodData(searchText: searchText)
+    }
 }
 
 // MARK: - UISearchBarDelegate
@@ -142,6 +168,9 @@ extension AddDietMenuViewController: UISearchBarDelegate {
             return
         }
         
+        // scrollIndex를 10으로 초기화
+        scrollIndex = 10
+        
         FoodDbAPIManager.shared.fetchFoodItems(searchQuery: searchText, index: scrollIndex) { [weak self] result in
             guard let self = self else { return }
             
@@ -163,6 +192,7 @@ extension AddDietMenuViewController: UISearchBarDelegate {
     private func handleSuccessResponse(_ items: [FoodItem]) {
         self.foodItems = items
         searchResultTableView.reloadData()
+        searchResultTableView.setContentOffset(.zero, animated: true)
     }
     
     private func handleError(_ error: Error) {
