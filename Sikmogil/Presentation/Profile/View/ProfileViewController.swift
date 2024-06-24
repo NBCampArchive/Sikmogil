@@ -286,7 +286,7 @@ class ProfileViewController: UIViewController {
         let keychain = KeychainSwift()
         keychain.clear()
         if let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate {
-            let loginVC = LoginViewController()
+            let loginVC = SplashViewController()
             let navController = UINavigationController(rootViewController:loginVC)
             sceneDelegate.window?.rootViewController = navController
             sceneDelegate.window?.makeKeyAndVisible()
