@@ -210,7 +210,7 @@ class DietBottomSheetViewController: UIViewController {
             $0.trailing.equalTo(breakfastView).inset(20)
         }
         breakfastKcalLabel.snp.makeConstraints{
-            $0.centerY.equalToSuperview()
+            $0.centerY.equalTo(breakfastIcon)
             $0.trailing.equalTo(breakfastView).inset(56)
             $0.width.equalTo(80)
         }
