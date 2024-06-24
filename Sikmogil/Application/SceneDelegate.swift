@@ -21,7 +21,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let window = UIWindow(windowScene: windowScene)
         
         // MARK: - API Test 시 아래 코드를 주석 처리하고 진행해주세요 (간단한 UI 수정시에만 사용해주세요)
-        let viewController = OnboardingViewController()
+        let viewController = LoginViewController()
         let navigationController = UINavigationController(rootViewController: viewController)
         
         window.rootViewController = navigationController
