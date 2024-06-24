@@ -34,12 +34,14 @@ class AddDietMenuViewController: UIViewController {
     var foodItems: [FoodItem] = []  // 데이터 저장 배열
     var addMeal: ((FoodItem) -> Void)?
     
+    var scrollIndex = 10
+    
     // MARK: - View Lifecycle
     override func viewDidLoad() {
         view.backgroundColor = .white
         setupViews()
         setupConstraints()
-        
+        fetchFoodData(searchText: "")
         searchResultTableView.delegate = self
         searchResultTableView.dataSource = self
         
@@ -49,6 +51,25 @@ class AddDietMenuViewController: UIViewController {
     // MARK: - Setup Methods
     private func setupViews() {
         view.addSubviews(TitleLabel, searchBar, searchResultTableView)
+    }
+    
+    private func fetchFoodData(searchText: String) {
+        FoodDbAPIManager.shared.fetchFoodItems(searchQuery: searchText, index: scrollIndex) { [weak self] result in
+            guard let self = self else { return }
+            
+            switch result {
+            case .success(let items):
+                DispatchQueue.main.async {
+                    // API 응답 처리
+                    self.handleSuccessResponse(items)
+                }
+            case .failure(let error):
+                DispatchQueue.main.async {
+                    // 에러 처리
+                    self.handleError(error)
+                }
+            }
+        }
     }
     
     private func setupConstraints() {
@@ -121,7 +142,7 @@ extension AddDietMenuViewController: UISearchBarDelegate {
             return
         }
         
-        FoodDbAPIManager.shared.fetchFoodItems(searchQuery: searchText) { [weak self] result in
+        FoodDbAPIManager.shared.fetchFoodItems(searchQuery: searchText, index: scrollIndex) { [weak self] result in
             guard let self = self else { return }
             
             switch result {
