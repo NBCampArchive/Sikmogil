@@ -13,7 +13,7 @@ import KeychainSwift
 class SplashViewController: UIViewController {
     private let splashImageView = UIImageView().then {
         $0.image = UIImage(named: "backgroundImage") // 최종 이미지
-        $0.contentMode = .scaleAspectFit
+        $0.contentMode = .scaleAspectFill
         $0.alpha = 0 // 애니메이션 완료 후 표시될 이미지
     }
     
