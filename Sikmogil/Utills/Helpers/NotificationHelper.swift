@@ -35,8 +35,8 @@ class NotificationHelper {
     // completion: 알림 설정 결과를 반환하는 클로저 (선택 사항)
     func scheduleDailyNotification(at dateComponents: DateComponents, completion: ((Error?) -> Void)? = nil) {
         let content = UNMutableNotificationContent().then {
-            $0.title = "리마인더"
-            $0.body = "설정된 시간입니다!"
+            $0.title = "식목일"
+            $0.body = "오늘의 목표를 기록할 시간이에요 🌱"
             $0.sound = .default
         }
         
@@ -58,8 +58,8 @@ class NotificationHelper {
     // MARK: - 타이머 알림 메서드
     func timerNotification() {
         let content = UNMutableNotificationContent().then {
-            $0.title = "Sikmogil"
-            $0.body = "운동이 끝났습니다!"
+            $0.title = "식목일"
+            $0.body = "운동이 끝났습니다! ⏰"
             $0.sound = .default
         }
         
@@ -85,8 +85,8 @@ class NotificationHelper {
         }
         
         let content = UNMutableNotificationContent().then {
-            $0.title = "Sikmogil"
-            $0.body = "단식 시간이 끝났습니다!"
+            $0.title = "식목일"
+            $0.body = "공복시간 14시간을 경과했습니다! ⏰"
             $0.sound = .default
         }
         
