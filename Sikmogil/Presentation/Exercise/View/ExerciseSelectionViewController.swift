@@ -130,6 +130,11 @@ class ExerciseSelectionViewController: UIViewController {
         setupMenus()
         bindViewModel()
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setTabBar(hidden: true, animated: true)
+    }
 
     // MARK: - Setup Views
     private func setupViews() {
