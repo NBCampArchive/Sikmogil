@@ -75,6 +75,7 @@ class ProfileViewController: UIViewController {
         super.viewDidLoad()
         setupViews()
         setupBindings()
+        loadImage(from: viewModel.picture)
         
         settingsButton.addTarget(self, action: #selector(settingsButtonTapped(_:)), for: .touchUpInside)
         logoutButton.addTarget(self, action: #selector(logoutButtonTapped(_:)), for: .touchUpInside)
