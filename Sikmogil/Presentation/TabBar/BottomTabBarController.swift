@@ -34,7 +34,7 @@ class BottomTabBarController: UITabBarController {
         
         let controllers = [homeVC, dietVC, exerciseVC, /*communicationVC,*/ profileVC]
         
-        viewControllers = controllers.map { UINavigationController(rootViewController: $0) }
+        viewControllers = controllers.map { CustomNavigationController(rootViewController: $0) }
         
         // 탭바 선택 인덱스 설정 ( 0 부터 시작 )
         selectedIndex = 0
