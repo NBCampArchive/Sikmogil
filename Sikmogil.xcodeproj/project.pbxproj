@@ -121,6 +121,8 @@
 		B566DF2C2C277C910050CF60 /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B566DF2B2C277C910050CF60 /* SplashViewController.swift */; };
 		B566DF2E2C29E8530050CF60 /* CustomNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B566DF2D2C29E8530050CF60 /* CustomNavigationController.swift */; };
 		B566DF302C2A9BC80050CF60 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = B566DF2F2C2A9BC80050CF60 /* PrivacyInfo.xcprivacy */; };
+		B566DF332C2ABA1E0050CF60 /* NVActivityIndicatorView in Frameworks */ = {isa = PBXBuildFile; productRef = B566DF322C2ABA1E0050CF60 /* NVActivityIndicatorView */; };
+		B566DF352C2ABA1E0050CF60 /* NVActivityIndicatorViewExtended in Frameworks */ = {isa = PBXBuildFile; productRef = B566DF342C2ABA1E0050CF60 /* NVActivityIndicatorViewExtended */; };
 		B5825BAA2C219A7100ADAA66 /* CommunityNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5825BA92C219A7100ADAA66 /* CommunityNavigationViewController.swift */; };
 		B5825BAD2C219C2B00ADAA66 /* BoardMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5825BAC2C219C2B00ADAA66 /* BoardMainViewController.swift */; };
 		B5825BAF2C219FE500ADAA66 /* CustomSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5825BAE2C219FE500ADAA66 /* CustomSegmentedControl.swift */; };
@@ -288,12 +290,14 @@
 				B54ABFB12C0CB476002E89DC /* GoogleSignInSwift in Frameworks */,
 				62578CD72C0ED5F1005035BB /* FSCalendar in Frameworks */,
 				62578CEC2C117181005035BB /* Lottie in Frameworks */,
+				B566DF352C2ABA1E0050CF60 /* NVActivityIndicatorViewExtended in Frameworks */,
 				B54AC0032C0F1CA3002E89DC /* RxSwift in Frameworks */,
 				B53786C92C2405E1007B362F /* MarkdownView in Frameworks */,
 				B54ABFA02C0CB41A002E89DC /* DGCharts in Frameworks */,
 				B54ABFA92C0CB447002E89DC /* Then in Frameworks */,
 				B54ABFAC2C0CB459002E89DC /* SnapKit in Frameworks */,
 				B54ABFAF2C0CB476002E89DC /* GoogleSignIn in Frameworks */,
+				B566DF332C2ABA1E0050CF60 /* NVActivityIndicatorView in Frameworks */,
 				B54AC0012C0F1CA3002E89DC /* RxRelay in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -857,6 +861,8 @@
 				B54AC0022C0F1CA3002E89DC /* RxSwift */,
 				B54AC0072C0F45DF002E89DC /* KeychainSwift */,
 				B53786C82C2405E1007B362F /* MarkdownView */,
+				B566DF322C2ABA1E0050CF60 /* NVActivityIndicatorView */,
+				B566DF342C2ABA1E0050CF60 /* NVActivityIndicatorViewExtended */,
 			);
 			productName = Sikmogil;
 			productReference = B54ABF842C09BD43002E89DC /* Sikmogil.app */;
@@ -899,6 +905,7 @@
 				B54ABFFB2C0F1CA3002E89DC /* XCRemoteSwiftPackageReference "RxSwift" */,
 				B54AC0062C0F45DF002E89DC /* XCRemoteSwiftPackageReference "keychain-swift" */,
 				B53786C72C2405E1007B362F /* XCRemoteSwiftPackageReference "MarkdownView" */,
+				B566DF312C2ABA1E0050CF60 /* XCRemoteSwiftPackageReference "NVActivityIndicatorView" */,
 			);
 			productRefGroup = B54ABF852C09BD43002E89DC /* Products */;
 			projectDirPath = "";
@@ -1362,6 +1369,14 @@
 				minimumVersion = 24.0.0;
 			};
 		};
+		B566DF312C2ABA1E0050CF60 /* XCRemoteSwiftPackageReference "NVActivityIndicatorView" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ninjaprox/NVActivityIndicatorView";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.2.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1444,6 +1459,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = B54AC0062C0F45DF002E89DC /* XCRemoteSwiftPackageReference "keychain-swift" */;
 			productName = KeychainSwift;
+		};
+		B566DF322C2ABA1E0050CF60 /* NVActivityIndicatorView */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B566DF312C2ABA1E0050CF60 /* XCRemoteSwiftPackageReference "NVActivityIndicatorView" */;
+			productName = NVActivityIndicatorView;
+		};
+		B566DF342C2ABA1E0050CF60 /* NVActivityIndicatorViewExtended */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B566DF312C2ABA1E0050CF60 /* XCRemoteSwiftPackageReference "NVActivityIndicatorView" */;
+			productName = NVActivityIndicatorViewExtended;
 		};
 /* End XCSwiftPackageProductDependency section */
 
