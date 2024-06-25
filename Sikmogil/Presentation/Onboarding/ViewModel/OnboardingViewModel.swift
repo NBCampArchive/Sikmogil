@@ -60,7 +60,7 @@ class OnboardingViewModel {
             switch result {
             case .success(let data):
                 if data.statusCode == 400 {
-                    self.errorMessage.accept("중복된 닉네임이에요!\n다른 닉네임으로 시도해주세요")
+                    self.errorMessage.accept("중복된 닉네임이에요!\n다른 닉네임으로 시도해 주세요")
                 } else {
                     self.saveProfileData()
                     self.moveToNextPage()

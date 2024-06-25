@@ -85,16 +85,6 @@ class GoalSettingsViewController: UIViewController {
         navigationController?.navigationBar.isHidden = false
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        setTabBar(hidden: true, animated: true)
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        setTabBar(hidden: false, animated: true)
-    }
-    
     private func setupAddTargets() {
         saveButton.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
     }

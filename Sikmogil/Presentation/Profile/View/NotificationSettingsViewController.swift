@@ -46,11 +46,6 @@ class NotificationSettingsViewController: UIViewController {
         navigationController?.navigationBar.isHidden = false
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        setTabBar(hidden: true, animated: true)
-    }
-    
     // MARK: - 알림설정 저장 및 예약제거
     private func saveNotificationSetting(isEnabled: Bool) {
         print("알림 설정 저장 호출됨: \(isEnabled)")

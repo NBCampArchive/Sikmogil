@@ -43,11 +43,6 @@ class ExerciseMenuViewController: UIViewController {
         setupButtons()
         showFirstView()
     }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        setTabBar(hidden: false, animated: true)
-    }
 
     // MARK: - Setup Views
     private func setupViews() {

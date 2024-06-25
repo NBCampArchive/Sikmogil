@@ -293,7 +293,6 @@ class ExerciseResultViewController: UIViewController {
                 self.showAlert(message: "운동 리스트 추가 성공") {
                     // 네비게이션의 최상단 페이지로 이동
                     self.navigationController?.popToRootViewController(animated: true)
-                    self.setTabBar(hidden: false, animated: true)
                 }
                 
             case .failure(let error):

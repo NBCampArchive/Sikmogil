@@ -36,6 +36,7 @@ class BottomTabBarController: UITabBarController {
         
         viewControllers = controllers.map { CustomNavigationController(rootViewController: $0) }
         
+//        hidesBottomBarWhenPushed = true
         // 탭바 선택 인덱스 설정 ( 0 부터 시작 )
         selectedIndex = 0
     }

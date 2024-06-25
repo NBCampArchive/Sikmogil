@@ -55,8 +55,8 @@ extension UIViewController {
     }
     
     //MARK: - 탭바 관련 확장
-    func setTabBar(hidden: Bool, animated: Bool) {
-        guard let tabBar = self.tabBarController?.tabBar else { return }
-        tabBar.changeTabBar(hidden: hidden, animated: animated)
-    }
+//    func setTabBar(hidden: Bool, animated: Bool) {
+//        guard let tabBar = self.tabBarController?.tabBar else { return }
+//        tabBar.changeTabBar(hidden: hidden, animated: animated)
+//    }
 }
