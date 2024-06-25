@@ -264,6 +264,7 @@ class ExerciseViewController: UIViewController {
     
     @objc private func startExerciseButtonTapped() {
         let exerciseSelectionVC = ExerciseSelectionViewController()
+        exerciseSelectionVC.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(exerciseSelectionVC, animated: true)
     }
     
