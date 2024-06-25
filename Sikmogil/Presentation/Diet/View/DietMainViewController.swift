@@ -52,13 +52,13 @@ class DietMainViewController: UIViewController {
     let dietKcalLabel = UILabel().then {
         $0.text = "kcalkcalkcal"
         $0.textColor = .appDarkGray
-        $0.font = Suite.semiBold.of(size: 16)
+        $0.font = Suite.semiBold.of(size: 18)
         $0.textAlignment = .center
     }
     let dietInfoLabel = UILabel().then {
         $0.text = "아직 더 먹을 수 있어요!"
         $0.textColor = .appDarkGray
-        $0.font = Suite.regular.of(size: 12)
+        $0.font = Suite.semiBold.of(size: 16)
         $0.textAlignment = .center
     }
     // 💦 Water
