@@ -34,7 +34,7 @@ class ProfileViewController: UIViewController {
     }
     
     let profileImageView = UIImageView().then {
-        $0.image = UIImage(named: "profile")
+        $0.image = UIImage(named: "defaultProfile")
         $0.contentMode = .scaleAspectFill
         $0.clipsToBounds = true
     }
@@ -114,7 +114,7 @@ class ProfileViewController: UIViewController {
                 if !picture.isEmpty {
                     self?.loadImage(from: picture)
                 } else {
-                    self?.profileImageView.image = UIImage(named: "profile")
+                    self?.profileImageView.image = UIImage(named: "defaultProfile")
                 }
             }
             .store(in: &cancellables)
@@ -268,6 +268,7 @@ class ProfileViewController: UIViewController {
         let notificationSettingsAction = UIAction(title: "알림 설정", image: nil) { [weak self] _ in
             guard let self = self else { return }
             let notificationSettingsVC = NotificationSettingsViewController()
+            notificationSettingsVC.hidesBottomBarWhenPushed = true
             self.navigationController?.pushViewController(notificationSettingsVC, animated: true)
         }
         
@@ -275,6 +276,7 @@ class ProfileViewController: UIViewController {
             guard let self = self else { return }
             let goalSettingsVC = GoalSettingsViewController()
             goalSettingsVC.viewModel = self.viewModel
+            goalSettingsVC.hidesBottomBarWhenPushed = true
             self.navigationController?.pushViewController(goalSettingsVC, animated: true)
         }
         

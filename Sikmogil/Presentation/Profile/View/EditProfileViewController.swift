@@ -28,7 +28,7 @@ class EditProfileViewController: UIViewController, UIImagePickerControllerDelega
     }
     
     let profileImageView = UIImageView().then {
-        $0.image = UIImage(named: "profile")
+        $0.image = UIImage(named: "defaultProfile")
         $0.layer.cornerRadius = 75
         $0.layer.masksToBounds = true
         $0.backgroundColor = .gray
@@ -147,7 +147,7 @@ class EditProfileViewController: UIViewController, UIImagePickerControllerDelega
         if let profileImageURL = viewModel?.picture {
             loadImage(from: profileImageURL)
         } else {
-            profileImageView.image = UIImage(named: "profile")
+            profileImageView.image = UIImage(named: "defaultProfile")
         }
         
         nickname.addTarget(self, action: #selector(nicknameDidChange(_:)), for: .editingChanged)
