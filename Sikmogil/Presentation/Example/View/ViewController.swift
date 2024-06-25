@@ -11,6 +11,14 @@ import Then
 
 class ViewController: UIViewController {
     
+    let scrollView = UIScrollView().then {
+        $0.backgroundColor = .clear
+    }
+    
+    let contentsView = UIView().then {
+        $0.backgroundColor = .clear
+    }
+    
     let circularProgressBar = CircularProgressBar().then {
         $0.backgroundColor = .clear
         $0.progressColor = .systemBlue
@@ -21,6 +29,13 @@ class ViewController: UIViewController {
         $0.backgroundColor = .clear
         $0.progressColor = .systemYellow
         $0.trackColor = .lightGray
+    }
+    
+    let wavewView = WaveProgressView().then {
+        $0.layer.cornerRadius = 150
+        $0.layer.masksToBounds = true
+        $0.backgroundColor = .customLightGray
+        $0.progress = 0.5
     }
     
     let label = UILabel().then {
@@ -44,13 +59,25 @@ class ViewController: UIViewController {
     }
     
     private func setupViews() {
-        view.addSubviews(circularProgressBar, customCircularProgressBar)
-        view.addSubview(label)
+        view.addSubviews(scrollView)
+        scrollView.addSubviews(contentsView)
+        contentsView.addSubviews(circularProgressBar, customCircularProgressBar, wavewView)
+        contentsView.addSubview(label)
     }
     
     private func setupConstraints() {
+        
+        scrollView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+        
+        contentsView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+            $0.width.equalToSuperview()
+        }
+        
         circularProgressBar.snp.makeConstraints {
-            $0.top.equalTo(view.safeAreaLayoutGuide.snp.top)
+            $0.top.equalToSuperview()
             $0.centerX.equalToSuperview()
             $0.width.height.equalTo(300)
         }
@@ -59,12 +86,19 @@ class ViewController: UIViewController {
             $0.centerX.equalToSuperview()
             $0.width.height.equalTo(300)
         }
+        
         label.snp.makeConstraints {
             $0.center.equalTo(customCircularProgressBar)
         }
+        
+        wavewView.snp.makeConstraints {
+            $0.top.equalTo(customCircularProgressBar.snp.bottom).offset(20)
+            $0.centerX.equalToSuperview()
+            $0.width.height.equalTo(300)
+            $0.bottom.equalToSuperview().offset(-20)
+        }
+        
     }
     
 }
 
-// ViewController나 View 파일은 각 뷰 폴더의 하위 파일에 View라는 파일을 생성해 추가해주세요.
-// Cell 파일 같은경우 View > Cell 폴더를 생성해서 추가해주세요.
