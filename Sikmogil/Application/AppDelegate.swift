@@ -18,6 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         //MARK: - 포그라운드 알림 설정
         UNUserNotificationCenter.current().delegate = self
+        print(UserDefaults.standard.bool(forKey: "NotificationEnabled"))
         
         //MARK: - 네비게이션 바의 스타일을 전역적으로 설정
         let appearance = UINavigationBar.appearance()
@@ -63,7 +64,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 extension AppDelegate: UNUserNotificationCenterDelegate {
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        completionHandler([.banner, .sound])
+        if UserDefaults.standard.bool(forKey: "NotificationEnabled") {
+            completionHandler([.banner, .sound])
+        } else {
+            completionHandler([])
+        }
+//        completionHandler([.banner, .sound])
     }
     
 }

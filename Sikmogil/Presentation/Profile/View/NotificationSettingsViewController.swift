@@ -50,10 +50,10 @@ class NotificationSettingsViewController: UIViewController {
     private func saveNotificationSetting(isEnabled: Bool) {
         print("알림 설정 저장 호출됨: \(isEnabled)")
         UserDefaults.standard.set(isEnabled, forKey: "NotificationEnabled")
-        if !isEnabled {
-            NotificationHelper.shared.clearAllNotifications()
-            print("모든 알림이 취소되었습니다.")
-        }
+//        if !isEnabled {
+//            NotificationHelper.shared.clearAllNotifications()
+//            print("모든 알림이 취소되었습니다.")
+//        }
     }
     
     private func checkAndRegisterNotification() {
