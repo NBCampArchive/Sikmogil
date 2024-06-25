@@ -93,7 +93,7 @@ class ProfileViewController: UIViewController {
         super.viewWillAppear(animated)
         viewModel.fetchUserProfile()
         setupBindings()
-        setTabBar(hidden: false, animated: true)
+//        setTabBar(hidden: false, animated: true)
         navigationController?.navigationBar.isHidden = true
     }
 
@@ -261,6 +261,7 @@ class ProfileViewController: UIViewController {
             guard let self = self else { return }
             let editProfileVC = EditProfileViewController()
             editProfileVC.viewModel = self.viewModel
+            editProfileVC.hidesBottomBarWhenPushed = true
             self.navigationController?.pushViewController(editProfileVC, animated: true)
         }
         
