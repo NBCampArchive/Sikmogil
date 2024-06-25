@@ -120,6 +120,7 @@
 		B566DF292C2772990050CF60 /* UITabBarExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B566DF282C2772990050CF60 /* UITabBarExtension.swift */; };
 		B566DF2C2C277C910050CF60 /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B566DF2B2C277C910050CF60 /* SplashViewController.swift */; };
 		B566DF2E2C29E8530050CF60 /* CustomNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B566DF2D2C29E8530050CF60 /* CustomNavigationController.swift */; };
+		B566DF302C2A9BC80050CF60 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = B566DF2F2C2A9BC80050CF60 /* PrivacyInfo.xcprivacy */; };
 		B5825BAA2C219A7100ADAA66 /* CommunityNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5825BA92C219A7100ADAA66 /* CommunityNavigationViewController.swift */; };
 		B5825BAD2C219C2B00ADAA66 /* BoardMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5825BAC2C219C2B00ADAA66 /* BoardMainViewController.swift */; };
 		B5825BAF2C219FE500ADAA66 /* CustomSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5825BAE2C219FE500ADAA66 /* CustomSegmentedControl.swift */; };
@@ -246,6 +247,7 @@
 		B566DF282C2772990050CF60 /* UITabBarExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITabBarExtension.swift; sourceTree = "<group>"; };
 		B566DF2B2C277C910050CF60 /* SplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
 		B566DF2D2C29E8530050CF60 /* CustomNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationController.swift; sourceTree = "<group>"; };
+		B566DF2F2C2A9BC80050CF60 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		B5825BA92C219A7100ADAA66 /* CommunityNavigationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityNavigationViewController.swift; sourceTree = "<group>"; };
 		B5825BAC2C219C2B00ADAA66 /* BoardMainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardMainViewController.swift; sourceTree = "<group>"; };
 		B5825BAE2C219FE500ADAA66 /* CustomSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSegmentedControl.swift; sourceTree = "<group>"; };
@@ -480,6 +482,7 @@
 				B54ABFC72C0CB754002E89DC /* Utills */,
 				B54ABFD22C0CBE4F002E89DC /* Views */,
 				B54ABF902C09BD43002E89DC /* Sikmogil.xcdatamodeld */,
+				B566DF2F2C2A9BC80050CF60 /* PrivacyInfo.xcprivacy */,
 			);
 			path = Sikmogil;
 			sourceTree = "<group>";
@@ -917,6 +920,7 @@
 				B53786CF2C25AE08007B362F /* BagelFatOne-Regular.ttf in Resources */,
 				B54ABFE22C0D68CF002E89DC /* SUITE-SemiBold.ttf in Resources */,
 				B54ABFE62C0D68CF002E89DC /* SUITE-Medium.ttf in Resources */,
+				B566DF302C2A9BC80050CF60 /* PrivacyInfo.xcprivacy in Resources */,
 				B54ABFE12C0D68CF002E89DC /* SUITE-Bold.ttf in Resources */,
 				B53786D12C25EB7E007B362F /* SikmogilPlist.plist in Resources */,
 				62578CEE2C117333005035BB /* The_Scale.json in Resources */,
