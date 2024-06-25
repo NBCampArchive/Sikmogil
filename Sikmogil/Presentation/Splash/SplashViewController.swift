@@ -132,7 +132,7 @@ class SplashViewController: UIViewController {
     private func navigateToLoginScreen() {
         print("로그인 화면으로 이동")
         let loginViewController = LoginViewController()
-        let navigationController = UINavigationController(rootViewController: loginViewController)
+        let navigationController = CustomNavigationController(rootViewController: loginViewController)
         setRootViewController(navigationController)
     }
     
