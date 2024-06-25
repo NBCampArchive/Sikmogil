@@ -24,14 +24,14 @@ class FoodDbAPIManager {
     
     static let shared = FoodDbAPIManager()
     
-    func fetchFoodItems(searchQuery: String, completion: @escaping (Result<[FoodItem], Error>) -> Void) {
+    func fetchFoodItems(searchQuery: String, index: Int, completion: @escaping (Result<[FoodItem], Error>) -> Void) {
         guard let encodedQuery = searchQuery.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
             let error = NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "검색어를 인코딩하는 중 오류 발생"])
             completion(.failure(error))
             return
         }
 
-        let urlString = "\(baseURLString)?serviceKey=\(serviceKey)&pageNo=1&numOfRows=30&type=json&FOOD_NM_KR=\(encodedQuery)"
+        let urlString = "\(baseURLString)?serviceKey=\(serviceKey)&pageNo=1&numOfRows=\(index)&type=json&FOOD_NM_KR=\(encodedQuery)"
         //print("요청 URL:", urlString)
 
         guard let url = URL(string: urlString) else {

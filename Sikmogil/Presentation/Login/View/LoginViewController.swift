@@ -153,7 +153,6 @@ class LoginViewController: UIViewController {
     
     private func navigateToAgreeVC() {
         print("로그인 성공, 온보딩 화면으로 이동")
-        modalPresentationStyle = .fullScreen
         navigationController?.pushViewController(AgreementViewController(), animated: true)
     }
     

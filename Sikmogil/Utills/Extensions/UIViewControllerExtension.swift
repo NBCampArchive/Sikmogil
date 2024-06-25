@@ -53,4 +53,10 @@ extension UIViewController {
             view.frame.origin.y = 0
         }
     }
+    
+    //MARK: - 탭바 관련 확장
+//    func setTabBar(hidden: Bool, animated: Bool) {
+//        guard let tabBar = self.tabBarController?.tabBar else { return }
+//        tabBar.changeTabBar(hidden: hidden, animated: animated)
+//    }
 }

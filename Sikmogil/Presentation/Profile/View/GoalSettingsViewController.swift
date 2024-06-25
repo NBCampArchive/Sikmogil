@@ -68,8 +68,9 @@ class GoalSettingsViewController: UIViewController {
     
     private let saveButton = UIButton().then {
         $0.setTitle("저장하기", for: .normal)
-        $0.backgroundColor = .appBlack
         $0.setTitleColor(.white, for: .normal)
+        $0.titleLabel?.font = Suite.bold.of(size: 22)
+        $0.backgroundColor = .appBlack
         $0.layer.cornerRadius = 8
     }
     
@@ -81,6 +82,7 @@ class GoalSettingsViewController: UIViewController {
         setupConstraints()
         setupAddTargets()
         bindViewModel()
+        navigationController?.navigationBar.isHidden = false
     }
     
     private func setupAddTargets() {
@@ -182,7 +184,7 @@ class GoalSettingsViewController: UIViewController {
             $0.bottom.equalTo(view.safeAreaLayoutGuide).offset(-16)
             $0.leading.equalToSuperview().offset(16)
             $0.trailing.equalToSuperview().offset(-16)
-            $0.height.equalTo(50)
+            $0.height.equalTo(60)
         }
     }
     

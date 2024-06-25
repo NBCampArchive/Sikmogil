@@ -174,6 +174,15 @@ class Step1ViewController: UIViewController {
         )
         .bind(to: viewModel.gender)
         .disposed(by: disposeBag)
+        
+        viewModel.errorMessage
+            .subscribe(onNext: { [weak self] message in
+                self?.showAlert(message: message)
+                if message.contains("중복된 닉네임") {
+                    self?.updateTextFieldBorders(isValid: false, textField: self?.nicknameTextField ?? UITextField())
+                }
+            })
+            .disposed(by: disposeBag)
     }
     
     private func setupConstraints() {
@@ -315,27 +324,26 @@ class Step1ViewController: UIViewController {
             return
         }
         
-        let nicknameValid = !(nicknameTextField.text ?? "").isEmpty
-        let heightValid = !(heightTextField.text ?? "").isEmpty
-        let weightValid = !(weightTextField.text ?? "").isEmpty
-        let genderValid = !viewModel.gender.value.isEmpty
-        
-        nicknameWarningLabel.isHidden = nicknameValid
-        heightWarningLabel.isHidden = heightValid
-        weightWarningLabel.isHidden = weightValid
-        genderWarningLabel.isHidden = genderValid
-        
-        if nicknameValid && heightValid && weightValid && genderValid {
-            viewModel.saveProfileData()
-            viewModel.moveToNextPage()
+        if viewModel.profileValidateForm() {
+            viewModel.checkNicknameAndProceed()
         } else {
-            updateTextFieldBorders(isValid: nicknameValid, textField: nicknameTextField)
-            updateTextFieldBorders(isValid: heightValid, textField: heightTextField)
-            updateTextFieldBorders(isValid: weightValid, textField: weightTextField)
+            updateTextFieldBorders(isValid: !viewModel.nickname.value.isEmpty, textField: nicknameTextField)
+            updateTextFieldBorders(isValid: !viewModel.height.value.isEmpty, textField: heightTextField)
+            updateTextFieldBorders(isValid: !viewModel.weight.value.isEmpty, textField: weightTextField)
+            
+            nicknameWarningLabel.isHidden = !viewModel.nickname.value.isEmpty
+            heightWarningLabel.isHidden = !viewModel.height.value.isEmpty
+            weightWarningLabel.isHidden = !viewModel.weight.value.isEmpty
+            genderWarningLabel.isHidden = !viewModel.gender.value.isEmpty
             
             view.shake()
         }
-        
+    }
+    
+    private func showAlert(message: String) {
+        let alert = UIAlertController(title: "중복 닉네임❗️", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "확인", style: .default))
+        present(alert, animated: true)
     }
     
     private func updateTextFieldBorders(isValid: Bool, textField: UITextField) {

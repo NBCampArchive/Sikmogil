@@ -52,13 +52,13 @@ class DietMainViewController: UIViewController {
     let dietKcalLabel = UILabel().then {
         $0.text = "kcalkcalkcal"
         $0.textColor = .appDarkGray
-        $0.font = Suite.semiBold.of(size: 16)
+        $0.font = Suite.semiBold.of(size: 18)
         $0.textAlignment = .center
     }
     let dietInfoLabel = UILabel().then {
         $0.text = "아직 더 먹을 수 있어요!"
         $0.textColor = .appDarkGray
-        $0.font = Suite.regular.of(size: 12)
+        $0.font = Suite.semiBold.of(size: 16)
         $0.textAlignment = .center
     }
     // 💦 Water
@@ -345,6 +345,9 @@ class DietMainViewController: UIViewController {
             print("타이머 시작 시간: \(startTime!)") // 디버깅용 print문
         }
         
+        // 공복 14시간 알림 추가
+        NotificationHelper.shared.fastingNotification()
+        
         isTimerRunning = true
         
         timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(updateTimer), userInfo: nil, repeats: true)
@@ -360,6 +363,9 @@ class DietMainViewController: UIViewController {
             print("타이머 정지 시간: \(Date())") // 디버깅용 print문
             print("경과 시간: \(elapsedTime)초") // 디버깅용 print문
         }
+        
+        // 공복 알림 제거
+        NotificationHelper.shared.removeFastingNotification()
         
         UserDefaults.standard.removeObject(forKey: "startTime")
         updateTimer() // 타이머 리셋

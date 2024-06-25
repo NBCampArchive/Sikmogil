@@ -30,14 +30,10 @@ class ReminderSettingsViewController: UIViewController {
         $0.textColor = .darkGray
     }
     
-    private let timeTextField = UITextField().then {
-        $0.placeholder = "12:00"
-        $0.font = UIFont.systemFont(ofSize: 48, weight: .medium)
-        UIFont.systemFont(ofSize: 48, weight: .medium)
-        $0.textColor = .lightGray
-        $0.textAlignment = .center
-        $0.keyboardType = .numberPad
-        $0.borderStyle = .none
+    private let timePicker = UIDatePicker().then {
+        $0.datePickerMode = .time
+        $0.locale = Locale(identifier: "ko_KR")
+        $0.preferredDatePickerStyle = .wheels
     }
     
     private let timeTextFieldWarningLabel = UILabel().then {
@@ -48,10 +44,10 @@ class ReminderSettingsViewController: UIViewController {
     }
     
     private let completeButton = UIButton(type: .system).then {
-        $0.setTitle("완료", for: .normal)
+        $0.setTitle("저장하기", for: .normal)
         $0.setTitleColor(.white, for: .normal)
         $0.titleLabel?.font = Suite.bold.of(size: 22)
-        $0.backgroundColor = .black
+        $0.backgroundColor = .appBlack
         $0.layer.cornerRadius = 8
     }
     
@@ -64,7 +60,6 @@ class ReminderSettingsViewController: UIViewController {
         hideKeyboardWhenTappedAround()
         setKeyboardObserver()
         bindViewModel()
-        timeTextField.delegate = self
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -75,7 +70,6 @@ class ReminderSettingsViewController: UIViewController {
     
     private func setupAddTargets() {
         completeButton.addTarget(self, action: #selector(completeButtonTapped), for: .touchUpInside)
-        timeTextField.addTarget(self, action: #selector(timeTextFieldChanged(_:)), for: .editingChanged)
     }
     
     // MARK: - 리마인드 시간 저장
@@ -91,59 +85,23 @@ class ReminderSettingsViewController: UIViewController {
         
         // 뷰모델의 reminderTime과 timeTextField를 바인딩
         viewModel.$reminderTime
-            .sink { [weak self] reminderTime in
-                self?.timeTextField.text = reminderTime
-            }
-            .store(in: &cancellables)
-    }
-    
-    @objc private func timeTextFieldChanged(_ textField: UITextField) {
-        guard let time = textField.text, validateTime(time) else {
-            timeTextFieldWarningLabel.isHidden = false
-            return
-        }
-        viewModel?.reminderTime = time
-        saveReminderTime(time)
-        timeTextFieldWarningLabel.isHidden = true
-    }
-    
-    // MARK: - 알림 업데이트
-    private func updateNotification(time: String) {
-        let isEnabled = UserDefaults.standard.bool(forKey: "NotificationEnabled")
-        if isEnabled {
-            let components = time.split(separator: ":").map { Int($0) ?? 0 }
-            var dateComponents = DateComponents()
-            dateComponents.hour = components[0]
-            dateComponents.minute = components[1]
-            
-            NotificationHelper.shared.scheduleDailyNotification(at: dateComponents) { error in
-                if let error = error {
-                    print("알림 예약 실패: \(error)")
-                } else {
-                    print("알림 예약 성공")
+            .sink { [weak self] time in
+                guard let self = self else { return }
+                let formatter = DateFormatter()
+                formatter.dateFormat = "HH:mm"
+                if let date = formatter.date(from: time) {
+                    self.timePicker.date = date
                 }
             }
-        }
-    }
-    
-    // MARK: - 시간 유효성 검사
-    private func validateTime(_ time: String) -> Bool {
-        let components = time.split(separator: ":")
-        guard components.count == 2,
-              let hours = Int(components[0]),
-              let minutes = Int(components[1]),
-              hours >= 0, hours < 24,
-              minutes >= 0, minutes < 60 else {
-            return false
-        }
-        return true
+            .store(in: &cancellables)
+
     }
     
     // MARK: - setupConstraints
     private func setupConstraints() {
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
-        contentView.addSubviews(titleLabel, descriptionLabel, timeTextField, timeTextFieldWarningLabel)
+        contentView.addSubviews(titleLabel, descriptionLabel, timePicker, timeTextFieldWarningLabel)
         view.addSubview(completeButton)
         
         scrollView.snp.makeConstraints {
@@ -168,12 +126,12 @@ class ReminderSettingsViewController: UIViewController {
             $0.leading.equalToSuperview().offset(16)
         }
         
-        timeTextField.snp.makeConstraints {
+        timePicker.snp.makeConstraints {
             $0.center.equalToSuperview()
         }
         
         timeTextFieldWarningLabel.snp.makeConstraints {
-            $0.top.equalTo(timeTextField.snp.bottom).offset(4)
+            $0.top.equalTo(timePicker.snp.bottom).offset(4)
             $0.centerX.equalToSuperview()
         }
         
@@ -181,7 +139,7 @@ class ReminderSettingsViewController: UIViewController {
             $0.bottom.equalTo(view.safeAreaLayoutGuide).offset(-16)
             $0.leading.equalToSuperview().offset(16)
             $0.trailing.equalToSuperview().offset(-16)
-            $0.height.equalTo(50)
+            $0.height.equalTo(60)
         }
     }
     
@@ -192,28 +150,42 @@ class ReminderSettingsViewController: UIViewController {
         }
         
         // timeTextField의 값을 뷰모델에 업데이트
-        viewModel.reminderTime = timeTextField.text ?? ""
+        let formatter = DateFormatter()
+        formatter.dateFormat = "HH:mm"
+        let selectedTime = formatter.string(from: timePicker.date)
+        
+        viewModel.reminderTime = selectedTime
         
         // 유효성 검사 후 저장 및 프로필 업데이트
-        if validateTime(viewModel.reminderTime) {
-            timeTextFieldWarningLabel.isHidden = true
-            viewModel.saveReminderData()
-            saveReminderTime(viewModel.reminderTime)
-            updateNotification(time: viewModel.reminderTime)
-            
-            // 데이터를 저장하는 부분 (submitProfile 호출)
-            viewModel.submitProfile { [weak self] result in
-                switch result {
-                case .success:
-                    viewModel.debugPrint()
-                    self?.showAlertAndNavigateToProfile()
-                case .failure(let error):
-                    self?.showErrorAlert(error: error)
-                }
+        timeTextFieldWarningLabel.isHidden = true
+        viewModel.saveReminderData()
+        saveReminderTime(viewModel.reminderTime)
+        
+        // 데이터를 저장하는 부분 (submitProfile 호출)
+        viewModel.submitProfile { [weak self] result in
+            switch result {
+            case .success:
+                viewModel.debugPrint()
+                self?.showAlertAndNavigateToProfile()
+                self?.registerNotification(time: viewModel.reminderTime)
+            case .failure(let error):
+                self?.showErrorAlert(error: error)
             }
-        } else {
-            view.shake()
-            timeTextFieldWarningLabel.isHidden = false
+        }
+        
+    }
+    
+    private func registerNotification(time: String) {
+        let components = time.split(separator: ":").map { Int($0) ?? 0 }
+        var dateComponents = DateComponents()
+        dateComponents.hour = components[0]
+        dateComponents.minute = components[1]
+        NotificationHelper.shared.scheduleDailyNotification(at: dateComponents) { error in
+            if let error = error {
+                print("알림 예약 실패: \(error)")
+            } else {
+                print("알림 예약 성공")
+            }
         }
     }
     
@@ -232,44 +204,5 @@ class ReminderSettingsViewController: UIViewController {
                 self?.navigationController?.popViewController(animated: true)
             }
         }
-    }
-}
-
-extension ReminderSettingsViewController: UITextFieldDelegate {
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange,replacementString string: String) -> Bool {
-        if let text = textField.text {
-            // 숫자 입력만 허용
-            let allowedCharacters = CharacterSet.decimalDigits
-            let characterSet = CharacterSet(charactersIn: string)
-            if !allowedCharacters.isSuperset(of: characterSet) {
-                return false
-            }
-            // 현재 텍스트와 입력된 문자열 결합
-            var newString = (text as NSString).replacingCharacters(in: range, with: string)
-            // : 추가 로직
-            newString = newString.replacingOccurrences(of: ":", with: "")
-            if newString.count > 4 {
-                return false
-            }
-            
-            if newString.count == 2 {
-                newString.insert(":", at: newString.index(newString.startIndex, offsetBy: 2))
-            } else if newString.count > 2 {
-                newString.insert(":", at: newString.index(newString.startIndex, offsetBy: 2))
-            }
-            
-            // 유효성 검사 (00:00 ~ 23:59)
-            if newString.count == 5 {
-                let components = newString.split(separator: ":")
-                if let hours = Int(components[0]), let minutes = Int(components[1]) {
-                    if hours > 23 || minutes > 59 {
-                        return false
-                    }
-                }
-            }
-            textField.text = newString
-            return false
-        }
-        return true
     }
 }

@@ -132,8 +132,8 @@ extension OnboardingViewController: UIPageViewControllerDataSource, UIPageViewCo
         guard let index = orderedViewControllers.firstIndex(of: viewController), index < orderedViewControllers.count - 1 else {
             return nil
         }
-        return orderedViewControllers[index + 1]
-//        return nil
+        
+        return nil
     }
     
     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {

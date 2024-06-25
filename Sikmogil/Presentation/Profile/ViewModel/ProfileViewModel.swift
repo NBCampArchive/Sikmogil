@@ -21,6 +21,11 @@ class ProfileViewModel: ObservableObject {
     @Published var targetDate = Date()
     @Published var reminderTime = ""
     
+    var originalNickname: String = ""
+    var isNicknameChanged: Bool {
+        return nickname != originalNickname
+    }
+    
     private var cancellables = Set<AnyCancellable>()
     
     // MARK: - 가져온 정보들을 인스턴스 생성될때 호출 및 초기화
@@ -119,6 +124,7 @@ class ProfileViewModel: ObservableObject {
         self.targetDate = DateHelper.shared.dateFromServerString(userProfile.targetDate) ?? Date()
         self.reminderTime = userProfile.remindTime
         self.userProfile.picture = self.picture
+        self.originalNickname = userProfile.nickname
     }
     
     // MARK: - 이미지 업로드 요청

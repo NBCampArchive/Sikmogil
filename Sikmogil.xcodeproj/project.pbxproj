@@ -66,6 +66,7 @@
 		B53786CB2C24126D007B362F /* PermissionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53786CA2C24126D007B362F /* PermissionViewController.swift */; };
 		B53786CD2C245390007B362F /* UITextFieldExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53786CC2C245390007B362F /* UITextFieldExtension.swift */; };
 		B53786CF2C25AE08007B362F /* BagelFatOne-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B53786CE2C25AE08007B362F /* BagelFatOne-Regular.ttf */; };
+		B53786D12C25EB7E007B362F /* SikmogilPlist.plist in Resources */ = {isa = PBXBuildFile; fileRef = B53786D02C25EB7E007B362F /* SikmogilPlist.plist */; };
 		B54ABF882C09BD43002E89DC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABF872C09BD43002E89DC /* AppDelegate.swift */; };
 		B54ABF8A2C09BD43002E89DC /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABF892C09BD43002E89DC /* SceneDelegate.swift */; };
 		B54ABF8C2C09BD43002E89DC /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABF8B2C09BD43002E89DC /* ViewController.swift */; };
@@ -116,6 +117,12 @@
 		B54AC01A2C105646002E89DC /* Step1ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54AC0192C105646002E89DC /* Step1ViewController.swift */; };
 		B54AC01C2C1056A4002E89DC /* Step2ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54AC01B2C1056A4002E89DC /* Step2ViewController.swift */; };
 		B54AC01E2C1056C3002E89DC /* Step3ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54AC01D2C1056C3002E89DC /* Step3ViewController.swift */; };
+		B566DF292C2772990050CF60 /* UITabBarExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B566DF282C2772990050CF60 /* UITabBarExtension.swift */; };
+		B566DF2C2C277C910050CF60 /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B566DF2B2C277C910050CF60 /* SplashViewController.swift */; };
+		B566DF2E2C29E8530050CF60 /* CustomNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B566DF2D2C29E8530050CF60 /* CustomNavigationController.swift */; };
+		B566DF302C2A9BC80050CF60 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = B566DF2F2C2A9BC80050CF60 /* PrivacyInfo.xcprivacy */; };
+		B566DF332C2ABA1E0050CF60 /* NVActivityIndicatorView in Frameworks */ = {isa = PBXBuildFile; productRef = B566DF322C2ABA1E0050CF60 /* NVActivityIndicatorView */; };
+		B566DF352C2ABA1E0050CF60 /* NVActivityIndicatorViewExtended in Frameworks */ = {isa = PBXBuildFile; productRef = B566DF342C2ABA1E0050CF60 /* NVActivityIndicatorViewExtended */; };
 		B5825BAA2C219A7100ADAA66 /* CommunityNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5825BA92C219A7100ADAA66 /* CommunityNavigationViewController.swift */; };
 		B5825BAD2C219C2B00ADAA66 /* BoardMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5825BAC2C219C2B00ADAA66 /* BoardMainViewController.swift */; };
 		B5825BAF2C219FE500ADAA66 /* CustomSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5825BAE2C219FE500ADAA66 /* CustomSegmentedControl.swift */; };
@@ -199,6 +206,7 @@
 		B53786CA2C24126D007B362F /* PermissionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionViewController.swift; sourceTree = "<group>"; };
 		B53786CC2C245390007B362F /* UITextFieldExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextFieldExtension.swift; sourceTree = "<group>"; };
 		B53786CE2C25AE08007B362F /* BagelFatOne-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "BagelFatOne-Regular.ttf"; sourceTree = "<group>"; };
+		B53786D02C25EB7E007B362F /* SikmogilPlist.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = SikmogilPlist.plist; path = Sikmogil/Resources/SikmogilPlist.plist; sourceTree = SOURCE_ROOT; };
 		B54ABF842C09BD43002E89DC /* Sikmogil.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sikmogil.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B54ABF872C09BD43002E89DC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B54ABF892C09BD43002E89DC /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -238,6 +246,10 @@
 		B54AC0192C105646002E89DC /* Step1ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Step1ViewController.swift; sourceTree = "<group>"; };
 		B54AC01B2C1056A4002E89DC /* Step2ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Step2ViewController.swift; sourceTree = "<group>"; };
 		B54AC01D2C1056C3002E89DC /* Step3ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Step3ViewController.swift; sourceTree = "<group>"; };
+		B566DF282C2772990050CF60 /* UITabBarExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITabBarExtension.swift; sourceTree = "<group>"; };
+		B566DF2B2C277C910050CF60 /* SplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
+		B566DF2D2C29E8530050CF60 /* CustomNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationController.swift; sourceTree = "<group>"; };
+		B566DF2F2C2A9BC80050CF60 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		B5825BA92C219A7100ADAA66 /* CommunityNavigationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityNavigationViewController.swift; sourceTree = "<group>"; };
 		B5825BAC2C219C2B00ADAA66 /* BoardMainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardMainViewController.swift; sourceTree = "<group>"; };
 		B5825BAE2C219FE500ADAA66 /* CustomSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSegmentedControl.swift; sourceTree = "<group>"; };
@@ -278,12 +290,14 @@
 				B54ABFB12C0CB476002E89DC /* GoogleSignInSwift in Frameworks */,
 				62578CD72C0ED5F1005035BB /* FSCalendar in Frameworks */,
 				62578CEC2C117181005035BB /* Lottie in Frameworks */,
+				B566DF352C2ABA1E0050CF60 /* NVActivityIndicatorViewExtended in Frameworks */,
 				B54AC0032C0F1CA3002E89DC /* RxSwift in Frameworks */,
 				B53786C92C2405E1007B362F /* MarkdownView in Frameworks */,
 				B54ABFA02C0CB41A002E89DC /* DGCharts in Frameworks */,
 				B54ABFA92C0CB447002E89DC /* Then in Frameworks */,
 				B54ABFAC2C0CB459002E89DC /* SnapKit in Frameworks */,
 				B54ABFAF2C0CB476002E89DC /* GoogleSignIn in Frameworks */,
+				B566DF332C2ABA1E0050CF60 /* NVActivityIndicatorView in Frameworks */,
 				B54AC0012C0F1CA3002E89DC /* RxRelay in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -472,6 +486,7 @@
 				B54ABFC72C0CB754002E89DC /* Utills */,
 				B54ABFD22C0CBE4F002E89DC /* Views */,
 				B54ABF902C09BD43002E89DC /* Sikmogil.xcdatamodeld */,
+				B566DF2F2C2A9BC80050CF60 /* PrivacyInfo.xcprivacy */,
 			);
 			path = Sikmogil;
 			sourceTree = "<group>";
@@ -539,6 +554,7 @@
 		B54ABFC02C0CB666002E89DC /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
+				B566DF2A2C277C6A0050CF60 /* Splash */,
 				B5825BA72C219A4000ADAA66 /* Community */,
 				62578CD82C0F3B16005035BB /* Main */,
 				B52001CF2C171B8C0083CBDF /* Diet */,
@@ -585,6 +601,7 @@
 				B54ABF932C09BD47002E89DC /* Assets.xcassets */,
 				62578CED2C117333005035BB /* The_Scale.json */,
 				B54ABF982C09BD47002E89DC /* Info.plist */,
+				B53786D02C25EB7E007B362F /* SikmogilPlist.plist */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -613,6 +630,7 @@
 				F36105B62C1BFF7600237572 /* Double.swift */,
 				54C282FB2C22F42100DDEA08 /* UITextField.swift */,
 				B53786CC2C245390007B362F /* UITextFieldExtension.swift */,
+				B566DF282C2772990050CF60 /* UITabBarExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -674,6 +692,7 @@
 			isa = PBXGroup;
 			children = (
 				B54ABFEB2C0D6BA6002E89DC /* BottomTabBarController.swift */,
+				B566DF2D2C29E8530050CF60 /* CustomNavigationController.swift */,
 			);
 			path = TabBar;
 			sourceTree = "<group>";
@@ -733,6 +752,14 @@
 				B53786CA2C24126D007B362F /* PermissionViewController.swift */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		B566DF2A2C277C6A0050CF60 /* Splash */ = {
+			isa = PBXGroup;
+			children = (
+				B566DF2B2C277C910050CF60 /* SplashViewController.swift */,
+			);
+			path = Splash;
 			sourceTree = "<group>";
 		};
 		B5825BA72C219A4000ADAA66 /* Community */ = {
@@ -834,6 +861,8 @@
 				B54AC0022C0F1CA3002E89DC /* RxSwift */,
 				B54AC0072C0F45DF002E89DC /* KeychainSwift */,
 				B53786C82C2405E1007B362F /* MarkdownView */,
+				B566DF322C2ABA1E0050CF60 /* NVActivityIndicatorView */,
+				B566DF342C2ABA1E0050CF60 /* NVActivityIndicatorViewExtended */,
 			);
 			productName = Sikmogil;
 			productReference = B54ABF842C09BD43002E89DC /* Sikmogil.app */;
@@ -876,6 +905,7 @@
 				B54ABFFB2C0F1CA3002E89DC /* XCRemoteSwiftPackageReference "RxSwift" */,
 				B54AC0062C0F45DF002E89DC /* XCRemoteSwiftPackageReference "keychain-swift" */,
 				B53786C72C2405E1007B362F /* XCRemoteSwiftPackageReference "MarkdownView" */,
+				B566DF312C2ABA1E0050CF60 /* XCRemoteSwiftPackageReference "NVActivityIndicatorView" */,
 			);
 			productRefGroup = B54ABF852C09BD43002E89DC /* Products */;
 			projectDirPath = "";
@@ -897,7 +927,9 @@
 				B53786CF2C25AE08007B362F /* BagelFatOne-Regular.ttf in Resources */,
 				B54ABFE22C0D68CF002E89DC /* SUITE-SemiBold.ttf in Resources */,
 				B54ABFE62C0D68CF002E89DC /* SUITE-Medium.ttf in Resources */,
+				B566DF302C2A9BC80050CF60 /* PrivacyInfo.xcprivacy in Resources */,
 				B54ABFE12C0D68CF002E89DC /* SUITE-Bold.ttf in Resources */,
+				B53786D12C25EB7E007B362F /* SikmogilPlist.plist in Resources */,
 				62578CEE2C117333005035BB /* The_Scale.json in Resources */,
 				B54ABFE02C0D68CF002E89DC /* SUITE-Light.ttf in Resources */,
 				B54ABF942C09BD47002E89DC /* Assets.xcassets in Resources */,
@@ -930,6 +962,7 @@
 				CACA65B82C1860CF0030D8D5 /* DietAlbumViewModel.swift in Sources */,
 				CACA65C82C1B5D0C0030D8D5 /* FoodDbModel.swift in Sources */,
 				B54AC00C2C0F48D1002E89DC /* SikmogilBundle++.swift in Sources */,
+				B566DF2E2C29E8530050CF60 /* CustomNavigationController.swift in Sources */,
 				B52001EE2C1C5CD60083CBDF /* CalendarCell.swift in Sources */,
 				F36105B92C1E00A700237572 /* ExerciseSelectionViewModel.swift in Sources */,
 				B54ABFCF2C0CBB59002E89DC /* UIViewExtensions.swift in Sources */,
@@ -958,6 +991,7 @@
 				545AA5162C11E6540083D893 /* AlarmTableViewCell.swift in Sources */,
 				B53786C62C23F3CD007B362F /* PrivacyPolicyViewController.swift in Sources */,
 				B52001D62C171B8C0083CBDF /* DietMainViewController.swift in Sources */,
+				B566DF2C2C277C910050CF60 /* SplashViewController.swift in Sources */,
 				B54ABF922C09BD43002E89DC /* Sikmogil.xcdatamodeld in Sources */,
 				5485F0882C0DFE2D00A2A71E /* ProfileTableViewCell.swift in Sources */,
 				546E32312C1078D100E94C2A /* EditProfileViewController.swift in Sources */,
@@ -985,6 +1019,7 @@
 				62578CD42C0ED558005035BB /* CalendarViewController.swift in Sources */,
 				62578D002C15A487005035BB /* HeaderView.swift in Sources */,
 				B54ABF882C09BD43002E89DC /* AppDelegate.swift in Sources */,
+				B566DF292C2772990050CF60 /* UITabBarExtension.swift in Sources */,
 				B54ABF8A2C09BD43002E89DC /* SceneDelegate.swift in Sources */,
 				CA13FDE82C22E76C007B3DBE /* LunchTableViewCell.swift in Sources */,
 				B52001D22C171B8C0083CBDF /* DietAlbumCollectionViewCell.swift in Sources */,
@@ -1334,6 +1369,14 @@
 				minimumVersion = 24.0.0;
 			};
 		};
+		B566DF312C2ABA1E0050CF60 /* XCRemoteSwiftPackageReference "NVActivityIndicatorView" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ninjaprox/NVActivityIndicatorView";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.2.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1416,6 +1459,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = B54AC0062C0F45DF002E89DC /* XCRemoteSwiftPackageReference "keychain-swift" */;
 			productName = KeychainSwift;
+		};
+		B566DF322C2ABA1E0050CF60 /* NVActivityIndicatorView */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B566DF312C2ABA1E0050CF60 /* XCRemoteSwiftPackageReference "NVActivityIndicatorView" */;
+			productName = NVActivityIndicatorView;
+		};
+		B566DF342C2ABA1E0050CF60 /* NVActivityIndicatorViewExtended */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B566DF312C2ABA1E0050CF60 /* XCRemoteSwiftPackageReference "NVActivityIndicatorView" */;
+			productName = NVActivityIndicatorViewExtended;
 		};
 /* End XCSwiftPackageProductDependency section */
 

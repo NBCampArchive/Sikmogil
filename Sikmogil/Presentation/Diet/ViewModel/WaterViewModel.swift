@@ -49,9 +49,9 @@ class WaterViewModel {
         dietViewModel.getDietLogDate(for: DateHelper.shared.formatDateToYearMonthDay(Date())) { [weak self] result in
             switch result {
             case .success(let data):
-                self?.todayWaterAmount = self!.dietViewModel.dietLog!.waterIntake
+                self?.todayWaterAmount = self!.dietViewModel.dietLog!.waterIntake ?? 0
                 self?.todayCanEatCalorie = self!.dietViewModel.dietLog!.canEatCalorie ?? 0
-                print("식단 출력 성공: todayWaterAmount: \(self?.todayWaterAmount), todayCanEatCalorie: \(self?.todayCanEatCalorie)")
+                print("식단 출력 성공: todayWaterAmount: \(self?.todayWaterAmount ?? 0), todayCanEatCalorie: \(self?.todayCanEatCalorie ?? 0)")
             case .failure(let error):
                 print("식단 출력 실패: \(error)")
             }

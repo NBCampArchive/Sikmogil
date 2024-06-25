@@ -38,9 +38,9 @@ class MainViewController: UIViewController {
         $0.font = Suite.bold.of(size: 28)
     }
     
-    private lazy var calendarButton = UIButton().then {
-        $0.setImage(.calendar, for: .normal)
-    }
+//    private lazy var calendarButton = UIButton().then {
+//        $0.setImage(.calendar, for: .normal)
+//    }
     
     private let weightLabel = UILabel().then {
         $0.text = "목표까지 남은기간 N일!"
@@ -121,12 +121,17 @@ class MainViewController: UIViewController {
         $0.xAxis.drawAxisLineEnabled = false
         $0.leftAxis.drawAxisLineEnabled = false
         $0.rightAxis.drawAxisLineEnabled = false
-        //        $0.xAxis.drawLabelsEnabled = false
         $0.leftAxis.drawLabelsEnabled = false
         $0.rightAxis.drawLabelsEnabled = false
         $0.legend.enabled = false
         $0.extraLeftOffset = 16
         $0.extraRightOffset = 16
+        $0.scaleXEnabled = false // X축 확대/축소 비활성화
+        $0.scaleYEnabled = false // Y축 확대/축소 비활성화
+        $0.isUserInteractionEnabled = false // 사용자 상호작용 비활성화
+        $0.highlightPerTapEnabled = false // 데이터 항목 클릭 시 강조 비활성화
+        $0.dragEnabled = false // 드래그 비활성화
+        $0.pinchZoomEnabled = false // 핀치 줌 비활성화
     }
     
     override func viewDidLoad() {
@@ -144,7 +149,7 @@ class MainViewController: UIViewController {
         hideKeyboardWhenTappedAround()
         setKeyboardObserver()
         
-        calendarButton.addTarget(self, action: #selector(tapCalendarButton), for: .touchUpInside)
+//        calendarButton.addTarget(self, action: #selector(tapCalendarButton), for: .touchUpInside)
         recordButton.addTarget(self, action: #selector(tapRecordButton), for: .touchUpInside)
     }
     
@@ -154,7 +159,7 @@ class MainViewController: UIViewController {
         scrollView.addSubview(scrollSubView)
         
         scrollSubView.addSubviews(goalStackView,
-                                  calendarButton,
+//                                  calendarButton,
                                   dateProgressView,
                                   weightLogLabel,
                                   weightNowLabel,
@@ -188,12 +193,12 @@ class MainViewController: UIViewController {
             $0.leading.equalToSuperview().offset(16)
         }
         
-        calendarButton.snp.makeConstraints {
-            $0.centerY.equalTo(goalLabel.snp.centerY)
-            $0.trailing.equalTo(view.safeAreaLayoutGuide).offset(-16)
-            $0.width.equalTo(24)
-            $0.height.equalTo(24)
-        }
+//        calendarButton.snp.makeConstraints {
+//            $0.centerY.equalTo(goalLabel.snp.centerY)
+//            $0.trailing.equalTo(view.safeAreaLayoutGuide).offset(-16)
+//            $0.width.equalTo(24)
+//            $0.height.equalTo(24)
+//        }
         
         dateProgressView.snp.makeConstraints {
             $0.top.equalTo(goalStackView.snp.bottom).offset(20)
@@ -325,6 +330,7 @@ class MainViewController: UIViewController {
         
         let data = LineChartData(dataSet: dataSet)
         graph.data = data
+        graph.notifyDataSetChanged()
     }
     
     @objc func tapCalendarButton() {

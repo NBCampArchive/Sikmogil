@@ -26,16 +26,17 @@ class BottomTabBarController: UITabBarController {
         let exerciseVC = ExerciseMenuViewController()
         exerciseVC.tabBarItem = UITabBarItem(title: "운동", image: UIImage(named: "exercise"), tag: 2)
         
-        let communicationVC = CommunityNavigationViewController()
-        communicationVC.tabBarItem = UITabBarItem(title: "소통", image: UIImage(named: "communication"), tag: 3)
+//        let communicationVC = CommunityNavigationViewController()
+//        communicationVC.tabBarItem = UITabBarItem(title: "소통", image: UIImage(named: "communication"), tag: 3)
         
         let profileVC = ProfileViewController()
         profileVC.tabBarItem = UITabBarItem(title: "프로필", image: UIImage(named: "profile"), tag: 4)
         
-        let controllers = [homeVC, dietVC, exerciseVC, communicationVC, profileVC]
+        let controllers = [homeVC, dietVC, exerciseVC, /*communicationVC,*/ profileVC]
         
-        viewControllers = controllers.map { UINavigationController(rootViewController: $0) }
+        viewControllers = controllers.map { CustomNavigationController(rootViewController: $0) }
         
+//        hidesBottomBarWhenPushed = true
         // 탭바 선택 인덱스 설정 ( 0 부터 시작 )
         selectedIndex = 0
     }
@@ -43,6 +44,9 @@ class BottomTabBarController: UITabBarController {
     private func setupTabBarAppearance() {
         UITabBar.appearance().tintColor = .customBlack
         UITabBar.appearance().unselectedItemTintColor = .customDarkGray
-        UITabBar.appearance().backgroundColor = .customLightGray
+        tabBar.backgroundColor = .appLightGray
+        tabBar.layer.cornerRadius = 16
+        tabBar.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        tabBar.layer.masksToBounds = true
     }
 }

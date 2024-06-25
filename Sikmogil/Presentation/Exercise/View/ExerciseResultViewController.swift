@@ -271,7 +271,7 @@ class ExerciseResultViewController: UIViewController {
         
         addButton.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview().inset(16)
-            $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottomMargin).inset(26)
+            $0.bottom.equalTo(view.safeAreaLayoutGuide)
             $0.height.equalTo(60)
         }
     }

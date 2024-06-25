@@ -147,14 +147,38 @@ class MainViewModel: ObservableObject {
         let outputDateFormatter = DateFormatter()
         outputDateFormatter.dateFormat = "MM.dd"
         
-        for index in 0..<targetModel.weekWeights.count {
-            let weight = targetModel.weekWeights[index].weight ?? 0.0
-            entries.append(ChartDataEntry(x: Double(index), y: weight))
-            if let date = inputDateFormatter.date(from: targetModel.weekWeights[index].date) {
+        if targetModel.weekWeights.count == 0 {
+            let weight = Double(targetModel.weight) ?? 0.0
+            entries.append(ChartDataEntry(x: Double(0), y: 0))
+            entries.append(ChartDataEntry(x: Double(1), y: weight))
+            dates.append("")
+            dates.append("시작일")
+        }
+        else if targetModel.weekWeights.count == 1 {
+            let startWeight = Double(targetModel.weight) ?? 0.0
+            let weight = targetModel.weekWeights[0].weight ?? 0.0
+            entries.append(ChartDataEntry(x: Double(0), y: startWeight))
+            entries.append(ChartDataEntry(x: Double(1), y: weight))
+            
+            dates.append("시작일")
+            if let date = inputDateFormatter.date(from: targetModel.weekWeights[0].date) {
                 let formattedDate = outputDateFormatter.string(from: date)
                 dates.append(formattedDate)
-            } else {
+            }
+            else {
                 dates.append("") // 변환에 실패하면 빈 문자열 추가
+            }
+        }
+        else {
+            for index in 0..<targetModel.weekWeights.count {
+                let weight = targetModel.weekWeights[index].weight ?? 0.0
+                entries.append(ChartDataEntry(x: Double(index), y: weight))
+                if let date = inputDateFormatter.date(from: targetModel.weekWeights[index].date) {
+                    let formattedDate = outputDateFormatter.string(from: date)
+                    dates.append(formattedDate)
+                } else {
+                    dates.append("") // 변환에 실패하면 빈 문자열 추가
+                }
             }
         }
         
