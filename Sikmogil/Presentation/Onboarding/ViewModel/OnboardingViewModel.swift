@@ -8,6 +8,7 @@
 import Foundation
 import RxSwift
 import RxCocoa
+import Alamofire
 
 class OnboardingViewModel {
     var userProfile = UserProfile(nickname: "", height: "", weight: "", gender: "", targetWeight: "", targetDate: "", canEatCalorie: 0, createdDate: "", remindTime: "")
@@ -20,6 +21,7 @@ class OnboardingViewModel {
     var targetWeight = BehaviorRelay<String>(value: "")
     var targetDate = BehaviorRelay<Date>(value: Date())
     var reminderTime = BehaviorRelay<String>(value: "")
+    let errorMessage = PublishRelay<String>()
     
     
     func moveToNextPage() {
@@ -45,6 +47,30 @@ class OnboardingViewModel {
         userProfile.height = height.value
         userProfile.weight = weight.value
         userProfile.gender = gender.value
+    }
+    
+    func checkNicknameAndProceed() {
+        guard profileValidateForm() else {
+            errorMessage.accept("모든 필드를 올바르게 입력해주세요.")
+            return
+        }
+        
+        UserAPIManager.shared.checkNickname(nickname: nickname.value) { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(let data):
+                if data.statusCode == 400 {
+                    self.errorMessage.accept("중복된 닉네임이에요!\n다른 닉네임으로 시도해주세요")
+                } else {
+                    self.saveProfileData()
+                    self.moveToNextPage()
+                    print("닉네임 중복 검사 통과 \(nickname.value)")
+                }
+            case .failure(let error):
+                self.errorMessage.accept("서버가 불안정 합니다.\n잠시 후 다시 시도해주세요.")
+                print("\(error.localizedDescription)")
+            }
+        }
     }
     
     func profileValidateForm() -> Bool {

@@ -25,3 +25,9 @@ struct UserProfile: Decodable {
     var remindTime: String
     var picture: String?
 }
+
+struct CheckNickname: Decodable {
+    var statusCode: Int
+    var message: String
+    var data: Bool
+}

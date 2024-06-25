@@ -8,6 +8,7 @@
 import Foundation
 import Alamofire
 import KeychainSwift
+import UIKit
 
 class UserAPIManager {
     
@@ -101,7 +102,7 @@ class UserAPIManager {
     }
     
     //MARK: - 닉네임 중복 확인
-    func checkNickname(nickname: String, completion: @escaping (Result<Void, Error>) -> Void) {
+    func checkNickname(nickname: String, completion: @escaping (Result<CheckNickname, Error>) -> Void) {
         
         let url = "\(baseURL)/api/members/nickname"
         
@@ -109,12 +110,12 @@ class UserAPIManager {
             "nickname": nickname
         ]
         
-        AF.request(url, method: .get, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
+        AF.request(url, method: .get, parameters: parameters, encoding: URLEncoding.default, headers: headers)
             .validate()
-            .response { response in
+            .responseDecodable(of: CheckNickname.self) { response in
                 switch response.result {
-                case .success:
-                    completion(.success(()))
+                case .success(let data):
+                    completion(.success(data))
                 case .failure(let error):
                     print("닉네임 중복 확인 에러")
                     if let responseCode = error.responseCode, responseCode == 401 {
