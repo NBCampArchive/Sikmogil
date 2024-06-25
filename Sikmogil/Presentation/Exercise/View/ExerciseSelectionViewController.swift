@@ -135,11 +135,6 @@ class ExerciseSelectionViewController: UIViewController {
         super.viewWillAppear(animated)
         setTabBar(hidden: true, animated: true)
     }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        setTabBar(hidden: false, animated: true)
-    }
 
     // MARK: - Setup Views
     private func setupViews() {

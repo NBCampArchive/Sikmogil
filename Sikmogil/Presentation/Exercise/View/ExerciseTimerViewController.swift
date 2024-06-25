@@ -73,11 +73,6 @@ class ExerciseTimerViewController: UIViewController {
         setTabBar(hidden: true, animated: true)
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        setTabBar(hidden: false, animated: true)
-    }
-    
     // MARK: - Setup Views
     private func setupViews() {
         view.backgroundColor = .white
