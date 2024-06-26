@@ -116,6 +116,17 @@ class ExerciseResultViewController: UIViewController {
         $0.textColor = .appBlack
     }
 
+    private let photoButton = UIButton().then {
+        $0.layer.cornerRadius = 16
+        $0.layer.borderWidth = 1
+        $0.layer.borderColor = UIColor.appBlack.cgColor
+    }
+    
+    private let photoIcon = UIImageView().then {
+        $0.image = .photoIcon
+        $0.contentMode = .scaleAspectFit
+    }
+    
     private let addButton = UIButton().then {
         $0.setTitle("추가하기", for: .normal)
         $0.titleLabel?.font = Suite.bold.of(size: 20)
@@ -185,7 +196,7 @@ class ExerciseResultViewController: UIViewController {
     // MARK: - Setup Views
     private func setupViews() {
         view.backgroundColor = .white
-        view.addSubviews(scrollView, addButton)
+        view.addSubviews(scrollView, photoButton, addButton)
         scrollView.addSubview(contentView)
         contentView.addSubviews(cardView, progressView, resultView)
         cardStackView.addArrangedSubviews(checkImage, completionLabel)
@@ -194,6 +205,7 @@ class ExerciseResultViewController: UIViewController {
         resultView.addSubviews(exerciseImage, exerciseLabel, verticalLine, timeStackView, kcalStackView)
         timeStackView.addArrangedSubviews(timeLabel, timeValueLabel)
         kcalStackView.addArrangedSubviews(kcalLabel, kcalValueLabel)
+        photoButton.addSubview(photoIcon)
     }
     
     private func setupConstraints() {
@@ -272,8 +284,20 @@ class ExerciseResultViewController: UIViewController {
             $0.bottom.equalTo(resultView.snp.bottom).offset(100)
         }
         
+        photoButton.snp.makeConstraints {
+            $0.leading.equalToSuperview().offset(16)
+            $0.width.height.equalTo(60)
+            $0.centerY.equalTo(addButton)
+        }
+        
+        photoIcon.snp.makeConstraints {
+            $0.centerX.centerY.equalToSuperview()
+            $0.width.height.equalTo(36)
+        }
+        
         addButton.snp.makeConstraints {
-            $0.leading.trailing.equalToSuperview().inset(16)
+            $0.trailing.equalToSuperview().inset(16)
+            $0.leading.equalTo(photoButton.snp.trailing).offset(16)
             $0.bottom.equalTo(view.safeAreaLayoutGuide)
             $0.height.equalTo(60)
         }
@@ -282,29 +306,31 @@ class ExerciseResultViewController: UIViewController {
     // MARK: - Setup Buttons
     private func setupButtons() {
         addButton.addTarget(self, action: #selector(addButtonTapped), for: .touchUpInside)
+        photoButton.addTarget(self, action: #selector(photoButtonTapped), for: .touchUpInside)
+    }
+    
+    @objc private func photoButtonTapped() {
+        self.present(recodingPhotoPanel, animated: true)
+        // TODO: - 운동 추가 로직 추가
     }
     
     @objc private func addButtonTapped() {
+        let exerciseData = viewModel.saveExerciseData()
+        let day = DateHelper.shared.formatDateToYearMonthDay(Date())
         
-        self.present(recodingPhotoPanel, animated: true)
-        
-        // TODO: - 운동 추가 로직 추가
-//        let exerciseData = viewModel.saveExerciseData()
-//        let day = DateHelper.shared.formatDateToYearMonthDay(Date())
-//        
-//        ExerciseAPIManager.shared.addExerciseListData(exerciseDay: day, exerciseList: exerciseData) { result in
-//            switch result {
-//            case .success:
-//                print("운동 리스트 추가 성공")
-//                self.showAlert(message: "운동 리스트 추가 성공") {
-//                    // 네비게이션의 최상단 페이지로 이동
-//                    self.navigationController?.popToRootViewController(animated: true)
-//                }
-//                
-//            case .failure(let error):
-//                print("운동 리스트 추가 실패", error)
-//            }
-//        }
+        ExerciseAPIManager.shared.addExerciseListData(exerciseDay: day, exerciseList: exerciseData) { result in
+            switch result {
+            case .success:
+                print("운동 리스트 추가 성공")
+                self.showAlert(message: "운동 리스트 추가 성공") {
+                    // 네비게이션의 최상단 페이지로 이동
+                    self.navigationController?.popToRootViewController(animated: true)
+                }
+                
+            case .failure(let error):
+                print("운동 리스트 추가 실패", error)
+            }
+        }
     }
     
     private func showAlert(message: String, completion: @escaping () -> Void) {
