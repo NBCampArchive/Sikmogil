@@ -70,6 +70,7 @@ class MainViewController: UIViewController {
         $0.layer.borderWidth = 4
         $0.layer.cornerRadius = 20
         $0.layer.borderColor = UIColor(red: 1, green: 0.749, blue: 0, alpha: 1.0).cgColor
+        $0.isHidden = true
     }
     
     private let percentLabel = UILabel().then {
@@ -179,7 +180,7 @@ class MainViewController: UIViewController {
     
     private func setupConstraints() {
         scrollView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+            $0.edges.equalTo(view.safeAreaLayoutGuide)
         }
         
         scrollSubView.snp.makeConstraints {
@@ -273,14 +274,18 @@ class MainViewController: UIViewController {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] progress in
                 self?.dateProgressView.progress = progress
-                self?.percentLabel.text = String(format: "%.0f%%", progress * 100)
+                if progress * 100 > 20{
+                    self?.percentView.isHidden = false
+                    self?.percentLabel.text = String(format: "%.0f%%", progress * 100)
+                }
+               
             }
             .store(in: &cancellables)
         
         viewModel.$remainingDays
             .receive(on: DispatchQueue.main)
             .sink { [weak self] remainingDays in
-                self?.weightLabel.text = "목표까지 남은기간 \(remainingDays)일!"
+                self?.weightLabel.text = "목표까지 남은기간 \(remainingDays + 1)일!"
             }
             .store(in: &cancellables)
         
@@ -304,7 +309,7 @@ class MainViewController: UIViewController {
     
     private func updateUI(with targetModel: TargetModel?) {
         guard let targetModel = targetModel else { return }
-        weightNowLabel.text = "현재 체중 \(targetModel.weekWeights.first?.weight ?? 0) Kg"
+        weightNowLabel.text = "현재 체중 \(targetModel.weekWeights.first?.weight ?? Double(targetModel.weight) ?? 0.0) Kg"
         weightToGoalLabel.text = "목표까지 \((Double(targetModel.targetWeight) ?? 0.0) - Double(targetModel.weekWeights.first?.weight ?? 0.0)) Kg"
         progressLabel.text = "\(targetModel.createDate) ~ \(targetModel.targetDate)"
     }

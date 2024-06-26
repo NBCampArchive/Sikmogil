@@ -29,7 +29,7 @@ class StepsViewController: UIViewController {
     }
 
     private let stepsValueLabel = UILabel().then {
-        $0.text = "15,000"
+        $0.text = "0"
         $0.font = Suite.bold.of(size: 50)
         $0.textColor = .appBlack
     }
@@ -91,9 +91,15 @@ class StepsViewController: UIViewController {
         setupViews()
         setupConstraints()
         
-        // HealthKit 권한 요청
-        requestHealthKitAuthorization()
-        updateStepsData()
+        // HealthKit 권한 요청 후 완료 시 걸음 데이터를 업데이트
+        requestHealthKitAuthorization { [weak self] authorized in
+            if authorized {
+                self?.updateStepsData()
+            } else {
+                // 권한이 거부된 경우 처리
+                print("HealthKit authorization denied")
+            }
+        }
     }
     
     // MARK: - Steps Data
@@ -208,18 +214,20 @@ class StepsViewController: UIViewController {
 // MARK: - HealthKit
 extension StepsViewController {
     // HealthKit 권한 요청
-    private func requestHealthKitAuthorization() {
+    private func requestHealthKitAuthorization(completion: @escaping (Bool) -> Void) {
         let stepCountType = HKQuantityType.quantityType(forIdentifier: .stepCount)!
         let dataTypesToRead: Set<HKObjectType> = [stepCountType]
         
         healthStore.requestAuthorization(toShare: nil, read: dataTypesToRead) { (success, error) in
             if success {
                 print("HealthKit authorization granted")
+                completion(true)
             } else {
                 print("HealthKit authorization denied")
                 if let error = error {
                     print(error.localizedDescription)
                 }
+                completion(false)
             }
         }
     }
