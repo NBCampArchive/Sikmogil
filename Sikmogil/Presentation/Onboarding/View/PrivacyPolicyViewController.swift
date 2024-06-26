@@ -80,7 +80,7 @@ class PrivacyPolicyViewController: UIViewController {
         """)
     }
     
-    private let nextButton = UIButton(type: .system).then {
+    let nextButton = UIButton(type: .system).then {
         $0.setTitle("동의", for: .normal)
         $0.setTitleColor(.white, for: .normal)
         $0.titleLabel?.font = Suite.bold.of(size: 22)
