@@ -187,17 +187,17 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
             switch indexPath.row {
             case 0:
                 cell.label.text = "프로필 수정"
-                cell.iconImageView.image = UIImage(named: "user")
+                cell.iconImageView.image = UIImage(named: "user")?.withRenderingMode(.alwaysOriginal).withTintColor(.appDeepDarkGray)
                 cell.customSwitch.isHidden = true
                 cell.showsAccessoryButton = true
             case 1:
                 cell.label.text = "목표 설정"
-                cell.iconImageView.image = UIImage(named: "marker")
+                cell.iconImageView.image = UIImage(named: "marker")?.withRenderingMode(.alwaysOriginal).withTintColor(.appDeepDarkGray)
                 cell.customSwitch.isHidden = true
                 cell.showsAccessoryButton = true
             case 2:
                 cell.label.text = "계정 관리"
-                cell.iconImageView.image = UIImage(named: "key")
+                cell.iconImageView.image = UIImage(named: "key")?.withRenderingMode(.alwaysOriginal).withTintColor(.appDeepDarkGray)
                 cell.customSwitch.isHidden = true
                 cell.showsAccessoryButton = true
             default:
@@ -207,16 +207,16 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
             switch indexPath.row {
             case 0:
                 cell.label.text = "리마인드 알림 설정"
-                cell.iconImageView.image = UIImage(named: "clock")
+                cell.iconImageView.image = UIImage(named: "clock")?.withRenderingMode(.alwaysOriginal).withTintColor(.appDeepDarkGray)
                 cell.customSwitch.isHidden = true
                 cell.showsAccessoryButton = true
             case 1:
                 cell.label.text = "공복 알림 시간 설정"
-                cell.iconImageView.image = UIImage(named: "stopwatch")
+                cell.iconImageView.image = UIImage(named: "stopwatch")?.withRenderingMode(.alwaysOriginal).withTintColor(.appDeepDarkGray)
                 cell.customSwitch.isHidden = true
                 cell.showsAccessoryButton = true
             case 2:
-                cell.iconImageView.image = UIImage(named: "alarm")
+                cell.iconImageView.image = UIImage(named: "alarm")?.withRenderingMode(.alwaysOriginal).withTintColor(.appDeepDarkGray)
                 cell.label.text = "알림 On / Off"
                 cell.customSwitch.isHidden = false
                 cell.customSwitch.isOn = loadNotificationSetting()
@@ -229,7 +229,7 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
                 break
             }
         case informationTableView:
-            cell.iconImageView.image = UIImage(named: "Information")
+            cell.iconImageView.image = UIImage(named: "Information")?.withRenderingMode(.alwaysOriginal).withTintColor(.appDeepDarkGray)
             cell.label.text = "개인정보 처리 방침"
             cell.customSwitch.isHidden = true
             cell.showsAccessoryButton = true
@@ -265,11 +265,15 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
                 let reminderVC = ReminderSettingsViewController()
                 reminderVC.viewModel = ProfileViewModel()
                 navigationController?.pushViewController(reminderVC, animated: true)
+            case 1:
+                let SpandrelVC = SpandrelSettingsViewController()
+                navigationController?.pushViewController(SpandrelVC, animated: true)
             default:
                 break
             }
         } else if tableView == informationTableView {
             let privacyPolicyVC = PrivacyPolicyViewController()
+            privacyPolicyVC.nextButton.isHidden = true
             navigationController?.pushViewController(privacyPolicyVC, animated: true)
         }
     }
