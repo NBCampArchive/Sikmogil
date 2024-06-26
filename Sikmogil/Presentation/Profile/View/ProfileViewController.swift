@@ -93,7 +93,6 @@ class ProfileViewController: UIViewController {
         super.viewWillAppear(animated)
         viewModel.fetchUserProfile()
         setupBindings()
-//        setTabBar(hidden: false, animated: true)
         navigationController?.navigationBar.isHidden = true
     }
 
@@ -103,11 +102,13 @@ class ProfileViewController: UIViewController {
         let heightPublisher = viewModel.$height
         let weightPublisher = viewModel.$weight
         let picturePublisher = viewModel.$picture
-
-        // 뷰모델의 프로퍼티와 뷰를 바인딩하여 데이터를 뿌려주는 부분
-        Publishers.CombineLatest4(nicknamePublisher, heightPublisher, weightPublisher, picturePublisher)
+        let genderPublisher = viewModel.$gender
+            
+        // CombineLatest4와 추가적인 CombineLatest를 사용하여 다섯 개 이상의 퍼블리셔 결합
+        Publishers.CombineLatest(Publishers.CombineLatest4(nicknamePublisher, heightPublisher, weightPublisher, picturePublisher), genderPublisher)
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] nickname, height, weight, picture in
+            .sink { [weak self] combinedValues, gender in
+                let (nickname, height, weight, picture) = combinedValues
                 self?.nicknameLabel.text = nickname
                 self?.profileInfoView.heightLabel.text = height
                 self?.profileInfoView.weightLabel.text = weight
@@ -116,6 +117,7 @@ class ProfileViewController: UIViewController {
                 } else {
                     self?.profileImageView.image = UIImage(named: "defaultProfile")
                 }
+                self?.profileInfoView.genderLabel.text = gender
             }
             .store(in: &cancellables)
     }
