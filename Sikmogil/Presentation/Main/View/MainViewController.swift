@@ -70,6 +70,7 @@ class MainViewController: UIViewController {
         $0.layer.borderWidth = 4
         $0.layer.cornerRadius = 20
         $0.layer.borderColor = UIColor(red: 1, green: 0.749, blue: 0, alpha: 1.0).cgColor
+        $0.isHidden = true
     }
     
     private let percentLabel = UILabel().then {
@@ -179,7 +180,7 @@ class MainViewController: UIViewController {
     
     private func setupConstraints() {
         scrollView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+            $0.edges.equalTo(view.safeAreaLayoutGuide)
         }
         
         scrollSubView.snp.makeConstraints {
@@ -273,7 +274,11 @@ class MainViewController: UIViewController {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] progress in
                 self?.dateProgressView.progress = progress
-                self?.percentLabel.text = String(format: "%.0f%%", progress * 100)
+                if progress * 100 > 20{
+                    self?.percentView.isHidden = false
+                    self?.percentLabel.text = String(format: "%.0f%%", progress * 100)
+                }
+               
             }
             .store(in: &cancellables)
         
