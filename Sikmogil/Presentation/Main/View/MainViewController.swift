@@ -280,7 +280,7 @@ class MainViewController: UIViewController {
         viewModel.$remainingDays
             .receive(on: DispatchQueue.main)
             .sink { [weak self] remainingDays in
-                self?.weightLabel.text = "목표까지 남은기간 \(remainingDays)일!"
+                self?.weightLabel.text = "목표까지 남은기간 \(remainingDays + 1)일!"
             }
             .store(in: &cancellables)
         
@@ -304,7 +304,7 @@ class MainViewController: UIViewController {
     
     private func updateUI(with targetModel: TargetModel?) {
         guard let targetModel = targetModel else { return }
-        weightNowLabel.text = "현재 체중 \(targetModel.weekWeights.first?.weight ?? 0) Kg"
+        weightNowLabel.text = "현재 체중 \(targetModel.weekWeights.first?.weight ?? Double(targetModel.weight) ?? 0.0) Kg"
         weightToGoalLabel.text = "목표까지 \((Double(targetModel.targetWeight) ?? 0.0) - Double(targetModel.weekWeights.first?.weight ?? 0.0)) Kg"
         progressLabel.text = "\(targetModel.createDate) ~ \(targetModel.targetDate)"
     }
