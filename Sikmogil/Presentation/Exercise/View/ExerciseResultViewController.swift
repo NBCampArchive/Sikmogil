@@ -9,9 +9,15 @@ import UIKit
 import Combine
 import SnapKit
 import Then
+import FloatingPanel
 
 class ExerciseResultViewController: UIViewController {
-
+    
+    // MARK: - Properties
+    var viewModel = ExerciseSelectionViewModel()
+    private var cancellables = Set<AnyCancellable>()
+    var recodingPhotoPanel: FloatingPanelController!
+    
     // MARK: - Components
     private let scrollView = UIScrollView()
     private let contentView = UIView()
@@ -117,11 +123,7 @@ class ExerciseResultViewController: UIViewController {
         $0.backgroundColor = .appBlack
         $0.layer.cornerRadius = 16
     }
-    
-    // MARK: - Properties
-    var viewModel = ExerciseSelectionViewModel()
-    private var cancellables = Set<AnyCancellable>()
-    
+  
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -129,6 +131,7 @@ class ExerciseResultViewController: UIViewController {
         setupConstraints()
         setupButtons()
         bindViewModel()
+        setupFloatingPanel()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -283,22 +286,25 @@ class ExerciseResultViewController: UIViewController {
     
     @objc private func addButtonTapped() {
         
-        let exerciseData = viewModel.saveExerciseData()
-        let day = DateHelper.shared.formatDateToYearMonthDay(Date())
+        self.present(recodingPhotoPanel, animated: true)
         
-        ExerciseAPIManager.shared.addExerciseListData(exerciseDay: day, exerciseList: exerciseData) { result in
-            switch result {
-            case .success:
-                print("운동 리스트 추가 성공")
-                self.showAlert(message: "운동 리스트 추가 성공") {
-                    // 네비게이션의 최상단 페이지로 이동
-                    self.navigationController?.popToRootViewController(animated: true)
-                }
-                
-            case .failure(let error):
-                print("운동 리스트 추가 실패", error)
-            }
-        }
+        // TODO: - 운동 추가 로직 추가
+//        let exerciseData = viewModel.saveExerciseData()
+//        let day = DateHelper.shared.formatDateToYearMonthDay(Date())
+//        
+//        ExerciseAPIManager.shared.addExerciseListData(exerciseDay: day, exerciseList: exerciseData) { result in
+//            switch result {
+//            case .success:
+//                print("운동 리스트 추가 성공")
+//                self.showAlert(message: "운동 리스트 추가 성공") {
+//                    // 네비게이션의 최상단 페이지로 이동
+//                    self.navigationController?.popToRootViewController(animated: true)
+//                }
+//                
+//            case .failure(let error):
+//                print("운동 리스트 추가 실패", error)
+//            }
+//        }
     }
     
     private func showAlert(message: String, completion: @escaping () -> Void) {
@@ -308,5 +314,21 @@ class ExerciseResultViewController: UIViewController {
         }
         alertController.addAction(okAction)
         present(alertController, animated: true, completion: nil)
+    }
+}
+extension ExerciseResultViewController: FloatingPanelControllerDelegate {
+    
+    func setupFloatingPanel() {
+        
+        recodingPhotoPanel = FloatingPanelController()
+        
+        let contentVC = PhotoRecordFloatingViewController()
+
+        recodingPhotoPanel.set(contentViewController: contentVC)
+        recodingPhotoPanel.layout = CustomFloatingPanelLayout()
+        recodingPhotoPanel.isRemovalInteractionEnabled = true
+    
+        recodingPhotoPanel.changePanelStyle()
+        recodingPhotoPanel.delegate = self
     }
 }
