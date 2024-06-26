@@ -1,16 +1,19 @@
 //
-//  NotificationSettingsViewController.swift
+//  SettingsViewController.swift
 //  Sikmogil
 //
 //  Created by 박준영 on 6/5/24.
-//  [알림설정] 🔔 설정 
+//  [설정] ⚙️ 설정 ⚙️
 
 import UIKit
 import SnapKit
 import Then
+import KeychainSwift
 import UserNotifications
 
-class NotificationSettingsViewController: UIViewController {
+class SettingsViewController: UIViewController {
+    
+    var viewModel = ProfileViewModel()
     
     private let scrollView = UIScrollView().then {
         $0.backgroundColor = .clear
@@ -39,7 +42,7 @@ class NotificationSettingsViewController: UIViewController {
     }
     
     private let userTableView = UITableView(frame: .zero).then {
-        $0.register(AlarmTableViewCell.self, forCellReuseIdentifier: AlarmTableViewCell.identifier)
+        $0.register(SettingsTableViewCell.self, forCellReuseIdentifier: SettingsTableViewCell.identifier)
         $0.backgroundColor = .clear
         $0.separatorStyle = .singleLine
         $0.isScrollEnabled = false
@@ -47,7 +50,7 @@ class NotificationSettingsViewController: UIViewController {
     }
     
     private let notificationTableView = UITableView(frame: .zero).then {
-        $0.register(AlarmTableViewCell.self, forCellReuseIdentifier: AlarmTableViewCell.identifier)
+        $0.register(SettingsTableViewCell.self, forCellReuseIdentifier: SettingsTableViewCell.identifier)
         $0.backgroundColor = .clear
         $0.separatorStyle = .singleLine
         $0.isScrollEnabled = false
@@ -55,7 +58,7 @@ class NotificationSettingsViewController: UIViewController {
     }
     
     private let informationTableView = UITableView(frame: .zero).then {
-        $0.register(AlarmTableViewCell.self, forCellReuseIdentifier: AlarmTableViewCell.identifier)
+        $0.register(SettingsTableViewCell.self, forCellReuseIdentifier: SettingsTableViewCell.identifier)
         $0.backgroundColor = .clear
         $0.separatorStyle = .singleLine
         $0.isScrollEnabled = false
@@ -155,7 +158,7 @@ class NotificationSettingsViewController: UIViewController {
 }
 
 // MARK: - UITableViewDataSource & UITableViewDelegate
-extension NotificationSettingsViewController: UITableViewDelegate, UITableViewDataSource {
+extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -175,7 +178,7 @@ extension NotificationSettingsViewController: UITableViewDelegate, UITableViewDa
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: AlarmTableViewCell.identifier, for: indexPath) as? AlarmTableViewCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: SettingsTableViewCell.identifier, for: indexPath) as? SettingsTableViewCell else {
             return UITableViewCell()
         }
         
@@ -245,13 +248,14 @@ extension NotificationSettingsViewController: UITableViewDelegate, UITableViewDa
             switch indexPath.row {
             case 0:
                 let editProfileVC = EditProfileViewController()
+                editProfileVC.viewModel = viewModel
                 navigationController?.pushViewController(editProfileVC, animated: true)
             case 1:
                 let goalSettingsVC = GoalSettingsViewController()
+                goalSettingsVC.viewModel = viewModel
                 navigationController?.pushViewController(goalSettingsVC, animated: true)
-//            case 2:
-//                let accountManagementVC = AccountManagementViewController()
-//                navigationController?.pushViewController(accountManagementVC, animated: true)
+            case 2:
+                presentAccountManagementActionSheet()
             default:
                 break
             }
@@ -261,9 +265,6 @@ extension NotificationSettingsViewController: UITableViewDelegate, UITableViewDa
                 let reminderVC = ReminderSettingsViewController()
                 reminderVC.viewModel = ProfileViewModel()
                 navigationController?.pushViewController(reminderVC, animated: true)
-//            case 1:
-//                let fastingReminderVC = FastingReminderSettingsViewController()
-//                navigationController?.pushViewController(fastingReminderVC, animated: true)
             default:
                 break
             }
@@ -271,6 +272,81 @@ extension NotificationSettingsViewController: UITableViewDelegate, UITableViewDa
             let privacyPolicyVC = PrivacyPolicyViewController()
             navigationController?.pushViewController(privacyPolicyVC, animated: true)
         }
+    }
+    
+    private func presentAccountManagementActionSheet() {
+        let actionSheet = UIAlertController(title: "계정 관리", message: "회원 탈퇴 시 모든 정보가 지워집니다", preferredStyle: .actionSheet)
+        
+        let logoutAction = UIAlertAction(title: "로그아웃", style: .default) { _ in
+            self.presentLogoutConfirmation()
+        }
+        
+        let deleteAccountAction = UIAlertAction(title: "회원탈퇴", style: .destructive) { _ in
+            self.presentDeleteAccountConfirmation()
+        }
+        
+        let cancelAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
+        
+        actionSheet.addAction(logoutAction)
+        actionSheet.addAction(deleteAccountAction)
+        actionSheet.addAction(cancelAction)
+        
+        // iPad 대응
+        if let popoverController = actionSheet.popoverPresentationController {
+            popoverController.sourceView = self.view
+            popoverController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
+            popoverController.permittedArrowDirections = []
+        }
+        
+        present(actionSheet, animated: true, completion: nil)
+    }
+    
+    // 로그아웃 확인 얼럿
+    private func presentLogoutConfirmation() {
+        let alert = UIAlertController(title: "로그아웃", message: "정말 로그아웃 하시겠습니까?", preferredStyle: .alert)
+        
+        let confirmAction = UIAlertAction(title: "예", style: .default) { _ in
+            self.logout()
+        }
+        
+        let cancelAction = UIAlertAction(title: "아니오", style: .cancel, handler: nil)
+        
+        alert.addAction(confirmAction)
+        alert.addAction(cancelAction)
+        
+        present(alert, animated: true, completion: nil)
+    }
+    
+    // 회원탈퇴 확인 얼럿
+    private func presentDeleteAccountConfirmation() {
+        let alert = UIAlertController(title: "회원탈퇴", message: "정말 회원탈퇴 하시겠습니까?", preferredStyle: .alert)
+        
+        let confirmAction = UIAlertAction(title: "예", style: .destructive) { _ in
+            self.deleteAccount()
+        }
+        
+        let cancelAction = UIAlertAction(title: "아니오", style: .cancel, handler: nil)
+        
+        alert.addAction(confirmAction)
+        alert.addAction(cancelAction)
+        
+        present(alert, animated: true, completion: nil)
+    }
+    
+    private func logout() {
+        let keychain = KeychainSwift()
+        keychain.clear()
+        if let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate {
+            let loginVC = SplashViewController()
+            let navController = CustomNavigationController(rootViewController: loginVC)
+            sceneDelegate.window?.rootViewController = navController
+            sceneDelegate.window?.makeKeyAndVisible()
+        }
+    }
+    
+    private func deleteAccount() {
+        // 계정 삭제 처리
+        print("회원 탈퇴")
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
