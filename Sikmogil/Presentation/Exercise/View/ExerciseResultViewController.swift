@@ -10,13 +10,13 @@ import Combine
 import SnapKit
 import Then
 import FloatingPanel
-
-class ExerciseResultViewController: UIViewController {
+ 
+class ExerciseResultViewController: UIViewController, FloatingPanelControllerDelegate {
     
     // MARK: - Properties
     var viewModel = ExerciseSelectionViewModel()
     private var cancellables = Set<AnyCancellable>()
-    var recodingPhotoPanel: FloatingPanelController!
+    var recodingPhotoPanel = FloatingPanelController()
     
     // MARK: - Components
     private let scrollView = UIScrollView()
@@ -311,27 +311,57 @@ class ExerciseResultViewController: UIViewController {
     
     @objc private func photoButtonTapped() {
         self.present(recodingPhotoPanel, animated: true)
-        // TODO: - 운동 추가 로직 추가
     }
     
     @objc private func addButtonTapped() {
-        let exerciseData = viewModel.saveExerciseData()
+        var exerciseData = viewModel.saveExerciseData()
         let day = DateHelper.shared.formatDateToYearMonthDay(Date())
         
-        ExerciseAPIManager.shared.addExerciseListData(exerciseDay: day, exerciseList: exerciseData) { result in
-            switch result {
-            case .success:
-                print("운동 리스트 추가 성공")
-                self.showAlert(message: "운동 리스트 추가 성공") {
-                    // 네비게이션의 최상단 페이지로 이동
-                    self.navigationController?.popToRootViewController(animated: true)
+        // 운동 리스트에 이미지가 있는 경우
+        if let exerciseImage = viewModel.selectedImageView {
+            viewModel.uploadExerciseImage(image: exerciseImage, directory: "exercise_images") { [weak self] result in
+                switch result {
+                case .success(let imageURL):
+                    // 이미지 업로드 후, 운동 리스트 데이터에 이미지 URL 설정
+                    exerciseData.workoutPicture = imageURL
+                    
+                    // 운동 리스트 데이터 서버에 추가
+                    self?.viewModel.addExerciseListData(exerciseDay: day, exerciseList: exerciseData) { addResult in
+                        switch addResult {
+                        case .success:
+                            print("이미지, 운동 리스트 추가 성공")
+                            self?.showAlert(message: "운동 리스트 추가 성공") {
+                                // 네비게이션의 최상단 페이지로 이동
+                                self?.navigationController?.popToRootViewController(animated: true)
+                            }
+                        case .failure(let error):
+                            print("이미지, 운동 리스트 추가 실패", error)
+                        }
+                    }
+                    
+                case .failure(let error):
+                    print("이미지 업로드 실패", error)
+                    self?.showAlert(message: "이미지 업로드 실패") {}
                 }
-                
-            case .failure(let error):
-                print("운동 리스트 추가 실패", error)
+            }
+        } else {
+            // 운동 리스트에 이미지가 없는 경우 바로 서버에 추가
+            viewModel.addExerciseListData(exerciseDay: day, exerciseList: exerciseData) { [weak self] result in
+                switch result {
+                case .success:
+                    print("운동 리스트 추가 성공")
+                    self?.showAlert(message: "운동 리스트 추가 성공") {
+                        // 네비게이션의 최상단 페이지로 이동
+                        self?.navigationController?.popToRootViewController(animated: true)
+                    }
+                    
+                case .failure(let error):
+                    print("운동 리스트 추가 실패", error)
+                }
             }
         }
     }
+
     
     private func showAlert(message: String, completion: @escaping () -> Void) {
         let alertController = UIAlertController(title: nil, message: message, preferredStyle: .alert)
@@ -341,14 +371,13 @@ class ExerciseResultViewController: UIViewController {
         alertController.addAction(okAction)
         present(alertController, animated: true, completion: nil)
     }
-}
-extension ExerciseResultViewController: FloatingPanelControllerDelegate {
     
     func setupFloatingPanel() {
         
         recodingPhotoPanel = FloatingPanelController()
         
         let contentVC = PhotoRecordFloatingViewController()
+        contentVC.viewModel = self.viewModel
 
         recodingPhotoPanel.set(contentViewController: contentVC)
         recodingPhotoPanel.layout = CustomFloatingPanelLayout()
