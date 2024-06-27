@@ -295,10 +295,6 @@ class ProfileViewController: UIViewController {
             let loginVC = SplashViewController()
             let navController = CustomNavigationController(rootViewController:loginVC)
             
-//            for key in UserDefaults.standard.dictionaryRepresentation().keys {
-//                UserDefaults.standard.removeObject(forKey: key.description)
-//            }
-            
             UIView.transition(with: sceneDelegate.window!, duration: 0.5, options: .transitionFlipFromRight, animations: {
                 sceneDelegate.window?.rootViewController = navController
             })

@@ -145,10 +145,11 @@ class SplashViewController: UIViewController {
     private func setRootViewController(_ viewController: UIViewController) {
         if let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate,
            let window = sceneDelegate.window {
-            UIView.animate(withDuration: 1.5) {
+            UIView.transition(with: window, duration: 0.7, options: .transitionFlipFromRight, animations: {
                 window.rootViewController = viewController
-                window.makeKeyAndVisible()
-            }
+            })
+            window.makeKeyAndVisible()
+
         }
     }
 }
