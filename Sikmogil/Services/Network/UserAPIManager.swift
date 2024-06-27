@@ -18,14 +18,10 @@ class UserAPIManager {
     
     private init() {}
     
-    let token = "Bearer \(LoginAPIManager.shared.getAccessTokenFromKeychain())"
-    
-    private var headers: HTTPHeaders {
-        return [
-            "Authorization": token,
-            "Accept": "application/json"
-        ]
-    }
+    private let session: Session = {
+        let interceptor = AuthInterceptor()
+        return Session(interceptor: interceptor)
+    }()
     
     //MARK: - 사용자 프로필 내용 업데이트 (온보딩, 프로필 수정)
     func userProfileUpdate(userProfile: UserProfile, completion: @escaping (Result<Void, Error>) -> Void) {
@@ -44,7 +40,7 @@ class UserAPIManager {
             "remindTime": userProfile.remindTime
         ]
         
-        AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
+        session.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default)
             .response { response in
                 switch response.result {
                 case .success:
@@ -74,14 +70,13 @@ class UserAPIManager {
         
         let url = "\(baseURL)/api/members/getMember"
         
-        AF.request(url, method: .get, encoding: JSONEncoding.default, headers: headers)
+        session.request(url, method: .get, encoding: JSONEncoding.default)
             .validate()
             .responseDecodable(of: UserResponse.self) { response in
                 switch response.result {
                 case .success(let userProfile):
                     completion(.success(userProfile))
                 case .failure(let error):
-                    print(self.token)
                     print("getUserInfo error\(error.localizedDescription)")
                     if let responseCode = error.responseCode, responseCode == 401 {
                         // 401 Unauthorized - Access token expired
@@ -110,28 +105,14 @@ class UserAPIManager {
             "nickname": nickname
         ]
         
-        AF.request(url, method: .get, parameters: parameters, encoding: URLEncoding.default, headers: headers)
+        session.request(url, method: .get, parameters: parameters, encoding: URLEncoding.default)
             .validate()
             .responseDecodable(of: CheckNickname.self) { response in
                 switch response.result {
                 case .success(let data):
                     completion(.success(data))
-                case .failure(let error):
+                case .failure(_):
                     print("닉네임 중복 확인 에러")
-                    if let responseCode = error.responseCode, responseCode == 401 {
-                        // 401 Unauthorized - Access token expired
-                        LoginAPIManager.shared.refreshToken { result in
-                            switch result {
-                            case .success:
-                                // 토큰 갱신 성공 후 다시 요청
-                                self.checkNickname(nickname: nickname, completion: completion)
-                            case .failure(let refreshError):
-                                completion(.failure(refreshError))
-                            }
-                        }
-                    } else {
-                        completion(.failure(error))
-                    }
                 }
             }
     }
