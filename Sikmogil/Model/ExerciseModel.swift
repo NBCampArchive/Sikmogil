@@ -21,6 +21,6 @@ struct ExerciseListModel: Decodable {
     let performedWorkout: String
     let workoutTime: Int
     let workoutIntensity: Int
-    let workoutPicture: String?
+    var workoutPicture: String?
     let calorieBurned: Int
 }

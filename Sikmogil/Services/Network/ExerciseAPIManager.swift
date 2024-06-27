@@ -53,12 +53,12 @@ class ExerciseAPIManager {
             "Accept": "application/json"
         ]
         
-        let parameters: [String: Any] = [
+        var parameters: [String: Any] = [
             "date": exerciseDay,
             "performedWorkout": exerciseList.performedWorkout,
             "workoutTime": exerciseList.workoutTime,
             "workoutIntensity": exerciseList.workoutIntensity,
-            //                "workoutPicture": exerciseList.workoutPicture,(사진 추가시 사용할 예정)
+            "workoutPicture": exerciseList.workoutPicture ?? "", // (사진 추가시 사용할 예정)
             "calorieBurned": exerciseList.calorieBurned
             
         ]
