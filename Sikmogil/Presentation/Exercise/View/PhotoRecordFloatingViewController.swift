@@ -12,6 +12,9 @@ import MobileCoreServices
 
 class PhotoRecordFloatingViewController: UIViewController, UINavigationControllerDelegate {
 
+    var selectedImage: UIImage?
+    var viewModel: ExerciseSelectionViewModel?
+    
     private let label = UILabel().then {
         $0.text = "사진을 추가하시겠습니까?"
         $0.font = Suite.semiBold.of(size: 24)
@@ -23,7 +26,7 @@ class PhotoRecordFloatingViewController: UIViewController, UINavigationControlle
     }
     
     private let addPhotoIcon = UIImageView().then {
-        $0.image = .photoPlus
+        $0.image = .addPhoto
         $0.contentMode = .scaleAspectFit
     }
     
@@ -42,6 +45,7 @@ class PhotoRecordFloatingViewController: UIViewController, UINavigationControlle
         $0.titleLabel?.font = Suite.bold.of(size: 22)
         $0.backgroundColor = .appBlack
         $0.layer.cornerRadius = 16
+        $0.isEnabled = false // 초기에는 완료 버튼을 비활성화
     }
     
     override func viewDidLoad() {
@@ -51,7 +55,6 @@ class PhotoRecordFloatingViewController: UIViewController, UINavigationControlle
         setupConstraints()
         setupButtons()
     }
-    
     
     private func setupViews() {
         view.backgroundColor = .white
@@ -103,13 +106,17 @@ class PhotoRecordFloatingViewController: UIViewController, UINavigationControlle
         removeButton.addTarget(self, action: #selector(tapRemoveButton), for: .touchUpInside)
     }
     
-    
-    @objc func tapDoneButton() {
-        // TODO: - 완료 버튼 로직
+    @objc private func tapDoneButton() {
+        dismiss(animated: true, completion: nil)
     }
     
+    // 📌 TODO: 버튼 처리
     @objc func tapRemoveButton() {
-        // TODO: - 삭제 버튼 로직
+        DispatchQueue.main.async {
+            self.imageView.image = .addDiary // 이미지 뷰 초기화
+            self.removeButton.isHidden = true // 삭제 버튼 숨기기
+            self.doneButton.isEnabled = false // 완료 버튼 비활성화
+        }
     }
     
     @objc func tapPhotoButton() {
@@ -146,15 +153,18 @@ class PhotoRecordFloatingViewController: UIViewController, UINavigationControlle
         }
     }
 }
+
 // MARK: - UIImagePickerControllerDelegate
 extension PhotoRecordFloatingViewController: UIImagePickerControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let image = info[.originalImage] as? UIImage {
-            // 📌 TODO: 이미지 선택 후 로직
             self.imageView.image = image
-            self.removeButton.isHidden = false
+            print(image)
+            self.viewModel?.selectedImageView = image
             
-            self.doneButton.isEnabled = true
+            // 📌 TODO: 버튼 처리
+            self.removeButton.isHidden = false
+            self.doneButton.isEnabled = true // 완료 버튼 활성화
         }
         picker.dismiss(animated: true, completion: nil)
     }
