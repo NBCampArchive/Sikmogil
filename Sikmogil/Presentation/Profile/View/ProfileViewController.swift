@@ -9,7 +9,6 @@ import UIKit
 import SnapKit
 import Then
 import Combine
-import KeychainSwift
 import Kingfisher
 
 class ProfileViewController: UIViewController {
@@ -289,12 +288,21 @@ class ProfileViewController: UIViewController {
     
     // MARK: - logout
     @objc private func logoutButtonTapped(_ sender: UIButton) {
-        let keychain = KeychainSwift()
-        keychain.clear()
+        TokenStorage.shared.clearTokens()
+        
+        
         if let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate {
             let loginVC = SplashViewController()
             let navController = CustomNavigationController(rootViewController:loginVC)
-            sceneDelegate.window?.rootViewController = navController
+            
+//            for key in UserDefaults.standard.dictionaryRepresentation().keys {
+//                UserDefaults.standard.removeObject(forKey: key.description)
+//            }
+            
+            UIView.transition(with: sceneDelegate.window!, duration: 0.5, options: .transitionFlipFromRight, animations: {
+                sceneDelegate.window?.rootViewController = navController
+            })
+            
             sceneDelegate.window?.makeKeyAndVisible()
         }
     }
