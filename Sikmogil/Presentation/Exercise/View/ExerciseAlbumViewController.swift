@@ -11,6 +11,8 @@ import Then
 
 class ExerciseAlbumViewController: UIViewController {
     
+    private var viewModel = ExerciseAlbumViewModel()
+    
     // MARK: - Components
     let albumTitleLabel = UILabel().then {
         $0.text = "운동 앨범"
@@ -41,13 +43,14 @@ class ExerciseAlbumViewController: UIViewController {
         layout.minimumLineSpacing = 16
         return UICollectionView(frame: .zero, collectionViewLayout: layout)
     }()
-    
+
     // MARK: - View Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         setupViews()
         setupConstraints()
+        bindViewModel()
     }
     
     // MARK: - Setup View
@@ -78,17 +81,21 @@ class ExerciseAlbumViewController: UIViewController {
             $0.bottom.equalToSuperview()
         }
         
-//        albumAddPhotoButton.snp.makeConstraints{
-//            $0.leading.trailing.equalToSuperview().inset(16)
-//            $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottomMargin).inset(26)
-//            $0.height.equalTo(60)
-//        }
+    }
+    
+    private func bindViewModel() {
+        viewModel.$exercisePictures
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                self?.albumCollectionView.reloadData()
+            }
+            .store(in: &viewModel.cancellables)
     }
 }
 // MARK: - UICollectionView
 extension ExerciseAlbumViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 10
+        return viewModel.exercisePictures.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -96,6 +103,8 @@ extension ExerciseAlbumViewController: UICollectionViewDataSource {
             return UICollectionViewCell()
         }
         
+        let exercisePicture = viewModel.exercisePictures[indexPath.item]
+        cell.configure(with: exercisePicture.workoutPicture ?? "")
         cell.backgroundColor = .appPurple
         return cell
     }
