@@ -55,4 +55,28 @@ class ExerciseAlbumCell: UICollectionViewCell {
             $0.bottom.equalTo(imageView.snp.bottom).inset(4)
         }
     }
+    
+    func configure(with url: String) {
+        guard let imageURL = URL(string: url) else {
+            self.imageView.image = nil
+            return
+        }
+        
+        // 비동기적으로 이미지 로드
+        URLSession.shared.dataTask(with: imageURL) { data, response, error in
+            if let error = error {
+                print("Failed to load image: \(error)")
+                return
+            }
+            
+            guard let data = data, let image = UIImage(data: data) else {
+                print("Failed to load image data")
+                return
+            }
+            
+            DispatchQueue.main.async {
+                self.imageView.image = image
+            }
+        }.resume()
+    }
 }
