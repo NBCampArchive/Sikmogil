@@ -83,7 +83,7 @@ class DietAPIManager {
             
         ]
         
-        AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).validate().response { response in
+        AF.request(url, method: .post, parameters: parameters, encoding: URLEncoding.default, headers: headers).validate().response { response in
             switch response.result {
             case .success:
                 print("deleteDietPicture success")
