@@ -145,7 +145,7 @@ class DietBottomSheetViewController: UIViewController {
         breakfastAddTabButton.addTarget(self, action: #selector(breakfastAddTabButtonTapped), for: .touchUpInside)
         lunchAddTabButton.addTarget(self, action: #selector(lunchAddTabButtonTapped), for: .touchUpInside)
         dinnerAddTabButton.addTarget(self, action: #selector(dinnerAddTabButtonTapped), for: .touchUpInside)
-        //albumButton.addTarget(self, action: #selector(albumButtonTapped), for: .touchUpInside)
+        albumButton.addTarget(self, action: #selector(albumButtonTapped), for: .touchUpInside)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -156,7 +156,7 @@ class DietBottomSheetViewController: UIViewController {
     // MARK: - Setup Methods
     private func setupViews() {
         view.addSubview(contentView)
-        contentView.addSubviews(titleLabel,breakfastView,lunchView,dinnerView) //albumButton 제외처리
+        contentView.addSubviews(titleLabel,albumButton,breakfastView,lunchView,dinnerView) //albumButton 제외처리
         breakfastView.addSubviews(breakfastIcon,breakfastTitleLabel,breakfastKcalLabel,breakfastAddTabButton,breakfastTableView)
         lunchView.addSubviews(lunchIcon,lunchTitleLabel,lunchKcalLabel,lunchAddTabButton,lunchTableView)
         dinnerView.addSubviews(dinnerIcon,dinnerTitleLabel,dinnerKcalLabel,dinnerAddTabButton,dinnerTableView)
@@ -182,12 +182,12 @@ class DietBottomSheetViewController: UIViewController {
             $0.top.equalToSuperview().offset(40)
             $0.leading.equalToSuperview().offset(16)
         }
-//        albumButton.snp.makeConstraints{
-//            $0.top.equalTo(titleLabel)
-//            $0.trailing.equalToSuperview().inset(16)
-//            $0.height.equalTo(30)
-//            $0.width.equalTo(91)
-//        }
+        albumButton.snp.makeConstraints{
+            $0.top.equalTo(titleLabel)
+            $0.trailing.equalToSuperview().inset(16)
+            $0.height.equalTo(30)
+            $0.width.equalTo(91)
+        }
         // 🍎 breakfastView
         breakfastView.snp.makeConstraints{
             $0.top.equalTo(titleLabel.snp.bottom).offset(24)
@@ -196,7 +196,7 @@ class DietBottomSheetViewController: UIViewController {
             self.breakfastViewHeightConstraint = $0.height.equalTo(64).constraint
         }
         breakfastIcon.snp.makeConstraints{
-            $0.top.equalToSuperview().offset(16)
+            $0.top.equalToSuperview().offset(26)
             $0.leading.equalToSuperview().offset(16)
             $0.width.equalTo(32)
             $0.height.equalTo(32)
@@ -228,7 +228,7 @@ class DietBottomSheetViewController: UIViewController {
             self.lunchViewHeightConstraint = $0.height.equalTo(64).constraint
         }
         lunchIcon.snp.makeConstraints{
-            $0.top.equalTo(lunchView).offset(16)
+            $0.top.equalTo(lunchView).offset(26)
             $0.leading.equalTo(lunchView).offset(16)
             $0.width.equalTo(32)
             $0.height.equalTo(32)
@@ -260,8 +260,8 @@ class DietBottomSheetViewController: UIViewController {
             self.dinnerViewHeightConstraint = $0.height.equalTo(64).constraint
         }
         dinnerIcon.snp.makeConstraints{
+            $0.top.equalToSuperview().offset(26)
             $0.leading.equalTo(dinnerView).offset(16)
-            $0.top.equalToSuperview().offset(16)
             $0.width.equalTo(32)
             $0.height.equalTo(32)
         }
