@@ -16,14 +16,10 @@ class DietAPIManager {
     
     private let baseURL = Bundle.main.baseURL
     
-    let token = "Bearer \(LoginAPIManager.shared.getAccessTokenFromKeychain())"
-    
-    private var headers: HTTPHeaders {
-        return [
-            "Authorization": token,
-            "Accept": "application/json"
-        ]
-    }
+    private let session: Session = {
+        let interceptor = AuthInterceptor()
+        return Session(interceptor: interceptor)
+    }()
     
     // MARK: - 특정 날짜 식단 데어터 업데이트
         func updateDietLog(date: String, water: Int, totalCalorieEaten: Int, completion: @escaping (Result<Void, Error>) -> Void) {
@@ -36,7 +32,7 @@ class DietAPIManager {
                 "totalCalorieEaten": totalCalorieEaten
             ]
             
-            AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).validate().response { response in
+            session.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default).validate().response { response in
                 switch response.result {
                 case .success:
                     print("updateDietLog success")
@@ -59,7 +55,7 @@ class DietAPIManager {
             "dietDate": date
         ]
         
-        AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).validate().response { response in
+        session.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default).validate().response { response in
             switch response.result {
             case .success:
                 print("addDietPicture success")
@@ -83,7 +79,7 @@ class DietAPIManager {
             
         ]
         
-        AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).validate().response { response in
+        session.request(url, method: .post, parameters: parameters, encoding: URLEncoding.default).validate().response { response in
             switch response.result {
             case .success:
                 print("deleteDietPicture success")
@@ -108,7 +104,7 @@ class DietAPIManager {
             "mealTime": dietList.mealTime // 밥먹은 시간 예시 ) breakfast, lunch, dinner, snack
         ]
         
-        AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).validate().response { response in
+        session.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default).validate().response { response in
             switch response.result {
             case .success:
                 print("addDietList success")
@@ -131,7 +127,7 @@ class DietAPIManager {
             "dietListId": dietListId
         ]
         
-        AF.request(url, method: .post, parameters: parameters, encoding: URLEncoding.default, headers: headers).validate().response { response in
+        session.request(url, method: .post, parameters: parameters, encoding: URLEncoding.default).validate().response { response in
             switch response.result {
             case .success:
                 print("deleteDietList success")
@@ -149,7 +145,7 @@ class DietAPIManager {
         
         let url = "\(baseURL)/api/dietLog"
         
-        AF.request(url, method: .get, headers: headers).responseDecodable(of: [DietLog].self,  emptyResponseCodes: [200]) { response in
+        session.request(url, method: .get).responseDecodable(of: [DietLog].self,  emptyResponseCodes: [200]) { response in
             switch response.result {
             case .success(let data):
                 print("getDietLog success")
@@ -169,7 +165,7 @@ class DietAPIManager {
         
         let parameters: [String: Any] = ["dietDate": date]
         
-        AF.request(url, method: .get, parameters: parameters, headers: headers).responseDecodable(of: DietLog.self,  emptyResponseCodes: [200]) { response in
+        session.request(url, method: .get, parameters: parameters).responseDecodable(of: DietLog.self,  emptyResponseCodes: [200]) { response in
             switch response.result {
             case .success(let data):
                 print("getDietLogDate success")
@@ -189,7 +185,7 @@ class DietAPIManager {
         
         let parameters: [String: Any] = ["date": date]
         
-        AF.request(url, method: .get, parameters: parameters, headers: headers).responseDecodable(of: [DietPicture].self,  emptyResponseCodes: [200]) { response in
+        session.request(url, method: .get, parameters: parameters).responseDecodable(of: [DietPicture].self,  emptyResponseCodes: [200]) { response in
             switch response.result {
             case .success(let data):
                 print("getDietPictureByDate success")
@@ -208,7 +204,7 @@ class DietAPIManager {
         
         let parameters: [String: Any] = ["date": date]
         
-        AF.request(url, method: .get, parameters: parameters, headers: headers).responseDecodable(of: [DietList].self,  emptyResponseCodes: [200]) { response in
+        session.request(url, method: .get, parameters: parameters).responseDecodable(of: [DietList].self,  emptyResponseCodes: [200]) { response in
             switch response.result {
             case .success(let data):
                 print("getDietListByDate success")
@@ -225,7 +221,7 @@ class DietAPIManager {
         
         let url = "\(baseURL)/api/dietLog/findDietPictures"
         
-        AF.request(url, method: .get, headers: headers).responseDecodable(of: [DietPicture].self,  emptyResponseCodes: [200]) { response in
+        session.request(url, method: .get).responseDecodable(of: [DietPicture].self,  emptyResponseCodes: [200]) { response in
             switch response.result {
             case .success(let data):
                 print("getDietPicture success")

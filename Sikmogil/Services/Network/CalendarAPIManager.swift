@@ -17,14 +17,10 @@ class CalendarAPIManager {
     
     private let baseURL = Bundle.main.baseURL
     
-    private let token = "Bearer \(LoginAPIManager.shared.getAccessTokenFromKeychain())"
-    
-    private var headers: HTTPHeaders {
-        return [
-            "Authorization": token,
-            "Accept": "application/json"
-        ]
-    }
+    private let session: Session = {
+        let interceptor = AuthInterceptor()
+        return Session(interceptor: interceptor)
+    }()
     
     // MARK: - 캘린더 데이터 업데이트
     func updateCalendarData(calendarDate: String, diaryText: String) -> AnyPublisher<Void, Error> {
@@ -37,7 +33,7 @@ class CalendarAPIManager {
             "workoutLists": []
         ]
         
-        return AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
+        return session.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default)
             .validate()
             .publishData()
             .tryMap { response in
@@ -53,7 +49,7 @@ class CalendarAPIManager {
     func getAllCalendarData() -> AnyPublisher<[CalendarModel], Error> {
         let url = "\(baseURL)/api/calendar"
         
-        return AF.request(url, method: .get, encoding: JSONEncoding.default, headers: headers)
+        return session.request(url, method: .get, encoding: JSONEncoding.default)
             .publishDecodable(type: [CalendarModel].self)
             .value()
             .mapError { $0 as Error }
@@ -69,7 +65,7 @@ class CalendarAPIManager {
             "diaryDate": calendarDate
         ]
         
-        return AF.request(url, method: .get, parameters: parameters, encoding: URLEncoding.default, headers: headers)
+        return session.request(url, method: .get, parameters: parameters, encoding: URLEncoding.default)
             .publishDecodable(type: CalendarModel.self)
             .value()
             .mapError { $0 as Error}
@@ -85,7 +81,7 @@ class CalendarAPIManager {
             "weight": weight
         ]
         
-        return AF.request(url, method: .post, parameters: parameters, encoding: URLEncoding.default, headers: headers)
+        return session.request(url, method: .post, parameters: parameters, encoding: URLEncoding.default)
             .validate()
             .publishData()
             .tryMap{ response in
@@ -101,7 +97,7 @@ class CalendarAPIManager {
     func getWeightData() -> AnyPublisher<TargetModel, Error> {
         let url = "\(baseURL)/api/calendar/getWeek"
         
-        return AF.request(url, method: .get, encoding: JSONEncoding.default, headers: headers)
+        return session.request(url, method: .get, encoding: JSONEncoding.default)
             .publishDecodable(type: TargetModel.self)
             .value()
             .mapError { $0 as Error }
