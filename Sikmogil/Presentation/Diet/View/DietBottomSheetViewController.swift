@@ -196,7 +196,7 @@ class DietBottomSheetViewController: UIViewController {
             self.breakfastViewHeightConstraint = $0.height.equalTo(64).constraint
         }
         breakfastIcon.snp.makeConstraints{
-            $0.top.equalToSuperview().offset(16)
+            $0.top.equalToSuperview().offset(26)
             $0.leading.equalToSuperview().offset(16)
             $0.width.equalTo(32)
             $0.height.equalTo(32)
@@ -228,7 +228,7 @@ class DietBottomSheetViewController: UIViewController {
             self.lunchViewHeightConstraint = $0.height.equalTo(64).constraint
         }
         lunchIcon.snp.makeConstraints{
-            $0.top.equalTo(lunchView).offset(16)
+            $0.top.equalTo(lunchView).offset(26)
             $0.leading.equalTo(lunchView).offset(16)
             $0.width.equalTo(32)
             $0.height.equalTo(32)
@@ -260,8 +260,8 @@ class DietBottomSheetViewController: UIViewController {
             self.dinnerViewHeightConstraint = $0.height.equalTo(64).constraint
         }
         dinnerIcon.snp.makeConstraints{
+            $0.top.equalToSuperview().offset(26)
             $0.leading.equalTo(dinnerView).offset(16)
-            $0.top.equalToSuperview().offset(16)
             $0.width.equalTo(32)
             $0.height.equalTo(32)
         }
