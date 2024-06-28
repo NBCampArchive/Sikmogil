@@ -28,7 +28,7 @@ class ImageAPIManager {
     
     func uploadImage(directory: String, images: [UIImage], completion: @escaping (Result<ImageModel, Error>) -> Void) {
         
-        let url = "\(baseURL)/api/imageUpload"
+        let url = "\(baseURL)/api/image/upload"
         
         var parameters: [String: Any] = [
             "directory": directory,
