@@ -30,6 +30,11 @@ class PhotoRecordFloatingViewController: UIViewController, UINavigationControlle
         $0.contentMode = .scaleAspectFit
     }
     
+    private var photoView = UIView().then {
+        $0.layer.cornerRadius = 8
+    }
+    
+    // TODO: - 이미지 cornerRadius, Fill
     private var imageView = UIImageView().then {
         $0.contentMode = .scaleToFill
         $0.layer.cornerRadius = 8
@@ -37,7 +42,6 @@ class PhotoRecordFloatingViewController: UIViewController, UINavigationControlle
     
     private var removeButton =  UIButton().then {
         $0.setImage(.removePhoto, for: .normal)
-        $0.isHidden = true
     }
 
     private let doneButton = UIButton().then {
@@ -45,7 +49,7 @@ class PhotoRecordFloatingViewController: UIViewController, UINavigationControlle
         $0.titleLabel?.font = Suite.bold.of(size: 22)
         $0.backgroundColor = .appBlack
         $0.layer.cornerRadius = 16
-        $0.isEnabled = false // 초기에는 완료 버튼을 비활성화
+        $0.isEnabled = false
     }
     
     override func viewDidLoad() {
@@ -58,9 +62,9 @@ class PhotoRecordFloatingViewController: UIViewController, UINavigationControlle
     
     private func setupViews() {
         view.backgroundColor = .white
-        view.addSubviews(label, addPhotoButton, imageView, doneButton)
+        view.addSubviews(label, addPhotoButton, photoView, doneButton)
         addPhotoButton.addSubview(addPhotoIcon)
-        imageView.addSubview(removeButton)
+        photoView.addSubviews(imageView, removeButton)
     }
     
     private func setupConstraints() {
@@ -80,10 +84,14 @@ class PhotoRecordFloatingViewController: UIViewController, UINavigationControlle
             $0.width.height.equalTo(32)
         }
         
-        imageView.snp.makeConstraints {
+        photoView.snp.makeConstraints {
             $0.width.height.equalTo(100)
             $0.centerY.equalTo(addPhotoButton)
             $0.leading.equalTo(addPhotoButton.snp.trailing).offset(16)
+        }
+        
+        imageView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
         }
         
         removeButton.snp.makeConstraints {
@@ -104,19 +112,24 @@ class PhotoRecordFloatingViewController: UIViewController, UINavigationControlle
         doneButton.addTarget(self, action: #selector(tapDoneButton), for: .touchUpInside)
         addPhotoButton.addTarget(self, action: #selector(tapPhotoButton), for: .touchUpInside)
         removeButton.addTarget(self, action: #selector(tapRemoveButton), for: .touchUpInside)
+        updateButtonsState()
     }
     
     @objc private func tapDoneButton() {
         dismiss(animated: true, completion: nil)
     }
     
-    // 📌 TODO: 버튼 처리
     @objc func tapRemoveButton() {
-        DispatchQueue.main.async {
-            self.imageView.image = .addDiary // 이미지 뷰 초기화
-            self.removeButton.isHidden = true // 삭제 버튼 숨기기
-            self.doneButton.isEnabled = false // 완료 버튼 비활성화
-        }
+        imageView.image = nil
+        viewModel?.selectedImageView = nil
+        updateButtonsState()
+    }
+    
+    // TODO: - doneButton 활성화 여부
+    private func updateButtonsState() {
+        let isImageSelected = imageView.image != nil
+        doneButton.isEnabled = isImageSelected
+        removeButton.isHidden = !isImageSelected
     }
     
     @objc func tapPhotoButton() {
@@ -159,12 +172,8 @@ extension PhotoRecordFloatingViewController: UIImagePickerControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let image = info[.originalImage] as? UIImage {
             self.imageView.image = image
-            print(image)
             self.viewModel?.selectedImageView = image
-            
-            // 📌 TODO: 버튼 처리
-            self.removeButton.isHidden = false
-            self.doneButton.isEnabled = true // 완료 버튼 활성화
+            updateButtonsState()
         }
         picker.dismiss(animated: true, completion: nil)
     }
