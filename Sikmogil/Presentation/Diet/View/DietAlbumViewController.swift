@@ -58,7 +58,7 @@ class DietAlbumViewController: UIViewController, UINavigationControllerDelegate 
         
         albumCollectionView.register(DietAlbumCollectionViewCell.self, forCellWithReuseIdentifier: DietAlbumCollectionViewCell.identifier)
         
-        viewModel.loadImages { [weak self] in
+        viewModel.loadImages(0) { [weak self] in
             DispatchQueue.main.async {
                 self?.albumCollectionView.reloadData()
             }
@@ -186,7 +186,7 @@ extension DietAlbumViewController: UIImagePickerControllerDelegate {
             viewModel.saveImage(image) { [weak self] result in
                 switch result {
                 case .success:
-                    self?.viewModel.loadImages {
+                    self?.viewModel.loadImages(0) {
                         DispatchQueue.main.async {
                             self?.albumCollectionView.reloadData()
                         }

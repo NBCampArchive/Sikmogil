@@ -151,6 +151,8 @@ class DietMainViewController: UIViewController {
         setupViews()
         setupConstraints()
         
+        addMealViewModel.getDietListByDate(for: DateHelper.shared.formatDateToYearMonthDay(Date())) { _ in }
+        
         view.backgroundColor = .white
         
         subscribeToViewModel()
