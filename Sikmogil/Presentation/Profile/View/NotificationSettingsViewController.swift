@@ -22,13 +22,13 @@ class NotificationSettingsViewController: UIViewController {
     
     private let titleLabel = UILabel().then {
         $0.text = "알림 설정"
-        $0.font = UIFont.boldSystemFont(ofSize: 24)
+        $0.font = Suite.bold.of(size: 28)
         $0.textColor = .black
     }
     
     private let subtitleLabel = UILabel().then {
         $0.text = "알림/소리를 설정해보세요."
-        $0.font = UIFont.systemFont(ofSize: 14)
+        $0.font = Suite.semiBold.of(size: 14)
         $0.textColor = .darkGray
     }
     

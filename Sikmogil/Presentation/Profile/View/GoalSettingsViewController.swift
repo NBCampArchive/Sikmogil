@@ -74,6 +74,8 @@ class GoalSettingsViewController: UIViewController {
         $0.layer.cornerRadius = 8
     }
     
+    var targetDate = ""
+    
     // MARK: - viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -82,6 +84,8 @@ class GoalSettingsViewController: UIViewController {
         setupConstraints()
         setupAddTargets()
         bindViewModel()
+        hideKeyboardWhenTappedAround()
+        setKeyboardObserver()
         navigationController?.navigationBar.isHidden = false
     }
     
@@ -103,13 +107,24 @@ class GoalSettingsViewController: UIViewController {
         goalWeightTextField.addTarget(self, action: #selector(goalWeightTextFieldDidChange), for: .editingChanged)
 
         // goalDatePicker 바인딩
-        viewModel.$targetDate
-            .sink { [weak self] date in
-                self?.goalDatePicker.date = date
-            }
-            .store(in: &cancellables)
+//        viewModel.$targetDate
+//            .sink { [weak self] date in
+//                print("Date : \(date)")
+//                self?.goalDatePicker.date = date
+//            }
+//            .store(in: &cancellables)
+        let targetDateString = viewModel.userProfile.targetDate
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy.MM.dd"
+        if let targetDate = dateFormatter.date(from: targetDateString) {
+            goalDatePicker.date = targetDate
+            viewModel.targetDate = targetDate
+        }
+            
 
         goalDatePicker.addTarget(self, action: #selector(goalDatePickerDidChange), for: .valueChanged)
+        
+//        print("TargetDate :\(targetDate) = \(viewModel.targetDate)")
     }
 
     @objc private func goalWeightTextFieldDidChange(_ textField: UITextField) {
@@ -117,7 +132,24 @@ class GoalSettingsViewController: UIViewController {
     }
 
     @objc private func goalDatePickerDidChange(_ datePicker: UIDatePicker) {
-        viewModel?.targetDate = datePicker.date
+        let now = Date()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy.MM.dd"
+        
+        if datePicker.date > now {
+            print("test")
+            viewModel?.targetDate = datePicker.date
+        } else {
+            let alert = UIAlertController(title: "알림", message: "오늘 이후의 날짜를 선택해주세요.", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+            
+            if let targetDateString = viewModel?.userProfile.targetDate,
+               let targetDate = dateFormatter.date(from: targetDateString) {
+                goalDatePicker.date = targetDate
+                viewModel?.targetDate = targetDate
+            }
+        }
     }
 
     // MARK: - setupViews
