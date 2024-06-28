@@ -338,6 +338,20 @@ class MainViewController: UIViewController {
         graph.notifyDataSetChanged()
     }
     
+    func setupFloatingPanel() {
+        recodingWeightPanel = FloatingPanelController()
+        
+        let contentVC = WeightRecordFloatingViewController()
+        contentVC.viewModel = viewModel
+        recodingWeightPanel.set(contentViewController: contentVC)
+        
+        recodingWeightPanel.layout = CustomFloatingPanelLayout()
+        recodingWeightPanel.isRemovalInteractionEnabled = true
+        recodingWeightPanel.changePanelStyle()
+        recodingWeightPanel.delegate = self
+    }
+    
+    
     @objc func tapCalendarButton() {
         let nextView = CalendarViewController()
         
@@ -345,7 +359,7 @@ class MainViewController: UIViewController {
     }
     
     @objc func tapRecordButton() {
-        self.present(recodingWeightPanel, animated: true)
+        recodingWeightPanel.addPanel(toParent: self)
     }
     
     // 키보드가 나타날 때 호출되는 메서드
@@ -364,18 +378,16 @@ class MainViewController: UIViewController {
 }
 
 extension MainViewController: FloatingPanelControllerDelegate {
+    func floatingPanelDidChangeState(_ vc: FloatingPanelController) {
+        if vc.state == .full || vc.state == .half {
+            vc.backdropView.dismissalTapGestureRecognizer.isEnabled = false
+        } else {
+            vc.backdropView.dismissalTapGestureRecognizer.isEnabled = true
+        }
+    }
     
-    func setupFloatingPanel() {
-        recodingWeightPanel = FloatingPanelController()
-        
-        let contentVC = WeightRecordFloatingViewController()
-        contentVC.viewModel = viewModel
-        recodingWeightPanel.set(contentViewController: contentVC)
-        
-        recodingWeightPanel.layout = CustomFloatingPanelLayout()
-        recodingWeightPanel.isRemovalInteractionEnabled = true
-        recodingWeightPanel.changePanelStyle()
-        recodingWeightPanel.delegate = self
+    func floatingPanelDidRemove(_ vc: FloatingPanelController) {
+        vc.backdropView.dismissalTapGestureRecognizer.isEnabled = true
     }
     
 }

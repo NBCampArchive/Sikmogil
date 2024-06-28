@@ -126,7 +126,6 @@
 		B5825BAA2C219A7100ADAA66 /* CommunityNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5825BA92C219A7100ADAA66 /* CommunityNavigationViewController.swift */; };
 		B5825BAD2C219C2B00ADAA66 /* BoardMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5825BAC2C219C2B00ADAA66 /* BoardMainViewController.swift */; };
 		B5825BAF2C219FE500ADAA66 /* CustomSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5825BAE2C219FE500ADAA66 /* CustomSegmentedControl.swift */; };
-		B5A1251D2C2D940500993A3F /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B54ABF982C09BD47002E89DC /* Info.plist */; };
 		B5CBB2102C2D0EE000C672DB /* TokenStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CBB20F2C2D0EE000C672DB /* TokenStorage.swift */; };
 		B5CBB2122C2D12F300C672DB /* AuthInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CBB2112C2D12F300C672DB /* AuthInterceptor.swift */; };
 		CA13FDE62C22E483007B3DBE /* BreakfastTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA13FDE52C22E483007B3DBE /* BreakfastTableViewCell.swift */; };
@@ -940,7 +939,6 @@
 				62578CEE2C117333005035BB /* The_Scale.json in Resources */,
 				B54ABFE02C0D68CF002E89DC /* SUITE-Light.ttf in Resources */,
 				B54ABF942C09BD47002E89DC /* Assets.xcassets in Resources */,
-				B5A1251D2C2D940500993A3F /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
