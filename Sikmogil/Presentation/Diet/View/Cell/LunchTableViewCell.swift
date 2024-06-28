@@ -48,13 +48,13 @@ class LunchTableViewCell: UITableViewCell {
         nameLabel.snp.makeConstraints {
             $0.top.equalToSuperview()
             $0.bottom.equalToSuperview()
-            $0.leading.equalToSuperview().offset(32)
+            $0.leading.equalToSuperview().offset(28)
             $0.trailing.equalTo(kcalLabel.snp.leading).offset(8)
         }
         kcalLabel.snp.makeConstraints{
             $0.top.equalToSuperview()
             $0.bottom.equalToSuperview()
-            $0.trailing.equalToSuperview().inset(20)
+            $0.trailing.equalToSuperview().inset(28)
         }
     }
 }

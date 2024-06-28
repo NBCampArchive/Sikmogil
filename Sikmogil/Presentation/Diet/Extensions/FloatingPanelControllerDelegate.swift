@@ -10,6 +10,18 @@ import FloatingPanel
 
 extension DietMainViewController: FloatingPanelControllerDelegate {
     
+    func floatingPanelDidChangeState(_ fpc: FloatingPanelController) {
+        if fpc.state == .full || fpc.state == .tip {
+            fpc.backdropView.dismissalTapGestureRecognizer.isEnabled = false
+        } else {
+            fpc.backdropView.dismissalTapGestureRecognizer.isEnabled = true
+        }
+      }
+    
+    func floatingPanelDidRemove(_ fpc: FloatingPanelController) {
+        fpc.backdropView.dismissalTapGestureRecognizer.isEnabled = true
+    }
+    
     // FloatingPanel이 이동할 때 호출되는 메서드
     func floatingPanelDidMove(_ fpc: FloatingPanelController) {
         

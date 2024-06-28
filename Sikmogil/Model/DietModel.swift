@@ -21,8 +21,13 @@ struct DietList: Decodable {
     var mealTime: String
 }
 
+struct DietAlbum: Decodable {
+  var lastPage: Int
+  var pictures: [DietPicture]
+}
+
 struct DietPicture: Decodable {
-    var dietPictureId: Int
-    var foodPicture: String
-    var dietDate: String
+  var dietPictureId: Int
+  var foodPicture: String
+  var dietDate: String
 }
