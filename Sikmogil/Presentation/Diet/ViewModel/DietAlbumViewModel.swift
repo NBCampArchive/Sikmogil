@@ -41,15 +41,15 @@ class DietAlbumViewModel {
         }
     }
     
-    func loadImages(completion: @escaping () -> Void) {
-        DietAPIManager.shared.getDietPicture() { [weak self] result in
+    func loadImages(_ page: Int, completion: @escaping () -> Void) {
+        DietAPIManager.shared.getDietPicture(page: page) { [weak self] result in
             switch result {
-            case .success(let data):
+            case .success(let album):
                 self?.savedDietImages.removeAll() // 기존 데이터를 모두 제거하고 새로 받은 데이터로 업데이트
-                
+
                 // 비동기 방식으로 이미지 데이터를 가져와서 savedDietImages에 추가
                 DispatchQueue.global().async {
-                    for dietPicture in data {
+                    for dietPicture in album.pictures {
                         if let imageUrl = URL(string: dietPicture.foodPicture),
                            let imageData = try? Data(contentsOf: imageUrl) {
                             let savedImage = SavedDietImage(dietPictureId: dietPicture.dietPictureId,
@@ -60,10 +60,12 @@ class DietAlbumViewModel {
                             }
                         }
                     }
-                    completion() // 데이터 로드 완료 후 호출
+                    DispatchQueue.main.async {
+                        completion() // 데이터 로드 완료 후 호출
+                    }
                 }
                 
-                print("loadImages success \(data)")
+                print("loadImages success \(album)")
             case .failure(let error):
                 print("loadImages failure \(error)")
             }
