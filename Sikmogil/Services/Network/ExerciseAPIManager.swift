@@ -173,7 +173,7 @@ class ExerciseAPIManager {
     }
     
     // MARK: - 운동 사진 출력
-    func getExercisePicture(completion: @escaping (Result<[ExerciseListModel], Error>) -> Void) {
+    func getExercisePicture(page: Int, completion: @escaping (Result<ExerciseAlbum, Error>) -> Void) {
         let url = "\(baseURL)/api/workoutLog/findWorkoutPictures"
         
         let headers: HTTPHeaders = [
@@ -181,7 +181,11 @@ class ExerciseAPIManager {
             "Accept": "application/json"
         ]
         
-        AF.request(url, method: .get, headers: headers).validate(statusCode: 200..<300).responseDecodable(of: [ExerciseListModel].self, emptyResponseCodes: [200]) { response in
+        let parameters: Parameters = [
+            "page": page
+        ]
+        
+        AF.request(url, method: .get, parameters: parameters, headers: headers).validate(statusCode: 200..<300).responseDecodable(of: ExerciseAlbum.self, emptyResponseCodes: [200]) { response in
             switch response.result {
             case .success(let data):
                 print("getExercisePicture success")
