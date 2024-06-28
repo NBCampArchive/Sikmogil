@@ -101,7 +101,13 @@ class MainViewModel: ObservableObject {
         dateFormatter.dateFormat = "yyyy.MM.dd"
         
         guard let startDate = dateFormatter.date(from: targetModel.createDate),
-              let endDate = dateFormatter.date(from: targetModel.targetDate) else {
+              let targetDate = dateFormatter.date(from: targetModel.targetDate) else {
+            return
+        }
+        
+        let calendar = Calendar.current
+        // targetDate의 다음 날을 계산하기 위해 1일을 더함
+        guard let endDate = calendar.date(byAdding: .day, value: 1, to: targetDate) else {
             return
         }
         
@@ -121,12 +127,17 @@ class MainViewModel: ObservableObject {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy.MM.dd"
         
-        guard let endDate = dateFormatter.date(from: targetModel.targetDate) else {
+        guard let startDate = dateFormatter.date(from: targetModel.targetDate) else {
+            return
+        }
+        
+        let calendar = Calendar.current
+        // targetDate의 다음 날을 계산하기 위해 1일을 더함
+        guard let endDate = calendar.date(byAdding: .day, value: 1, to: startDate) else {
             return
         }
         
         let now = Date()
-        let calendar = Calendar.current
         let components = calendar.dateComponents([.day], from: now, to: endDate)
         
         if let remainingDays = components.day {
