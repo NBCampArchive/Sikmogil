@@ -13,6 +13,8 @@ class ExerciseAlbumViewController: UIViewController {
     
     private var viewModel = ExerciseAlbumViewModel()
     
+    // TODO: 페이지네이션 & KingFisher 로딩
+    
     // MARK: - Components
     let albumTitleLabel = UILabel().then {
         $0.text = "운동 앨범"
@@ -80,11 +82,10 @@ class ExerciseAlbumViewController: UIViewController {
             $0.leading.trailing.equalToSuperview().inset(16)
             $0.bottom.equalToSuperview()
         }
-        
     }
     
     private func bindViewModel() {
-        viewModel.$exercisePictures
+        viewModel.$exerciseAlbum
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
                 self?.albumCollectionView.reloadData()
@@ -105,7 +106,7 @@ extension ExerciseAlbumViewController: UICollectionViewDataSource {
         
         let exercisePicture = viewModel.exercisePictures[indexPath.item]
         cell.configure(with: exercisePicture.workoutPicture ?? "")
-        cell.backgroundColor = .appPurple
+        cell.backgroundColor = .appLightGray
         return cell
     }
 }
