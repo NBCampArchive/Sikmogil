@@ -21,7 +21,6 @@ class AddMealViewModel: ObservableObject {
     private var previousDinnerCount = 0
     
     init() {
-        getDietListByDate(for: DateHelper.shared.formatDateToYearMonthDay(Date())) { _ in }
         self.setupDietListListeners()
     }
     

@@ -140,7 +140,7 @@ class MainViewController: UIViewController {
         
         view.backgroundColor = .white
         
-        viewModel.loadWeightData()
+//        viewModel.loadWeightData()
         bindViewModel()
         
         setupViews()
@@ -152,6 +152,11 @@ class MainViewController: UIViewController {
         
 //        calendarButton.addTarget(self, action: #selector(tapCalendarButton), for: .touchUpInside)
         recordButton.addTarget(self, action: #selector(tapRecordButton), for: .touchUpInside)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.loadWeightData()
     }
     
     private func setupViews() {
@@ -285,7 +290,17 @@ class MainViewController: UIViewController {
         viewModel.$remainingDays
             .receive(on: DispatchQueue.main)
             .sink { [weak self] remainingDays in
-                self?.weightLabel.text = "목표까지 남은기간 \(remainingDays + 1)일!"
+                if remainingDays == 0 {
+                    let fullText = "목표일 D-day!"
+                    let changeText = "D-day!"
+                    let color = UIColor.appYellow
+                    self?.weightLabel.setAttributedText(fullText: fullText, changeText: changeText, color: color, font: Suite.semiBold.of(size: 16))
+                } else {
+                    let fullText = "목표까지 \(remainingDays)일!"
+                    let changeText = "\(remainingDays)일!"
+                    let color = UIColor.appYellow
+                    self?.weightLabel.setAttributedText(fullText: fullText, changeText: changeText, color: color, font: Suite.semiBold.of(size: 16))
+                }
             }
             .store(in: &cancellables)
         
@@ -338,6 +353,20 @@ class MainViewController: UIViewController {
         graph.notifyDataSetChanged()
     }
     
+    func setupFloatingPanel() {
+        recodingWeightPanel = FloatingPanelController()
+        
+        let contentVC = WeightRecordFloatingViewController()
+        contentVC.viewModel = viewModel
+        recodingWeightPanel.set(contentViewController: contentVC)
+        
+        recodingWeightPanel.layout = CustomFloatingPanelLayout()
+        recodingWeightPanel.isRemovalInteractionEnabled = true
+        recodingWeightPanel.changePanelStyle()
+        recodingWeightPanel.delegate = self
+    }
+    
+    
     @objc func tapCalendarButton() {
         let nextView = CalendarViewController()
         
@@ -345,7 +374,7 @@ class MainViewController: UIViewController {
     }
     
     @objc func tapRecordButton() {
-        self.present(recodingWeightPanel, animated: true)
+        recodingWeightPanel.addPanel(toParent: self)
     }
     
     // 키보드가 나타날 때 호출되는 메서드
@@ -364,18 +393,20 @@ class MainViewController: UIViewController {
 }
 
 extension MainViewController: FloatingPanelControllerDelegate {
+    func floatingPanelDidChangeState(_ vc: FloatingPanelController) {
+        if vc.state == .full || vc.state == .half {
+            tabBarController?.tabBar.isHidden = true
+            vc.backdropView.dismissalTapGestureRecognizer.isEnabled = false
+        } else {
+            tabBarController?.tabBar.isHidden = false
+            vc.backdropView.dismissalTapGestureRecognizer.isEnabled = true
+        }
+    }
     
-    func setupFloatingPanel() {
-        recodingWeightPanel = FloatingPanelController()
+    func floatingPanelDidRemove(_ vc: FloatingPanelController) {
+        tabBarController?.tabBar.isHidden = false
+        vc.backdropView.dismissalTapGestureRecognizer.isEnabled = true
         
-        let contentVC = WeightRecordFloatingViewController()
-        contentVC.viewModel = viewModel
-        recodingWeightPanel.set(contentViewController: contentVC)
-        
-        recodingWeightPanel.layout = CustomFloatingPanelLayout()
-        recodingWeightPanel.isRemovalInteractionEnabled = true
-        recodingWeightPanel.changePanelStyle()
-        recodingWeightPanel.delegate = self
     }
     
 }
