@@ -28,7 +28,7 @@ class ImageAPIManager {
     
     func uploadImage(directory: String, images: [UIImage], completion: @escaping (Result<ImageModel, Error>) -> Void) {
         
-        let url = "\(baseURL)/api/imageUpload"
+        let url = "\(baseURL)/api/image/upload"
         
         var parameters: [String: Any] = [
             "directory": directory,
@@ -43,7 +43,7 @@ class ImageAPIManager {
             }
             // 이미지 배열 추가
             for (index, image) in images.enumerated() {
-                if let imageData = image.jpegData(compressionQuality: 1) {
+                if let imageData = image.jpegData(compressionQuality: 0.5) {
                     multipartFormData.append(imageData, withName: "image", fileName: "\(Date())\(index).jpg", mimeType: "image/jpeg")
                 }
             }
