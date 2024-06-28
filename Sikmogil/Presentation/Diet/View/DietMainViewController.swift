@@ -15,6 +15,7 @@ class DietMainViewController: UIViewController {
     var waterViewModel: WaterViewModel = WaterViewModel.shared
     var addMealViewModel: AddMealViewModel = AddMealViewModel.shared
     var dietViewModel = DietViewModel()
+    var floatingPanel: FloatingPanelController!
     
     private var cancellables = Set<AnyCancellable>()
     
@@ -147,6 +148,7 @@ class DietMainViewController: UIViewController {
         
         setupViews()
         setupConstraints()
+        setupFloatingPanel()
         
         view.backgroundColor = .white
         
@@ -299,28 +301,28 @@ class DietMainViewController: UIViewController {
     }
     
     // MARK: - Actions
-    @objc func showDietBottomSheet() {
-        let floatingPanelController = FloatingPanelController()
-        floatingPanelController.delegate = self
-        
-        floatingPanelController.changePanelStyle()
-        
+    
+    func setupFloatingPanel() {
+        floatingPanel = FloatingPanelController()
+        floatingPanel.layout = CustomFloatingPanelLayout()
+        floatingPanel.isRemovalInteractionEnabled = true
+        floatingPanel.changePanelStyle()
+        floatingPanel.delegate = self
+    }
+    
+    private func showBottomSheet(contentVC: UIViewController) {
+        floatingPanel.set(contentViewController: contentVC)
+        floatingPanel.addPanel(toParent: self)
+    }
+    
+    @objc private func showDietBottomSheet() {
         let contentVC = DietBottomSheetViewController()
-        floatingPanelController.set(contentViewController: contentVC)
-        
-        floatingPanelController.addPanel(toParent: self)
+        showBottomSheet(contentVC: contentVC)
     }
     
     @objc private func showWaterBottomSheet() {
-        let floatingPanelController = FloatingPanelController()
-        floatingPanelController.delegate = self
-        
-        floatingPanelController.changePanelStyle()
-        
         let contentVC = WaterBottomSheetViewController()
-        floatingPanelController.set(contentViewController: contentVC)
-        
-        floatingPanelController.addPanel(toParent: self)
+        showBottomSheet(contentVC: contentVC)
     }
     
     // MARK: - Timer Management
