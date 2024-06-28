@@ -16,16 +16,14 @@ class ExerciseAPIManager {
     
     let baseURL = Bundle.main.baseURL
     
-    let token = "Bearer \(LoginAPIManager.shared.getAccessTokenFromKeychain())"
+    private let session: Session = {
+        let interceptor = AuthInterceptor()
+        return Session(interceptor: interceptor)
+    }()
     
     // MARK: - 특정 날짜의 운동 데이터 업데이트
     func updateExerciseData(exerciseDay: String, steps: Int, totalCaloriesBurned: Int, completion: @escaping (Result<Void, Error>) -> Void) {
         let url = "\(baseURL)/api/workoutLog/updateWorkoutLog"
-        
-        let headers: HTTPHeaders = [
-            "Authorization": token,
-            "Accept": "application/json"
-        ]
         
         let parameters: [String: Any] = [
             "workoutDate": exerciseDay,
@@ -33,7 +31,7 @@ class ExerciseAPIManager {
             "totalCaloriesBurned": totalCaloriesBurned
         ]
         
-        AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).response { response in
+        session.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default).response { response in
             switch response.result {
             case .success:
                 print("updateExerciseData success\(exerciseDay) \(steps) \(totalCaloriesBurned)")
@@ -48,11 +46,6 @@ class ExerciseAPIManager {
     func addExerciseListData(exerciseDay: String, exerciseList: ExerciseListModel, completion: @escaping (Result<Void, Error>) -> Void) {
         let url = "\(baseURL)/api/workoutLog/workoutList/addWorkoutList"
         
-        let headers: HTTPHeaders = [
-            "Authorization": token,
-            "Accept": "application/json"
-        ]
-        
         let parameters: [String: Any] = [
             "date": exerciseDay,
             "performedWorkout": exerciseList.performedWorkout,
@@ -63,7 +56,7 @@ class ExerciseAPIManager {
             
         ]
         
-        AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).validate().response { response in
+        session.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default).validate().response { response in
             switch response.result {
             case .success:
                 print("addExerciseListData success")
@@ -79,17 +72,12 @@ class ExerciseAPIManager {
     func deleteExerciseListData(exerciseDay: String, exerciseListId: Int, completion: @escaping (Result<Void, Error>) -> Void) {
         let url = "\(baseURL)/api/workoutLog/workoutList/deleteWorkoutList"
         
-        let headers: HTTPHeaders = [
-            "Authorization": token,
-            "Accept": "application/json"
-        ]
-        
         let parameters: [String: Any] = [
             "date": exerciseDay,
             "workoutListId": exerciseListId
         ]
         
-        AF.request(url, method: .post, parameters: parameters, encoding: URLEncoding.default, headers: headers).validate().response { response in
+        session.request(url, method: .post, parameters: parameters, encoding: URLEncoding.default).validate().response { response in
             switch response.result {
             case .success:
                 print("deleteExerciseListData success")
@@ -105,12 +93,7 @@ class ExerciseAPIManager {
     func getAllExerciseData(completion: @escaping (Result<[ExerciseModel], Error>) -> Void) {
         let url = "\(baseURL)/api/workoutLog"
         
-        let headers: HTTPHeaders = [
-            "Authorization": token,
-            "Accept": "application/json"
-        ]
-        
-        AF.request(url, method: .get, headers: headers).validate(statusCode: 200..<300).responseDecodable(of: [ExerciseModel].self,  emptyResponseCodes: [200]) { response in
+        session.request(url, method: .get).validate(statusCode: 200..<300).responseDecodable(of: [ExerciseModel].self,  emptyResponseCodes: [200]) { response in
             switch response.result {
             case .success(let data):
                 print("getAllExerciseData success")
@@ -126,16 +109,11 @@ class ExerciseAPIManager {
     func getExerciseData(exerciseDay: String, completion: @escaping (Result<ExerciseModel, Error>) -> Void) {
         let url = "\(baseURL)/api/workoutLog/getWorkoutLogDate"
         
-        let headers: HTTPHeaders = [
-            "Authorization": token,
-            "Accept": "application/json"
-        ]
-        
         let parameters: [String: Any] = [
             "workoutDate": exerciseDay
         ]
         
-        AF.request(url, method: .get, parameters: parameters, headers: headers).validate(statusCode: 200..<300).responseDecodable(of: ExerciseModel.self, emptyResponseCodes: [200]) { response in
+        session.request(url, method: .get, parameters: parameters).validate(statusCode: 200..<300).responseDecodable(of: ExerciseModel.self, emptyResponseCodes: [200]) { response in
             switch response.result {
             case .success(let data):
                 print("getExerciseData success")
@@ -151,16 +129,11 @@ class ExerciseAPIManager {
     func getExerciseList(exerciseDay: String, completion: @escaping (Result<[ExerciseListModel], Error>) -> Void) {
         let url = "\(baseURL)/api/workoutLog/workoutList/getWorkoutListByDate"
         
-        let headers: HTTPHeaders = [
-            "Authorization": token,
-            "Accept": "application/json"
-        ]
-        
         let parameters: [String: Any] = [
             "date": exerciseDay
         ]
         
-        AF.request(url, method: .get, parameters: parameters, headers: headers).validate(statusCode: 200..<300).responseDecodable(of: [ExerciseListModel].self, emptyResponseCodes: [200]) { response in
+        session.request(url, method: .get, parameters: parameters).validate(statusCode: 200..<300).responseDecodable(of: [ExerciseListModel].self, emptyResponseCodes: [200]) { response in
             switch response.result {
             case .success(let data):
                 print("getExerciseList success")
@@ -176,12 +149,7 @@ class ExerciseAPIManager {
     func getExercisePicture(completion: @escaping (Result<[ExerciseListModel], Error>) -> Void) {
         let url = "\(baseURL)/api/workoutLog/findWorkoutPictures"
         
-        let headers: HTTPHeaders = [
-            "Authorization": token,
-            "Accept": "application/json"
-        ]
-        
-        AF.request(url, method: .get, headers: headers).validate(statusCode: 200..<300).responseDecodable(of: [ExerciseListModel].self, emptyResponseCodes: [200]) { response in
+        session.request(url, method: .get).validate(statusCode: 200..<300).responseDecodable(of: [ExerciseListModel].self, emptyResponseCodes: [200]) { response in
             switch response.result {
             case .success(let data):
                 print("getExercisePicture success")

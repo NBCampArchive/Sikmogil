@@ -171,12 +171,13 @@ class PermissionViewController: UIViewController {
     @objc func confirmButtonTapped() {
         let bottomTabBarController = BottomTabBarController()
         
-        let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as! SceneDelegate
-        sceneDelegate.window?.rootViewController = bottomTabBarController
-        sceneDelegate.window?.rootViewController?.view.alpha = 0
-        UIView.animate(withDuration: 1.5, animations: {
-            sceneDelegate.window?.rootViewController?.view.alpha = 1
-        })
+        if let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate,
+           let window = sceneDelegate.window {
+            UIView.transition(with: window, duration: 0.7, options: .transitionFlipFromRight, animations: {
+                window.rootViewController = bottomTabBarController
+            })
+            window.makeKeyAndVisible()
+        }
         
     }
 }

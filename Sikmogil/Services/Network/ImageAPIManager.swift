@@ -17,14 +17,10 @@ class ImageAPIManager {
     
     private let baseURL = Bundle.main.baseURL
     
-    let token = "Bearer \(LoginAPIManager.shared.getAccessTokenFromKeychain())"
-    
-    private var headers: HTTPHeaders {
-        return [
-            "Authorization": token,
-            "Accept": "application/json"
-        ]
-    }
+    private let session: Session = {
+        let interceptor = AuthInterceptor()
+        return Session(interceptor: interceptor)
+    }()
     
     func uploadImage(directory: String, images: [UIImage], completion: @escaping (Result<ImageModel, Error>) -> Void) {
         
@@ -36,7 +32,7 @@ class ImageAPIManager {
         
         print("\(directory) \(images)")
         
-        AF.upload(multipartFormData: { multipartFormData in
+        session.upload(multipartFormData: { multipartFormData in
             // directory 추가
             for (key, value) in parameters {
                 multipartFormData.append("\(value)".data(using: .utf8)!, withName: key)
@@ -47,7 +43,7 @@ class ImageAPIManager {
                     multipartFormData.append(imageData, withName: "image", fileName: "\(Date())\(index).jpg", mimeType: "image/jpeg")
                 }
             }
-        }, to: url, headers: headers).responseDecodable(of: ImageModel.self) { response in
+        }, to: url).responseDecodable(of: ImageModel.self) { response in
             switch response.result {
             case .success(let data):
                 completion(.success(data))
