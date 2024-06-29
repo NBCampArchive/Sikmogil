@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>NSCameraUsageDescription</key>
-	<string>프로필 사진 변경을 위한 카메라 접근을 허용해주세요.</string>
+	<string>프로필 사진 첨부를 위한 카메라 접근을 허용해주세요.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>프로필 사진 변경을 위한 사진 접근을 허용해주세요.</string>
+	<string>프로필 사진 첨부를 위한 사진 접근을 허용해주세요.</string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
