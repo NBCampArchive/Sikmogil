@@ -32,6 +32,7 @@ class PermissionViewController: UIViewController {
         ("알림", "푸시 알림 및 메시지 수신 안내를 위한 권한", "bell.badge.fill"),
         ("카메라", "식단, 운동 사진 촬영을 위한 권한", "camera.fill"),
         ("사진 라이브러리", "식단, 운동 사진 첨부를 위한 권한", "photo.fill"),
+        ("건강", "걸음 수 확보를 위한 권한", "heart.fill")
     ]
     
     private let infoLabel = UILabel().then {
