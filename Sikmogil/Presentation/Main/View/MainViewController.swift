@@ -338,7 +338,13 @@ class MainViewController: UIViewController {
     private func updateUI(with targetModel: TargetModel?) {
         guard let targetModel = targetModel else { return }
         weightNowLabel.text = "현재 체중 \(targetModel.weekWeights.first?.weight ?? Double(targetModel.weight) ?? 0.0) Kg"
-        weightToGoalLabel.text = "목표까지 \((Double(targetModel.targetWeight) ?? 0.0) - Double((targetModel.weekWeights.first?.weight ?? Double(targetModel.weight)) ?? 0.0)) Kg"
+        let currentWeight = Double((targetModel.weekWeights.first?.weight ?? Double(targetModel.weight)) ?? 0.0)
+        let targetWeight = Double(targetModel.targetWeight) ?? 0.0
+        let difference = targetWeight - currentWeight
+
+        let formattedDifference = difference > 0 ? String(format: "+%.1f", difference) : String(format: "%.1f", difference)
+
+        weightToGoalLabel.text = "목표까지 \(formattedDifference) Kg"
         progressLabel.text = "\(targetModel.createDate) ~ \(targetModel.targetDate)"
     }
     
