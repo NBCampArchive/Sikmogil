@@ -25,7 +25,7 @@ class SpandrelSettingsViewController: UIViewController {
     }
     
     private let descriptionLabel = UILabel().then {
-        $0.text = "공복 알림을 원하는 시간으로 선택해주세요"
+        $0.text = "원하는 공복 시간을 설정해주세요!"
         $0.font = Suite.semiBold.of(size: 14)
         $0.textColor = .darkGray
     }
@@ -61,6 +61,7 @@ class SpandrelSettingsViewController: UIViewController {
         setupAddTargets()
         hideKeyboardWhenTappedAround()
         setKeyboardObserver()
+        loadSavedTime()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -70,8 +71,51 @@ class SpandrelSettingsViewController: UIViewController {
     }
     
     private func setupAddTargets() {
-        
+        completeButton.addTarget(self, action: #selector(completeButtonTapped), for: .touchUpInside)
     }
+    
+    @objc private func completeButtonTapped() {
+        saveSelectedTime(date: timePicker.date)
+        showAlertAndNavigateToProfile()
+        print("Time saved: \(timePicker.date)")
+    }
+    
+    private func saveSelectedTime(date: Date) {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "HH:mm" // 24시간 형식으로 저장
+        let timeString = dateFormatter.string(from: date)
+        
+        UserDefaults.standard.set(timeString, forKey: "fastingTime")
+    }
+    
+    private func loadSavedTime() {
+        if let savedTimeString = UserDefaults.standard.string(forKey: "fastingTime") {
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "HH:mm"
+            if let savedTime = dateFormatter.date(from: savedTimeString) {
+                timePicker.date = savedTime
+            }
+        } else {
+            // 기본값을 14:00으로 설정
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "HH:mm"
+            if let defaultTime = dateFormatter.date(from: "14:00") {
+                timePicker.date = defaultTime
+            }
+        }
+    }
+    
+    private func showAlertAndNavigateToProfile() {
+        let alert = UIAlertController(title: "성공", message: "공복 시간 설정이 완료되었습니다.", preferredStyle: .alert)
+        self.present(alert, animated: true, completion: nil)
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
+            alert.dismiss(animated: true) {
+                self?.navigationController?.popViewController(animated: true)
+            }
+        }
+    }
+
     
     // MARK: - setupConstraints
     private func setupConstraints() {
@@ -121,27 +165,5 @@ class SpandrelSettingsViewController: UIViewController {
     
 }
 
-private func registerNotification(time: String) {
-    let components = time.split(separator: ":").map { Int($0) ?? 0 }
-    var dateComponents = DateComponents()
-    dateComponents.hour = components[0]
-    dateComponents.minute = components[1]
-    NotificationHelper.shared.scheduleDailyNotification(at: dateComponents) { error in
-        if let error = error {
-            print("알림 예약 실패: \(error)")
-        } else {
-            print("알림 예약 성공")
-        }
-    }
-}
-
-private func showErrorAlert(error: Error) {
-    let alert = UIAlertController(title: "에러", message: "프로필 업데이트 실패: \(error.localizedDescription)", preferredStyle: .alert)
-    alert.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
-}
-
-private func showAlertAndNavigateToProfile() {
-    let alert = UIAlertController(title: "성공", message: "공복 시간 설정이 완료되었습니다.", preferredStyle: .alert)
-}
 
 
