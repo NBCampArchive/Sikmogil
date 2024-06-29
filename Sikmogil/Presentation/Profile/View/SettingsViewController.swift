@@ -8,7 +8,6 @@
 import UIKit
 import SnapKit
 import Then
-import KeychainSwift
 import UserNotifications
 
 class SettingsViewController: UIViewController {
@@ -338,12 +337,16 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     private func logout() {
-        let keychain = KeychainSwift()
-        keychain.clear()
+        TokenStorage.shared.clearTokens()
+        
         if let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate {
             let loginVC = SplashViewController()
-            let navController = CustomNavigationController(rootViewController: loginVC)
-            sceneDelegate.window?.rootViewController = navController
+            let navController = CustomNavigationController(rootViewController:loginVC)
+            
+            UIView.transition(with: sceneDelegate.window!, duration: 0.5, options: .transitionFlipFromRight, animations: {
+                sceneDelegate.window?.rootViewController = navController
+            })
+            
             sceneDelegate.window?.makeKeyAndVisible()
         }
     }
