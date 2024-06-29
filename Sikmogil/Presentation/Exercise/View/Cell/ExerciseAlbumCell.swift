@@ -63,22 +63,13 @@ class ExerciseAlbumCell: UICollectionViewCell {
             return
         }
 
-        // 이미지 가져오는 동안 애니메이션 호출 (가져오는 시간이 짦아도 transition이 되도록 설정)
+        // 이미지 가져오는 동안 애니메이션 호출
         self.imageView.kf.setImage(
             with: imageURL,
             placeholder: nil,
             options: [
-                .transition(.fade(1.2)),
-                .forceTransition
+                .transition(.fade(0.5))
             ],
-            progressBlock: nil
-        ) { result in
-            switch result {
-            case .success(let value):
-                print("이미지 로드 성공")
-            case .failure(let error):
-                print("이미지 로드 실패: \(error.localizedDescription)")
-            }
-        }
+            progressBlock: nil)
     }
 }
