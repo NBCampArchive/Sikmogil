@@ -270,3 +270,24 @@ extension PermissionViewController {
         }
     }
 }
+
+//MARK: - 건강 권한 요청
+extension PermissionViewController {
+    private func requestHealthKitAuthorization(completion: @escaping (Bool) -> Void) {
+        let stepCountType = HKQuantityType.quantityType(forIdentifier: .stepCount)!
+        let dataTypesToRead: Set<HKObjectType> = [stepCountType]
+        
+        healthStore.requestAuthorization(toShare: nil, read: dataTypesToRead) { (success, error) in
+            if success {
+                print("HealthKit authorization granted")
+                completion(true)
+            } else {
+                print("HealthKit authorization denied")
+                if let error = error {
+                    print(error.localizedDescription)
+                }
+                completion(false)
+            }
+        }
+    }
+}
