@@ -13,8 +13,6 @@ class ExerciseAlbumViewController: UIViewController {
     
     private var viewModel = ExerciseAlbumViewModel()
     
-    // TODO: 페이지네이션 & KingFisher 로딩
-    
     // MARK: - Components
     let albumTitleLabel = UILabel().then {
         $0.text = "운동 앨범"
@@ -120,6 +118,7 @@ extension ExerciseAlbumViewController: UICollectionViewDelegateFlowLayout {
 }
 // MARK: - UICollectionViewDelegate
 extension ExerciseAlbumViewController: UICollectionViewDelegate {
+    // 스크롤 이벤트 감지
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let offsetY = scrollView.contentOffset.y
         let contentHeight = scrollView.contentSize.height
@@ -133,4 +132,15 @@ extension ExerciseAlbumViewController: UICollectionViewDelegate {
     private func loadMoreData() {
         viewModel.fetchNextPage()
     }
+    
+    // 이미지 확대
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let exercisePicture = viewModel.exercisePictures[indexPath.item]
+        guard let imageURLString = exercisePicture.workoutPicture,
+              let imageURL = URL(string: imageURLString) else { return }
+        
+        let imageVC = PhotoSelectViewController(imageURL: imageURL)
+        present(imageVC, animated: true, completion: nil)
+    }
+    
 }
