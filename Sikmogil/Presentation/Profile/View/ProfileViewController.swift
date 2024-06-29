@@ -92,7 +92,7 @@ class ProfileViewController: UIViewController {
         super.viewWillAppear(animated)
         viewModel.fetchUserProfile()
         setupBindings()
-        navigationController?.navigationBar.isHidden = true
+//        navigationController?.navigationBar.isHidden = true
     }
 
     // MARK: - Binding
@@ -172,12 +172,12 @@ class ProfileViewController: UIViewController {
         
         profileLabel.snp.makeConstraints {
             $0.left.equalTo(topBar).offset(16)
-            $0.centerY.equalTo(topBar)
+            $0.top.equalToSuperview()
         }
         
         settingsButton.snp.makeConstraints {
             $0.right.equalTo(topBar).offset(-16)
-            $0.centerY.equalTo(topBar)
+            $0.top.equalToSuperview()
             $0.width.height.equalTo(24)
         }
         
