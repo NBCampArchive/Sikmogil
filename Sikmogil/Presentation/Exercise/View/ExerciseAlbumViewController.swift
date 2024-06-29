@@ -57,7 +57,6 @@ class ExerciseAlbumViewController: UIViewController {
     
     // MARK: - Setup View
     private func setupViews() {
-        
         albumCollectionView.delegate = self
         albumCollectionView.dataSource = self
         albumCollectionView.register(ExerciseAlbumCell.self, forCellWithReuseIdentifier: ExerciseAlbumCell.identifier)
@@ -117,5 +116,21 @@ extension ExerciseAlbumViewController: UICollectionViewDelegateFlowLayout {
         let availableWidth = collectionView.frame.width - padding
         let width = availableWidth / 2
         return CGSize(width: width, height: width)
+    }
+}
+// MARK: - UICollectionViewDelegate
+extension ExerciseAlbumViewController: UICollectionViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let offsetY = scrollView.contentOffset.y
+        let contentHeight = scrollView.contentSize.height
+        let height = scrollView.frame.size.height
+        
+        if offsetY > contentHeight - height - 100 {
+            loadMoreData()
+        }
+    }
+    
+    private func loadMoreData() {
+        viewModel.fetchNextPage()
     }
 }
