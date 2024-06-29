@@ -116,15 +116,18 @@ class ExerciseResultViewController: UIViewController, FloatingPanelControllerDel
         $0.textColor = .appBlack
     }
 
+    // 사진 추가 버튼 히든 처리
     private let photoButton = UIButton().then {
         $0.layer.cornerRadius = 16
         $0.layer.borderWidth = 1
         $0.layer.borderColor = UIColor.appBlack.cgColor
+        $0.isHidden = true
     }
     
     private let photoIcon = UIImageView().then {
         $0.image = .photoIcon
         $0.contentMode = .scaleAspectFit
+        $0.isHidden = true
     }
     
     private let addButton = UIButton().then {
@@ -295,9 +298,11 @@ class ExerciseResultViewController: UIViewController, FloatingPanelControllerDel
             $0.width.height.equalTo(36)
         }
         
+        // 버튼 제약조건 히든
         addButton.snp.makeConstraints {
             $0.trailing.equalToSuperview().inset(16)
-            $0.leading.equalTo(photoButton.snp.trailing).offset(16)
+//            $0.leading.equalTo(photoButton.snp.trailing).offset(16)
+            $0.leading.equalToSuperview().offset(16)
             $0.bottom.equalTo(view.safeAreaLayoutGuide)
             $0.height.equalTo(60)
         }

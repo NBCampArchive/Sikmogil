@@ -67,6 +67,8 @@ class ExerciseViewController: UIViewController {
         $0.tintColor = .white
         $0.backgroundColor = .appBlack
         $0.layer.cornerRadius = 16
+        // 앨범 버튼 히든 처리
+        $0.isHidden = true
     }
 
     private let startExerciseButton = UIButton().then {
