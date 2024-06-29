@@ -301,9 +301,16 @@ class MainViewController: UIViewController {
                     let changeText = "D-day!"
                     let color = UIColor.appYellow
                     self?.weightLabel.setAttributedText(fullText: fullText, changeText: changeText, color: color, font: Suite.semiBold.of(size: 16))
-                } else {
+                }
+                if remainingDays > 0 {
                     let fullText = "목표까지 \(remainingDays)일!"
                     let changeText = "\(remainingDays)일!"
+                    let color = UIColor.appYellow
+                    self?.weightLabel.setAttributedText(fullText: fullText, changeText: changeText, color: color, font: Suite.semiBold.of(size: 16))
+                }
+                if remainingDays < 0 {
+                    let fullText = "목표 기간이 끝났습니다 새로 설정해주세요!"
+                    let changeText = "새로 설정해주세요!"
                     let color = UIColor.appYellow
                     self?.weightLabel.setAttributedText(fullText: fullText, changeText: changeText, color: color, font: Suite.semiBold.of(size: 16))
                 }
