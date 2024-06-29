@@ -8,7 +8,6 @@
 import UIKit
 import SnapKit
 import Then
-import KeychainSwift
 
 class SplashViewController: UIViewController {
     private let splashImageView = UIImageView().then {
@@ -105,27 +104,27 @@ class SplashViewController: UIViewController {
     }
     
     private func checkTokenAndNavigate() {
-        if KeychainSwift().get("refreshToken") != nil {
-            // Refresh 토큰이 있으면 토큰 갱신 시도
-            LoginAPIManager.shared.refreshToken { result in
-                switch result {
-                case .success:
-                    // 토큰 갱신 성공, 메인 화면으로 이동
-                    DispatchQueue.main.async {
-                        print("메인화면 이동")
-                        self.navigateToMainScreen()
-                    }
-                case .failure:
-                    // 토큰 갱신 실패, 로그인 화면으로 이동
-                    DispatchQueue.main.async {
-                        print("로그인 이동")
-                        self.navigateToLoginScreen()
-                    }
+        guard TokenStorage.shared.refreshToken != nil else {
+            navigateToLoginScreen()
+            return
+        }
+
+        // Refresh 토큰이 있으면 토큰 갱신 시도
+        LoginAPIManager.shared.refreshToken { result in
+            switch result {
+            case .success:
+                // 토큰 갱신 성공, 메인 화면으로 이동
+                DispatchQueue.main.async {
+                    print("메인화면 이동")
+                    self.navigateToMainScreen()
+                }
+            case .failure:
+                // 토큰 갱신 실패, 로그인 화면으로 이동
+                DispatchQueue.main.async {
+                    print("로그인 이동")
+                    self.navigateToLoginScreen()
                 }
             }
-        } else {
-            // Refresh 토큰이 없으면 로그인 화면으로 이동
-            navigateToLoginScreen()
         }
     }
     
