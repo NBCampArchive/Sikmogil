@@ -34,10 +34,10 @@ class PhotoRecordFloatingViewController: UIViewController, UINavigationControlle
         $0.layer.cornerRadius = 8
     }
     
-    // TODO: - 이미지 cornerRadius, Fill
     private var imageView = UIImageView().then {
-        $0.contentMode = .scaleToFill
+        $0.contentMode = .scaleAspectFill
         $0.layer.cornerRadius = 8
+        $0.clipsToBounds = true
     }
     
     private var removeButton =  UIButton().then {
@@ -49,12 +49,10 @@ class PhotoRecordFloatingViewController: UIViewController, UINavigationControlle
         $0.titleLabel?.font = Suite.bold.of(size: 22)
         $0.backgroundColor = .appBlack
         $0.layer.cornerRadius = 16
-        $0.isEnabled = false
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         setupViews()
         setupConstraints()
         setupButtons()
@@ -124,11 +122,9 @@ class PhotoRecordFloatingViewController: UIViewController, UINavigationControlle
         viewModel?.selectedImageView = nil
         updateButtonsState()
     }
-    
-    // TODO: - doneButton 활성화 여부
+
     private func updateButtonsState() {
         let isImageSelected = imageView.image != nil
-        doneButton.isEnabled = isImageSelected
         removeButton.isHidden = !isImageSelected
     }
     
