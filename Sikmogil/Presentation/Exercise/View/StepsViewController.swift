@@ -90,6 +90,10 @@ class StepsViewController: UIViewController {
         super.viewDidLoad()
         setupViews()
         setupConstraints()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
         updateStepsData()
     }
