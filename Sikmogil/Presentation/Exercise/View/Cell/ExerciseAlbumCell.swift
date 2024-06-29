@@ -8,6 +8,7 @@
 import UIKit
 import SnapKit
 import Then
+import Kingfisher
 
 class ExerciseAlbumCell: UICollectionViewCell {
     static let identifier = "ExerciseAlbumCell"
@@ -61,22 +62,23 @@ class ExerciseAlbumCell: UICollectionViewCell {
             self.imageView.image = nil
             return
         }
-        
-        // 비동기적으로 이미지 로드
-        URLSession.shared.dataTask(with: imageURL) { data, response, error in
-            if let error = error {
-                print("Failed to load image: \(error)")
-                return
+
+        // 이미지 가져오는 동안 애니메이션 호출 (가져오는 시간이 짦아도 transition이 되도록 설정)
+        self.imageView.kf.setImage(
+            with: imageURL,
+            placeholder: nil,
+            options: [
+                .transition(.fade(1.2)),
+                .forceTransition
+            ],
+            progressBlock: nil
+        ) { result in
+            switch result {
+            case .success(let value):
+                print("이미지 로드 성공")
+            case .failure(let error):
+                print("이미지 로드 실패: \(error.localizedDescription)")
             }
-            
-            guard let data = data, let image = UIImage(data: data) else {
-                print("Failed to load image data")
-                return
-            }
-            
-            DispatchQueue.main.async {
-                self.imageView.image = image
-            }
-        }.resume()
+        }
     }
 }
