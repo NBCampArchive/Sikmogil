@@ -10,6 +10,7 @@ import GoogleSignIn
 import AuthenticationServices
 import RxSwift
 import RxCocoa
+import NVActivityIndicatorView
 
 
 protocol LoginViewModelInput {
@@ -30,6 +31,8 @@ class LoginViewModel: NSObject, LoginViewModelIO {
     let loginSuccess = PublishSubject<Void>()
     let loginFailure = PublishSubject<Error>()
     
+    private var loadingIndicator: NVActivityIndicatorView?
+    
     override init() {
         super.init()
     }
@@ -48,26 +51,29 @@ class LoginViewModel: NSObject, LoginViewModelIO {
     
     func signInWithGoogle(presentingViewController: UIViewController) {
         print("Google Sign-In 시작")
-
+        
         GIDSignIn.sharedInstance.signIn(withPresenting: presentingViewController) { signInResult, error in
-                 guard error == nil else { return }
-                 guard let signInResult = signInResult else { return }
-                 
-                 signInResult.user.refreshTokensIfNeeded { user, error in
-                    guard error == nil else { return }
-                    guard let user = user else { return }
-                    
-                     if let idToken = user.idToken?.tokenString {
-                         self.loginWithServer(idToken: idToken, provider: "google")
-                         print(idToken)
-                     }
-                     
-                 }
-              }
+            guard error == nil else { return }
+            guard let signInResult = signInResult else { return }
+            
+            signInResult.user.refreshTokensIfNeeded { user, error in
+                guard error == nil else { return }
+                guard let user = user else { return }
+                
+                if let idToken = user.idToken?.tokenString {
+                    self.loginWithServer(idToken: idToken, provider: "google")
+                    print(idToken)
+                }
+                
+            }
+        }
     }
     
     private func loginWithServer(idToken: String, provider: String) {
         print("서버에 로그인 시도 with ID Token: \(idToken), Provider: \(provider)")
+        DispatchQueue.main.async {
+            self.showLoadingIndicator()
+        }
         LoginAPIManager.shared.getAccessToken(authCode: idToken, provider: provider) { result in
             switch result {
             case .success(let tokenResponse):
@@ -81,6 +87,9 @@ class LoginViewModel: NSObject, LoginViewModelIO {
     }
     
     private func checkFirstLogin() {
+        DispatchQueue.main.async {
+            self.hideLoadingIndicator()
+        }
         LoginAPIManager.shared.checkFirstLogin { result in
             switch result {
             case .success(let firstLoginResponse):
@@ -95,6 +104,27 @@ class LoginViewModel: NSObject, LoginViewModelIO {
                 self.loginFailure.onNext(error)
             }
         }
+    }
+    
+    private func showLoadingIndicator() {
+        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
+            if let window = windowScene.windows.first {
+                let loadingIndicator = NVActivityIndicatorView(frame: .zero, type: .ballBeat, color: .appGreen, padding: 0)
+                window.addSubview(loadingIndicator)
+                loadingIndicator.snp.makeConstraints {
+                    $0.center.equalToSuperview()
+                    $0.width.height.equalTo(50)
+                }
+                loadingIndicator.startAnimating()
+                self.loadingIndicator = loadingIndicator
+            }
+        }
+    }
+    
+    private func hideLoadingIndicator() {
+        loadingIndicator?.stopAnimating()
+        loadingIndicator?.removeFromSuperview()
+        loadingIndicator = nil
     }
 }
 

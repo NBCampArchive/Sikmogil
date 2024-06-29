@@ -67,7 +67,6 @@
 		B53786CB2C24126D007B362F /* PermissionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53786CA2C24126D007B362F /* PermissionViewController.swift */; };
 		B53786CD2C245390007B362F /* UITextFieldExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53786CC2C245390007B362F /* UITextFieldExtension.swift */; };
 		B53786CF2C25AE08007B362F /* BagelFatOne-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B53786CE2C25AE08007B362F /* BagelFatOne-Regular.ttf */; };
-		B53786D12C25EB7E007B362F /* SikmogilPlist.plist in Resources */ = {isa = PBXBuildFile; fileRef = B53786D02C25EB7E007B362F /* SikmogilPlist.plist */; };
 		B54ABF882C09BD43002E89DC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABF872C09BD43002E89DC /* AppDelegate.swift */; };
 		B54ABF8A2C09BD43002E89DC /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABF892C09BD43002E89DC /* SceneDelegate.swift */; };
 		B54ABF8C2C09BD43002E89DC /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54ABF8B2C09BD43002E89DC /* ViewController.swift */; };
@@ -127,9 +126,12 @@
 		B5825BAA2C219A7100ADAA66 /* CommunityNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5825BA92C219A7100ADAA66 /* CommunityNavigationViewController.swift */; };
 		B5825BAD2C219C2B00ADAA66 /* BoardMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5825BAC2C219C2B00ADAA66 /* BoardMainViewController.swift */; };
 		B5825BAF2C219FE500ADAA66 /* CustomSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5825BAE2C219FE500ADAA66 /* CustomSegmentedControl.swift */; };
+		B5CBB2102C2D0EE000C672DB /* TokenStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CBB20F2C2D0EE000C672DB /* TokenStorage.swift */; };
+		B5CBB2122C2D12F300C672DB /* AuthInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CBB2112C2D12F300C672DB /* AuthInterceptor.swift */; };
 		CA13FDE62C22E483007B3DBE /* BreakfastTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA13FDE52C22E483007B3DBE /* BreakfastTableViewCell.swift */; };
 		CA13FDE82C22E76C007B3DBE /* LunchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA13FDE72C22E76C007B3DBE /* LunchTableViewCell.swift */; };
 		CA13FDEA2C22E791007B3DBE /* DinnerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA13FDE92C22E791007B3DBE /* DinnerTableViewCell.swift */; };
+		CA7517762C2BC1B40076452D /* SikmogilPlist.plist in Resources */ = {isa = PBXBuildFile; fileRef = CA7517752C2BC1B40076452D /* SikmogilPlist.plist */; };
 		CACA65B82C1860CF0030D8D5 /* DietAlbumViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CACA65B72C1860CF0030D8D5 /* DietAlbumViewModel.swift */; };
 		CACA65BA2C19BBDF0030D8D5 /* SavedDietImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CACA65B92C19BBDF0030D8D5 /* SavedDietImage.swift */; };
 		CACA65C62C1B5CE20030D8D5 /* FoodDbAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CACA65C52C1B5CE20030D8D5 /* FoodDbAPIManager.swift */; };
@@ -208,7 +210,6 @@
 		B53786CA2C24126D007B362F /* PermissionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionViewController.swift; sourceTree = "<group>"; };
 		B53786CC2C245390007B362F /* UITextFieldExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextFieldExtension.swift; sourceTree = "<group>"; };
 		B53786CE2C25AE08007B362F /* BagelFatOne-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "BagelFatOne-Regular.ttf"; sourceTree = "<group>"; };
-		B53786D02C25EB7E007B362F /* SikmogilPlist.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = SikmogilPlist.plist; path = Sikmogil/Resources/SikmogilPlist.plist; sourceTree = SOURCE_ROOT; };
 		B54ABF842C09BD43002E89DC /* Sikmogil.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sikmogil.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B54ABF872C09BD43002E89DC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B54ABF892C09BD43002E89DC /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -255,9 +256,12 @@
 		B5825BA92C219A7100ADAA66 /* CommunityNavigationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityNavigationViewController.swift; sourceTree = "<group>"; };
 		B5825BAC2C219C2B00ADAA66 /* BoardMainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardMainViewController.swift; sourceTree = "<group>"; };
 		B5825BAE2C219FE500ADAA66 /* CustomSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSegmentedControl.swift; sourceTree = "<group>"; };
+		B5CBB20F2C2D0EE000C672DB /* TokenStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenStorage.swift; sourceTree = "<group>"; };
+		B5CBB2112C2D12F300C672DB /* AuthInterceptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthInterceptor.swift; sourceTree = "<group>"; };
 		CA13FDE52C22E483007B3DBE /* BreakfastTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreakfastTableViewCell.swift; sourceTree = "<group>"; };
 		CA13FDE72C22E76C007B3DBE /* LunchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LunchTableViewCell.swift; sourceTree = "<group>"; };
 		CA13FDE92C22E791007B3DBE /* DinnerTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DinnerTableViewCell.swift; sourceTree = "<group>"; };
+		CA7517752C2BC1B40076452D /* SikmogilPlist.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = SikmogilPlist.plist; sourceTree = "<group>"; };
 		CACA65B72C1860CF0030D8D5 /* DietAlbumViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DietAlbumViewModel.swift; sourceTree = "<group>"; };
 		CACA65B92C19BBDF0030D8D5 /* SavedDietImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedDietImage.swift; sourceTree = "<group>"; };
 		CACA65C52C1B5CE20030D8D5 /* FoodDbAPIManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoodDbAPIManager.swift; sourceTree = "<group>"; };
@@ -542,6 +546,7 @@
 				B52001DF2C18922D0083CBDF /* DietAPIManager.swift */,
 				B52001E52C1972330083CBDF /* ImageAPIManager.swift */,
 				CACA65C52C1B5CE20030D8D5 /* FoodDbAPIManager.swift */,
+				B5CBB2112C2D12F300C672DB /* AuthInterceptor.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -550,6 +555,7 @@
 			isa = PBXGroup;
 			children = (
 				B54ABFBE2C0CB639002E89DC /* PersistentStorage.swift */,
+				B5CBB20F2C2D0EE000C672DB /* TokenStorage.swift */,
 			);
 			path = PersistentStorage;
 			sourceTree = "<group>";
@@ -604,7 +610,7 @@
 				B54ABF932C09BD47002E89DC /* Assets.xcassets */,
 				62578CED2C117333005035BB /* The_Scale.json */,
 				B54ABF982C09BD47002E89DC /* Info.plist */,
-				B53786D02C25EB7E007B362F /* SikmogilPlist.plist */,
+				CA7517752C2BC1B40076452D /* SikmogilPlist.plist */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -932,7 +938,7 @@
 				B54ABFE62C0D68CF002E89DC /* SUITE-Medium.ttf in Resources */,
 				B566DF302C2A9BC80050CF60 /* PrivacyInfo.xcprivacy in Resources */,
 				B54ABFE12C0D68CF002E89DC /* SUITE-Bold.ttf in Resources */,
-				B53786D12C25EB7E007B362F /* SikmogilPlist.plist in Resources */,
+				CA7517762C2BC1B40076452D /* SikmogilPlist.plist in Resources */,
 				62578CEE2C117333005035BB /* The_Scale.json in Resources */,
 				B54ABFE02C0D68CF002E89DC /* SUITE-Light.ttf in Resources */,
 				B54ABF942C09BD47002E89DC /* Assets.xcassets in Resources */,
@@ -972,6 +978,7 @@
 				B54ABFCF2C0CBB59002E89DC /* UIViewExtensions.swift in Sources */,
 				F3094F0E2C19A1BE0099DE2C /* ExerciseViewModel.swift in Sources */,
 				B54AC01A2C105646002E89DC /* Step1ViewController.swift in Sources */,
+				B5CBB2102C2D0EE000C672DB /* TokenStorage.swift in Sources */,
 				B54ABFCB2C0CB770002E89DC /* Extension.swift in Sources */,
 				62578CFE2C15A395005035BB /* PhotoCell.swift in Sources */,
 				B52001F02C1C8D7E0083CBDF /* TargetModel.swift in Sources */,
@@ -1033,6 +1040,7 @@
 				B52001B22C1217DA0083CBDF /* WaveProgressView.swift in Sources */,
 				B54AC0152C1055DA002E89DC /* OnboardingProgressBar.swift in Sources */,
 				B54ABFF82C0F0DC7002E89DC /* LoginAPIManager.swift in Sources */,
+				B5CBB2122C2D12F300C672DB /* AuthInterceptor.swift in Sources */,
 				B54AC01E2C1056C3002E89DC /* Step3ViewController.swift in Sources */,
 				F36105B72C1BFF7600237572 /* Double.swift in Sources */,
 				B54AC01C2C1056A4002E89DC /* Step2ViewController.swift in Sources */,
