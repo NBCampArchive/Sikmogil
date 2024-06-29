@@ -313,6 +313,7 @@ class ExerciseResultViewController: UIViewController, FloatingPanelControllerDel
         self.present(recodingPhotoPanel, animated: true)
     }
     
+    // TODO: - NVActivityIndicatorView, 추가 메서드 분리
     @objc private func addButtonTapped() {
         var exerciseData = viewModel.saveExerciseData()
         let day = DateHelper.shared.formatDateToYearMonthDay(Date())
