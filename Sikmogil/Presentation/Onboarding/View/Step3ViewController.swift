@@ -129,6 +129,10 @@ class Step3ViewController: UIViewController {
     @objc private func doneButtonTapped() {
         guard let viewModel = viewModel else { return }
         
+        // 처음 회원가입 시 공복 시간 14시간으로 설정
+        let defaultTimeString = "14:00"
+        UserDefaults.standard.set(defaultTimeString, forKey: "fastingTime")
+        
         let formatter = DateFormatter()
         formatter.dateFormat = "HH:mm"
         let selectedTime = formatter.string(from: timePicker.date)
