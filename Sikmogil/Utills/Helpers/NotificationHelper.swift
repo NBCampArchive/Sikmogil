@@ -12,7 +12,7 @@ import Then
 class NotificationHelper {
     
     static let shared = NotificationHelper()
-
+    
     // 초기화 방지
     private init() {}
     
@@ -36,7 +36,7 @@ class NotificationHelper {
     func scheduleDailyNotification(at dateComponents: DateComponents, completion: ((Error?) -> Void)? = nil) {
         let content = UNMutableNotificationContent().then {
             $0.title = "식목일"
-            $0.body = "오늘의 목표를 기록할 시간이에요 🌱"
+            $0.body = "오늘 하루를 기록해보세요 🌱"
             $0.sound = .default
         }
         
@@ -84,29 +84,42 @@ class NotificationHelper {
             return
         }
         
-        let content = UNMutableNotificationContent().then {
-            $0.title = "식목일"
-            $0.body = "공복시간 14시간을 경과했습니다! ⏰"
-            $0.sound = .default
-        }
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "HH:mm"
         
-        let calendar = Calendar.current
-        let notificationTime = calendar.date(byAdding: .hour, value: 14, to: startTime) ?? Date().addingTimeInterval(14 * 60 * 60)
-        let notificationComponents = calendar.dateComponents([.year, .month, .day, .hour, .minute, .second], from: notificationTime)
-        
-        let trigger = UNCalendarNotificationTrigger(dateMatching: notificationComponents, repeats: false)
-        let request = UNNotificationRequest(identifier: "fastingNotification", content: content, trigger: trigger)
-        
-        UNUserNotificationCenter.current().add(request) { error in
-            DispatchQueue.main.async {
-                if let error = error {
-                    print("알림 설정 실패: \(error.localizedDescription)")
-                } else {
-                    print("14시간 알림이 성공적으로 설정되었습니다.")
+        if let savedTimeString = UserDefaults.standard.string(forKey: "fastingTime"), let savedTime = dateFormatter.date(from: savedTimeString) {
+            let calendar = Calendar.current
+            let savedTimeComponents = calendar.dateComponents([.hour, .minute], from: savedTime)
+            
+            // 현재 시간에 저장된 시간(시간과 분)을 더한 날짜를 계산
+            let notificationTime = calendar.date(byAdding: .hour, value: savedTimeComponents.hour ?? 0, to: startTime) ?? Date()
+            let finalNotificationTime = calendar.date(byAdding: .minute, value: savedTimeComponents.minute ?? 0, to: notificationTime) ?? Date()
+            
+            let notificationComponents = calendar.dateComponents([.year, .month, .day, .hour, .minute, .second], from: finalNotificationTime)
+            
+            let content = UNMutableNotificationContent().then {
+                $0.title = "식목일"
+                $0.body = "공복 시간이 경과했습니다! ⏰"
+                $0.sound = .default
+            }
+            
+            let trigger = UNCalendarNotificationTrigger(dateMatching: notificationComponents, repeats: false)
+            let request = UNNotificationRequest(identifier: "fastingNotification", content: content, trigger: trigger)
+            
+            UNUserNotificationCenter.current().add(request) { error in
+                DispatchQueue.main.async {
+                    if let error = error {
+                        print("알림 설정 실패: \(error.localizedDescription)")
+                    } else {
+                        print("알림이 성공적으로 설정되었습니다.")
+                    }
                 }
             }
         }
     }
+
+
+    
     
     //MARK: - 공복 알림 제거
     func removeFastingNotification() {
