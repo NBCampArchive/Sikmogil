@@ -338,7 +338,24 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
     
     private func logout() {
         TokenStorage.shared.clearTokens()
-        
+        navigationRootView()
+    }
+    
+    private func deleteAccount() {
+        print("회원 탈퇴")
+        UserAPIManager.shared.deleteAccount() { result in
+            switch result {
+            case .success():
+                print("회원 탈퇴 성공")
+                TokenStorage.shared.clearTokens()
+                self.navigationRootView()
+            case .failure(_):
+                print("회원 탈퇴 실패")
+            }
+        }
+    }
+    
+    private func navigationRootView() {
         if let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate {
             let loginVC = SplashViewController()
             let navController = CustomNavigationController(rootViewController:loginVC)
@@ -349,11 +366,6 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
             
             sceneDelegate.window?.makeKeyAndVisible()
         }
-    }
-    
-    private func deleteAccount() {
-        // 계정 삭제 처리
-        print("회원 탈퇴")
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

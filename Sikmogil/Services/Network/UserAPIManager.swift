@@ -117,4 +117,21 @@ class UserAPIManager {
             }
     }
     
+    //MARK: - 회원 탈퇴
+    func deleteAccount(completion: @escaping (Result<Void, Error>) -> Void) {
+        
+        let url = "\(baseURL)/api/my/delete-account"
+        
+        session.request(url, method: .post, encoding: JSONEncoding.default).validate()
+            .response { response in
+                switch response.result {
+                case .success:
+                    completion(.success(()))
+                case .failure(let error):
+                    print("회원 탈퇴 에러\(error.localizedDescription)")
+                    completion(.failure(error))
+                }
+            }
+    }
+    
 }
