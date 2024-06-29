@@ -281,7 +281,13 @@ class MainViewController: UIViewController {
                 self?.dateProgressView.progress = progress
                 if progress * 100 > 20{
                     self?.percentView.isHidden = false
-                    self?.percentLabel.text = String(format: "%.0f%%", progress * 100)
+                    let progressPercentage = progress * 100
+                    let displayedPercentage = progressPercentage > 100 ? 100 : progressPercentage
+                    self?.percentLabel.text = String(format: "%.0f%%", displayedPercentage)
+                    if displayedPercentage == 100 {
+                        let alert = UIAlertController(title: "목표 기간 종료!", message: "설정해둔 목표기간이 종료되었습니다.\n새로운 목표를 포함한 새로운 기간을 설정해주세요!", preferredStyle: .alert)
+                        self?.present(alert, animated: true, completion: nil)
+                    }
                 }
                
             }
