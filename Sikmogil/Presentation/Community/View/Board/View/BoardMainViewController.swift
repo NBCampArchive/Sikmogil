@@ -63,7 +63,7 @@ class BoardMainViewController: UIViewController {
         setupTableView()
         bindViewModel()
         setupButton()
-        viewModel.fetchBoardList(category: categoryForIndex(currentCategoryIndex), reset: true)
+//        viewModel.fetchBoardList(category: categoryForIndex(currentCategoryIndex), reset: true)
     }
     
     private func setupButton() {
@@ -75,8 +75,9 @@ class BoardMainViewController: UIViewController {
         
         writeButton.addAction(UIAction { [weak self] _ in
             print("writesearchButtonTapped")
-//            let writeVC = WriteViewController()
-//            self?.navigationController?.pushViewController(writeVC, animated: true)
+            let writeVC = WriteViewController()
+            writeVC.hidesBottomBarWhenPushed = true
+            self?.navigationController?.pushViewController(writeVC, animated: true)
         }, for: .touchUpInside)
     }
     
