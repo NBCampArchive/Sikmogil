@@ -30,7 +30,7 @@ class DietAlbumViewController: UIViewController, UINavigationControllerDelegate 
         $0.backgroundColor = .appBlack
         $0.setTitleColor(.white, for: .normal)
         $0.titleLabel?.font = Suite.bold.of(size: 22)
-        $0.layer.cornerRadius = 14
+        $0.layer.cornerRadius = 16
         $0.clipsToBounds = true
         $0.addTarget(self, action: #selector(albumAddPhotoButtonTapped), for: .touchUpInside)
     }
@@ -43,6 +43,10 @@ class DietAlbumViewController: UIViewController, UINavigationControllerDelegate 
     }()
     
     var viewModel: DietAlbumViewModel!
+    
+    // 페이지네이션을 위한 변수
+    var currentPage = 0
+    var isLoading = false
     
     // MARK: - View Lifecycle
     override func viewDidLoad() {
@@ -58,18 +62,16 @@ class DietAlbumViewController: UIViewController, UINavigationControllerDelegate 
         
         albumCollectionView.register(DietAlbumCollectionViewCell.self, forCellWithReuseIdentifier: DietAlbumCollectionViewCell.identifier)
         
-        viewModel.loadImages(0) { [weak self] in
-            DispatchQueue.main.async {
-                self?.albumCollectionView.reloadData()
-            }
-        }
+        loadMoreImages()
+        
+        navigationController?.navigationBar.isHidden = false
     }
     
     // MARK: - Setup Methods
     private func setupViews() {
         view.addSubviews(albumTitleLabel, albumTitleSubLabel, albumCollectionView, albumAddPhotoButton)
     }
-
+    
     private func setupConstraints() {
         albumTitleLabel.snp.makeConstraints{
             $0.top.equalTo(view.safeAreaLayoutGuide)
@@ -87,10 +89,10 @@ class DietAlbumViewController: UIViewController, UINavigationControllerDelegate 
             $0.bottom.equalToSuperview()
         }
         albumAddPhotoButton.snp.makeConstraints{
-            $0.bottom.equalToSuperview().inset(32)
+            $0.bottom.equalToSuperview().inset(40)
             $0.leading.equalToSuperview().offset(16)
             $0.trailing.equalToSuperview().inset(16)
-            $0.height.equalTo(60)
+            $0.height.equalTo(48)
         }
     }
     
@@ -129,6 +131,19 @@ class DietAlbumViewController: UIViewController, UINavigationControllerDelegate 
             present(alertController, animated: true, completion: nil)
         }
     }
+    
+    private func loadMoreImages() {
+        guard !isLoading, currentPage <= viewModel.lastPage else { return }
+        isLoading = true
+        
+        viewModel.loadImages(page: currentPage) { [weak self] in
+            DispatchQueue.main.async {
+                self?.albumCollectionView.reloadData()
+                self?.isLoading = false
+                self?.currentPage += 1
+            }
+        }
+    }
 }
 
 // MARK: - UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
@@ -151,6 +166,16 @@ extension DietAlbumViewController: UICollectionViewDelegate, UICollectionViewDat
         let availableWidth = collectionView.frame.width - paddingSpace
         let widthPerItem = availableWidth / itemsPerRow
         return CGSize(width: widthPerItem, height: widthPerItem)
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let offsetY = scrollView.contentOffset.y
+        let contentHeight = scrollView.contentSize.height
+        let frameHeight = scrollView.frame.size.height
+        
+        if offsetY > contentHeight - frameHeight * 2 {
+            loadMoreImages()
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -186,9 +211,11 @@ extension DietAlbumViewController: UIImagePickerControllerDelegate {
             viewModel.saveImage(image) { [weak self] result in
                 switch result {
                 case .success:
-                    self?.viewModel.loadImages(0) {
-                        DispatchQueue.main.async {
-                            self?.albumCollectionView.reloadData()
+                    DispatchQueue.main.async {
+                        self?.albumCollectionView.reloadData()
+                        if let lastItemIndex = self?.viewModel.savedDietImages.count {
+                            let indexPath = IndexPath(item: lastItemIndex - 1, section: 0)
+                            self?.albumCollectionView.scrollToItem(at: indexPath, at: .bottom, animated: true)
                         }
                     }
                 case .failure(let error):

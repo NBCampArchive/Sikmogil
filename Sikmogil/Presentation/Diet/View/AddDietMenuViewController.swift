@@ -23,12 +23,16 @@ class AddDietMenuViewController: UIViewController {
         $0.searchTextField.layer.borderWidth = 1
         $0.searchTextField.layer.borderColor = UIColor.appBlack.cgColor
         $0.searchTextField.layer.cornerRadius = 10
+        $0.tintColor = .appBlack
+        $0.setValue("취소", forKey: "cancelButtonText")
+        $0.backgroundImage = UIImage()
     }
     let searchResultTableView = UITableView().then {
         $0.backgroundColor = .clear
         $0.register(AddDietMenuTableViewCell.self, forCellReuseIdentifier: "AddDietMenuTableViewCell")
         $0.separatorStyle = .none
     }
+    var overlayView: UIView!
     
     // MARK: - Properties
     var foodItems: [FoodItem] = []  // 데이터 저장 배열
@@ -46,11 +50,26 @@ class AddDietMenuViewController: UIViewController {
         searchResultTableView.dataSource = self
         
         searchBar.delegate = self
+        
+        setupOverlayView()
     }
     
     // MARK: - Setup Methods
     private func setupViews() {
         view.addSubviews(TitleLabel, searchBar, searchResultTableView)
+    }
+    
+    private func setupOverlayView() {
+        overlayView = UIView(frame: self.view.bounds)
+        overlayView.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+        overlayView.isHidden = true
+        overlayView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard)))
+        view.addSubview(overlayView)
+    }
+    
+    @objc override func dismissKeyboard() {
+        searchBar.resignFirstResponder()
+        overlayView.isHidden = true
     }
     
     private func fetchFoodData(searchText: String) {
@@ -78,12 +97,12 @@ class AddDietMenuViewController: UIViewController {
             $0.leading.equalToSuperview().offset(16)
         }
         searchBar.snp.makeConstraints{
-            $0.top.equalTo(TitleLabel.snp.bottom).offset(16)
-            $0.leading.equalToSuperview().offset(16)
-            $0.trailing.equalToSuperview().inset(16)
+            $0.top.equalTo(TitleLabel.snp.bottom).offset(8)
+            $0.leading.equalToSuperview().offset(8)
+            $0.trailing.equalToSuperview().inset(8)
         }
         searchResultTableView.snp.makeConstraints{
-            $0.top.equalTo(searchBar.snp.bottom).offset(16)
+            $0.top.equalTo(searchBar.snp.bottom).offset(8)
             $0.leading.equalToSuperview().offset(16)
             $0.trailing.equalToSuperview().inset(16)
             $0.bottom.equalToSuperview().inset(16)
@@ -148,12 +167,14 @@ extension AddDietMenuViewController: UISearchBarDelegate {
     func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
         // 키보드가 나타나도록 설정
         searchBar.setShowsCancelButton(true, animated: true)
+        overlayView.isHidden = false
         return true
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         // 검색 버튼(리턴 키)을 눌렀을 때의 액션
         searchBar.resignFirstResponder()  // 키보드 숨기기
+        overlayView.isHidden = true
         
         // 검색어가 공백일 경우
         guard let searchText = searchBar.text?.trimmingCharacters(in: .whitespacesAndNewlines), !searchText.isEmpty else {
@@ -203,5 +224,6 @@ extension AddDietMenuViewController: UISearchBarDelegate {
         searchBar.resignFirstResponder()  // 키보드 숨기기
         searchBar.setShowsCancelButton(false, animated: true)
         searchBar.text = nil  // 검색어 초기화
+        overlayView.isHidden = true
     }
 }

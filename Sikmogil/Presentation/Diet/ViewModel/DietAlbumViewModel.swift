@@ -11,6 +11,9 @@ import UIKit
 
 class DietAlbumViewModel {
     var savedDietImages: [SavedDietImage] = []
+    var lastPage: Int = 0
+    var currentPage: Int = 0
+    var isLoading = false
     
     init() {
     }
@@ -27,7 +30,9 @@ class DietAlbumViewModel {
                         switch result {
                         case .success:
                             print("uploadDietImage success")
-                            completion(.success(()))
+                            self.loadImages(page: 0) { // reload the first page
+                                completion(.success(()))
+                            }
                         case .failure(let error):
                             print("failure \(error)")
                             completion(.failure(error))
@@ -41,34 +46,48 @@ class DietAlbumViewModel {
         }
     }
     
-    func loadImages(_ page: Int, completion: @escaping () -> Void) {
+    func loadImages(page: Int, completion: @escaping () -> Void) {
+        guard !isLoading else { return }
+        isLoading = true
+        
         DietAPIManager.shared.getDietPicture(page: page) { [weak self] result in
+            guard let self = self else { return }
+            self.isLoading = false
+            
             switch result {
             case .success(let album):
-                self?.savedDietImages.removeAll() // 기존 데이터를 모두 제거하고 새로 받은 데이터로 업데이트
-
-                // 비동기 방식으로 이미지 데이터를 가져와서 savedDietImages에 추가
+                if page == 0 {
+                    self.savedDietImages = []
+                }
+                self.lastPage = album.lastPage
+                self.currentPage = page + 1
+                
                 DispatchQueue.global().async {
+                    var newImages: [SavedDietImage] = []
                     for dietPicture in album.pictures {
                         if let imageUrl = URL(string: dietPicture.foodPicture),
                            let imageData = try? Data(contentsOf: imageUrl) {
                             let savedImage = SavedDietImage(dietPictureId: dietPicture.dietPictureId,
                                                             foodPicture: imageData,
                                                             dietDate: dietPicture.dietDate)
-                            DispatchQueue.main.async {
-                                self?.savedDietImages.append(savedImage)
-                            }
+                            newImages.append(savedImage)
                         }
                     }
                     DispatchQueue.main.async {
-                        completion() // 데이터 로드 완료 후 호출
+                        self.savedDietImages.append(contentsOf: newImages)
+                        completion()
                     }
                 }
                 
-                print("loadImages success \(album)")
             case .failure(let error):
                 print("loadImages failure \(error)")
             }
+        }
+    }
+    
+    func loadMoreImages(completion: @escaping () -> Void) {
+        if currentPage < lastPage {
+            loadImages(page: currentPage, completion: completion)
         }
     }
     
