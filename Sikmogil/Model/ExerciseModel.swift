@@ -21,6 +21,12 @@ struct ExerciseListModel: Decodable {
     let performedWorkout: String
     let workoutTime: Int
     let workoutIntensity: Int
-    let workoutPicture: String?
+    var workoutPicture: String?
     let calorieBurned: Int
+}
+
+// MARK: - 운동 사진 출력
+struct ExerciseAlbum: Decodable {
+    var lastPage: Int
+    var pictures: [ExerciseListModel]
 }

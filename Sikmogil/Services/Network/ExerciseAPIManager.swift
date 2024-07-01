@@ -51,7 +51,7 @@ class ExerciseAPIManager {
             "performedWorkout": exerciseList.performedWorkout,
             "workoutTime": exerciseList.workoutTime,
             "workoutIntensity": exerciseList.workoutIntensity,
-            //                "workoutPicture": exerciseList.workoutPicture,(사진 추가시 사용할 예정)
+            "workoutPicture": exerciseList.workoutPicture ?? "", // (사진 추가시 사용할 예정)
             "calorieBurned": exerciseList.calorieBurned
             
         ]
@@ -146,10 +146,14 @@ class ExerciseAPIManager {
     }
     
     // MARK: - 운동 사진 출력
-    func getExercisePicture(completion: @escaping (Result<[ExerciseListModel], Error>) -> Void) {
+    func getExercisePicture(page: Int, completion: @escaping (Result<ExerciseAlbum, Error>) -> Void) {
         let url = "\(baseURL)/api/workoutLog/findWorkoutPictures"
         
-        session.request(url, method: .get).validate(statusCode: 200..<300).responseDecodable(of: [ExerciseListModel].self, emptyResponseCodes: [200]) { response in
+        let parameters: Parameters = [
+            "page": page
+        ]
+
+        session.request(url, parameters: parameters, method: .get).validate(statusCode: 200..<300).responseDecodable(of: [ExerciseListModel].self, emptyResponseCodes: [200]) { response in
             switch response.result {
             case .success(let data):
                 print("getExercisePicture success")

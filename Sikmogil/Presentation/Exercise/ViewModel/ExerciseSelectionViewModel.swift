@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 import Combine
 
 class ExerciseSelectionViewModel {
@@ -14,6 +15,8 @@ class ExerciseSelectionViewModel {
     @Published var selectedTime: String?
     @Published var selectedIntensity: Int?
     @Published var expectedCalories: Int = 0
+    @Published var selectedImageView: UIImage?
+    @Published var uploadedImageURL: String?
     
     private var cancellables = Set<AnyCancellable>()
     
@@ -92,8 +95,35 @@ class ExerciseSelectionViewModel {
             performedWorkout: selectedExercise ?? "",
             workoutTime: Int(selectedTime?.dropLast(1) ?? "0") ?? 0, // ex) "30분" -> 30
             workoutIntensity: selectedIntensity ?? 0,
-            workoutPicture: "",
+            workoutPicture: uploadedImageURL ?? "",
             calorieBurned: expectedCalories
         )
+    }
+    
+    
+    // 이미지 업로드 메서드
+    func uploadExerciseImage(image: UIImage, directory: String, completion: @escaping (Result<String, Error>) -> Void) {
+        ImageAPIManager.shared.uploadImage(directory: directory, images: [image]) { result in
+            switch result {
+            case .success(let imageModel):
+                if let firstImageUrl = imageModel.data.first {
+                    completion(.success(firstImageUrl)) // 첫 번째 이미지의 URL 반환
+                }
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    // 운동 리스트 데이터 추가 메서드
+    func addExerciseListData(exerciseDay: String, exerciseList: ExerciseListModel, completion: @escaping (Result<Void, Error>) -> Void) {
+        ExerciseAPIManager.shared.addExerciseListData(exerciseDay: exerciseDay, exerciseList: exerciseList) { result in
+            switch result {
+            case .success:
+                completion(.success(()))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
     }
 }
