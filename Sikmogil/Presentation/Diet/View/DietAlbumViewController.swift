@@ -67,6 +67,11 @@ class DietAlbumViewController: UIViewController, UINavigationControllerDelegate 
         navigationController?.navigationBar.isHidden = false
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.navigationBar.isHidden = false
+    }
+    
     // MARK: - Setup Methods
     private func setupViews() {
         view.addSubviews(albumTitleLabel, albumTitleSubLabel, albumCollectionView, albumAddPhotoButton)

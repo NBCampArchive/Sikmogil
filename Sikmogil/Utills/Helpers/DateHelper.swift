@@ -27,10 +27,22 @@ class DateHelper {
         return dateFormatter.string(from: date)
     }
     
-    // 서버에서 받은 문자열을 Date로 변환 (예제: "2024-06-02T14:30:00Z")
+    // 서버에서 받은 문자열을 Date로 변환 (예제: "2024-07-01T13:37:51.983961464")
     func dateFromServerString(_ dateString: String) -> Date? {
-        let dateFormatter = ISO8601DateFormatter()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS"
+        dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
         return dateFormatter.date(from: dateString)
+    }
+    
+    func formatServerDateYMD(from dateString: String) -> String? {
+        guard let date = dateFromServerString(dateString) else { return nil }
+        return formatDateToYearMonthDay(date)
+    }
+    
+    func formatServerDateYMDHM(from dateString: String) -> String? {
+        guard let date = dateFromServerString(dateString) else { return nil }
+        return formatDateToYearMonthDayHourMinute(date)
     }
 }
 

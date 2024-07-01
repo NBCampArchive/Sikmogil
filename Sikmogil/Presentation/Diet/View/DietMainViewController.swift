@@ -177,6 +177,12 @@ class DietMainViewController: UIViewController {
         waterAddTabButton.addTarget(self, action: #selector(showWaterBottomSheet), for: .touchUpInside)
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        navigationController?.navigationBar.isHidden = true
+    }
+    
     // MARK: - Setup Methods
     private func setupViews() {
         view.addSubview(scrollView)
