@@ -17,7 +17,7 @@ class ExerciseAlbumViewController: UIViewController {
     let albumTitleLabel = UILabel().then {
         $0.text = "운동 앨범"
         $0.textColor = .appBlack
-        $0.font = Suite.bold.of(size: 28)
+        $0.font = Suite.bold.of(size: 24)
         $0.textAlignment = .left
     }
     

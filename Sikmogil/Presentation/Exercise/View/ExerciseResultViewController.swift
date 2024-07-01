@@ -54,7 +54,7 @@ class ExerciseResultViewController: UIViewController, FloatingPanelControllerDel
     }
 
     private let progressLabel = UILabel().then {
-        $0.textColor = .appDarkGray
+        $0.textColor = .appDeepDarkGray
         $0.font = Suite.semiBold.of(size: 20)
         $0.numberOfLines = 2
         $0.textAlignment = .center
@@ -74,8 +74,8 @@ class ExerciseResultViewController: UIViewController, FloatingPanelControllerDel
 
     private let exerciseLabel = UILabel().then {
         $0.text = "운동 이름"
-        $0.font = Suite.medium.of(size: 18)
-        $0.textColor = .appDarkGray
+        $0.font = Suite.semiBold.of(size: 18)
+        $0.textColor = .appDeepDarkGray
     }
 
     private let verticalLine = UIView().then {
@@ -84,12 +84,12 @@ class ExerciseResultViewController: UIViewController, FloatingPanelControllerDel
 
     private let timeStackView = UIStackView().then {
         $0.axis = .vertical
-        $0.spacing = 4
+        $0.spacing = 6
     }
 
     private let kcalStackView = UIStackView().then {
         $0.axis = .vertical
-        $0.spacing = 4
+        $0.spacing = 6
     }
 
     private let timeLabel = UILabel().then {
@@ -132,7 +132,7 @@ class ExerciseResultViewController: UIViewController, FloatingPanelControllerDel
     
     private let addButton = UIButton().then {
         $0.setTitle("추가하기", for: .normal)
-        $0.titleLabel?.font = Suite.bold.of(size: 22)
+        $0.titleLabel?.font = Suite.bold.of(size: 18)
         $0.tintColor = .white
         $0.backgroundColor = .appBlack
         $0.layer.cornerRadius = 16
@@ -304,7 +304,7 @@ class ExerciseResultViewController: UIViewController, FloatingPanelControllerDel
             $0.leading.equalTo(photoButton.snp.trailing).offset(16)
             // 버튼 히든 제약조건
 //            $0.leading.equalToSuperview().offset(16)
-            $0.bottom.equalTo(view.safeAreaLayoutGuide)
+            $0.bottom.equalTo(view.safeAreaLayoutGuide).inset(16)
             $0.height.equalTo(48)
         }
     }
