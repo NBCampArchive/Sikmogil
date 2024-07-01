@@ -37,7 +37,6 @@
 		B52001B22C1217DA0083CBDF /* WaveProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001B12C1217DA0083CBDF /* WaveProgressView.swift */; };
 		B52001B62C12F4570083CBDF /* StepsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001B52C12F4570083CBDF /* StepsViewController.swift */; };
 		B52001BB2C1325110083CBDF /* BoardListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001BA2C1325110083CBDF /* BoardListViewModel.swift */; };
-		B52001BD2C15A9860083CBDF /* BoardListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001BC2C15A9860083CBDF /* BoardListViewController.swift */; };
 		B52001BF2C15AC1E0083CBDF /* ExerciseAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001BE2C15AC1E0083CBDF /* ExerciseAPIManager.swift */; };
 		B52001C12C15ADA50083CBDF /* ExerciseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001C02C15ADA50083CBDF /* ExerciseModel.swift */; };
 		B52001D02C171B8C0083CBDF /* FloatingPanelControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52001C22C171B8C0083CBDF /* FloatingPanelControllerDelegate.swift */; };
@@ -128,6 +127,7 @@
 		B5825BAF2C219FE500ADAA66 /* CustomSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5825BAE2C219FE500ADAA66 /* CustomSegmentedControl.swift */; };
 		B5AD4FB22C327C2300AA6695 /* BoardAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5AD4FB12C327C2300AA6695 /* BoardAPIManager.swift */; };
 		B5AD4FB42C327CBC00AA6695 /* BoardListResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5AD4FB32C327CBC00AA6695 /* BoardListResponseModel.swift */; };
+		B5AD4FB72C32BB5300AA6695 /* BoardListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5AD4FB62C32BB5300AA6695 /* BoardListCell.swift */; };
 		B5CBB2102C2D0EE000C672DB /* TokenStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CBB20F2C2D0EE000C672DB /* TokenStorage.swift */; };
 		B5CBB2122C2D12F300C672DB /* AuthInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CBB2112C2D12F300C672DB /* AuthInterceptor.swift */; };
 		CA13FDE62C22E483007B3DBE /* BreakfastTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA13FDE52C22E483007B3DBE /* BreakfastTableViewCell.swift */; };
@@ -188,7 +188,6 @@
 		B52001B12C1217DA0083CBDF /* WaveProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaveProgressView.swift; sourceTree = "<group>"; };
 		B52001B52C12F4570083CBDF /* StepsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StepsViewController.swift; sourceTree = "<group>"; };
 		B52001BA2C1325110083CBDF /* BoardListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardListViewModel.swift; sourceTree = "<group>"; };
-		B52001BC2C15A9860083CBDF /* BoardListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardListViewController.swift; sourceTree = "<group>"; };
 		B52001BE2C15AC1E0083CBDF /* ExerciseAPIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseAPIManager.swift; sourceTree = "<group>"; };
 		B52001C02C15ADA50083CBDF /* ExerciseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseModel.swift; sourceTree = "<group>"; };
 		B52001C22C171B8C0083CBDF /* FloatingPanelControllerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatingPanelControllerDelegate.swift; sourceTree = "<group>"; };
@@ -265,6 +264,7 @@
 		B5825BAE2C219FE500ADAA66 /* CustomSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSegmentedControl.swift; sourceTree = "<group>"; };
 		B5AD4FB12C327C2300AA6695 /* BoardAPIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardAPIManager.swift; sourceTree = "<group>"; };
 		B5AD4FB32C327CBC00AA6695 /* BoardListResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardListResponseModel.swift; sourceTree = "<group>"; };
+		B5AD4FB62C32BB5300AA6695 /* BoardListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardListCell.swift; sourceTree = "<group>"; };
 		B5CBB20F2C2D0EE000C672DB /* TokenStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenStorage.swift; sourceTree = "<group>"; };
 		B5CBB2112C2D12F300C672DB /* AuthInterceptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthInterceptor.swift; sourceTree = "<group>"; };
 		CA13FDE52C22E483007B3DBE /* BreakfastTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreakfastTableViewCell.swift; sourceTree = "<group>"; };
@@ -398,23 +398,6 @@
 				B52001F12C1DBAF70083CBDF /* CalendarViewModel.swift */,
 			);
 			path = ViewModel;
-			sourceTree = "<group>";
-		};
-		B52001B72C1324EE0083CBDF /* Board */ = {
-			isa = PBXGroup;
-			children = (
-				B52001B92C1325010083CBDF /* ViewModel */,
-				B52001B82C1324FC0083CBDF /* View */,
-			);
-			path = Board;
-			sourceTree = "<group>";
-		};
-		B52001B82C1324FC0083CBDF /* View */ = {
-			isa = PBXGroup;
-			children = (
-				B52001BC2C15A9860083CBDF /* BoardListViewController.swift */,
-			);
-			path = View;
 			sourceTree = "<group>";
 		};
 		B52001B92C1325010083CBDF /* ViewModel */ = {
@@ -584,7 +567,6 @@
 				62578CD82C0F3B16005035BB /* Main */,
 				B52001CF2C171B8C0083CBDF /* Diet */,
 				547A1BAA2C0DA9E8000A16BF /* Profile */,
-				B52001B72C1324EE0083CBDF /* Board */,
 				B54AC00F2C10549A002E89DC /* Onboarding */,
 				B54ABFEF2C0DE020002E89DC /* Login */,
 				B54ABFEA2C0D6B8B002E89DC /* TabBar */,
@@ -808,9 +790,19 @@
 		B5825BAB2C219C0A00ADAA66 /* Board */ = {
 			isa = PBXGroup;
 			children = (
-				B5825BAC2C219C2B00ADAA66 /* BoardMainViewController.swift */,
+				B52001B92C1325010083CBDF /* ViewModel */,
+				B5AD4FB52C32B67C00AA6695 /* View */,
 			);
 			path = Board;
+			sourceTree = "<group>";
+		};
+		B5AD4FB52C32B67C00AA6695 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				B5825BAC2C219C2B00ADAA66 /* BoardMainViewController.swift */,
+				B5AD4FB62C32BB5300AA6695 /* BoardListCell.swift */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 		F3094EC22C0DB1730099DE2C /* Cell */ = {
@@ -982,6 +974,7 @@
 				B52001E22C1897C20083CBDF /* DietModel.swift in Sources */,
 				F3094EC62C0E40040099DE2C /* ExerciseSelectionViewController.swift in Sources */,
 				CACA65C62C1B5CE20030D8D5 /* FoodDbAPIManager.swift in Sources */,
+				B5AD4FB72C32BB5300AA6695 /* BoardListCell.swift in Sources */,
 				B52001D82C171B8C0083CBDF /* WaterViewModel.swift in Sources */,
 				548951562C1C8370004EA44A /* NotificationHelper.swift in Sources */,
 				B52001D82C171B8C0083CBDF /* WaterViewModel.swift in Sources */,
@@ -1016,7 +1009,6 @@
 				B54ABFE92C0D69CD002E89DC /* Font.swift in Sources */,
 				B54AC00E2C105475002E89DC /* UserProfile.swift in Sources */,
 				546285CC2C1E4499002247BB /* ProfileViewModel.swift in Sources */,
-				B52001BD2C15A9860083CBDF /* BoardListViewController.swift in Sources */,
 				B54ABFB82C0CB595002E89DC /* Model.swift in Sources */,
 				62578CE02C106715005035BB /* WeightRecordFloatingViewController.swift in Sources */,
 				547A1BAC2C0DAA78000A16BF /* ProfileViewController.swift in Sources */,
