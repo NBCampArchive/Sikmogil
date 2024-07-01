@@ -132,7 +132,7 @@ class ExerciseResultViewController: UIViewController, FloatingPanelControllerDel
     
     private let addButton = UIButton().then {
         $0.setTitle("추가하기", for: .normal)
-        $0.titleLabel?.font = Suite.bold.of(size: 20)
+        $0.titleLabel?.font = Suite.bold.of(size: 22)
         $0.tintColor = .white
         $0.backgroundColor = .appBlack
         $0.layer.cornerRadius = 16
@@ -284,18 +284,19 @@ class ExerciseResultViewController: UIViewController, FloatingPanelControllerDel
         }
         
         contentView.snp.makeConstraints {
-            $0.bottom.equalTo(resultView.snp.bottom).offset(100)
+            $0.bottom.equalTo(resultView.snp.bottom).offset(60)
         }
         
         photoButton.snp.makeConstraints {
             $0.leading.equalToSuperview().offset(16)
-            $0.width.height.equalTo(60)
+            $0.height.equalTo(48)
+            $0.width.equalTo(52)
             $0.centerY.equalTo(addButton)
         }
         
         photoIcon.snp.makeConstraints {
             $0.centerX.centerY.equalToSuperview()
-            $0.width.height.equalTo(36)
+            $0.width.height.equalTo(32)
         }
         
         addButton.snp.makeConstraints {
@@ -304,7 +305,7 @@ class ExerciseResultViewController: UIViewController, FloatingPanelControllerDel
             // 버튼 히든 제약조건
 //            $0.leading.equalToSuperview().offset(16)
             $0.bottom.equalTo(view.safeAreaLayoutGuide)
-            $0.height.equalTo(60)
+            $0.height.equalTo(48)
         }
     }
     
@@ -318,7 +319,7 @@ class ExerciseResultViewController: UIViewController, FloatingPanelControllerDel
         self.present(recodingPhotoPanel, animated: true)
     }
     
-    // TODO: - NVActivityIndicatorView, 추가 메서드 분리
+    // TODO: - NVActivityIndicatorView, 추가 메서드 분리, 중복으로 누를 때!
     @objc private func addButtonTapped() {
         var exerciseData = viewModel.saveExerciseData()
         let day = DateHelper.shared.formatDateToYearMonthDay(Date())
