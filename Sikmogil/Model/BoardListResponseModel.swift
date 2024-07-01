@@ -21,28 +21,16 @@ struct BoardData: Codable {
 
 // MARK: - BoardInfoResDtos
 struct BoardInfoResDtos: Codable {
-    let totalPages: Int
-    let totalElements: Int
-    let pageable: Pageable
-    let size: Int
     let content: [BoardContent]
+    let page: Page
+}
+
+// MARK: - Page
+struct Page: Codable {
+    let size: Int
     let number: Int
-    let sort: Sort
-    let numberOfElements: Int
-    let first, last, empty: Bool
-}
-
-// MARK: - Pageable
-struct Pageable: Codable {
-    let paged: Bool
-    let pageNumber, pageSize, offset: Int
-    let sort: Sort
-    let unpaged: Bool
-}
-
-// MARK: - Sort
-struct Sort: Codable {
-    let sorted, empty, unsorted: Bool
+    let totalElements: Int
+    let totalPages: Int
 }
 
 // MARK: - BoardContent
@@ -54,7 +42,7 @@ struct BoardContent: Codable {
     let isLike: Bool
     let commentCount: Int
     let nickname, date: String
-    let comments: [Comment]
+    let comments: [Comment]?
 }
 
 // MARK: - Comment
