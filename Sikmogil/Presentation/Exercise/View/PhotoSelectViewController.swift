@@ -96,7 +96,24 @@ class PhotoSelectViewController: UIViewController {
     }
     
     @objc private func deleteButtonTapped() {
-        // TODO: - 이미지 삭제 로직 구현
-        print("삭제 버튼")
-    }
+           let alertController = UIAlertController(title: "사진 삭제", message: "정말 삭제하시겠어요?", preferredStyle: .alert)
+           
+           let cancelAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
+           let deleteAction = UIAlertAction(title: "삭제", style: .destructive) { [weak self] _ in
+               self?.deletePhoto()
+           }
+           
+           alertController.addAction(cancelAction)
+           alertController.addAction(deleteAction)
+           
+           present(alertController, animated: true, completion: nil)
+       }
+       
+       private func deletePhoto() {
+           // TODO: - 이미지 삭제 로직 구현
+           print("이미지 삭제됨")
+           
+           // 삭제 후 이전 화면으로 돌아가기
+           navigationController?.popViewController(animated: true)
+       }
 }
