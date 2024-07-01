@@ -23,7 +23,7 @@ class ExerciseAlbumCell: UICollectionViewCell {
     
     let dataLabel = UILabel().then {
         $0.text = "날짜"
-        $0.textColor = .white
+        $0.textColor = .appLightGray
         $0.font = Suite.bold.of(size: 12)
         $0.textAlignment = .left
     }
@@ -57,7 +57,7 @@ class ExerciseAlbumCell: UICollectionViewCell {
         }
     }
     
-    func configure(with url: String) {
+    func configure(with url: String, date: String) {
         guard let imageURL = URL(string: url) else {
             self.imageView.image = nil
             return
@@ -71,5 +71,7 @@ class ExerciseAlbumCell: UICollectionViewCell {
                 .transition(.fade(0.5))
             ],
             progressBlock: nil)
+        
+        self.dataLabel.text = date
     }
 }

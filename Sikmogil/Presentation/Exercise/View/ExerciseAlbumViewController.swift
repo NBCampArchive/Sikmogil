@@ -103,7 +103,7 @@ extension ExerciseAlbumViewController: UICollectionViewDataSource {
         }
         
         let exercisePicture = viewModel.exercisePictures[indexPath.item]
-        cell.configure(with: exercisePicture.workoutPicture ?? "")
+        cell.configure(with: exercisePicture.workoutPicture ?? "", date: exercisePicture.date)
         cell.backgroundColor = .appLightGray
         return cell
     }
