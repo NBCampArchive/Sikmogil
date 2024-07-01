@@ -368,6 +368,14 @@ class DietMainViewController: UIViewController {
             let elapsedTime = Date().timeIntervalSince(startTime)
             print("타이머 정지 시간: \(Date())") // 디버깅용 print문
             print("경과 시간: \(elapsedTime)초") // 디버깅용 print문
+            
+            let hours = Int(elapsedTime) / 3600
+            let minutes = (Int(elapsedTime) % 3600) / 60
+            let alertMessage = String(format: "%d시간 %d분 동안 공복을 유지했습니다.", hours, minutes)
+            
+            let alert = UIAlertController(title: "공복 타이머 종료", message: alertMessage, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
+            present(alert, animated: true, completion: nil)
         }
         
         // 공복 알림 제거
@@ -417,7 +425,7 @@ class DietMainViewController: UIViewController {
             return
         }
         
-        let alert = UIAlertController(title: "아침 식사가 처음으로 추가되었습니다.", message: "공복 타이머를 멈추시겠습니까?", preferredStyle: .alert)
+        let alert = UIAlertController(title: "오늘의 식사가 처음으로 추가되었습니다.", message: "공복 타이머를 멈추시겠습니까?", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "네", style: .default, handler: { _ in
             self.startStopButtonTapped()
         }))
