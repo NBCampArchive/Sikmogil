@@ -195,7 +195,7 @@ class MainViewController: UIViewController {
         }
         
         goalStackView.snp.makeConstraints {
-            $0.top.equalToSuperview()
+            $0.top.equalToSuperview().offset(32)
             $0.leading.equalToSuperview().offset(16)
         }
         
@@ -281,7 +281,13 @@ class MainViewController: UIViewController {
                 self?.dateProgressView.progress = progress
                 if progress * 100 > 20{
                     self?.percentView.isHidden = false
-                    self?.percentLabel.text = String(format: "%.0f%%", progress * 100)
+                    let progressPercentage = progress * 100
+                    let displayedPercentage = progressPercentage > 100 ? 100 : progressPercentage
+                    self?.percentLabel.text = String(format: "%.0f%%", displayedPercentage)
+                    if displayedPercentage == 100 {
+                        let alert = UIAlertController(title: "목표 기간 종료!", message: "설정해둔 목표기간이 종료되었습니다.\n새로운 목표를 포함한 새로운 기간을 설정해주세요!", preferredStyle: .alert)
+                        self?.present(alert, animated: true, completion: nil)
+                    }
                 }
                
             }
@@ -293,13 +299,20 @@ class MainViewController: UIViewController {
                 if remainingDays == 0 {
                     let fullText = "목표일 D-day!"
                     let changeText = "D-day!"
-                    let color = UIColor.appYellow
-                    self?.weightLabel.setAttributedText(fullText: fullText, changeText: changeText, color: color, font: Suite.semiBold.of(size: 16))
-                } else {
+                    let color = UIColor.appDeepDarkGray
+                    self?.weightLabel.setAttributedText(fullText: fullText, changeText: changeText, color: color, font: Suite.heavy.of(size: 16))
+                }
+                if remainingDays > 0 {
                     let fullText = "목표까지 \(remainingDays)일!"
                     let changeText = "\(remainingDays)일!"
-                    let color = UIColor.appYellow
-                    self?.weightLabel.setAttributedText(fullText: fullText, changeText: changeText, color: color, font: Suite.semiBold.of(size: 16))
+                    let color = UIColor.appDeepDarkGray
+                    self?.weightLabel.setAttributedText(fullText: fullText, changeText: changeText, color: color, font: Suite.heavy.of(size: 16))
+                }
+                if remainingDays < 0 {
+                    let fullText = "목표 기간이 끝났습니다 새로 설정해주세요!"
+                    let changeText = "새로 설정해주세요!"
+                    let color = UIColor.appDeepDarkGray
+                    self?.weightLabel.setAttributedText(fullText: fullText, changeText: changeText, color: color, font: Suite.heavy.of(size: 16))
                 }
             }
             .store(in: &cancellables)
@@ -325,7 +338,16 @@ class MainViewController: UIViewController {
     private func updateUI(with targetModel: TargetModel?) {
         guard let targetModel = targetModel else { return }
         weightNowLabel.text = "현재 체중 \(targetModel.weekWeights.first?.weight ?? Double(targetModel.weight) ?? 0.0) Kg"
-        weightToGoalLabel.text = "목표까지 \((Double(targetModel.targetWeight) ?? 0.0) - Double(targetModel.weekWeights.first?.weight ?? 0.0)) Kg"
+        let currentWeight = Double((targetModel.weekWeights.first?.weight ?? Double(targetModel.weight)) ?? 0.0)
+        let targetWeight = Double(targetModel.targetWeight) ?? 0.0
+        let difference = targetWeight - currentWeight
+
+        let formattedDifference = difference > 0 ? String(format: "+%.1f", difference) : String(format: "%.1f", difference)
+        let fullText = "목표까지 \(formattedDifference) Kg"
+        let changeText = "\(formattedDifference) Kg"
+        let color = UIColor.appDeepDarkGray
+        self.weightToGoalLabel.setAttributedText(fullText: fullText, changeText: changeText, color: color, font: Suite.heavy.of(size: 22))
+
         progressLabel.text = "\(targetModel.createDate) ~ \(targetModel.targetDate)"
     }
     
@@ -345,7 +367,7 @@ class MainViewController: UIViewController {
         graph.xAxis.valueFormatter = IndexAxisValueFormatter(values: dates)
         graph.xAxis.labelPosition = .bottom
         graph.xAxis.granularity = 1
-        graph.xAxis.labelTextColor = .black
+        graph.xAxis.labelTextColor = .appBlack
         graph.xAxis.labelFont = Suite.semiBold.of(size: 10)
         
         let data = LineChartData(dataSet: dataSet)

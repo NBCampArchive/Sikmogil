@@ -64,7 +64,7 @@ class ExerciseMenuViewController: UIViewController {
         }
 
         headerStackView.snp.makeConstraints {
-            $0.top.equalToSuperview()
+            $0.top.equalToSuperview().offset(32)
             $0.leading.equalToSuperview().offset(16)
             $0.height.equalTo(28)
         }

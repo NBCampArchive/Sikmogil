@@ -90,16 +90,12 @@ class StepsViewController: UIViewController {
         super.viewDidLoad()
         setupViews()
         setupConstraints()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
-        // HealthKit 권한 요청 후 완료 시 걸음 데이터를 업데이트
-        requestHealthKitAuthorization { [weak self] authorized in
-            if authorized {
-                self?.updateStepsData()
-            } else {
-                // 권한이 거부된 경우 처리
-                print("HealthKit authorization denied")
-            }
-        }
+        updateStepsData()
     }
     
     // MARK: - Steps Data

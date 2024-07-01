@@ -67,6 +67,8 @@ class ExerciseViewController: UIViewController {
         $0.tintColor = .white
         $0.backgroundColor = .appBlack
         $0.layer.cornerRadius = 16
+        // 앨범 버튼 히든 처리
+        $0.isHidden = true
     }
 
     private let startExerciseButton = UIButton().then {
@@ -178,7 +180,7 @@ class ExerciseViewController: UIViewController {
         
         view.addSubviews(scrollView, startExerciseButton)
         scrollView.addSubview(contentView)
-        contentView.addSubviews(descriptionLabel, progressView, historyLabel, tableView)
+        contentView.addSubviews(descriptionLabel, progressView, historyLabel, albumButton, tableView)
         progressView.addSubviews(customCircularProgressBar, exerciseProgressBarIcon, progressLabel)
     }
     
@@ -223,12 +225,12 @@ class ExerciseViewController: UIViewController {
             $0.top.equalTo(progressView.snp.bottom)
         }
         
-//        albumButton.snp.makeConstraints {
-//            $0.trailing.equalTo(contentView).inset(16)
-//            $0.width.equalTo(90)
-//            $0.height.equalTo(30)
-//            $0.centerY.equalTo(historyLabel)
-//        }
+        albumButton.snp.makeConstraints {
+            $0.trailing.equalTo(contentView).inset(16)
+            $0.width.equalTo(86)
+            $0.height.equalTo(30)
+            $0.centerY.equalTo(historyLabel)
+        }
         
         tableView.snp.makeConstraints {
             $0.top.equalTo(historyLabel.snp.bottom).offset(16)
@@ -260,6 +262,7 @@ class ExerciseViewController: UIViewController {
     private func setupButtons() {
         startExerciseButton.addTarget(self, action: #selector(startExerciseButtonTapped), for: .touchUpInside)
         stepsMenuButton.addTarget(self, action: #selector(stepsMenuButtonTapped), for: .touchUpInside)
+        albumButton.addTarget(self, action: #selector(albumButtonTapped), for: .touchUpInside)
     }
     
     @objc private func startExerciseButtonTapped() {
@@ -271,6 +274,11 @@ class ExerciseViewController: UIViewController {
     @objc private func stepsMenuButtonTapped() {
         let stepsVC = StepsViewController()
         navigationController?.pushViewController(stepsVC, animated: true)
+    }
+    
+    @objc private func albumButtonTapped() {
+        let albumVC = ExerciseAlbumViewController()
+        navigationController?.pushViewController(albumVC, animated: true)
     }
 }
 
