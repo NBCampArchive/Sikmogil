@@ -63,7 +63,7 @@ class BoardMainViewController: UIViewController {
         setupTableView()
         bindViewModel()
         setupButton()
-//        viewModel.fetchBoardList(category: categoryForIndex(currentCategoryIndex), reset: true)
+        viewModel.fetchBoardList(category: categoryForIndex(currentCategoryIndex), reset: true)
     }
     
     private func setupButton() {
