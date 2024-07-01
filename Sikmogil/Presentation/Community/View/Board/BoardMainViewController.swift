@@ -12,34 +12,38 @@ import Combine
 
 class BoardMainViewController: UIViewController {
     
-    //MARK: - Properties
+    // MARK: - Properties
     private var cancellables = Set<AnyCancellable>()
     
     private let customSegmentedControl = CustomSegmentedControl(frame: .zero, buttonTitles: ["전체", "다이어트", "운동", "자유"])
-    //        .then{
-    //        $0.selectedSegmentIndex = 0
-    //    }
     
-    
-    private let pageViewController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal).then {
-        $0.view.backgroundColor = .clear
+    private let tableView = UITableView().then {
+        $0.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
     }
+    
+    private var currentCategoryIndex: Int = 0 {
+        didSet {
+            fetchDataForCategory(index: currentCategoryIndex)
+        }
+    }
+    
+    private var data: [String] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setupViews()
         setupConstraints()
-        setupPageViewController()
+        setupTableView()
+        fetchDataForCategory(index: 0)
     }
     
     private func setupViews() {
         view.addSubview(customSegmentedControl)
-        view.addSubview(pageViewController.view)
+        view.addSubview(tableView)
         customSegmentedControl.onSelectSegment = { [weak self] index in
             self?.segmentChanged(index: index)
         }
-        //        customSegmentedControl.addTarget(self, action: #selector(segmentChanged), for: .valueChanged)
     }
     
     private func setupConstraints() {
@@ -48,68 +52,72 @@ class BoardMainViewController: UIViewController {
             $0.leading.trailing.equalToSuperview().inset(16)
         }
         
-        pageViewController.view.snp.makeConstraints {
+        tableView.snp.makeConstraints {
             $0.top.equalTo(customSegmentedControl.snp.bottom).offset(10)
             $0.leading.trailing.bottom.equalToSuperview()
         }
-        
     }
     
-    private func setupPageViewController() {
-        pageViewController.delegate = self
-        pageViewController.dataSource = self
+    private func setupTableView() {
+        tableView.delegate = self
+        tableView.dataSource = self
         
-        addChild(pageViewController)
-        pageViewController.didMove(toParent: self)
+        let swipeLeft = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipe(_:)))
+        swipeLeft.direction = .left
+        tableView.addGestureRecognizer(swipeLeft)
         
-        
-        // 초기 페이지 설정
-        if let firstVC = viewControllerAtIndex(index: 0) {
-            pageViewController.setViewControllers([firstVC], direction: .forward, animated: true, completion: nil)
-        }
+        let swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipe(_:)))
+        swipeRight.direction = .right
+        tableView.addGestureRecognizer(swipeRight)
     }
     
     private func segmentChanged(index: Int) {
-        if let viewController = viewControllerAtIndex(index: index) {
-            let direction: UIPageViewController.NavigationDirection = index > (pageViewController.viewControllers?.first?.view.tag ?? 0) ? .forward : .reverse
-            pageViewController.setViewControllers([viewController], direction: direction, animated: true, completion: nil)
+        currentCategoryIndex = index
+        customSegmentedControl.setSelectedIndex(index: index)
+        customSegmentedControl.updateButtonSelection()
+    }
+    
+    @objc private func handleSwipe(_ gesture: UISwipeGestureRecognizer) {
+        if gesture.direction == .left {
+            if currentCategoryIndex < customSegmentedControl.buttonTitles.count - 1 {
+                currentCategoryIndex += 1
+                segmentChanged(index: currentCategoryIndex)
+            }
+        } else if gesture.direction == .right {
+            if currentCategoryIndex > 0 {
+                currentCategoryIndex -= 1
+                segmentChanged(index: currentCategoryIndex)
+            }
         }
     }
     
-    private func viewControllerAtIndex(index: Int) -> UIViewController? {
-        // 각 인덱스에 해당하는 뷰 컨트롤러 반환
+    private func fetchDataForCategory(index: Int) {
+        // 여기에 각 카테고리에 따른 데이터를 요청하고 tableView를 리로드하는 로직을 추가하세요.
+        // 예시 데이터:
         switch index {
         case 0:
-            return StepsViewController().then { $0.view.tag = 0 }
+            data = ["전체 항목 1", "전체 항목 2", "전체 항목 3"]
         case 1:
-            return ViewController().then { $0.view.tag = 1 }
+            data = ["다이어트 항목 1", "다이어트 항목 2", "다이어트 항목 3"]
         case 2:
-            return StepsViewController().then { $0.view.tag = 2 }
+            data = ["운동 항목 1", "운동 항목 2", "운동 항목 3"]
         case 3:
-            return ViewController().then { $0.view.tag = 3 }
+            data = ["자유 항목 1", "자유 항목 2", "자유 항목 3"]
         default:
-            return nil
+            data = []
         }
+        tableView.reloadData()
     }
 }
 
-extension BoardMainViewController: UIPageViewControllerDelegate, UIPageViewControllerDataSource {
-    func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
-        var index = viewController.view.tag
-        index -= 1
-        return viewControllerAtIndex(index: index)
+extension BoardMainViewController: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return data.count
     }
     
-    func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
-        var index = viewController.view.tag
-        index += 1
-        return viewControllerAtIndex(index: index)
-    }
-    
-    func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
-        if completed, let currentViewController = pageViewController.viewControllers?.first {
-            customSegmentedControl.setSelectedIndex(index: currentViewController.view.tag)
-            customSegmentedControl.updateButtonSelection()
-        }
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        cell.textLabel?.text = data[indexPath.row]
+        return cell
     }
 }
