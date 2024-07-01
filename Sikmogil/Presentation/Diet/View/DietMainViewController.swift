@@ -15,6 +15,7 @@ class DietMainViewController: UIViewController {
     var waterViewModel: WaterViewModel = WaterViewModel.shared
     var addMealViewModel: AddMealViewModel = AddMealViewModel.shared
     var dietViewModel = DietViewModel()
+    var floatingPanel: FloatingPanelController!
     
     private var cancellables = Set<AnyCancellable>()
     
@@ -60,6 +61,9 @@ class DietMainViewController: UIViewController {
         $0.textColor = .appDarkGray
         $0.font = Suite.semiBold.of(size: 16)
         $0.textAlignment = .center
+        $0.numberOfLines = 0
+        $0.lineBreakMode = .byWordWrapping
+        $0.preferredMaxLayoutWidth = 200
     }
     // 💦 Water
     let waterTitleView = UIView().then {
@@ -147,6 +151,9 @@ class DietMainViewController: UIViewController {
         
         setupViews()
         setupConstraints()
+        setupFloatingPanel()
+        
+        addMealViewModel.getDietListByDate(for: DateHelper.shared.formatDateToYearMonthDay(Date())) { _ in }
         
         view.backgroundColor = .white
         
@@ -184,17 +191,17 @@ class DietMainViewController: UIViewController {
     }
     
     private func setupConstraints() {
-        scrollView.snp.makeConstraints { make in
-            make.edges.equalTo(view.safeAreaLayoutGuide)
+        scrollView.snp.makeConstraints {
+            $0.edges.equalTo(view.safeAreaLayoutGuide)
         }
         contentView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
             make.width.equalToSuperview()
-            make.bottom.equalTo(fastingTimerTitleView.snp.bottom)
+            make.bottom.equalTo(fastingTimerStartStopButton.snp.bottom).offset(32)
         }
         // 🍳 Diet
         dietTitleView.snp.makeConstraints {
-            $0.top.equalToSuperview()
+            $0.top.equalToSuperview().offset(32)
             $0.leading.equalToSuperview().offset(16)
             $0.trailing.equalToSuperview().inset(16)
             $0.height.equalTo(384)
@@ -299,28 +306,27 @@ class DietMainViewController: UIViewController {
     }
     
     // MARK: - Actions
-    @objc func showDietBottomSheet() {
-        let floatingPanelController = FloatingPanelController()
-        floatingPanelController.delegate = self
-        
-        floatingPanelController.changePanelStyle()
-        
+    func setupFloatingPanel() {
+        floatingPanel = FloatingPanelController()
+        floatingPanel.layout = CustomFloatingPanelLayout()
+        floatingPanel.isRemovalInteractionEnabled = true
+        floatingPanel.changePanelStyle()
+        floatingPanel.delegate = self
+    }
+    
+    private func showBottomSheet(contentVC: UIViewController) {
+        floatingPanel.set(contentViewController: contentVC)
+        floatingPanel.addPanel(toParent: self)
+    }
+    
+    @objc private func showDietBottomSheet() {
         let contentVC = DietBottomSheetViewController()
-        floatingPanelController.set(contentViewController: contentVC)
-        
-        floatingPanelController.addPanel(toParent: self)
+        showBottomSheet(contentVC: contentVC)
     }
     
     @objc private func showWaterBottomSheet() {
-        let floatingPanelController = FloatingPanelController()
-        floatingPanelController.delegate = self
-        
-        floatingPanelController.changePanelStyle()
-        
         let contentVC = WaterBottomSheetViewController()
-        floatingPanelController.set(contentViewController: contentVC)
-        
-        floatingPanelController.addPanel(toParent: self)
+        showBottomSheet(contentVC: contentVC)
     }
     
     // MARK: - Timer Management
@@ -369,6 +375,7 @@ class DietMainViewController: UIViewController {
         
         UserDefaults.standard.removeObject(forKey: "startTime")
         updateTimer() // 타이머 리셋
+        fastingTimerInfoLabel.text = "공복시간을 측정하세요"
     }
     
     @objc private func updateTimer() {
@@ -457,7 +464,14 @@ class DietMainViewController: UIViewController {
             .sink { [weak self] totalCalorie, canEatCalorie in
                 print("총 칼로리 업데이트됨:", totalCalorie)
                 self?.dietKcalLabel.text = "\(totalCalorie) / \(canEatCalorie) Kcal"
-                let progress = canEatCalorie > 0 ? Double(totalCalorie) / Double(canEatCalorie) : 0.0
+                var progress: Double = 0.0
+                if canEatCalorie > 0 {
+                    if totalCalorie >= canEatCalorie {
+                        progress = 1.0
+                    } else {
+                        progress = Double(totalCalorie) / Double(canEatCalorie)
+                    }
+                }
                 self?.dietCircularProgressBar.progress = progress
                 if totalCalorie > canEatCalorie {
                     self?.dietInfoLabel.text = "오늘의 권장 칼로리 섭취량을 달성했어요."

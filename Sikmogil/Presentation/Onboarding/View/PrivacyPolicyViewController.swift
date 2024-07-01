@@ -72,7 +72,7 @@ class PrivacyPolicyViewController: UIViewController {
         #### **개인정보 보호책임자 작성**
         - <small>본 개인정보처리정책에 대해 궁금하신 사항이 있거나, 개인정보 처리절차에 대한 질문, 의견 또는 우려가 있을 경우 아래 연락처로 연락 주시기 바랍니다.
         
-        이메일: <a href="mailto:devpark435@gmail.com">devpark435@gmail.com</a></small>
+        이메일: <a href="mailto:sikmogilhealthcare@gmail.com">sikmogilhealthcare@gmail.com</a></small>
         """, css: """
         small {
             font-size: 14px;
@@ -80,7 +80,7 @@ class PrivacyPolicyViewController: UIViewController {
         """)
     }
     
-    private let nextButton = UIButton(type: .system).then {
+    let nextButton = UIButton(type: .system).then {
         $0.setTitle("동의", for: .normal)
         $0.setTitleColor(.white, for: .normal)
         $0.titleLabel?.font = Suite.bold.of(size: 22)

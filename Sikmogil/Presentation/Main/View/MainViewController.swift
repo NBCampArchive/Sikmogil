@@ -70,6 +70,7 @@ class MainViewController: UIViewController {
         $0.layer.borderWidth = 4
         $0.layer.cornerRadius = 20
         $0.layer.borderColor = UIColor(red: 1, green: 0.749, blue: 0, alpha: 1.0).cgColor
+        $0.isHidden = true
     }
     
     private let percentLabel = UILabel().then {
@@ -139,7 +140,7 @@ class MainViewController: UIViewController {
         
         view.backgroundColor = .white
         
-        viewModel.loadWeightData()
+//        viewModel.loadWeightData()
         bindViewModel()
         
         setupViews()
@@ -151,6 +152,11 @@ class MainViewController: UIViewController {
         
 //        calendarButton.addTarget(self, action: #selector(tapCalendarButton), for: .touchUpInside)
         recordButton.addTarget(self, action: #selector(tapRecordButton), for: .touchUpInside)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.loadWeightData()
     }
     
     private func setupViews() {
@@ -179,7 +185,7 @@ class MainViewController: UIViewController {
     
     private func setupConstraints() {
         scrollView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+            $0.edges.equalTo(view.safeAreaLayoutGuide)
         }
         
         scrollSubView.snp.makeConstraints {
@@ -189,7 +195,7 @@ class MainViewController: UIViewController {
         }
         
         goalStackView.snp.makeConstraints {
-            $0.top.equalToSuperview()
+            $0.top.equalToSuperview().offset(32)
             $0.leading.equalToSuperview().offset(16)
         }
         
@@ -273,14 +279,41 @@ class MainViewController: UIViewController {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] progress in
                 self?.dateProgressView.progress = progress
-                self?.percentLabel.text = String(format: "%.0f%%", progress * 100)
+                if progress * 100 > 20{
+                    self?.percentView.isHidden = false
+                    let progressPercentage = progress * 100
+                    let displayedPercentage = progressPercentage > 100 ? 100 : progressPercentage
+                    self?.percentLabel.text = String(format: "%.0f%%", displayedPercentage)
+                    if displayedPercentage == 100 {
+                        let alert = UIAlertController(title: "목표 기간 종료!", message: "설정해둔 목표기간이 종료되었습니다.\n새로운 목표를 포함한 새로운 기간을 설정해주세요!", preferredStyle: .alert)
+                        self?.present(alert, animated: true, completion: nil)
+                    }
+                }
+               
             }
             .store(in: &cancellables)
         
         viewModel.$remainingDays
             .receive(on: DispatchQueue.main)
             .sink { [weak self] remainingDays in
-                self?.weightLabel.text = "목표까지 남은기간 \(remainingDays + 1)일!"
+                if remainingDays == 0 {
+                    let fullText = "목표일 D-day!"
+                    let changeText = "D-day!"
+                    let color = UIColor.appDeepDarkGray
+                    self?.weightLabel.setAttributedText(fullText: fullText, changeText: changeText, color: color, font: Suite.heavy.of(size: 16))
+                }
+                if remainingDays > 0 {
+                    let fullText = "목표까지 \(remainingDays)일!"
+                    let changeText = "\(remainingDays)일!"
+                    let color = UIColor.appDeepDarkGray
+                    self?.weightLabel.setAttributedText(fullText: fullText, changeText: changeText, color: color, font: Suite.heavy.of(size: 16))
+                }
+                if remainingDays < 0 {
+                    let fullText = "목표 기간이 끝났습니다 새로 설정해주세요!"
+                    let changeText = "새로 설정해주세요!"
+                    let color = UIColor.appDeepDarkGray
+                    self?.weightLabel.setAttributedText(fullText: fullText, changeText: changeText, color: color, font: Suite.heavy.of(size: 16))
+                }
             }
             .store(in: &cancellables)
         
@@ -305,7 +338,16 @@ class MainViewController: UIViewController {
     private func updateUI(with targetModel: TargetModel?) {
         guard let targetModel = targetModel else { return }
         weightNowLabel.text = "현재 체중 \(targetModel.weekWeights.first?.weight ?? Double(targetModel.weight) ?? 0.0) Kg"
-        weightToGoalLabel.text = "목표까지 \((Double(targetModel.targetWeight) ?? 0.0) - Double(targetModel.weekWeights.first?.weight ?? 0.0)) Kg"
+        let currentWeight = Double((targetModel.weekWeights.first?.weight ?? Double(targetModel.weight)) ?? 0.0)
+        let targetWeight = Double(targetModel.targetWeight) ?? 0.0
+        let difference = targetWeight - currentWeight
+
+        let formattedDifference = difference > 0 ? String(format: "+%.1f", difference) : String(format: "%.1f", difference)
+        let fullText = "목표까지 \(formattedDifference) Kg"
+        let changeText = "\(formattedDifference) Kg"
+        let color = UIColor.appDeepDarkGray
+        self.weightToGoalLabel.setAttributedText(fullText: fullText, changeText: changeText, color: color, font: Suite.heavy.of(size: 22))
+
         progressLabel.text = "\(targetModel.createDate) ~ \(targetModel.targetDate)"
     }
     
@@ -325,13 +367,27 @@ class MainViewController: UIViewController {
         graph.xAxis.valueFormatter = IndexAxisValueFormatter(values: dates)
         graph.xAxis.labelPosition = .bottom
         graph.xAxis.granularity = 1
-        graph.xAxis.labelTextColor = .black
+        graph.xAxis.labelTextColor = .appBlack
         graph.xAxis.labelFont = Suite.semiBold.of(size: 10)
         
         let data = LineChartData(dataSet: dataSet)
         graph.data = data
         graph.notifyDataSetChanged()
     }
+    
+    func setupFloatingPanel() {
+        recodingWeightPanel = FloatingPanelController()
+        
+        let contentVC = WeightRecordFloatingViewController()
+        contentVC.viewModel = viewModel
+        recodingWeightPanel.set(contentViewController: contentVC)
+        
+        recodingWeightPanel.layout = CustomFloatingPanelLayout()
+        recodingWeightPanel.isRemovalInteractionEnabled = true
+        recodingWeightPanel.changePanelStyle()
+        recodingWeightPanel.delegate = self
+    }
+    
     
     @objc func tapCalendarButton() {
         let nextView = CalendarViewController()
@@ -340,7 +396,7 @@ class MainViewController: UIViewController {
     }
     
     @objc func tapRecordButton() {
-        self.present(recodingWeightPanel, animated: true)
+        recodingWeightPanel.addPanel(toParent: self)
     }
     
     // 키보드가 나타날 때 호출되는 메서드
@@ -359,18 +415,20 @@ class MainViewController: UIViewController {
 }
 
 extension MainViewController: FloatingPanelControllerDelegate {
+    func floatingPanelDidChangeState(_ vc: FloatingPanelController) {
+        if vc.state == .full || vc.state == .half {
+            tabBarController?.tabBar.isHidden = true
+            vc.backdropView.dismissalTapGestureRecognizer.isEnabled = false
+        } else {
+            tabBarController?.tabBar.isHidden = false
+            vc.backdropView.dismissalTapGestureRecognizer.isEnabled = true
+        }
+    }
     
-    func setupFloatingPanel() {
-        recodingWeightPanel = FloatingPanelController()
+    func floatingPanelDidRemove(_ vc: FloatingPanelController) {
+        tabBarController?.tabBar.isHidden = false
+        vc.backdropView.dismissalTapGestureRecognizer.isEnabled = true
         
-        let contentVC = WeightRecordFloatingViewController()
-        contentVC.viewModel = viewModel
-        recodingWeightPanel.set(contentViewController: contentVC)
-        
-        recodingWeightPanel.layout = CustomFloatingPanelLayout()
-        recodingWeightPanel.isRemovalInteractionEnabled = true
-        recodingWeightPanel.changePanelStyle()
-        recodingWeightPanel.delegate = self
     }
     
 }

@@ -10,8 +10,11 @@ import SnapKit
 import Then
 import AVFoundation
 import Photos
+import HealthKit
 
 class PermissionViewController: UIViewController {
+    
+    let healthStore = HKHealthStore()
     
     private let titleLabel = UILabel().then {
         $0.text = "앱 서비스 접근 권한 안내"
@@ -32,6 +35,7 @@ class PermissionViewController: UIViewController {
         ("알림", "푸시 알림 및 메시지 수신 안내를 위한 권한", "bell.badge.fill"),
         ("카메라", "식단, 운동 사진 촬영을 위한 권한", "camera.fill"),
         ("사진 라이브러리", "식단, 운동 사진 첨부를 위한 권한", "photo.fill"),
+        ("건강", "걸음 수 연동을 위한 권한", "heart.fill")
     ]
     
     private let infoLabel = UILabel().then {
@@ -76,6 +80,13 @@ class PermissionViewController: UIViewController {
         requestPhotoLibraryPermission()
         UNUserNotificationCenter.current().delegate = self
         requestNotificationPermission()
+        requestHealthKitAuthorization { granted in
+            if granted {
+                print("건강 권한 허용됨")
+            } else {
+                print("건강 권한 거부됨")
+            }
+        }
     }
     
     private func setupViews() {
@@ -171,12 +182,13 @@ class PermissionViewController: UIViewController {
     @objc func confirmButtonTapped() {
         let bottomTabBarController = BottomTabBarController()
         
-        let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as! SceneDelegate
-        sceneDelegate.window?.rootViewController = bottomTabBarController
-        sceneDelegate.window?.rootViewController?.view.alpha = 0
-        UIView.animate(withDuration: 1.5, animations: {
-            sceneDelegate.window?.rootViewController?.view.alpha = 1
-        })
+        if let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate,
+           let window = sceneDelegate.window {
+            UIView.transition(with: window, duration: 0.7, options: .transitionFlipFromRight, animations: {
+                window.rootViewController = bottomTabBarController
+            })
+            window.makeKeyAndVisible()
+        }
         
     }
 }
@@ -265,6 +277,27 @@ extension PermissionViewController {
             print("사진 접근 권한이 제한적으로 부여되었습니다.")
         @unknown default:
             fatalError("Unknown authorization status")
+        }
+    }
+}
+
+//MARK: - 건강 권한 요청
+extension PermissionViewController {
+    private func requestHealthKitAuthorization(completion: @escaping (Bool) -> Void) {
+        let stepCountType = HKQuantityType.quantityType(forIdentifier: .stepCount)!
+        let dataTypesToRead: Set<HKObjectType> = [stepCountType]
+        
+        healthStore.requestAuthorization(toShare: nil, read: dataTypesToRead) { (success, error) in
+            if success {
+                print("HealthKit authorization granted")
+                completion(true)
+            } else {
+                print("HealthKit authorization denied")
+                if let error = error {
+                    print(error.localizedDescription)
+                }
+                completion(false)
+            }
         }
     }
 }

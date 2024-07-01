@@ -9,7 +9,6 @@ import UIKit
 import SnapKit
 import Then
 import Combine
-import KeychainSwift
 import Kingfisher
 
 class ProfileViewController: UIViewController {
@@ -64,11 +63,11 @@ class ProfileViewController: UIViewController {
     let profileInfoView = ProfileInfoView()
 //    let profileTableView = ProfileTableView()
     
-    let logoutButton = UIButton().then {
-        $0.setTitle("로그아웃", for: .normal)
-        $0.setTitleColor(.appBlack, for: .normal)
-        $0.titleLabel?.font = Suite.bold.of(size: 16)
-    }
+//    let logoutButton = UIButton().then {
+//        $0.setTitle("로그아웃", for: .normal)
+//        $0.setTitleColor(.appBlack, for: .normal)
+//        $0.titleLabel?.font = Suite.bold.of(size: 16)
+//    }
     
     // MARK: - viewDidLoad
     override func viewDidLoad() {
@@ -78,7 +77,7 @@ class ProfileViewController: UIViewController {
         loadImage(from: viewModel.picture)
         
         settingsButton.addTarget(self, action: #selector(settingsButtonTapped(_:)), for: .touchUpInside)
-        logoutButton.addTarget(self, action: #selector(logoutButtonTapped(_:)), for: .touchUpInside)
+//        logoutButton.addTarget(self, action: #selector(logoutButtonTapped(_:)), for: .touchUpInside)
         
         profileImageView.layer.cornerRadius = 50
         profileImageView.layer.masksToBounds = true
@@ -93,7 +92,7 @@ class ProfileViewController: UIViewController {
         super.viewWillAppear(animated)
         viewModel.fetchUserProfile()
         setupBindings()
-        navigationController?.navigationBar.isHidden = true
+//        navigationController?.navigationBar.isHidden = true
     }
 
     // MARK: - Binding
@@ -140,7 +139,7 @@ class ProfileViewController: UIViewController {
         topBar.addSubview(profileLabel)
         topBar.addSubview(settingsButton)
         
-        [profileImageView, /*levelBadgeView,*/ nicknameLabel, profileInfoView,/* profileTableView,*/ logoutButton].forEach {
+        [profileImageView, /*levelBadgeView,*/ nicknameLabel, profileInfoView/* profileTableView,*/].forEach {
             contentView.addSubview($0)
         }
         
@@ -157,8 +156,11 @@ class ProfileViewController: UIViewController {
             $0.edges.equalTo(view.safeAreaLayoutGuide)
         }
         
+        scrollView.contentLayoutGuide.snp.makeConstraints {
+            $0.edges.equalTo(contentView)
+        }
+        
         contentView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
             $0.width.equalToSuperview()
         }
         
@@ -170,12 +172,12 @@ class ProfileViewController: UIViewController {
         
         profileLabel.snp.makeConstraints {
             $0.left.equalTo(topBar).offset(16)
-            $0.centerY.equalTo(topBar)
+            $0.top.equalToSuperview()
         }
         
         settingsButton.snp.makeConstraints {
             $0.right.equalTo(topBar).offset(-16)
-            $0.centerY.equalTo(topBar)
+            $0.top.equalToSuperview()
             $0.width.height.equalTo(24)
         }
         
@@ -199,6 +201,7 @@ class ProfileViewController: UIViewController {
             $0.left.equalTo(contentView).offset(16)
             $0.right.equalTo(contentView).offset(-16)
             $0.height.equalTo(100)
+            $0.bottom.equalToSuperview().offset(-30)
         }
         
 //        profileTableView.snp.makeConstraints {
@@ -207,13 +210,6 @@ class ProfileViewController: UIViewController {
 //            $0.right.equalTo(contentView).offset(-16)
 //            $0.height.equalTo(200)
 //        }
-        
-        logoutButton.snp.makeConstraints {
-            $0.centerX.equalTo(contentView)
-//            $0.top.equalTo(profileTableView.snp.bottom).offset(240)
-            $0.top.equalTo(profileInfoView.snp.bottom).offset(32)
-            $0.bottom.equalTo(contentView).offset(-20)
-        }
     }
     
     // MARK: - didSelectCell
@@ -257,45 +253,10 @@ class ProfileViewController: UIViewController {
 //        self.navigationController?.pushViewController(likedPostViewController, animated: true)
     }
     
-    // MARK: - UIMenu
+    // MARK: - Settings
     @objc private func settingsButtonTapped(_ sender: UIButton) {
-        let editProfileAction = UIAction(title: "프로필 수정", image: nil) { [weak self] _ in
-            guard let self = self else { return }
-            let editProfileVC = EditProfileViewController()
-            editProfileVC.viewModel = self.viewModel
-            editProfileVC.hidesBottomBarWhenPushed = true
-            self.navigationController?.pushViewController(editProfileVC, animated: true)
-        }
-        
-        let notificationSettingsAction = UIAction(title: "알림 설정", image: nil) { [weak self] _ in
-            guard let self = self else { return }
-            let notificationSettingsVC = NotificationSettingsViewController()
-            notificationSettingsVC.hidesBottomBarWhenPushed = true
-            self.navigationController?.pushViewController(notificationSettingsVC, animated: true)
-        }
-        
-        let goalSettingsAction = UIAction(title: "목표 설정", image: nil) { [weak self] _ in
-            guard let self = self else { return }
-            let goalSettingsVC = GoalSettingsViewController()
-            goalSettingsVC.viewModel = self.viewModel
-            goalSettingsVC.hidesBottomBarWhenPushed = true
-            self.navigationController?.pushViewController(goalSettingsVC, animated: true)
-        }
-        
-        let menu = UIMenu(title: "", children: [editProfileAction, notificationSettingsAction, goalSettingsAction])
-        sender.menu = menu
-        sender.showsMenuAsPrimaryAction = true
-    }
-    
-    // MARK: - logout
-    @objc private func logoutButtonTapped(_ sender: UIButton) {
-        let keychain = KeychainSwift()
-        keychain.clear()
-        if let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate {
-            let loginVC = SplashViewController()
-            let navController = CustomNavigationController(rootViewController:loginVC)
-            sceneDelegate.window?.rootViewController = navController
-            sceneDelegate.window?.makeKeyAndVisible()
-        }
+        let settingsVC = SettingsViewController()
+        settingsVC.hidesBottomBarWhenPushed = true
+        self.navigationController?.pushViewController(settingsVC, animated: true)
     }
 }

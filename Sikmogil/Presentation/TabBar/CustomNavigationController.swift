@@ -12,6 +12,7 @@ class CustomNavigationController: UINavigationController {
         super.viewDidLoad()
         
         setupNavigationBarAppearance()
+        navigationBar.isHidden = true
     }
     
     private func setupNavigationBarAppearance() {
