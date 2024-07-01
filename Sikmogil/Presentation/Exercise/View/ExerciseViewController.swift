@@ -157,7 +157,7 @@ class ExerciseViewController: UIViewController {
         }
     }
     
-    // MARK: - API
+    // MARK: - Fetch Data
     private func fetchExerciseData() {
         viewModel.getExerciseData(for: day) { result in
             switch result {
@@ -229,8 +229,8 @@ class ExerciseViewController: UIViewController {
         
         albumButton.snp.makeConstraints {
             $0.trailing.equalTo(contentView).inset(16)
-            $0.width.equalTo(86)
-            $0.height.equalTo(30)
+            $0.width.equalTo(80)
+            $0.height.equalTo(32)
             $0.centerY.equalTo(historyLabel)
         }
         
@@ -250,15 +250,12 @@ class ExerciseViewController: UIViewController {
         
         // contentView의 높이 설정
         contentView.snp.makeConstraints {
-            $0.bottom.equalTo(tableView.snp.bottom).offset(100)
+            $0.bottom.equalTo(tableView.snp.bottom).offset(80)
         }
         
         startExerciseButton.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview().inset(16)
-//            $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottomMargin).inset(26)
-//            $0.height.equalTo(60)
-            // safeArea 영역이 바뀐 문제
-            $0.bottom.equalTo(view.safeAreaLayoutGuide).inset(48)
+            $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottomMargin).inset(26)
             $0.height.equalTo(48)
         }
     }
@@ -266,7 +263,6 @@ class ExerciseViewController: UIViewController {
     // MARK: - Setup Button
     private func setupButtons() {
         startExerciseButton.addTarget(self, action: #selector(startExerciseButtonTapped), for: .touchUpInside)
-        stepsMenuButton.addTarget(self, action: #selector(stepsMenuButtonTapped), for: .touchUpInside)
         albumButton.addTarget(self, action: #selector(albumButtonTapped), for: .touchUpInside)
     }
     
@@ -288,14 +284,13 @@ class ExerciseViewController: UIViewController {
     }
 }
 
-// MARK: - UITableView
+// MARK: - UITableViewDataSource
 extension ExerciseViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return viewModel.exercises.count
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
         let reversedIndex = viewModel.exercises.count - 1 - indexPath.row
         
         guard let cell = tableView.dequeueReusableCell(withIdentifier: ExerciseHistoryCell.identifier, for: indexPath) as? ExerciseHistoryCell else {
@@ -306,12 +301,12 @@ extension ExerciseViewController: UITableViewDataSource {
         cell.configure(exercise: exercise)
         return cell
     }
-    
+}
+// MARK: - UITableViewDelegate
+extension ExerciseViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 88
     }
-}
-extension ExerciseViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let deleteAction = UIContextualAction(style: .destructive, title: "") { [weak self] (action, view, completion) in
             guard let self = self else { return }
