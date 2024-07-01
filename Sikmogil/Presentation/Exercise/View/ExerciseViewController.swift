@@ -282,6 +282,7 @@ class ExerciseViewController: UIViewController {
     
     @objc private func albumButtonTapped() {
         let albumVC = ExerciseAlbumViewController()
+        albumVC.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(albumVC, animated: true)
     }
 }
