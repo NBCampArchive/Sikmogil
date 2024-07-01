@@ -129,6 +129,8 @@ class ExerciseSelectionViewController: UIViewController {
         setupButtons()
         setupMenus()
         bindViewModel()
+        
+        navigationController?.navigationBar.isHidden = false
     }
 
     // MARK: - Setup Views

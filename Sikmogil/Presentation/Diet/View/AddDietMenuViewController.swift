@@ -48,6 +48,11 @@ class AddDietMenuViewController: UIViewController {
         searchBar.delegate = self
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.navigationBar.isHidden = false
+    }
+    
     // MARK: - Setup Methods
     private func setupViews() {
         view.addSubviews(TitleLabel, searchBar, searchResultTableView)

@@ -102,6 +102,7 @@ class ExerciseViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         fetchExerciseData()
+        navigationController?.navigationBar.isHidden = true
     }
     
     // MARK: - Bind ViewModel
