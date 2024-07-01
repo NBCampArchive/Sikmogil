@@ -43,6 +43,7 @@ class ExerciseViewController: UIViewController {
         $0.progressColor = .appGreen
         $0.trackColor = .appLightGray
     }
+    
     private let exerciseProgressBarIcon = UIImageView().then {
         $0.image = UIImage.exerciseIconFill
     }
@@ -68,12 +69,12 @@ class ExerciseViewController: UIViewController {
         $0.backgroundColor = .appBlack
         $0.layer.cornerRadius = 16
         // 앨범 버튼 히든 처리
-        $0.isHidden = true
+//        $0.isHidden = true
     }
 
     private let startExerciseButton = UIButton().then {
         $0.setTitle("운동하기", for: .normal)
-        $0.titleLabel?.font = Suite.bold.of(size: 20)
+        $0.titleLabel?.font = Suite.bold.of(size: 22)
         $0.tintColor = .white
         $0.backgroundColor = .appBlack
         $0.layer.cornerRadius = 16
@@ -253,8 +254,11 @@ class ExerciseViewController: UIViewController {
         
         startExerciseButton.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview().inset(16)
-            $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottomMargin).inset(26)
-            $0.height.equalTo(60)
+//            $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottomMargin).inset(26)
+//            $0.height.equalTo(60)
+            // safeArea 영역이 바뀐 문제
+            $0.bottom.equalTo(view.safeAreaLayoutGuide).inset(48)
+            $0.height.equalTo(48)
         }
     }
     
