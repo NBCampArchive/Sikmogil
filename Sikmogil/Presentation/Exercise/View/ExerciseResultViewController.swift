@@ -333,7 +333,7 @@ class ExerciseResultViewController: UIViewController, FloatingPanelControllerDel
                     exerciseData.workoutPicture = imageURL
                     
                     // 운동 리스트 데이터 서버에 추가
-                    self?.viewModel.addExerciseListData(exerciseDay: day, exerciseList: exerciseData) { addResult in
+                    self?.viewModel.addExerciseListData(exerciseList: exerciseData) { addResult in
                         switch addResult {
                         case .success:
                             print("이미지, 운동 리스트 추가 성공")
@@ -353,7 +353,7 @@ class ExerciseResultViewController: UIViewController, FloatingPanelControllerDel
             }
         } else {
             // 운동 리스트에 이미지가 없는 경우 바로 서버에 추가
-            viewModel.addExerciseListData(exerciseDay: day, exerciseList: exerciseData) { [weak self] result in
+            viewModel.addExerciseListData(exerciseList: exerciseData) { [weak self] result in
                 switch result {
                 case .success:
                     print("운동 리스트 추가 성공")
