@@ -14,16 +14,19 @@ class BoardMainViewController: UIViewController {
     
     // MARK: - Properties
     private var cancellables = Set<AnyCancellable>()
+    private let viewModel = BoardListViewModel()
     
     private let customSegmentedControl = CustomSegmentedControl(frame: .zero, buttonTitles: ["전체", "다이어트", "운동", "자유"])
     
     private let tableView = UITableView().then {
-        $0.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        $0.register(BoardListCell.self, forCellReuseIdentifier: "BoardListCell")
+        $0.separatorStyle = .none
     }
     
     private var currentCategoryIndex: Int = 0 {
         didSet {
-            fetchDataForCategory(index: currentCategoryIndex)
+            let category = categoryForIndex(currentCategoryIndex)
+                        viewModel.fetchBoardList(category: category, reset: true)
         }
     }
     
@@ -35,7 +38,8 @@ class BoardMainViewController: UIViewController {
         setupViews()
         setupConstraints()
         setupTableView()
-        fetchDataForCategory(index: 0)
+        bindViewModel()
+        viewModel.fetchBoardList(category: categoryForIndex(currentCategoryIndex), reset: true)
     }
     
     private func setupViews() {
@@ -72,52 +76,85 @@ class BoardMainViewController: UIViewController {
     }
     
     private func segmentChanged(index: Int) {
-        currentCategoryIndex = index
-        customSegmentedControl.setSelectedIndex(index: index)
-        customSegmentedControl.updateButtonSelection()
-    }
+            currentCategoryIndex = index
+            customSegmentedControl.setSelectedIndex(index: index)
+            customSegmentedControl.updateButtonSelection()
+            let category = categoryForIndex(index)
+            viewModel.fetchBoardList(category: category, reset: true)
+        }
     
     @objc private func handleSwipe(_ gesture: UISwipeGestureRecognizer) {
-        if gesture.direction == .left {
-            if currentCategoryIndex < customSegmentedControl.buttonTitles.count - 1 {
-                currentCategoryIndex += 1
-                segmentChanged(index: currentCategoryIndex)
+            if gesture.direction == .left {
+                if currentCategoryIndex < customSegmentedControl.buttonTitles.count - 1 {
+                    currentCategoryIndex += 1
+                    segmentChanged(index: currentCategoryIndex)
+                }
+            } else if gesture.direction == .right {
+                if currentCategoryIndex > 0 {
+                    currentCategoryIndex -= 1
+                    segmentChanged(index: currentCategoryIndex)
+                }
             }
-        } else if gesture.direction == .right {
-            if currentCategoryIndex > 0 {
-                currentCategoryIndex -= 1
-                segmentChanged(index: currentCategoryIndex)
+        }
+    
+    private func bindViewModel() {
+        viewModel.$boardList
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                self?.tableView.reloadData()
             }
+            .store(in: &cancellables)
+        
+        viewModel.$errorMessage
+            .compactMap { $0 }
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] errorMessage in
+                self?.showErrorAlert(message: errorMessage)
+            }
+            .store(in: &cancellables)
+    }
+    
+    private func categoryForIndex(_ index: Int) -> String {
+        switch index {
+        case 0: return "ALL"
+        case 1: return "DIET"
+        case 2: return "WORKOUT"
+        case 3: return "FREE"
+        default: return "ALL"
         }
     }
     
-    private func fetchDataForCategory(index: Int) {
-        // 여기에 각 카테고리에 따른 데이터를 요청하고 tableView를 리로드하는 로직을 추가하세요.
-        // 예시 데이터:
-        switch index {
-        case 0:
-            data = ["전체 항목 1", "전체 항목 2", "전체 항목 3"]
-        case 1:
-            data = ["다이어트 항목 1", "다이어트 항목 2", "다이어트 항목 3"]
-        case 2:
-            data = ["운동 항목 1", "운동 항목 2", "운동 항목 3"]
-        case 3:
-            data = ["자유 항목 1", "자유 항목 2", "자유 항목 3"]
-        default:
-            data = []
-        }
-        tableView.reloadData()
+    private func showErrorAlert(message: String) {
+        let alert = UIAlertController(title: "오류 ❗️", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "확인", style: .default))
+        present(alert, animated: true)
     }
 }
 
 extension BoardMainViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return data.count
+        return viewModel.boardList.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        cell.textLabel?.text = data[indexPath.row]
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "BoardListCell", for: indexPath) as? BoardListCell else {
+            return UITableViewCell()
+        }
+        
+        let board = viewModel.boardList[indexPath.row]
+        cell.configure(with: board)
+        cell.selectionStyle = .none
+        
         return cell
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let offsetY = scrollView.contentOffset.y
+        let contentHeight = scrollView.contentSize.height
+        let height = scrollView.frame.size.height
+        
+        if offsetY > contentHeight - height * 2 {
+            viewModel.fetchNextPage(category: categoryForIndex(currentCategoryIndex))
+        }
     }
 }
