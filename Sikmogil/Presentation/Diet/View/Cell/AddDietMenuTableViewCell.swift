@@ -55,6 +55,15 @@ class AddDietMenuTableViewCell: UITableViewCell {
         self.selectionStyle = .none
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        cellTitleLabel.text = nil
+        cellInfoLabel.text = nil
+        cellKcalLabel.text = nil
+        plusButton.isHidden = false
+    }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
