@@ -22,10 +22,14 @@ class BoardAPIManager {
         return Session(interceptor: interceptor)
     }()
     
-    func fetchBoardList() -> AnyPublisher<BoardListResponse, Error> {
-        let url = "\(baseURL)/api/board/list"
+    func fetchBoardList(category: String, page: Int) -> AnyPublisher<BoardListResponse, Error> {
+        let url = "\(baseURL)/api/boards/\(category)"
         
-        return session.request(url, method: .get)
+        let parameters: [String: Any] = [
+            "page": page
+        ]
+        
+        return session.request(url, method: .get, parameters:parameters)
             .publishDecodable(type: BoardListResponse.self)
             .value()
             .mapError { $0 as Error }
