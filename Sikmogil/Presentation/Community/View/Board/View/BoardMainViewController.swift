@@ -30,6 +30,29 @@ class BoardMainViewController: UIViewController {
         }
     }
     
+    private let buttonStackView = UIStackView().then {
+        $0.axis = .vertical
+        $0.spacing = 10
+        $0.distribution = .fillEqually
+    }
+    
+    private let searchButton = UIButton().then {
+        var config = UIButton.Configuration.plain()
+        config.image = .search
+        config.background.backgroundColor = .appDarkGray
+        config.cornerStyle = .capsule
+        $0.configuration = config
+    }
+    
+    private let writeButton = UIButton().then {
+        var config = UIButton.Configuration.plain()
+        config.image = .addPost
+        config.imagePadding = 10
+        config.background.backgroundColor = .appBlack
+        config.cornerStyle = .capsule
+        $0.configuration = config
+    }
+    
     private var data: [String] = []
     
     override func viewDidLoad() {
@@ -39,15 +62,33 @@ class BoardMainViewController: UIViewController {
         setupConstraints()
         setupTableView()
         bindViewModel()
-        viewModel.fetchBoardList(category: categoryForIndex(currentCategoryIndex), reset: true)
+        setupButton()
+//        viewModel.fetchBoardList(category: categoryForIndex(currentCategoryIndex), reset: true)
+    }
+    
+    private func setupButton() {
+        searchButton.addAction(UIAction { [weak self] _ in
+            print("searchButtonTapped")
+//            let searchVC = SearchViewController()
+//            self?.navigationController?.pushViewController(searchVC, animated: true)
+        }, for: .touchUpInside)
+        
+        writeButton.addAction(UIAction { [weak self] _ in
+            print("writesearchButtonTapped")
+//            let writeVC = WriteViewController()
+//            self?.navigationController?.pushViewController(writeVC, animated: true)
+        }, for: .touchUpInside)
     }
     
     private func setupViews() {
         view.addSubview(customSegmentedControl)
         view.addSubview(tableView)
+        view.addSubview(buttonStackView)
+        buttonStackView.addArrangedSubviews(searchButton, writeButton)
         customSegmentedControl.onSelectSegment = { [weak self] index in
             self?.segmentChanged(index: index)
         }
+        
     }
     
     private func setupConstraints() {
@@ -59,6 +100,20 @@ class BoardMainViewController: UIViewController {
         tableView.snp.makeConstraints {
             $0.top.equalTo(customSegmentedControl.snp.bottom).offset(10)
             $0.leading.trailing.bottom.equalToSuperview()
+        }
+        
+        buttonStackView.snp.makeConstraints {
+            $0.trailing.equalToSuperview().inset(16)
+            $0.bottom.equalTo(view.safeAreaLayoutGuide).inset(50)
+            $0.width.equalTo(50)
+        }
+        
+        searchButton.snp.makeConstraints {
+            $0.height.equalTo(50)
+        }
+
+        writeButton.snp.makeConstraints {
+            $0.height.equalTo(50)
         }
     }
     
