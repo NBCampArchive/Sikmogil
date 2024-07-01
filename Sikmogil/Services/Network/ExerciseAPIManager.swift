@@ -153,7 +153,7 @@ class ExerciseAPIManager {
             "page": page
         ]
 
-        session.request(url, parameters: parameters, method: .get).validate(statusCode: 200..<300).responseDecodable(of: [ExerciseListModel].self, emptyResponseCodes: [200]) { response in
+        session.request(url, method: .get, parameters: parameters).validate(statusCode: 200..<300).responseDecodable(of: ExerciseAlbum.self, emptyResponseCodes: [200]) { response in
             switch response.result {
             case .success(let data):
                 print("getExercisePicture success")

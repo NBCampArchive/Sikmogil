@@ -48,6 +48,7 @@ class ExerciseAlbumViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
+        navigationController?.navigationBar.isHidden = false
         setupViews()
         setupConstraints()
         bindViewModel()
@@ -139,8 +140,10 @@ extension ExerciseAlbumViewController: UICollectionViewDelegate {
         guard let imageURLString = exercisePicture.workoutPicture,
               let imageURL = URL(string: imageURLString) else { return }
         
-        let imageVC = PhotoSelectViewController(imageURL: imageURL)
-        present(imageVC, animated: true, completion: nil)
+        // TODO: - 날짜 전달
+        let date = "2024.07.01"
+        
+        let imageVC = PhotoSelectViewController(imageURL: imageURL, title: date)
+        navigationController?.pushViewController(imageVC, animated: true)
     }
-    
 }
