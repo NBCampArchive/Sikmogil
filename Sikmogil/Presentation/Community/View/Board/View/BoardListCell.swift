@@ -26,7 +26,7 @@ class BoardListCell: UITableViewCell {
     
     let contentLabel = UILabel().then {
         $0.font = Suite.medium.of(size: 14)
-        $0.numberOfLines = 1
+        $0.numberOfLines = 2
         $0.textColor = .gray
     }
     
@@ -42,7 +42,7 @@ class BoardListCell: UITableViewCell {
     
     let likeButton = UIButton(type: .system).then {
         var config = UIButton.Configuration.plain()
-        config.image = UIImage(systemName: "heart")
+        config.image = UIImage(systemName: "heart.fill")
         config.imagePadding = 5
         config.baseForegroundColor = .gray
         config.titleAlignment = .center
@@ -51,7 +51,7 @@ class BoardListCell: UITableViewCell {
 
     let commentButton = UIButton(type: .system).then {
         var config = UIButton.Configuration.plain()
-        config.image = UIImage(systemName: "message")
+        config.image = UIImage(systemName: "ellipsis.message.fill")
         config.imagePadding = 5
         config.baseForegroundColor = .gray
         config.titleAlignment = .center
@@ -101,13 +101,13 @@ class BoardListCell: UITableViewCell {
         }
         
         likeButton.snp.makeConstraints {
-            $0.top.equalTo(contentLabel.snp.bottom).offset(8)
-            $0.leading.equalToSuperview().inset(16)
+            $0.top.equalTo(nicknameLabel.snp.top)
+            $0.leading.equalToSuperview().inset(11)
             $0.bottom.equalToSuperview().inset(16)
         }
         
         commentButton.snp.makeConstraints {
-            $0.top.equalTo(contentLabel.snp.bottom).offset(8)
+            $0.top.equalTo(nicknameLabel.snp.top)
             $0.leading.equalTo(likeButton.snp.trailing).offset(4)
             $0.bottom.equalToSuperview().inset(16)
         }
@@ -140,7 +140,7 @@ class BoardListCell: UITableViewCell {
             ]))
             likeButtonConfig.attributedTitle = likeAttributedTitle
             let symbolConfig = UIImage.SymbolConfiguration(pointSize: 12, weight: .regular)
-            likeButtonConfig.image = UIImage(systemName: "heart", withConfiguration: symbolConfig)
+            likeButtonConfig.image = UIImage(systemName: "heart.fill", withConfiguration: symbolConfig)
             likeButtonConfig.imagePadding = 5
             likeButton.configuration = likeButtonConfig
         }
@@ -153,7 +153,7 @@ class BoardListCell: UITableViewCell {
             ]))
             commentButtonConfig.attributedTitle = commentAttributedTitle
             let symbolConfig = UIImage.SymbolConfiguration(pointSize: 12, weight: .regular)
-            commentButtonConfig.image = UIImage(systemName: "message", withConfiguration: symbolConfig)
+            commentButtonConfig.image = UIImage(systemName: "ellipsis.message.fill", withConfiguration: symbolConfig)
             commentButtonConfig.imagePadding = 5
             commentButton.configuration = commentButtonConfig
         }
