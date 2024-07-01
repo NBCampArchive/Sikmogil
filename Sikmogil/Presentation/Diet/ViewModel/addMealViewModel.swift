@@ -18,6 +18,7 @@ class AddMealViewModel: ObservableObject {
     @Published var totalDinnerKcal: Int = 0
     
     private var previousBreakfastCount = 0
+    private var previousLunchCount = 0
     private var previousDinnerCount = 0
     
     init() {
@@ -57,6 +58,21 @@ class AddMealViewModel: ObservableObject {
                     self.postDinnerAlert()
                 }
                 self.previousDinnerCount = currentCount
+            }
+            .store(in: &cancellables)
+        
+        // 점심 식사 추가 감지
+        $lunchDietLists
+            .sink { [weak self] lists in
+                guard let self = self else { return }
+                let currentCount = lists.count
+                if self.previousLunchCount == 0 && currentCount == 1 {
+                    // 추가된 점심 식사가 있고, 아침 식사가 없을 때도 알림을 발생시킴
+                    if self.breakfastDietLists.isEmpty {
+                        self.postBreakfastAlert()
+                    }
+                }
+                self.previousLunchCount = currentCount
             }
             .store(in: &cancellables)
     }
