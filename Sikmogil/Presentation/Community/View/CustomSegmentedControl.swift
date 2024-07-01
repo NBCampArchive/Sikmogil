@@ -18,7 +18,7 @@ class CustomSegmentedControl: UIView {
     private var dividerView = UIView().then{
         $0.backgroundColor = .lightGray
     }
-    private var buttonTitles: [String]
+    var buttonTitles: [String]
     var selectedIndex: Int = 0
     
     var onSelectSegment: ((Int) -> Void)?
