@@ -139,9 +139,7 @@ extension ExerciseAlbumViewController: UICollectionViewDelegate {
         let exercisePicture = viewModel.exercisePictures[indexPath.item]
         guard let imageURLString = exercisePicture.workoutPicture,
               let imageURL = URL(string: imageURLString) else { return }
-        
-        // TODO: - 날짜 전달
-        let date = "2024.07.01"
+        let date = exercisePicture.date
         
         let imageVC = PhotoSelectViewController(imageURL: imageURL, title: date)
         navigationController?.pushViewController(imageVC, animated: true)
