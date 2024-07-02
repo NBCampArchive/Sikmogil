@@ -17,6 +17,11 @@ class ExerciseViewModel {
     
     private var cancellables = Set<AnyCancellable>()
     private let day = DateHelper.shared.formatDateToYearMonthDay(Date())
+
+    private func updateTotals() {
+        totalWorkoutTime = exercises.reduce(0) { $0 + $1.workoutTime }
+        totalCaloriesBurned = exercises.reduce(0) { $0 + $1.calorieBurned }
+    }
     
     func fetchExerciseList() {
         ExerciseAPIManager.shared.getExerciseList(exerciseDay: day) { [weak self] result in
@@ -32,12 +37,7 @@ class ExerciseViewModel {
         }
     }
     
-    private func updateTotals() {
-        totalWorkoutTime = exercises.reduce(0) { $0 + $1.workoutTime }
-        totalCaloriesBurned = exercises.reduce(0) { $0 + $1.calorieBurned }
-    }
-    
-    func getExerciseData(for completion: @escaping (Result<ExerciseModel, Error>) -> Void) {
+    func fetchExerciseData(completion: @escaping (Result<ExerciseModel, Error>) -> Void) {
         ExerciseAPIManager.shared.getExerciseData(exerciseDay: day) { [weak self] result in
             switch result {
             case .success(let exerciseData):
@@ -61,6 +61,4 @@ class ExerciseViewModel {
             }
         }
     }
-    
-    // TODO: 뷰모델 값 바꼈을 떄
 }

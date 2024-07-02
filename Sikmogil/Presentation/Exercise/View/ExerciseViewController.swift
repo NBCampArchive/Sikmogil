@@ -95,8 +95,8 @@ class ExerciseViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        fetchExerciseData()
         navigationController?.navigationBar.isHidden = true
+        fetchExerciseData()
     }
     
     // MARK: - Bind ViewModel
@@ -153,18 +153,17 @@ class ExerciseViewController: UIViewController {
         if viewModel.exercises.count != 0 {
             self.emptyLabel.isHidden = true
         }
-        // TODO: - 값 바뀔 때 데이터 변경
     }
     
     // MARK: - Fetch Data
     private func fetchExerciseData() {
-        viewModel.getExerciseData() { result in
+        viewModel.fetchExerciseData() { [weak self] result in
             switch result {
             case .success(_):
                 DispatchQueue.main.async {
-                    self.updateProgress()
-                    self.viewModel.fetchExerciseList()
-                    self.tableView.reloadData()
+                    self?.updateProgress()
+                    self?.viewModel.fetchExerciseList()
+                    self?.tableView.reloadData()
                 }
             case .failure(let error):
                 print("운동 데이터 불러오기 실패:", error)
