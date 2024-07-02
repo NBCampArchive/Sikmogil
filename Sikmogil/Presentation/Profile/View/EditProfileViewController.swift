@@ -402,38 +402,34 @@ class EditProfileViewController: UIViewController, UIImagePickerControllerDelega
         self.present(alert, animated: true, completion: nil)
     }
     
+    private func createVerticalStackView(with views: [UIView]) -> UIStackView {
+        return UIStackView(arrangedSubviews: views).then {
+            $0.axis = .vertical
+            $0.alignment = .fill
+            $0.spacing = 6
+        }
+    }
+
     // MARK: - Setup Views
     private func setupViews() {
         view.addSubviews(scrollView, saveButton, loadingIndicator)
         scrollView.addSubview(contentView)
         
-        [profileImageView, profileLabel, profileSubLabel, nicknameView, heightView, weightView].forEach {
-            contentView.addSubview($0)
-        }
+        contentView.addSubview(profileImageView)
+        contentView.addSubview(profileLabel)
+        contentView.addSubview(profileSubLabel)
+        contentView.addSubview(nicknameView)
+        contentView.addSubview(heightView)
+        contentView.addSubview(weightView)
         
-        let nicknameStackView = UIStackView(arrangedSubviews: [nicknameLabel, nickname]).then {
-            $0.axis = .vertical
-            $0.alignment = .fill
-            $0.spacing = 6
-        }
-        
+        let nicknameStackView = createVerticalStackView(with: [nicknameLabel, nickname])
         nicknameView.addSubview(nicknameStackView)
         
-        let heightStackView = UIStackView(arrangedSubviews: [heightLabel, height]).then {
-            $0.axis = .vertical
-            $0.alignment = .fill
-            $0.spacing = 6
-        }
-        
+        let heightStackView = createVerticalStackView(with: [heightLabel, height])
         heightView.addSubview(heightStackView)
         heightView.addSubview(heightUnitLabel)
         
-        let weightStackView = UIStackView(arrangedSubviews: [weightLabel, weight]).then {
-            $0.axis = .vertical
-            $0.alignment = .fill
-            $0.spacing = 6
-        }
-        
+        let weightStackView = createVerticalStackView(with: [weightLabel, weight])
         weightView.addSubview(weightStackView)
         weightView.addSubview(weightUnitLabel)
     }
