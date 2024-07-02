@@ -115,7 +115,7 @@ class EditProfileViewController: UIViewController, UIImagePickerControllerDelega
     let saveButton = UIButton(type: .system).then {
         $0.setTitle("저장하기", for: .normal)
         $0.setTitleColor(.white, for: .normal)
-        $0.titleLabel?.font = Suite.bold.of(size: 22)
+        $0.titleLabel?.font = Suite.bold.of(size: 18)
         $0.backgroundColor = .appBlack
         $0.layer.cornerRadius = 16
     }
@@ -133,15 +133,8 @@ class EditProfileViewController: UIViewController, UIImagePickerControllerDelega
         setKeyboardObserver()
         bindViewModel()
         
-        nickname.delegate = self
-        height.delegate = self
-        weight.delegate = self
-        
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(profileImageTapped))
         profileImageView.addGestureRecognizer(tapGestureRecognizer)
-        
-        // 데이터를 받아오는 부분
-        viewModel?.fetchUserProfile()
         
         navigationController?.navigationBar.isHidden = false
         
@@ -149,8 +142,6 @@ class EditProfileViewController: UIViewController, UIImagePickerControllerDelega
         height.addTarget(self, action: #selector(heightDidChange(_:)), for: .editingChanged)
         weight.addTarget(self, action: #selector(weightDidChange(_:)), for: .editingChanged)
         saveButton.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(handleCancelImageSelection), name: Notification.Name("CancelImageSelection"), object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -222,21 +213,17 @@ class EditProfileViewController: UIViewController, UIImagePickerControllerDelega
         guard let selectedImage = info[.originalImage] as? UIImage else {
             return
         }
-        profileImageView.image = selectedImage
         
         // 선택된 이미지를 임시 저장
         self.selectedImage = selectedImage
+        // 이미지가 업로드 되는 동안 기존 이미지를 유지합니다.
+        profileImageView.image = selectedImage
     }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         picker.dismiss(animated: true, completion: nil)
     }
     
-    @objc private func handleCancelImageSelection() {
-        profileImageView.image = UIImage(named: "AppIcon")
-        selectedImage = nil
-        viewModel?.picture = ""
-    }
     
     private func saveProfile() {
         guard let viewModel = viewModel else {
@@ -247,17 +234,18 @@ class EditProfileViewController: UIViewController, UIImagePickerControllerDelega
         // 업로드할 이미지가 있는지 확인하고 업로드
         if let selectedImage = self.selectedImage {
             viewModel.uploadImage(selectedImage) { [weak self] result in
-                switch result {
-                case .success(let url):
-                    DispatchQueue.main.async {
+                DispatchQueue.main.async {
+                    switch result {
+                    case .success(let url):
                         viewModel.picture = url
                         // URL이 성공적으로 설정된 후 프로필 저장
                         print("이미지 포함 저장")
                         self?.finalizeProfileSave()
+                    case .failure(let error):
+                        print("이미지 업로드 실패: \(error)")
+                        self?.showErrorAlert(message: "이미지 업로드 실패. 다시 시도해주세요.")
+                        self?.loadingIndicator.stopAnimating() // 에러 발생 시 로딩 인디케이터 중지
                     }
-                case .failure(let error):
-                    print("이미지 업로드 실패: \(error)")
-                    self?.showErrorAlert(message: "이미지 업로드 실패. 다시 시도해주세요.")
                 }
             }
         } else {
@@ -300,7 +288,7 @@ class EditProfileViewController: UIViewController, UIImagePickerControllerDelega
                 switch result {
                 case .success:
                     print("프로필 업데이트 성공")
-                    self?.navigationController?.popViewController(animated: true)
+                    self?.showCustomAlertAndNavigateBack()
                 case .failure(let error):
                     print("업데이트 에러: \(error)")
                     self?.showErrorAlert(message: "프로필 업데이트 실패. 다시 시도해주세요.")
@@ -310,9 +298,46 @@ class EditProfileViewController: UIViewController, UIImagePickerControllerDelega
     }
     
     private func showErrorAlert(message: String) {
-        let alert = UIAlertController(title: "오류 ❗️", message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
-        self.present(alert, animated: true, completion: nil)
+        let customAlert = CustomAlertView().then {
+            $0.setTitle("오류 ❗️")
+            $0.setMessage(message)
+            $0.setConfirmAction(self, action: #selector(dismissCustomAlert))
+            $0.showButtons(confirm: true, cancel: false)
+        }
+        
+        customAlert.frame = self.view.bounds
+        self.view.addSubview(customAlert)
+        
+        customAlert.show(animated: true)
+    }
+    
+    private func showCustomAlertAndNavigateBack(showConfirmButton: Bool = false, showCancelButton: Bool = false) {
+        let customAlert = CustomAlertView().then {
+            $0.setTitle("✨ 성공 ✨")
+            $0.setMessage("프로필 수정이 완료되었습니다.")
+            $0.setCancelAction(self, action: #selector(dismissCustomAlert))
+            $0.setConfirmAction(self, action: #selector(dismissCustomAlert))
+            $0.showButtons(confirm: showConfirmButton, cancel: showCancelButton)
+        }
+        
+        customAlert.frame = self.view.bounds
+        self.view.addSubview(customAlert)
+        
+        customAlert.show(animated: true)
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
+            if !showConfirmButton && !showCancelButton {
+                customAlert.removeFromSuperview()
+                self?.navigationController?.popViewController(animated: true)
+            }
+        }
+    }
+    
+    @objc private func dismissCustomAlert() {
+        if let customAlert = view.subviews.first(where: { $0 is CustomAlertView }) {
+            customAlert.removeFromSuperview()
+            navigationController?.popViewController(animated: true)
+        }
     }
     
     // MARK: - setupViews
@@ -329,28 +354,44 @@ class EditProfileViewController: UIViewController, UIImagePickerControllerDelega
             $0.alignment = .fill
             $0.spacing = 6
         }
-        
         nicknameView.addSubview(nicknameStackView)
+        nicknameStackView.snp.makeConstraints {
+            $0.edges.equalToSuperview().inset(16)
+        }
         
         let heightStackView = UIStackView(arrangedSubviews: [heightLabel, height]).then {
             $0.axis = .vertical
             $0.alignment = .fill
             $0.spacing = 6
         }
-        
         heightView.addSubview(heightStackView)
+        heightStackView.snp.makeConstraints {
+            $0.edges.equalToSuperview().inset(16)
+        }
         heightView.addSubview(heightUnitLabel)
+        heightUnitLabel.snp.makeConstraints {
+            $0.centerY.equalTo(height)
+            $0.trailing.equalToSuperview().inset(16)
+            $0.width.equalTo(30)
+        }
         
         let weightStackView = UIStackView(arrangedSubviews: [weightLabel, weight]).then {
             $0.axis = .vertical
             $0.alignment = .fill
             $0.spacing = 6
         }
-        
         weightView.addSubview(weightStackView)
+        weightStackView.snp.makeConstraints {
+            $0.edges.equalToSuperview().inset(16)
+        }
         weightView.addSubview(weightUnitLabel)
+        weightUnitLabel.snp.makeConstraints {
+            $0.centerY.equalTo(weight)
+            $0.trailing.equalToSuperview().inset(16)
+            $0.width.equalTo(30)
+        }
     }
-    
+
     // MARK: - setupConstraints
     private func setupConstraints() {
         scrollView.snp.makeConstraints {
@@ -391,14 +432,6 @@ class EditProfileViewController: UIViewController, UIImagePickerControllerDelega
             $0.height.equalTo(80)
         }
         
-        let nicknameStackView = nicknameView.subviews.first { $0 is UIStackView } as? UIStackView
-        
-        nicknameStackView?.snp.makeConstraints {
-            $0.centerY.equalToSuperview()
-            $0.leading.equalTo(nicknameView.snp.leading).offset(16)
-            $0.trailing.equalTo(nicknameView.snp.trailing).offset(-10)
-        }
-        
         heightView.snp.makeConstraints {
             $0.top.equalTo(nicknameView.snp.bottom).offset(20)
             $0.leading.equalToSuperview().offset(16)
@@ -406,39 +439,11 @@ class EditProfileViewController: UIViewController, UIImagePickerControllerDelega
             $0.height.equalTo(80)
         }
         
-        let heightStackView = heightView.subviews.first { $0 is UIStackView } as? UIStackView
-        
-        heightStackView?.snp.makeConstraints {
-            $0.centerY.equalToSuperview()
-            $0.leading.equalTo(heightView.snp.leading).offset(16)
-            $0.trailing.equalTo(heightUnitLabel.snp.leading).offset(-10)
-        }
-        
-        heightUnitLabel.snp.makeConstraints {
-            $0.centerY.equalTo(height)
-            $0.trailing.equalTo(heightView.snp.trailing).offset(-16)
-            $0.width.equalTo(30)
-        }
-        
         weightView.snp.makeConstraints {
             $0.top.equalTo(heightView.snp.bottom).offset(20)
             $0.leading.equalToSuperview().offset(16)
             $0.trailing.equalToSuperview().offset(-16)
             $0.height.equalTo(80)
-        }
-        
-        let weightStackView = weightView.subviews.first { $0 is UIStackView } as? UIStackView
-        
-        weightStackView?.snp.makeConstraints {
-            $0.centerY.equalToSuperview()
-            $0.leading.equalTo(weightView.snp.leading).offset(16)
-            $0.trailing.equalTo(weightUnitLabel.snp.leading).offset(-10)
-        }
-        
-        weightUnitLabel.snp.makeConstraints {
-            $0.centerY.equalTo(weight)
-            $0.trailing.equalTo(weightView.snp.trailing).offset(-16)
-            $0.width.equalTo(30)
         }
         
         contentView.snp.makeConstraints {
