@@ -360,6 +360,7 @@
 				545AA5172C11F4760083D893 /* ReminderSettingsViewController.swift */,
 				546E32342C1078FA00E94C2A /* GoalSettingsViewController.swift */,
 				547B0E2A2C2C3ACB00C6E96C /* SpandrelSettingsViewController.swift */,
+				54A499512C3344950020BA80 /* CustomImagePickerController.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -680,7 +681,6 @@
 		B54ABFD32C0CBE67002E89DC /* CustomViews */ = {
 			isa = PBXGroup;
 			children = (
-				54A499512C3344950020BA80 /* CustomImagePickerController.swift */,
 				B54ABFD42C0CBE86002E89DC /* CircularProgressBar.swift */,
 				B54ABFD62C0CC281002E89DC /* CustomCircularProgressBar.swift */,
 				B52001B12C1217DA0083CBDF /* WaveProgressView.swift */,
