@@ -15,7 +15,7 @@ class PhotoSelectViewController: UIViewController {
     private var imageURL: URL
     private var titleText: String
     private var imageId: Int
-    private var viewModel = ExerciseAlbumViewModel()
+    private let viewModel: ExerciseAlbumViewModel
     
     private var imageView = UIImageView().then {
         $0.contentMode = .scaleAspectFit
@@ -28,10 +28,16 @@ class PhotoSelectViewController: UIViewController {
         $0.titleLabel?.font = Suite.semiBold.of(size: 16)
     }
     
-    init(imageURL: URL, title: String, imageId: Int) {
+    init(
+        imageURL: URL,
+        title: String,
+        imageId: Int,
+        viewModel: ExerciseAlbumViewModel
+    ) {
         self.imageURL = imageURL
         self.titleText = title
         self.imageId = imageId
+        self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -99,11 +105,12 @@ class PhotoSelectViewController: UIViewController {
     }
     
     @objc private func deleteButtonTapped() {
-        let alertController = UIAlertController(title: "사진 삭제", message: "정말 삭제하시겠어요?", preferredStyle: .alert)
+        let alertController = UIAlertController(title: nil, message: "정말 삭제하시겠어요?", preferredStyle: .alert)
         
         let cancelAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
         let deleteAction = UIAlertAction(title: "삭제", style: .destructive) { [weak self] _ in
             self?.deletePhoto()
+            self?.navigationController?.popViewController(animated: true)
         }
         
         alertController.addAction(cancelAction)
@@ -113,18 +120,9 @@ class PhotoSelectViewController: UIViewController {
     }
     
     private func deletePhoto() {
-        viewModel.deleteExercisePictureData(date: titleText, workoutListId: imageId) { result in
-            switch result {
-            case .success:
-                DispatchQueue.main.async {
-                    self.navigationController?.popViewController(animated: true)
-                    if let albumVC = self.navigationController?.viewControllers.last as? ExerciseAlbumViewController {
-                        albumVC.albumCollectionView.reloadData()
-                    }
-                }
-            case .failure(let error):
-                print("이미지 삭제 실패: \(error)")
-            }
-        }
+        viewModel.deleteExercisePictureData(
+            date: titleText,
+            workoutListId: imageId
+        ) {_ in }
     }
 }
