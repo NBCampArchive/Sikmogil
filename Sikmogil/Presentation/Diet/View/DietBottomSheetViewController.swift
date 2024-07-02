@@ -22,7 +22,7 @@ class DietBottomSheetViewController: UIViewController {
     let titleLabel = UILabel().then {
         $0.text = "식사"
         $0.textColor = .appBlack
-        $0.font = Suite.bold.of(size: 28)
+        $0.font = Suite.bold.of(size: 24)
         $0.textAlignment = .left
     }
     let albumButton = UIButton().then {
@@ -30,9 +30,11 @@ class DietBottomSheetViewController: UIViewController {
         $0.backgroundColor = .appBlack
         $0.setTitleColor(.white, for: .normal)
         $0.titleLabel?.font = Suite.semiBold.of(size: 16)
-        
-        $0.layer.cornerRadius = 14
+        $0.tintColor = .white
+        $0.layer.cornerRadius = 16
         $0.clipsToBounds = true
+        // 앨범 버튼 히든 처리
+//        $0.isHidden = true
     }
     let scrollView = UIScrollView().then {
         $0.backgroundColor = .clear
@@ -199,11 +201,11 @@ class DietBottomSheetViewController: UIViewController {
         albumButton.snp.makeConstraints{
             $0.top.equalTo(titleLabel)
             $0.trailing.equalToSuperview().inset(16)
-            $0.height.equalTo(30)
-            $0.width.equalTo(91)
+            $0.height.equalTo(32)
+            $0.width.equalTo(80)
         }
         scrollView.snp.makeConstraints{
-            $0.top.equalTo(titleLabel.snp.bottom).offset(8)
+            $0.top.equalTo(titleLabel.snp.bottom).offset(16)
             $0.leading.equalTo(titleLabel)
             $0.trailing.equalTo(albumButton)
             $0.bottom.equalToSuperview().inset(24)

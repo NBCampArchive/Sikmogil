@@ -16,7 +16,7 @@ class DietAlbumViewController: UIViewController, UINavigationControllerDelegate 
     let albumTitleLabel = UILabel().then {
         $0.text = "식단 앨범"
         $0.textColor = .appBlack
-        $0.font = Suite.bold.of(size: 28)
+        $0.font = Suite.bold.of(size: 24)
         $0.textAlignment = .left
     }
     let albumTitleSubLabel = UILabel().then {
@@ -29,7 +29,7 @@ class DietAlbumViewController: UIViewController, UINavigationControllerDelegate 
         $0.setTitle("사진 기록하기", for: .normal)
         $0.backgroundColor = .appBlack
         $0.setTitleColor(.white, for: .normal)
-        $0.titleLabel?.font = Suite.bold.of(size: 22)
+        $0.titleLabel?.font = Suite.bold.of(size: 18)
         $0.layer.cornerRadius = 16
         $0.clipsToBounds = true
         $0.addTarget(self, action: #selector(albumAddPhotoButtonTapped), for: .touchUpInside)
@@ -85,7 +85,7 @@ class DietAlbumViewController: UIViewController, UINavigationControllerDelegate 
             $0.leading.equalToSuperview().offset(16)
         }
         albumTitleSubLabel.snp.makeConstraints{
-            $0.top.equalTo(albumTitleLabel.snp.bottom)
+            $0.top.equalTo(albumTitleLabel.snp.bottom).offset(8)
             $0.leading.equalToSuperview().offset(16)
             $0.width.equalToSuperview()
         }
