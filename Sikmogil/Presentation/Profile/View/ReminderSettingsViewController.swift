@@ -46,7 +46,7 @@ class ReminderSettingsViewController: UIViewController {
     private let completeButton = UIButton(type: .system).then {
         $0.setTitle("저장하기", for: .normal)
         $0.setTitleColor(.white, for: .normal)
-        $0.titleLabel?.font = Suite.bold.of(size: 22)
+        $0.titleLabel?.font = Suite.bold.of(size: 18)
         $0.backgroundColor = .appBlack
         $0.layer.cornerRadius = 16
     }
@@ -195,14 +195,32 @@ class ReminderSettingsViewController: UIViewController {
         self.present(alert, animated: true, completion: nil)
     }
     
-    private func showAlertAndNavigateToProfile() {
-        let alert = UIAlertController(title: "성공", message: "리마인드 설정이 완료되었습니다.", preferredStyle: .alert)
-        present(alert, animated: true, completion: nil)
+    private func showAlertAndNavigateToProfile(showConfirmButton: Bool = false, showCancelButton: Bool = false) {
+        let customAlert = CustomAlertView().then {
+            $0.setTitle("✨ 성공 ✨")
+            $0.setMessage("리마인드 설정이 완료되었습니다.")
+            $0.setCancelAction(self, action: #selector(dismissCustomAlert))
+            $0.setConfirmAction(self, action: #selector(dismissCustomAlert))
+            $0.showButtons(confirm: showConfirmButton, cancel: showCancelButton)
+        }
+        
+        customAlert.show(animated: true)
+        
+        customAlert.frame = self.view.bounds
+        self.view.addSubview(customAlert)
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
-            alert.dismiss(animated: true) {
+            if !showConfirmButton && !showCancelButton {
+                customAlert.removeFromSuperview()
                 self?.navigationController?.popViewController(animated: true)
             }
+        }
+    }
+
+    @objc private func dismissCustomAlert() {
+        if let customAlert = view.subviews.first(where: { $0 is CustomAlertView }) {
+            customAlert.removeFromSuperview()
+            navigationController?.popViewController(animated: true)
         }
     }
 }

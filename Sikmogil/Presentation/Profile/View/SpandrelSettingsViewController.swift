@@ -48,7 +48,7 @@ class SpandrelSettingsViewController: UIViewController {
     private let completeButton = UIButton(type: .system).then {
         $0.setTitle("저장하기", for: .normal)
         $0.setTitleColor(.white, for: .normal)
-        $0.titleLabel?.font = Suite.bold.of(size: 22)
+        $0.titleLabel?.font = Suite.bold.of(size: 18)
         $0.backgroundColor = .appBlack
         $0.layer.cornerRadius = 16
     }
@@ -76,7 +76,7 @@ class SpandrelSettingsViewController: UIViewController {
     
     @objc private func completeButtonTapped() {
         saveSelectedTime(date: timePicker.date)
-        showAlertAndNavigateToProfile()
+        showCustomAlertAndNavigateToProfile()
         print("Time saved: \(timePicker.date)")
     }
     
@@ -105,14 +105,29 @@ class SpandrelSettingsViewController: UIViewController {
         }
     }
     
-    private func showAlertAndNavigateToProfile() {
-        let alert = UIAlertController(title: "성공", message: "공복 시간 설정이 완료되었습니다.", preferredStyle: .alert)
-        self.present(alert, animated: true, completion: nil)
+    private func showCustomAlertAndNavigateToProfile() {
+        let customAlert = CustomAlertView().then {
+            $0.setTitle("✨ 성공 ✨")
+            $0.setMessage("공복 시간 설정이 완료되었습니다.")
+            $0.showButtons(confirm: false, cancel: false)
+        }
+        
+        customAlert.frame = self.view.bounds
+        self.view.addSubview(customAlert)
+
+        customAlert.show(animated: true)
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
-            alert.dismiss(animated: true) {
-                self?.navigationController?.popViewController(animated: true)
-            }
+            customAlert.removeFromSuperview()
+            self?.navigationController?.popViewController(animated: true)
+        }
+    }
+
+    // CustomAlertView를 닫는 액션
+    @objc private func dismissCustomAlert() {
+        if let customAlert = view.subviews.first(where: { $0 is CustomAlertView }) {
+            customAlert.removeFromSuperview()
+            navigationController?.popViewController(animated: true)
         }
     }
 
