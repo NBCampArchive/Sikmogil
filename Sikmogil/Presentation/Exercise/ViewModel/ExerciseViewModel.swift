@@ -60,4 +60,6 @@ class ExerciseViewModel {
             }
         }
     }
+    
+    // TODO: 뷰모델 값 바꼈을 떄
 }
