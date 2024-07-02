@@ -17,22 +17,23 @@ class ExerciseAlbumViewModel: ObservableObject {
     private var itemPerPage = 10
     
     var exercisePictures: [ExerciseListModel] {
-        return exerciseAlbum?.pictures ?? []
+        exerciseAlbum?.pictures ?? []
     }
+    var dataCount: Int { exercisePictures.count }
     
     var cancellables = Set<AnyCancellable>()
     
     init() {
         // 초기 데이터 가져오기 (필요한 경우)
-        getExercisePictures(page: currentPage)
+        fetchExercisePictures(page: currentPage)
     }
     
-    func getExercisePictures(page: Int) {
+    func fetchExercisePictures(page: Int) {
         guard !isFetching else { return }
         isFetching = true
         
         ExerciseAPIManager.shared.getExercisePicture(page: page) { [weak self] result in
-            guard let self = self else { return }
+            guard let self else { return }
             self.isFetching = false
             
             switch result {
@@ -58,16 +59,18 @@ class ExerciseAlbumViewModel: ObservableObject {
     }
     
     func fetchNextPage() {
-        guard let exerciseAlbum = exerciseAlbum, !isFetching else { return }
+        guard exerciseAlbum != nil, !isFetching else { return }
         let nextPage = currentPage + 1
-        getExercisePictures(page: nextPage)
+        fetchExercisePictures(page: nextPage)
     }
     
     func deleteExercisePictureData(date: String, workoutListId: Int, completion: @escaping (Result<Void, Error>) -> Void) {
-        ExerciseAPIManager.shared.deleteExercisePictureData(exerciseDay: date, exerciseListId: workoutListId) { result in
+        ExerciseAPIManager.shared.deleteExercisePictureData(exerciseDay: date, exerciseListId: workoutListId) { [weak self] result in
             switch result {
             case .success:
+                self?.exerciseAlbum?.deleteExercise(for: workoutListId, and: date)
                 completion(.success(()))
+                
             case .failure(let error):
                 print("운동 사진 삭제 실패 \(date): \(error)")
                 completion(.failure(error))
