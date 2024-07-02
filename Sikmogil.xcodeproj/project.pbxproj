@@ -20,6 +20,8 @@
 		547B0E2B2C2C3ACB00C6E96C /* SpandrelSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 547B0E2A2C2C3ACB00C6E96C /* SpandrelSettingsViewController.swift */; };
 		5485F0882C0DFE2D00A2A71E /* ProfileTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5485F0872C0DFE2D00A2A71E /* ProfileTableViewCell.swift */; };
 		548951562C1C8370004EA44A /* NotificationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 548951552C1C8370004EA44A /* NotificationHelper.swift */; };
+		54A499522C3344950020BA80 /* CustomImagePickerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54A499512C3344950020BA80 /* CustomImagePickerController.swift */; };
+		54A499552C33CCD50020BA80 /* EditProfileTextFieldDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54A499542C33CCD50020BA80 /* EditProfileTextFieldDelegate.swift */; };
 		54C282FC2C22F42100DDEA08 /* UITextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54C282FB2C22F42100DDEA08 /* UITextField.swift */; };
 		62578CD12C0DAB92005035BB /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62578CD02C0DAB92005035BB /* MainViewController.swift */; };
 		62578CD42C0ED558005035BB /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62578CD32C0ED558005035BB /* CalendarViewController.swift */; };
@@ -166,6 +168,8 @@
 		547B0E2A2C2C3ACB00C6E96C /* SpandrelSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpandrelSettingsViewController.swift; sourceTree = "<group>"; };
 		5485F0872C0DFE2D00A2A71E /* ProfileTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTableViewCell.swift; sourceTree = "<group>"; };
 		548951552C1C8370004EA44A /* NotificationHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationHelper.swift; sourceTree = "<group>"; };
+		54A499512C3344950020BA80 /* CustomImagePickerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomImagePickerController.swift; sourceTree = "<group>"; };
+		54A499542C33CCD50020BA80 /* EditProfileTextFieldDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileTextFieldDelegate.swift; sourceTree = "<group>"; };
 		54C282FB2C22F42100DDEA08 /* UITextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextField.swift; sourceTree = "<group>"; };
 		62578CD02C0DAB92005035BB /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		62578CD32C0ED558005035BB /* CalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
@@ -340,6 +344,7 @@
 				545AA5172C11F4760083D893 /* ReminderSettingsViewController.swift */,
 				546E32342C1078FA00E94C2A /* GoalSettingsViewController.swift */,
 				547B0E2A2C2C3ACB00C6E96C /* SpandrelSettingsViewController.swift */,
+				54A499512C3344950020BA80 /* CustomImagePickerController.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -347,10 +352,19 @@
 		547A1BAA2C0DA9E8000A16BF /* Profile */ = {
 			isa = PBXGroup;
 			children = (
+				54A499532C33CC500020BA80 /* Extensions */,
 				546285CB2C1E4499002247BB /* ViewModel */,
 				546E322E2C102E3A00E94C2A /* View */,
 			);
 			path = Profile;
+			sourceTree = "<group>";
+		};
+		54A499532C33CC500020BA80 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				54A499542C33CCD50020BA80 /* EditProfileTextFieldDelegate.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		62578CD82C0F3B16005035BB /* Main */ = {
@@ -974,6 +988,7 @@
 				B54AC00C2C0F48D1002E89DC /* SikmogilBundle++.swift in Sources */,
 				B566DF2E2C29E8530050CF60 /* CustomNavigationController.swift in Sources */,
 				B52001EE2C1C5CD60083CBDF /* CalendarCell.swift in Sources */,
+				54A499552C33CCD50020BA80 /* EditProfileTextFieldDelegate.swift in Sources */,
 				F36105B92C1E00A700237572 /* ExerciseSelectionViewModel.swift in Sources */,
 				B54ABFCF2C0CBB59002E89DC /* UIViewExtensions.swift in Sources */,
 				F3094F0E2C19A1BE0099DE2C /* ExerciseViewModel.swift in Sources */,
@@ -1021,6 +1036,7 @@
 				B54ABFF12C0DE03D002E89DC /* LoginViewController.swift in Sources */,
 				B52001F22C1DBAF70083CBDF /* CalendarViewModel.swift in Sources */,
 				B54ABFD72C0CC281002E89DC /* CustomCircularProgressBar.swift in Sources */,
+				54A499522C3344950020BA80 /* CustomImagePickerController.swift in Sources */,
 				B52001BF2C15AC1E0083CBDF /* ExerciseAPIManager.swift in Sources */,
 				F3094EC42C0DB1940099DE2C /* ExerciseHistoryCell.swift in Sources */,
 				B54AC0172C10560A002E89DC /* OnboardingPageViewController.swift in Sources */,
