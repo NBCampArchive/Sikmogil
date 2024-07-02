@@ -161,9 +161,9 @@ extension WaterBottomSheetViewController: UITextFieldDelegate {
         // 텍스트 업데이트
         let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
         
-        // 새로운 텍스트가 3자리를 넘지 않도록 제한
+        // 새로운 텍스트가 4자리를 넘지 않도록 제한
         let newNumbers = updatedText.components(separatedBy: CharacterSet.decimalDigits.inverted).joined()
-        guard newNumbers.count <= 3 else { return false }
+        guard newNumbers.count <= 4 else { return false }
         
         // 새로운 형식의 텍스트 설정
         let formattedText = "\(newNumbers) ml"

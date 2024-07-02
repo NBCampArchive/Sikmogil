@@ -17,10 +17,17 @@ struct ExerciseModel: Decodable {
 
 // MARK: - 특정 날짜 운동 리스트
 struct ExerciseListModel: Decodable {
+    let date: String
     let workoutListId: Int
     let performedWorkout: String
     let workoutTime: Int
     let workoutIntensity: Int
-    let workoutPicture: String?
+    var workoutPicture: String?
     let calorieBurned: Int
+}
+
+// MARK: - 운동 사진 출력
+struct ExerciseAlbum: Decodable {
+    var lastPage: Int
+    var pictures: [ExerciseListModel]
 }

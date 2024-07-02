@@ -90,7 +90,7 @@ class ExerciseSelectionViewController: UIViewController {
         $0.textColor = .appDarkGray
         $0.font = Suite.semiBold.of(size: 20)
         $0.text = "예상 소모 칼로리는 0kcal예요"
-        $0.textColor = .appDarkGray
+        $0.textColor = .appDeepDarkGray
     }
 
     private let recordButton = UIButton(type: .system).then {
@@ -129,6 +129,8 @@ class ExerciseSelectionViewController: UIViewController {
         setupButtons()
         setupMenus()
         bindViewModel()
+        
+        navigationController?.navigationBar.isHidden = false
     }
 
     // MARK: - Setup Views
@@ -196,8 +198,8 @@ class ExerciseSelectionViewController: UIViewController {
        
         buttonStackView.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview().inset(16)
-            $0.height.equalTo(60)
-            $0.bottom.equalTo(view.safeAreaLayoutGuide).inset(32)
+            $0.height.equalTo(48)
+            $0.bottom.equalTo(view.safeAreaLayoutGuide).inset(16)
         }
     }
     

@@ -1,16 +1,17 @@
 //
-//  DietAlbumCollectionViewCell.swift
+//  ExerciseAlbumCell.swift
 //  Sikmogil
 //
-//  Created by 희라 on 6/5/24.
-//  [Cell] **설명** 식사 앨범 컬렉션뷰 셀
+//  Created by 정유진 on 6/26/24.
+//
 
 import UIKit
+import SnapKit
+import Then
 import Kingfisher
 
-class DietAlbumCollectionViewCell: UICollectionViewCell {
-    
-    static let identifier = "DietAlbumCollectionViewCell"
+class ExerciseAlbumCell: UICollectionViewCell {
+    static let identifier = "ExerciseAlbumCell"
     
     // MARK: - UI components
     let imageView: UIImageView = {
@@ -22,7 +23,7 @@ class DietAlbumCollectionViewCell: UICollectionViewCell {
     
     let dataLabel = UILabel().then {
         $0.text = "날짜"
-        $0.textColor = .white
+        $0.textColor = .appLightGray
         $0.font = Suite.bold.of(size: 12)
         $0.textAlignment = .left
     }
@@ -55,14 +56,22 @@ class DietAlbumCollectionViewCell: UICollectionViewCell {
             $0.bottom.equalTo(imageView.snp.bottom).inset(4)
         }
     }
-    func configure(with data: Data) {
-        guard let image = UIImage(data: data) else {
+    
+    func configure(with url: String, date: String) {
+        guard let imageURL = URL(string: url) else {
             self.imageView.image = nil
             return
         }
+
+        // 이미지 가져오는 동안 애니메이션 호출
+        self.imageView.kf.setImage(
+            with: imageURL,
+            placeholder: nil,
+            options: [
+                .transition(.fade(0.5))
+            ],
+            progressBlock: nil)
         
-        UIView.transition(with: imageView, duration: 0.5, options: .transitionCrossDissolve, animations: {
-            self.imageView.image = image
-        }, completion: nil)
+        self.dataLabel.text = date
     }
 }

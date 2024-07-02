@@ -311,7 +311,7 @@ class EditProfileViewController: UIViewController, UIImagePickerControllerDelega
     
     private func showErrorAlert(message: String) {
         let alert = UIAlertController(title: "오류 ❗️", message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        alert.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
         self.present(alert, animated: true, completion: nil)
     }
     
