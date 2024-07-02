@@ -54,7 +54,7 @@ class ExerciseResultViewController: UIViewController, FloatingPanelControllerDel
     }
 
     private let progressLabel = UILabel().then {
-        $0.textColor = .appDarkGray
+        $0.textColor = .appDeepDarkGray
         $0.font = Suite.semiBold.of(size: 20)
         $0.numberOfLines = 2
         $0.textAlignment = .center
@@ -74,8 +74,8 @@ class ExerciseResultViewController: UIViewController, FloatingPanelControllerDel
 
     private let exerciseLabel = UILabel().then {
         $0.text = "운동 이름"
-        $0.font = Suite.medium.of(size: 18)
-        $0.textColor = .appDarkGray
+        $0.font = Suite.semiBold.of(size: 18)
+        $0.textColor = .appDeepDarkGray
     }
 
     private let verticalLine = UIView().then {
@@ -84,12 +84,12 @@ class ExerciseResultViewController: UIViewController, FloatingPanelControllerDel
 
     private let timeStackView = UIStackView().then {
         $0.axis = .vertical
-        $0.spacing = 4
+        $0.spacing = 6
     }
 
     private let kcalStackView = UIStackView().then {
         $0.axis = .vertical
-        $0.spacing = 4
+        $0.spacing = 6
     }
 
     private let timeLabel = UILabel().then {
@@ -132,7 +132,7 @@ class ExerciseResultViewController: UIViewController, FloatingPanelControllerDel
     
     private let addButton = UIButton().then {
         $0.setTitle("추가하기", for: .normal)
-        $0.titleLabel?.font = Suite.bold.of(size: 20)
+        $0.titleLabel?.font = Suite.bold.of(size: 18)
         $0.tintColor = .white
         $0.backgroundColor = .appBlack
         $0.layer.cornerRadius = 16
@@ -284,18 +284,19 @@ class ExerciseResultViewController: UIViewController, FloatingPanelControllerDel
         }
         
         contentView.snp.makeConstraints {
-            $0.bottom.equalTo(resultView.snp.bottom).offset(100)
+            $0.bottom.equalTo(resultView.snp.bottom).offset(60)
         }
         
         photoButton.snp.makeConstraints {
             $0.leading.equalToSuperview().offset(16)
-            $0.width.height.equalTo(60)
+            $0.height.equalTo(48)
+            $0.width.equalTo(52)
             $0.centerY.equalTo(addButton)
         }
         
         photoIcon.snp.makeConstraints {
             $0.centerX.centerY.equalToSuperview()
-            $0.width.height.equalTo(36)
+            $0.width.height.equalTo(32)
         }
         
         addButton.snp.makeConstraints {
@@ -303,8 +304,8 @@ class ExerciseResultViewController: UIViewController, FloatingPanelControllerDel
             $0.leading.equalTo(photoButton.snp.trailing).offset(16)
             // 버튼 히든 제약조건
 //            $0.leading.equalToSuperview().offset(16)
-            $0.bottom.equalTo(view.safeAreaLayoutGuide)
-            $0.height.equalTo(60)
+            $0.bottom.equalTo(view.safeAreaLayoutGuide).inset(16)
+            $0.height.equalTo(48)
         }
     }
     
@@ -318,7 +319,7 @@ class ExerciseResultViewController: UIViewController, FloatingPanelControllerDel
         self.present(recodingPhotoPanel, animated: true)
     }
     
-    // TODO: - NVActivityIndicatorView, 추가 메서드 분리
+    // TODO: - NVActivityIndicatorView, 추가 메서드 분리, 중복으로 누를 때!
     @objc private func addButtonTapped() {
         var exerciseData = viewModel.saveExerciseData()
         let day = DateHelper.shared.formatDateToYearMonthDay(Date())
@@ -332,7 +333,7 @@ class ExerciseResultViewController: UIViewController, FloatingPanelControllerDel
                     exerciseData.workoutPicture = imageURL
                     
                     // 운동 리스트 데이터 서버에 추가
-                    self?.viewModel.addExerciseListData(exerciseDay: day, exerciseList: exerciseData) { addResult in
+                    self?.viewModel.addExerciseListData(exerciseList: exerciseData) { addResult in
                         switch addResult {
                         case .success:
                             print("이미지, 운동 리스트 추가 성공")
@@ -352,7 +353,7 @@ class ExerciseResultViewController: UIViewController, FloatingPanelControllerDel
             }
         } else {
             // 운동 리스트에 이미지가 없는 경우 바로 서버에 추가
-            viewModel.addExerciseListData(exerciseDay: day, exerciseList: exerciseData) { [weak self] result in
+            viewModel.addExerciseListData(exerciseList: exerciseData) { [weak self] result in
                 switch result {
                 case .success:
                     print("운동 리스트 추가 성공")

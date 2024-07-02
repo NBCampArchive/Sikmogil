@@ -17,7 +17,7 @@ class ExerciseAlbumViewController: UIViewController {
     let albumTitleLabel = UILabel().then {
         $0.text = "운동 앨범"
         $0.textColor = .appBlack
-        $0.font = Suite.bold.of(size: 28)
+        $0.font = Suite.bold.of(size: 24)
         $0.textAlignment = .left
     }
     
@@ -103,7 +103,7 @@ extension ExerciseAlbumViewController: UICollectionViewDataSource {
         }
         
         let exercisePicture = viewModel.exercisePictures[indexPath.item]
-        cell.configure(with: exercisePicture.workoutPicture ?? "")
+        cell.configure(with: exercisePicture.workoutPicture ?? "", date: exercisePicture.date)
         cell.backgroundColor = .appLightGray
         return cell
     }
@@ -139,9 +139,7 @@ extension ExerciseAlbumViewController: UICollectionViewDelegate {
         let exercisePicture = viewModel.exercisePictures[indexPath.item]
         guard let imageURLString = exercisePicture.workoutPicture,
               let imageURL = URL(string: imageURLString) else { return }
-        
-        // TODO: - 날짜 전달
-        let date = "2024.07.01"
+        let date = exercisePicture.date
         
         let imageVC = PhotoSelectViewController(imageURL: imageURL, title: date)
         navigationController?.pushViewController(imageVC, animated: true)

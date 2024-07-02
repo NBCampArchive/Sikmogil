@@ -12,7 +12,6 @@ import Then
 class ExerciseMenuViewController: UIViewController {
     
     // MARK: - Components
-    private let scrollView = UIScrollView()
     private let contentView = UIView()
     
     private let headerStackView = UIStackView().then {
@@ -23,16 +22,21 @@ class ExerciseMenuViewController: UIViewController {
     
     let exerciseMenuButton = UIButton(type: .system).then {
         $0.setTitle("운동", for: .normal)
-        $0.titleLabel?.font = Suite.bold.of(size: 28)
+        $0.titleLabel?.font = Suite.bold.of(size: 24)
         $0.tintColor = .appBlack
     }
     
     let stepsMenuButton = UIButton(type: .system).then {
         $0.setTitle("걸음 수", for: .normal)
-        $0.titleLabel?.font = Suite.bold.of(size: 28)
+        $0.titleLabel?.font = Suite.bold.of(size: 24)
         $0.tintColor = .appDarkGray
     }
     
+    let plusMenuButton = UIButton(type: .system).then {
+        $0.setImage(.listPlusButton, for: .normal)
+        $0.tintColor = .appBlack
+    }
+  
     private var currentChildViewController: UIViewController?
 
     // MARK: - View Life Cycle
@@ -47,26 +51,27 @@ class ExerciseMenuViewController: UIViewController {
     // MARK: - Setup Views
     private func setupViews() {
         view.backgroundColor = .white
-        view.addSubview(scrollView)
-        scrollView.addSubview(contentView)
+        view.addSubview(contentView)
         contentView.addSubviews(headerStackView)
         headerStackView.addArrangedSubviews(exerciseMenuButton, stepsMenuButton)
+        contentView.addSubview(plusMenuButton)
     }
 
     private func setupConstraints() {
-        scrollView.snp.makeConstraints {
-            $0.edges.equalTo(view.safeAreaLayoutGuide)
-        }
-
         contentView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
-            $0.width.equalToSuperview()
+            $0.edges.equalTo(view.safeAreaLayoutGuide)
         }
 
         headerStackView.snp.makeConstraints {
             $0.top.equalToSuperview().offset(32)
             $0.leading.equalToSuperview().offset(16)
             $0.height.equalTo(28)
+        }
+        
+        plusMenuButton.snp.makeConstraints {
+            $0.width.height.equalTo(24)
+            $0.trailing.equalToSuperview().inset(16)
+            $0.centerY.equalTo(headerStackView)
         }
     }
 
@@ -76,7 +81,6 @@ class ExerciseMenuViewController: UIViewController {
         viewController.view.snp.makeConstraints { make in
             make.top.equalTo(headerStackView.snp.bottom).offset(8)
             make.leading.trailing.bottom.equalToSuperview()
-            make.height.equalTo(scrollView.snp.height).offset(-36)
         }
         viewController.didMove(toParent: self)
         currentChildViewController = viewController
@@ -92,18 +96,27 @@ class ExerciseMenuViewController: UIViewController {
     private func setupButtons() {
         exerciseMenuButton.addTarget(self, action: #selector(showFirstView), for: .touchUpInside)
         stepsMenuButton.addTarget(self, action: #selector(showSecondView), for: .touchUpInside)
+        plusMenuButton.addTarget(self, action: #selector(plusMenuButtonButtonTapped), for: .touchUpInside)
     }
 
     @objc private func showFirstView() {
         let exerciseVC = ExerciseViewController()
         transition(to: exerciseVC)
+        plusMenuButton.isHidden = false
         updateButtonColors(selectedButton: exerciseMenuButton)
     }
 
     @objc private func showSecondView() {
         let stepsVC = StepsViewController()
         transition(to: stepsVC)
+        plusMenuButton.isHidden = true
         updateButtonColors(selectedButton: stepsMenuButton)
+    }
+    
+    @objc private func plusMenuButtonButtonTapped() {
+        let exerciseSelectionVC = ExerciseSelectionViewController()
+        exerciseSelectionVC.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(exerciseSelectionVC, animated: true)
     }
 
     private func transition(to viewController: UIViewController) {

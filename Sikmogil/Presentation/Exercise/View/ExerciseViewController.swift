@@ -21,19 +21,7 @@ class ExerciseViewController: UIViewController {
         $0.font = Suite.semiBold.of(size: 14)
         $0.textColor = .appDarkGray
     }
-
-    let exerciseMenuButton = UIButton(type: .system).then {
-        $0.setTitle("운동", for: .normal)
-        $0.titleLabel?.font = Suite.bold.of(size: 28)
-        $0.tintColor = .appBlack
-    }
-
-    let stepsMenuButton = UIButton(type: .system).then {
-        $0.setTitle("걸음 수", for: .normal)
-        $0.titleLabel?.font = Suite.bold.of(size: 28)
-        $0.tintColor = .appDarkGray
-    }
-
+    
     private let progressView = UIView().then {
         $0.backgroundColor = .clear
     }
@@ -48,17 +36,25 @@ class ExerciseViewController: UIViewController {
         $0.image = UIImage.exerciseIconFill
     }
 
-    private let progressLabel = UILabel().then {
-        $0.text = "활동시간 00분\n소모칼로리 0kcal"
+    private let progressTimeLabel = UILabel().then {
+        $0.text = "활동시간 00분"
         $0.numberOfLines = 2
         $0.textAlignment = .center
-        $0.font = Suite.semiBold.of(size: 18)
-        $0.textColor = .appDarkGray
+        $0.font = Suite.semiBold.of(size: 16)
+        $0.textColor = .appDeepDarkGray
+    }
+    
+    private let progressKcalLabel = UILabel().then {
+        $0.text = "소모칼로리 0kcal"
+        $0.numberOfLines = 2
+        $0.textAlignment = .center
+        $0.font = Suite.semiBold.of(size: 16)
+        $0.textColor = .appDeepDarkGray
     }
 
     private let historyLabel = UILabel().then {
         $0.text = "운동 기록"
-        $0.font = Suite.bold.of(size: 28)
+        $0.font = Suite.bold.of(size: 22)
         $0.textColor = .appBlack
     }
 
@@ -74,10 +70,19 @@ class ExerciseViewController: UIViewController {
 
     private let startExerciseButton = UIButton().then {
         $0.setTitle("운동하기", for: .normal)
-        $0.titleLabel?.font = Suite.bold.of(size: 22)
+        $0.titleLabel?.font = Suite.bold.of(size: 18)
         $0.tintColor = .white
         $0.backgroundColor = .appBlack
         $0.layer.cornerRadius = 16
+        // 운동하기 버튼 히든 처리
+        $0.isHidden = true
+    }
+    
+    private let emptyLabel = UILabel().then {
+        $0.text = "오늘의 운동 기록이 없어요!"
+        $0.textAlignment = .center
+        $0.font = Suite.semiBold.of(size: 16)
+        $0.textColor = .appDeepDarkGray
     }
 
     private let tableView = UITableView().then {
@@ -141,7 +146,8 @@ class ExerciseViewController: UIViewController {
     private func updateProgress() {
         let totalTime = viewModel.totalWorkoutTime
         let totalCalories = viewModel.totalCaloriesBurned
-        progressLabel.text = "활동시간 \(totalTime)분\n소모칼로리 \(totalCalories)kcal"
+        progressTimeLabel.text = "활동시간 \(totalTime)분"
+        progressKcalLabel.text = "소모칼로리 \(totalCalories)kcal"
         
         if let canEatCalorie = viewModel.canEatCalorie {
             let recommendedCalories = CGFloat(canEatCalorie) * 0.5
@@ -155,9 +161,14 @@ class ExerciseViewController: UIViewController {
         tableView.snp.updateConstraints {
             $0.height.equalTo(tableViewHeight)
         }
+        
+        if viewModel.exercises.count != 0 {
+            self.emptyLabel.isHidden = true
+        }
+        // TODO: - willAppear 데이터 받아오는 부분
     }
     
-    // MARK: - API
+    // MARK: - Fetch Data
     private func fetchExerciseData() {
         viewModel.getExerciseData(for: day) { result in
             switch result {
@@ -182,8 +193,8 @@ class ExerciseViewController: UIViewController {
         
         view.addSubviews(scrollView, startExerciseButton)
         scrollView.addSubview(contentView)
-        contentView.addSubviews(descriptionLabel, progressView, historyLabel, albumButton, tableView)
-        progressView.addSubviews(customCircularProgressBar, exerciseProgressBarIcon, progressLabel)
+        contentView.addSubviews(descriptionLabel, progressView, historyLabel, albumButton, tableView, emptyLabel)
+        progressView.addSubviews(customCircularProgressBar, exerciseProgressBarIcon, progressTimeLabel, progressKcalLabel)
     }
     
     private func setupConstraints() {
@@ -217,9 +228,14 @@ class ExerciseViewController: UIViewController {
             $0.top.equalToSuperview().inset(60)
         }
         
-        progressLabel.snp.makeConstraints {
+        progressTimeLabel.snp.makeConstraints {
             $0.centerX.equalToSuperview()
-            $0.top.equalTo(exerciseProgressBarIcon.snp.bottom).offset(16)
+            $0.top.equalTo(exerciseProgressBarIcon.snp.bottom).offset(18)
+        }
+        
+        progressKcalLabel.snp.makeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.top.equalTo(progressTimeLabel.snp.bottom).offset(6)
         }
         
         historyLabel.snp.makeConstraints {
@@ -229,9 +245,14 @@ class ExerciseViewController: UIViewController {
         
         albumButton.snp.makeConstraints {
             $0.trailing.equalTo(contentView).inset(16)
-            $0.width.equalTo(86)
-            $0.height.equalTo(30)
+            $0.width.equalTo(80)
+            $0.height.equalTo(32)
             $0.centerY.equalTo(historyLabel)
+        }
+        
+        emptyLabel.snp.makeConstraints{
+            $0.top.equalTo(historyLabel.snp.bottom).offset(100)
+            $0.centerX.equalToSuperview()
         }
         
         tableView.snp.makeConstraints {
@@ -250,15 +271,12 @@ class ExerciseViewController: UIViewController {
         
         // contentView의 높이 설정
         contentView.snp.makeConstraints {
-            $0.bottom.equalTo(tableView.snp.bottom).offset(100)
+            $0.bottom.equalTo(tableView.snp.bottom).offset(80)
         }
         
         startExerciseButton.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview().inset(16)
-//            $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottomMargin).inset(26)
-//            $0.height.equalTo(60)
-            // safeArea 영역이 바뀐 문제
-            $0.bottom.equalTo(view.safeAreaLayoutGuide).inset(48)
+            $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottomMargin).inset(26)
             $0.height.equalTo(48)
         }
     }
@@ -266,7 +284,6 @@ class ExerciseViewController: UIViewController {
     // MARK: - Setup Button
     private func setupButtons() {
         startExerciseButton.addTarget(self, action: #selector(startExerciseButtonTapped), for: .touchUpInside)
-        stepsMenuButton.addTarget(self, action: #selector(stepsMenuButtonTapped), for: .touchUpInside)
         albumButton.addTarget(self, action: #selector(albumButtonTapped), for: .touchUpInside)
     }
     
@@ -288,14 +305,13 @@ class ExerciseViewController: UIViewController {
     }
 }
 
-// MARK: - UITableView
+// MARK: - UITableViewDataSource
 extension ExerciseViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return viewModel.exercises.count
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
         let reversedIndex = viewModel.exercises.count - 1 - indexPath.row
         
         guard let cell = tableView.dequeueReusableCell(withIdentifier: ExerciseHistoryCell.identifier, for: indexPath) as? ExerciseHistoryCell else {
@@ -306,12 +322,13 @@ extension ExerciseViewController: UITableViewDataSource {
         cell.configure(exercise: exercise)
         return cell
     }
-    
+}
+
+// MARK: - UITableViewDelegate
+extension ExerciseViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 88
     }
-}
-extension ExerciseViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let deleteAction = UIContextualAction(style: .destructive, title: "") { [weak self] (action, view, completion) in
             guard let self = self else { return }

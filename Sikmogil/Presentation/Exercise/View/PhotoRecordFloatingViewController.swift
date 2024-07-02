@@ -17,7 +17,7 @@ class PhotoRecordFloatingViewController: UIViewController, UINavigationControlle
     
     private let label = UILabel().then {
         $0.text = "사진을 추가하시겠습니까?"
-        $0.font = Suite.semiBold.of(size: 24)
+        $0.font = Suite.semiBold.of(size: 20)
     }
     
     private let addPhotoButton =  UIButton().then {
@@ -46,7 +46,7 @@ class PhotoRecordFloatingViewController: UIViewController, UINavigationControlle
 
     private let doneButton = UIButton().then {
         $0.setTitle("완료", for: .normal)
-        $0.titleLabel?.font = Suite.bold.of(size: 22)
+        $0.titleLabel?.font = Suite.bold.of(size: 18)
         $0.backgroundColor = .appBlack
         $0.layer.cornerRadius = 16
     }
@@ -102,7 +102,7 @@ class PhotoRecordFloatingViewController: UIViewController, UINavigationControlle
             $0.top.equalTo(addPhotoButton.snp.bottom).offset(40)
             $0.leading.equalToSuperview().offset(16)
             $0.trailing.equalToSuperview().offset(-16)
-            $0.height.equalTo(60)
+            $0.height.equalTo(48)
         }
     }
     

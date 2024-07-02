@@ -97,8 +97,8 @@ class ExerciseTimerViewController: UIViewController {
         }
         
         recordButton.snp.makeConstraints {
-            $0.bottom.equalTo(view.safeAreaLayoutGuide).inset(32)
-            $0.height.equalTo(60)
+            $0.bottom.equalTo(view.safeAreaLayoutGuide).inset(16)
+            $0.height.equalTo(48)
             $0.leading.trailing.equalToSuperview().inset(16)
         }
     }
