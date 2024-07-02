@@ -14,6 +14,8 @@ class PhotoSelectViewController: UIViewController {
     
     private var imageURL: URL
     private var titleText: String
+    private var imageId: Int
+    private var viewModel = ExerciseAlbumViewModel()
     
     private var imageView = UIImageView().then {
         $0.contentMode = .scaleAspectFit
@@ -26,9 +28,10 @@ class PhotoSelectViewController: UIViewController {
         $0.titleLabel?.font = Suite.semiBold.of(size: 16)
     }
     
-    init(imageURL: URL, title: String) {
+    init(imageURL: URL, title: String, imageId: Int) {
         self.imageURL = imageURL
         self.titleText = title
+        self.imageId = imageId
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -96,24 +99,32 @@ class PhotoSelectViewController: UIViewController {
     }
     
     @objc private func deleteButtonTapped() {
-           let alertController = UIAlertController(title: "사진 삭제", message: "정말 삭제하시겠어요?", preferredStyle: .alert)
-           
-           let cancelAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
-           let deleteAction = UIAlertAction(title: "삭제", style: .destructive) { [weak self] _ in
-               self?.deletePhoto()
-           }
-           
-           alertController.addAction(cancelAction)
-           alertController.addAction(deleteAction)
-           
-           present(alertController, animated: true, completion: nil)
-       }
-       
-       private func deletePhoto() {
-           // TODO: - 이미지 삭제 로직 구현
-           print("이미지 삭제됨")
-           
-           // 삭제 후 이전 화면으로 돌아가기
-           navigationController?.popViewController(animated: true)
-       }
+        let alertController = UIAlertController(title: "사진 삭제", message: "정말 삭제하시겠어요?", preferredStyle: .alert)
+        
+        let cancelAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
+        let deleteAction = UIAlertAction(title: "삭제", style: .destructive) { [weak self] _ in
+            self?.deletePhoto()
+        }
+        
+        alertController.addAction(cancelAction)
+        alertController.addAction(deleteAction)
+        
+        present(alertController, animated: true, completion: nil)
+    }
+    
+    private func deletePhoto() {
+        viewModel.deleteExercisePictureData(date: titleText, workoutListId: imageId) { result in
+            switch result {
+            case .success:
+                DispatchQueue.main.async {
+                    self.navigationController?.popViewController(animated: true)
+                    if let albumVC = self.navigationController?.viewControllers.last as? ExerciseAlbumViewController {
+                        albumVC.albumCollectionView.reloadData()
+                    }
+                }
+            case .failure(let error):
+                print("이미지 삭제 실패: \(error)")
+            }
+        }
+    }
 }
