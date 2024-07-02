@@ -14,7 +14,7 @@ class SettingsTableViewCell: UITableViewCell {
     // MARK: - Properties
     static let identifier = "AlarmTableViewCell"
     
-    private let containerView = UIView().then {
+    let containerView = UIView().then {
         $0.layer.masksToBounds = true
     }
     
@@ -31,7 +31,7 @@ class SettingsTableViewCell: UITableViewCell {
     }
     
     private let separatorLine = UIView().then {
-        $0.backgroundColor = .lightGray
+        $0.backgroundColor = .appDarkGray
     }
     
     private let accessoryButton = UIButton(type: .system).then {
@@ -86,7 +86,7 @@ class SettingsTableViewCell: UITableViewCell {
         
         customSwitch.snp.makeConstraints {
             $0.centerY.equalToSuperview()
-            $0.trailing.equalTo(accessoryButton.snp.leading).offset(-8)
+            $0.trailing.equalTo(accessoryButton.snp.leading).offset(16)
         }
         
         accessoryButton.snp.makeConstraints {

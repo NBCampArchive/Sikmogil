@@ -17,22 +17,22 @@ class ProfileViewController: UIViewController {
     
     private var cancellables = Set<AnyCancellable>()
     
-    let spacerView = UIView()
-    let scrollView = UIScrollView()
-    let contentView = UIView()
-    let topBar = UIView()
+    private let spacerView = UIView()
+    private let scrollView = UIScrollView()
+    private let contentView = UIView()
+    private let topBar = UIView()
     
-    let profileLabel = UILabel().then {
+    private let profileLabel = UILabel().then {
         $0.text = "프로필"
         $0.font = Suite.bold.of(size: 24)
     }
     
-    let settingsButton = UIButton().then {
+    private let settingsButton = UIButton().then {
         $0.setImage(.setting, for: .normal)
         $0.tintColor = .appBlack
     }
     
-    let profileImageView = UIImageView().then {
+    private let profileImageView = UIImageView().then {
         $0.image = UIImage(named: "AppIcon")
         $0.contentMode = .scaleAspectFill
         $0.clipsToBounds = true
@@ -60,8 +60,8 @@ class ProfileViewController: UIViewController {
         $0.font = Suite.bold.of(size: 24)
     }
     
-    let profileInfoView = ProfileInfoView()
-//    let profileTableView = ProfileTableView()
+    private let profileInfoView = ProfileInfoView()
+//    private let profileTableView = ProfileTableView()
     
     // MARK: - viewDidLoad
     override func viewDidLoad() {

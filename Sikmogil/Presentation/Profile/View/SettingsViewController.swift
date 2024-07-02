@@ -12,7 +12,7 @@ import UserNotifications
 
 class SettingsViewController: UIViewController {
     
-    private var viewModel = ProfileViewModel()
+    var viewModel = ProfileViewModel()
     
     private let scrollView = UIScrollView().then {
         $0.backgroundColor = .clear
