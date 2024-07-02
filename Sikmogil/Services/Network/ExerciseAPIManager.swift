@@ -89,6 +89,27 @@ class ExerciseAPIManager {
         }
     }
     
+    // MARK: - 특정 날짜의 운동사진만! 삭제
+    func deleteExercisePictureData(exerciseDay: String, exerciseListId: Int, completion: @escaping (Result<Void, Error>) -> Void) {
+        let url = "\(baseURL)/api/workoutLog/workoutList/deleteWorkoutPicture"
+        
+        let parameters: [String: Any] = [
+            "date": exerciseDay,
+            "workoutListId": exerciseListId
+        ]
+        
+        session.request(url, method: .post, parameters: parameters, encoding: URLEncoding.default).validate().response { response in
+            switch response.result {
+            case .success:
+                print("deleteExerciseListData success")
+                completion(.success(()))
+            case .failure(let error):
+                print("deleteExerciseListData failure")
+                completion(.failure(error))
+            }
+        }
+    }
+    
     // MARK: - 사용자의 모든 운동 내역 출력
     func getAllExerciseData(completion: @escaping (Result<[ExerciseModel], Error>) -> Void) {
         let url = "\(baseURL)/api/workoutLog"

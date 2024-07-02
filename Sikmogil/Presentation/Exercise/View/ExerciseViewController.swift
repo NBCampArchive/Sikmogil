@@ -11,6 +11,9 @@ import SnapKit
 import Then
 
 class ExerciseViewController: UIViewController {
+
+    private var viewModel = ExerciseViewModel()
+    private var cancellables = Set<AnyCancellable>()
     
     // MARK: - Components
     private let scrollView = UIScrollView()
@@ -67,16 +70,6 @@ class ExerciseViewController: UIViewController {
         // 앨범 버튼 히든 처리
 //        $0.isHidden = true
     }
-
-    private let startExerciseButton = UIButton().then {
-        $0.setTitle("운동하기", for: .normal)
-        $0.titleLabel?.font = Suite.bold.of(size: 18)
-        $0.tintColor = .white
-        $0.backgroundColor = .appBlack
-        $0.layer.cornerRadius = 16
-        // 운동하기 버튼 히든 처리
-        $0.isHidden = true
-    }
     
     private let emptyLabel = UILabel().then {
         $0.text = "오늘의 운동 기록이 없어요!"
@@ -91,11 +84,6 @@ class ExerciseViewController: UIViewController {
         $0.separatorStyle = .none
     }
     
-    // MARK: - Properties
-    let day = DateHelper.shared.formatDateToYearMonthDay(Date())
-    private var viewModel = ExerciseViewModel()
-    private var cancellables = Set<AnyCancellable>()
-    
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -107,8 +95,8 @@ class ExerciseViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        fetchExerciseData()
         navigationController?.navigationBar.isHidden = true
+        fetchExerciseData()
     }
     
     // MARK: - Bind ViewModel
@@ -165,18 +153,17 @@ class ExerciseViewController: UIViewController {
         if viewModel.exercises.count != 0 {
             self.emptyLabel.isHidden = true
         }
-        // TODO: - willAppear 데이터 받아오는 부분
     }
     
     // MARK: - Fetch Data
     private func fetchExerciseData() {
-        viewModel.getExerciseData(for: day) { result in
+        viewModel.fetchExerciseData() { [weak self] result in
             switch result {
             case .success(_):
                 DispatchQueue.main.async {
-                    self.updateProgress()
-                    self.viewModel.fetchExerciseList(for: self.day)
-                    self.tableView.reloadData()
+                    self?.updateProgress()
+                    self?.viewModel.fetchExerciseList()
+                    self?.tableView.reloadData()
                 }
             case .failure(let error):
                 print("운동 데이터 불러오기 실패:", error)
@@ -191,7 +178,7 @@ class ExerciseViewController: UIViewController {
         tableView.dataSource = self
         tableView.register(ExerciseHistoryCell.self, forCellReuseIdentifier: ExerciseHistoryCell.identifier)
         
-        view.addSubviews(scrollView, startExerciseButton)
+        view.addSubview(scrollView)
         scrollView.addSubview(contentView)
         contentView.addSubviews(descriptionLabel, progressView, historyLabel, albumButton, tableView, emptyLabel)
         progressView.addSubviews(customCircularProgressBar, exerciseProgressBarIcon, progressTimeLabel, progressKcalLabel)
@@ -273,29 +260,11 @@ class ExerciseViewController: UIViewController {
         contentView.snp.makeConstraints {
             $0.bottom.equalTo(tableView.snp.bottom).offset(80)
         }
-        
-        startExerciseButton.snp.makeConstraints {
-            $0.leading.trailing.equalToSuperview().inset(16)
-            $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottomMargin).inset(26)
-            $0.height.equalTo(48)
-        }
     }
     
     // MARK: - Setup Button
     private func setupButtons() {
-        startExerciseButton.addTarget(self, action: #selector(startExerciseButtonTapped), for: .touchUpInside)
         albumButton.addTarget(self, action: #selector(albumButtonTapped), for: .touchUpInside)
-    }
-    
-    @objc private func startExerciseButtonTapped() {
-        let exerciseSelectionVC = ExerciseSelectionViewController()
-        exerciseSelectionVC.hidesBottomBarWhenPushed = true
-        navigationController?.pushViewController(exerciseSelectionVC, animated: true)
-    }
-    
-    @objc private func stepsMenuButtonTapped() {
-        let stepsVC = StepsViewController()
-        navigationController?.pushViewController(stepsVC, animated: true)
     }
     
     @objc private func albumButtonTapped() {
@@ -342,7 +311,7 @@ extension ExerciseViewController: UITableViewDelegate {
                 let exercise = self.viewModel.exercises[reversedIndex]
                 let listId = exercise.workoutListId
                 
-                self.viewModel.deleteExerciseListData(for: self.day, exerciseListId: listId) { result in
+                self.viewModel.deleteExerciseListData(exerciseListId: listId) { result in
                     switch result {
                     case .success:
                         DispatchQueue.main.async {

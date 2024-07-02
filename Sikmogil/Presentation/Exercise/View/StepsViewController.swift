@@ -12,6 +12,8 @@ import Then
 
 class StepsViewController: UIViewController {
 
+    private var currentProgressPercentage: CGFloat = 0.0
+    
     // MARK: - Components
     let healthStore = HKHealthStore()
     
@@ -82,9 +84,6 @@ class StepsViewController: UIViewController {
         $0.textColor = .appBlack
     }
     
-    // MARK: - Properties
-    private var currentProgressPercentage: CGFloat = 0.0
-    
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -94,7 +93,6 @@ class StepsViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
         updateStepsData()
     }
     

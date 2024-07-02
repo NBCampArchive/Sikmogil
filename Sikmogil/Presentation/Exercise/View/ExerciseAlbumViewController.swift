@@ -70,14 +70,14 @@ class ExerciseAlbumViewController: UIViewController {
         }
         
         albumTitleSubLabel.snp.makeConstraints{
-            $0.top.equalTo(albumTitleLabel.snp.bottom)
+            $0.top.equalTo(albumTitleLabel.snp.bottom).offset(6)
             $0.leading.equalToSuperview().offset(16)
             $0.width.equalToSuperview()
         }
         
         albumCollectionView.snp.makeConstraints{
             $0.top.equalTo(albumTitleSubLabel.snp.bottom).offset(16)
-            $0.leading.trailing.equalToSuperview().inset(16)
+            $0.horizontalEdges.equalToSuperview().inset(16)
             $0.bottom.equalToSuperview()
         }
     }
@@ -94,7 +94,7 @@ class ExerciseAlbumViewController: UIViewController {
 // MARK: - UICollectionView
 extension ExerciseAlbumViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return viewModel.exercisePictures.count
+        return viewModel.dataCount
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -140,8 +140,14 @@ extension ExerciseAlbumViewController: UICollectionViewDelegate {
         guard let imageURLString = exercisePicture.workoutPicture,
               let imageURL = URL(string: imageURLString) else { return }
         let date = exercisePicture.date
+        let workoutId = exercisePicture.workoutListId
         
-        let imageVC = PhotoSelectViewController(imageURL: imageURL, title: date)
+        let imageVC = PhotoSelectViewController(
+            imageURL: imageURL,
+            title: date,
+            imageId: workoutId,
+            viewModel: viewModel
+        )
         navigationController?.pushViewController(imageVC, animated: true)
     }
 }

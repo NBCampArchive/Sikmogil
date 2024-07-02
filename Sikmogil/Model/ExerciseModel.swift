@@ -26,8 +26,14 @@ struct ExerciseListModel: Decodable {
     let calorieBurned: Int
 }
 
+extension ExerciseListModel: Equatable {}
+
 // MARK: - 운동 사진 출력
 struct ExerciseAlbum: Decodable {
     var lastPage: Int
     var pictures: [ExerciseListModel]
+    
+    mutating func deleteExercise(for id: Int, and date: String) {
+        pictures.removeAll { $0.workoutListId == id && $0.date == date }
+    }
 }

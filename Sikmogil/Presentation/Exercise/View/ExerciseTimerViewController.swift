@@ -12,7 +12,7 @@ import Then
 class ExerciseTimerViewController: UIViewController {
     
     // MARK: - Properties
-    var viewModel = ExerciseSelectionViewModel()
+    var viewModel: ExerciseSelectionViewModel?
     var initialTime: TimeInterval
     var selectedTime: TimeInterval // 선택한 시간을 저장할 변수: 30분(30 * 60 = 1800)
     
