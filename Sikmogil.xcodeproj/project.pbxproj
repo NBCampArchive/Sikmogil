@@ -134,6 +134,7 @@
 		CA13FDE82C22E76C007B3DBE /* LunchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA13FDE72C22E76C007B3DBE /* LunchTableViewCell.swift */; };
 		CA13FDEA2C22E791007B3DBE /* DinnerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA13FDE92C22E791007B3DBE /* DinnerTableViewCell.swift */; };
 		CA7517762C2BC1B40076452D /* SikmogilPlist.plist in Resources */ = {isa = PBXBuildFile; fileRef = CA7517752C2BC1B40076452D /* SikmogilPlist.plist */; };
+		CA7517782C3302100076452D /* DietPhotoSelectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA7517772C3302100076452D /* DietPhotoSelectViewController.swift */; };
 		CACA65B82C1860CF0030D8D5 /* DietAlbumViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CACA65B72C1860CF0030D8D5 /* DietAlbumViewModel.swift */; };
 		CACA65BA2C19BBDF0030D8D5 /* SavedDietImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CACA65B92C19BBDF0030D8D5 /* SavedDietImage.swift */; };
 		CACA65C62C1B5CE20030D8D5 /* FoodDbAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CACA65C52C1B5CE20030D8D5 /* FoodDbAPIManager.swift */; };
@@ -271,6 +272,7 @@
 		CA13FDE72C22E76C007B3DBE /* LunchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LunchTableViewCell.swift; sourceTree = "<group>"; };
 		CA13FDE92C22E791007B3DBE /* DinnerTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DinnerTableViewCell.swift; sourceTree = "<group>"; };
 		CA7517752C2BC1B40076452D /* SikmogilPlist.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = SikmogilPlist.plist; sourceTree = "<group>"; };
+		CA7517772C3302100076452D /* DietPhotoSelectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DietPhotoSelectViewController.swift; sourceTree = "<group>"; };
 		CACA65B72C1860CF0030D8D5 /* DietAlbumViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DietAlbumViewModel.swift; sourceTree = "<group>"; };
 		CACA65B92C19BBDF0030D8D5 /* SavedDietImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedDietImage.swift; sourceTree = "<group>"; };
 		CACA65C52C1B5CE20030D8D5 /* FoodDbAPIManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoodDbAPIManager.swift; sourceTree = "<group>"; };
@@ -436,6 +438,7 @@
 				B52001C92C171B8C0083CBDF /* DietBottomSheetViewController.swift */,
 				B52001CA2C171B8C0083CBDF /* DietMainViewController.swift */,
 				B52001CB2C171B8C0083CBDF /* WaterBottomSheetViewController.swift */,
+				CA7517772C3302100076452D /* DietPhotoSelectViewController.swift */,
 				B52001C62C171B8C0083CBDF /* Cell */,
 			);
 			path = View;
@@ -1030,6 +1033,7 @@
 				F3094EF12C0EEDBA0099DE2C /* ExerciseResultViewController.swift in Sources */,
 				B54ABFCD2C0CB78F002E89DC /* Helpers.swift in Sources */,
 				B52001D52C171B8C0083CBDF /* DietBottomSheetViewController.swift in Sources */,
+				CA7517782C3302100076452D /* DietPhotoSelectViewController.swift in Sources */,
 				F36105BD2C2056E100237572 /* AnimationProgressBar.swift in Sources */,
 				F3094F062C1841240099DE2C /* ExerciseMenuViewController.swift in Sources */,
 				B54ABFBD2C0CB60D002E89DC /* Network.swift in Sources */,
