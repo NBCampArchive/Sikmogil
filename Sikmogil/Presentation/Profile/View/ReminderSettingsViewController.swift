@@ -21,13 +21,13 @@ class ReminderSettingsViewController: UIViewController {
     private let titleLabel = UILabel().then {
         $0.text = "리마인드 알림 시간 설정"
         $0.font = Suite.bold.of(size: 28)
-        $0.textColor = .black
+        $0.textColor = .appBlack
     }
     
     private let descriptionLabel = UILabel().then {
         $0.text = "하루 리마인드 알림을 원하는 시간을 선택해주세요"
-        $0.font = Suite.semiBold.of(size: 14)
-        $0.textColor = .darkGray
+        $0.font = Suite.regular.of(size: 14)
+        $0.textColor = .appDarkGray
     }
     
     private let timePicker = UIDatePicker().then {
@@ -48,7 +48,7 @@ class ReminderSettingsViewController: UIViewController {
         $0.setTitleColor(.white, for: .normal)
         $0.titleLabel?.font = Suite.bold.of(size: 22)
         $0.backgroundColor = .appBlack
-        $0.layer.cornerRadius = 8
+        $0.layer.cornerRadius = 16
     }
     
     // MARK: - 생명주기
@@ -117,7 +117,7 @@ class ReminderSettingsViewController: UIViewController {
         }
         
         titleLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(32)
+            $0.top.equalToSuperview().offset(16)
             $0.leading.equalToSuperview().offset(16)
         }
         
@@ -139,7 +139,7 @@ class ReminderSettingsViewController: UIViewController {
             $0.bottom.equalTo(view.safeAreaLayoutGuide).offset(-16)
             $0.leading.equalToSuperview().offset(16)
             $0.trailing.equalToSuperview().offset(-16)
-            $0.height.equalTo(60)
+            $0.height.equalTo(48)
         }
     }
     

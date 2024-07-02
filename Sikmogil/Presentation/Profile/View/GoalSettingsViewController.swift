@@ -24,7 +24,7 @@ class GoalSettingsViewController: UIViewController {
     
     private let goalSettingLabel = UILabel().then {
         $0.text = "목표 설정"
-        $0.font = Suite.bold.of(size: 24)
+        $0.font = Suite.bold.of(size: 28)
         $0.textColor = .appBlack
     }
     
@@ -71,7 +71,7 @@ class GoalSettingsViewController: UIViewController {
         $0.setTitleColor(.white, for: .normal)
         $0.titleLabel?.font = Suite.bold.of(size: 22)
         $0.backgroundColor = .appBlack
-        $0.layer.cornerRadius = 8
+        $0.layer.cornerRadius = 16
     }
     
     var targetDate = ""
@@ -174,7 +174,7 @@ class GoalSettingsViewController: UIViewController {
         }
         
         goalSettingLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(32)
+            $0.top.equalToSuperview().offset(16)
             $0.leading.equalToSuperview().offset(16)
         }
         
@@ -216,7 +216,7 @@ class GoalSettingsViewController: UIViewController {
             $0.bottom.equalTo(view.safeAreaLayoutGuide).offset(-16)
             $0.leading.equalToSuperview().offset(16)
             $0.trailing.equalToSuperview().offset(-16)
-            $0.height.equalTo(60)
+            $0.height.equalTo(48)
         }
     }
     
