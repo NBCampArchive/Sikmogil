@@ -142,6 +142,10 @@ class EditProfileViewController: UIViewController, UIImagePickerControllerDelega
         height.addTarget(self, action: #selector(heightDidChange(_:)), for: .editingChanged)
         weight.addTarget(self, action: #selector(weightDidChange(_:)), for: .editingChanged)
         saveButton.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
+        
+        nickname.delegate = self
+        height.delegate = self
+        weight.delegate = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -354,44 +358,28 @@ class EditProfileViewController: UIViewController, UIImagePickerControllerDelega
             $0.alignment = .fill
             $0.spacing = 6
         }
+        
         nicknameView.addSubview(nicknameStackView)
-        nicknameStackView.snp.makeConstraints {
-            $0.edges.equalToSuperview().inset(16)
-        }
         
         let heightStackView = UIStackView(arrangedSubviews: [heightLabel, height]).then {
             $0.axis = .vertical
             $0.alignment = .fill
             $0.spacing = 6
         }
+        
         heightView.addSubview(heightStackView)
-        heightStackView.snp.makeConstraints {
-            $0.edges.equalToSuperview().inset(16)
-        }
         heightView.addSubview(heightUnitLabel)
-        heightUnitLabel.snp.makeConstraints {
-            $0.centerY.equalTo(height)
-            $0.trailing.equalToSuperview().inset(16)
-            $0.width.equalTo(30)
-        }
         
         let weightStackView = UIStackView(arrangedSubviews: [weightLabel, weight]).then {
             $0.axis = .vertical
             $0.alignment = .fill
             $0.spacing = 6
         }
+        
         weightView.addSubview(weightStackView)
-        weightStackView.snp.makeConstraints {
-            $0.edges.equalToSuperview().inset(16)
-        }
         weightView.addSubview(weightUnitLabel)
-        weightUnitLabel.snp.makeConstraints {
-            $0.centerY.equalTo(weight)
-            $0.trailing.equalToSuperview().inset(16)
-            $0.width.equalTo(30)
-        }
     }
-
+    
     // MARK: - setupConstraints
     private func setupConstraints() {
         scrollView.snp.makeConstraints {
@@ -432,6 +420,14 @@ class EditProfileViewController: UIViewController, UIImagePickerControllerDelega
             $0.height.equalTo(80)
         }
         
+        let nicknameStackView = nicknameView.subviews.first { $0 is UIStackView } as? UIStackView
+        
+        nicknameStackView?.snp.makeConstraints {
+            $0.centerY.equalToSuperview()
+            $0.leading.equalTo(nicknameView.snp.leading).offset(16)
+            $0.trailing.equalTo(nicknameView.snp.trailing).offset(-10)
+        }
+        
         heightView.snp.makeConstraints {
             $0.top.equalTo(nicknameView.snp.bottom).offset(20)
             $0.leading.equalToSuperview().offset(16)
@@ -439,11 +435,39 @@ class EditProfileViewController: UIViewController, UIImagePickerControllerDelega
             $0.height.equalTo(80)
         }
         
+        let heightStackView = heightView.subviews.first { $0 is UIStackView } as? UIStackView
+        
+        heightStackView?.snp.makeConstraints {
+            $0.centerY.equalToSuperview()
+            $0.leading.equalTo(heightView.snp.leading).offset(16)
+            $0.trailing.equalTo(heightUnitLabel.snp.leading).offset(-10)
+        }
+        
+        heightUnitLabel.snp.makeConstraints {
+            $0.centerY.equalTo(height)
+            $0.trailing.equalTo(heightView.snp.trailing).offset(-16)
+            $0.width.equalTo(30)
+        }
+        
         weightView.snp.makeConstraints {
             $0.top.equalTo(heightView.snp.bottom).offset(20)
             $0.leading.equalToSuperview().offset(16)
             $0.trailing.equalToSuperview().offset(-16)
             $0.height.equalTo(80)
+        }
+        
+        let weightStackView = weightView.subviews.first { $0 is UIStackView } as? UIStackView
+        
+        weightStackView?.snp.makeConstraints {
+            $0.centerY.equalToSuperview()
+            $0.leading.equalTo(weightView.snp.leading).offset(16)
+            $0.trailing.equalTo(weightUnitLabel.snp.leading).offset(-10)
+        }
+        
+        weightUnitLabel.snp.makeConstraints {
+            $0.centerY.equalTo(weight)
+            $0.trailing.equalTo(weightView.snp.trailing).offset(-16)
+            $0.width.equalTo(30)
         }
         
         contentView.snp.makeConstraints {
