@@ -12,6 +12,10 @@ import Then
 
 class ExerciseSelectionViewController: UIViewController {
    
+    // MARK: - Properties
+    private var viewModel = ExerciseSelectionViewModel()
+    private var cancellables = Set<AnyCancellable>()
+    
     // MARK: - Components
     private let exerciseLabel = UILabel().then {
         $0.text = "운동 종목"
@@ -116,10 +120,6 @@ class ExerciseSelectionViewController: UIViewController {
         $0.spacing = 8
         $0.distribution = .fillEqually
     }
-
-    // MARK: - Properties
-    private var viewModel = ExerciseSelectionViewModel()
-    private var cancellables = Set<AnyCancellable>()
     
     // MARK: - View Life Cycle
     override func viewDidLoad() {
@@ -230,7 +230,7 @@ class ExerciseSelectionViewController: UIViewController {
             }
             .store(in: &cancellables)
     }
-    
+
     private func updateExpectedCaloriesLabel(calories: Int) {
         let fullText = "예상 소모 칼로리는 \(calories)kcal예요"
         let changeText = "\(calories)kcal"

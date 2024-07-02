@@ -10,7 +10,9 @@ import SnapKit
 import Then
 
 class ExerciseMenuViewController: UIViewController {
-    
+
+    private var currentChildViewController: UIViewController?
+
     // MARK: - Components
     private let contentView = UIView()
     
@@ -37,8 +39,6 @@ class ExerciseMenuViewController: UIViewController {
         $0.tintColor = .appBlack
     }
   
-    private var currentChildViewController: UIViewController?
-
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
