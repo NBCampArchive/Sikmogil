@@ -64,6 +64,7 @@ class SettingsViewController: UIViewController {
         $0.separatorStyle = .none
     }
     
+    // MARK: - viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
