@@ -38,9 +38,9 @@ class MainViewController: UIViewController {
         $0.font = Suite.bold.of(size: 28)
     }
     
-//    private lazy var calendarButton = UIButton().then {
-//        $0.setImage(.calendar, for: .normal)
-//    }
+    private lazy var calendarButton = UIButton().then {
+        $0.setImage(.calendar, for: .normal)
+    }
     
     private let weightLabel = UILabel().then {
         $0.text = "목표까지 남은기간 N일!"
@@ -150,7 +150,7 @@ class MainViewController: UIViewController {
         hideKeyboardWhenTappedAround()
         setKeyboardObserver()
         
-//        calendarButton.addTarget(self, action: #selector(tapCalendarButton), for: .touchUpInside)
+        calendarButton.addTarget(self, action: #selector(tapCalendarButton), for: .touchUpInside)
         recordButton.addTarget(self, action: #selector(tapRecordButton), for: .touchUpInside)
     }
     
@@ -165,7 +165,7 @@ class MainViewController: UIViewController {
         scrollView.addSubview(scrollSubView)
         
         scrollSubView.addSubviews(goalStackView,
-//                                  calendarButton,
+                                  calendarButton,
                                   dateProgressView,
                                   weightLogLabel,
                                   weightNowLabel,
@@ -199,12 +199,12 @@ class MainViewController: UIViewController {
             $0.leading.equalToSuperview().offset(16)
         }
         
-//        calendarButton.snp.makeConstraints {
-//            $0.centerY.equalTo(goalLabel.snp.centerY)
-//            $0.trailing.equalTo(view.safeAreaLayoutGuide).offset(-16)
-//            $0.width.equalTo(24)
-//            $0.height.equalTo(24)
-//        }
+        calendarButton.snp.makeConstraints {
+            $0.centerY.equalTo(goalLabel.snp.centerY)
+            $0.trailing.equalTo(view.safeAreaLayoutGuide).offset(-16)
+            $0.width.equalTo(24)
+            $0.height.equalTo(24)
+        }
         
         dateProgressView.snp.makeConstraints {
             $0.top.equalTo(goalStackView.snp.bottom).offset(20)
@@ -286,6 +286,9 @@ class MainViewController: UIViewController {
                     self?.percentLabel.text = String(format: "%.0f%%", displayedPercentage)
                     if displayedPercentage == 100 {
                         let alert = UIAlertController(title: "목표 기간 종료!", message: "설정해둔 목표기간이 종료되었습니다.\n새로운 목표를 포함한 새로운 기간을 설정해주세요!", preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: "확인", style: .default) { [weak self] _ in
+                            self?.moveToGoalSetting()
+                        })
                         self?.present(alert, animated: true, completion: nil)
                     }
                 }
@@ -333,6 +336,12 @@ class MainViewController: UIViewController {
             }
             .store(in: &cancellables)
         
+    }
+    
+    private func moveToGoalSetting() {
+        if let tabBarController = self.tabBarController as? BottomTabBarController {
+            tabBarController.moveToProfileAndGoalSetting()
+        }
     }
     
     private func updateUI(with targetModel: TargetModel?) {
