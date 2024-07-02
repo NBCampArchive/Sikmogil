@@ -6,6 +6,7 @@
 //  [Cell] **설명** 식사 앨범 컬렉션뷰 셀
 
 import UIKit
+import Kingfisher
 
 class DietAlbumCollectionViewCell: UICollectionViewCell {
     
@@ -40,15 +41,28 @@ class DietAlbumCollectionViewCell: UICollectionViewCell {
     // MARK: - Setup Methods
     private func setupViews() {
         contentView.addSubviews(imageView,dataLabel)
+        self.layer.cornerRadius = 16
+        self.layer.masksToBounds = true
     }
     
     private func setupConstraints() {
-        imageView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+        imageView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
         }
-        dataLabel.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.bottom.equalTo(imageView.snp.bottom)
+        
+        dataLabel.snp.makeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.bottom.equalTo(imageView.snp.bottom).inset(4)
         }
+    }
+    func configure(with data: Data) {
+        guard let image = UIImage(data: data) else {
+            self.imageView.image = nil
+            return
+        }
+        
+        UIView.transition(with: imageView, duration: 0.5, options: .transitionCrossDissolve, animations: {
+            self.imageView.image = image
+        }, completion: nil)
     }
 }

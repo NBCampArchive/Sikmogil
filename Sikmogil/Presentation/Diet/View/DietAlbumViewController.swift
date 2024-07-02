@@ -37,8 +37,7 @@ class DietAlbumViewController: UIViewController, UINavigationControllerDelegate 
     let albumCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
-        layout.minimumLineSpacing = 8
-        layout.minimumInteritemSpacing = 8
+        layout.minimumLineSpacing = 16
         return UICollectionView(frame: .zero, collectionViewLayout: layout)
     }()
     
@@ -63,6 +62,9 @@ class DietAlbumViewController: UIViewController, UINavigationControllerDelegate 
         albumCollectionView.register(DietAlbumCollectionViewCell.self, forCellWithReuseIdentifier: DietAlbumCollectionViewCell.identifier)
         
         loadMoreImages()
+        
+        let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress(_:)))
+        albumCollectionView.addGestureRecognizer(longPressGesture)
         
         navigationController?.navigationBar.isHidden = false
     }
@@ -136,7 +138,7 @@ class DietAlbumViewController: UIViewController, UINavigationControllerDelegate 
             present(alertController, animated: true, completion: nil)
         }
     }
-    
+    //페이지네이션
     private func loadMoreImages() {
         guard !isLoading, currentPage <= viewModel.lastPage else { return }
         isLoading = true
@@ -149,45 +151,21 @@ class DietAlbumViewController: UIViewController, UINavigationControllerDelegate 
             }
         }
     }
-}
-
-// MARK: - UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
-extension DietAlbumViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return viewModel.savedDietImages.count
-    }
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DietAlbumCollectionViewCell.identifier, for: indexPath) as! DietAlbumCollectionViewCell
-        let dietImage = viewModel.savedDietImages[indexPath.item]
-        cell.imageView.image = UIImage(data: dietImage.foodPicture)
-        cell.dataLabel.text = "\(dietImage.dietDate)"
+    //롱프레스 컬렉션뷰셀 데이터 삭제
+    @objc private func handleLongPress(_ gesture: UILongPressGestureRecognizer) {
+        let location = gesture.location(in: albumCollectionView)
         
-        return cell
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let itemsPerRow: CGFloat = 2
-        let paddingSpace = 8 * (itemsPerRow - 1)
-        let availableWidth = collectionView.frame.width - paddingSpace
-        let widthPerItem = availableWidth / itemsPerRow
-        return CGSize(width: widthPerItem, height: widthPerItem)
-    }
-    
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let offsetY = scrollView.contentOffset.y
-        let contentHeight = scrollView.contentSize.height
-        let frameHeight = scrollView.frame.size.height
-        
-        if offsetY > contentHeight - frameHeight * 2 {
-            loadMoreImages()
+        switch gesture.state {
+        case .began:
+            if let indexPath = albumCollectionView.indexPathForItem(at: location) {
+                confirmDeleteImage(at: indexPath)
+            }
+        default:
+            break
         }
     }
     
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        confirmDeleteImage(at: indexPath)
-    }
-    
-    func confirmDeleteImage(at indexPath: IndexPath) {
+    private func confirmDeleteImage(at indexPath: IndexPath) {
         let alert = UIAlertController(title: "사진 삭제", message: "이 사진을 삭제하시겠습니까?", preferredStyle: .alert)
         let deleteAction = UIAlertAction(title: "삭제", style: .destructive) { _ in
             let index = indexPath.item
@@ -206,6 +184,48 @@ extension DietAlbumViewController: UICollectionViewDelegate, UICollectionViewDat
         alert.addAction(deleteAction)
         alert.addAction(cancelAction)
         present(alert, animated: true, completion: nil)
+    }
+}
+
+// MARK: - UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
+extension DietAlbumViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return viewModel.savedDietImages.count
+    }
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DietAlbumCollectionViewCell.identifier, for: indexPath) as! DietAlbumCollectionViewCell
+        let dietImage = viewModel.savedDietImages[indexPath.item]
+        cell.configure(with: dietImage.foodPicture)
+        //cell.imageView.image = UIImage(data: dietImage.foodPicture)
+        cell.dataLabel.text = "\(dietImage.dietDate)"
+        
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let padding: CGFloat = 20 // 셀 간 간격
+        let availableWidth = collectionView.frame.width - padding
+        let width = availableWidth / 2
+        return CGSize(width: width, height: width)
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let offsetY = scrollView.contentOffset.y
+        let contentHeight = scrollView.contentSize.height
+        let frameHeight = scrollView.frame.size.height
+        
+        if offsetY > contentHeight - frameHeight * 2 {
+            loadMoreImages()
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let dietPicture = viewModel.savedDietImages[indexPath.item]
+        let imageData = dietPicture.foodPicture
+        let date = dietPicture.dietDate
+        
+        let imageVC = DietPhotoSelectViewController(imageData: imageData, title: date, imageIndex: indexPath.item, viewModel: viewModel)
+        navigationController?.pushViewController(imageVC, animated: true)
     }
 }
 
