@@ -11,6 +11,9 @@ import SnapKit
 import Then
 
 class ExerciseViewController: UIViewController {
+
+    private var viewModel = ExerciseViewModel()
+    private var cancellables = Set<AnyCancellable>()
     
     // MARK: - Components
     private let scrollView = UIScrollView()
@@ -80,11 +83,6 @@ class ExerciseViewController: UIViewController {
         $0.isScrollEnabled = false
         $0.separatorStyle = .none
     }
-    
-    // MARK: - Properties
-    let day = DateHelper.shared.formatDateToYearMonthDay(Date())
-    private var viewModel = ExerciseViewModel()
-    private var cancellables = Set<AnyCancellable>()
     
     // MARK: - View Life Cycle
     override func viewDidLoad() {
@@ -160,12 +158,12 @@ class ExerciseViewController: UIViewController {
     
     // MARK: - Fetch Data
     private func fetchExerciseData() {
-        viewModel.getExerciseData(for: day) { result in
+        viewModel.getExerciseData() { result in
             switch result {
             case .success(_):
                 DispatchQueue.main.async {
                     self.updateProgress()
-                    self.viewModel.fetchExerciseList(for: self.day)
+                    self.viewModel.fetchExerciseList()
                     self.tableView.reloadData()
                 }
             case .failure(let error):
@@ -314,7 +312,7 @@ extension ExerciseViewController: UITableViewDelegate {
                 let exercise = self.viewModel.exercises[reversedIndex]
                 let listId = exercise.workoutListId
                 
-                self.viewModel.deleteExerciseListData(for: self.day, exerciseListId: listId) { result in
+                self.viewModel.deleteExerciseListData(exerciseListId: listId) { result in
                     switch result {
                     case .success:
                         DispatchQueue.main.async {
