@@ -57,7 +57,7 @@ class CalendarAPIManager {
     }
     
     // MARK: - 특정 날짜 캘린더 데이터 출력
-    func getCalendarData(calendarDate: String) -> AnyPublisher<CalendarModel, Error>{
+    func getCalendarData(calendarDate: String) -> AnyPublisher<DailyCalendarModel, Error>{
         
         let url = "\(baseURL)/api/calendar/getCalendarDate"
         
@@ -66,7 +66,7 @@ class CalendarAPIManager {
         ]
         
         return session.request(url, method: .get, parameters: parameters, encoding: URLEncoding.default)
-            .publishDecodable(type: CalendarModel.self)
+            .publishDecodable(type: DailyCalendarModel.self)
             .value()
             .mapError { $0 as Error}
             .eraseToAnyPublisher()
