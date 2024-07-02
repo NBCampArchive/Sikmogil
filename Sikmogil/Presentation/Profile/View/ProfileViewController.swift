@@ -159,7 +159,7 @@ class ProfileViewController: UIViewController {
         }
         
         topBar.snp.makeConstraints {
-            $0.top.equalTo(contentView).offset(26)
+            $0.top.equalTo(contentView).offset(32)
             $0.left.right.equalTo(contentView)
             $0.height.equalTo(60)
         }
