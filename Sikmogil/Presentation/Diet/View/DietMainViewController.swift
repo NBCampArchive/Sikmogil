@@ -218,7 +218,7 @@ class DietMainViewController: UIViewController {
             $0.width.equalToSuperview()
         }
         dietTitleSubLabel.snp.makeConstraints {
-            $0.top.equalTo(dietTitleLabel.snp.bottom).offset(8)
+            $0.top.equalTo(dietTitleLabel.snp.bottom).offset(6)
             $0.leading.equalToSuperview()
             $0.width.equalToSuperview()
         }
@@ -257,7 +257,7 @@ class DietMainViewController: UIViewController {
             $0.width.equalToSuperview()
         }
         waterTitleSubLabel.snp.makeConstraints {
-            $0.top.equalTo(waterTitleLabel.snp.bottom).offset(8)
+            $0.top.equalTo(waterTitleLabel.snp.bottom).offset(6)
             $0.leading.equalToSuperview()
             $0.width.equalToSuperview()
         }
@@ -287,7 +287,7 @@ class DietMainViewController: UIViewController {
             $0.width.equalToSuperview()
         }
         fastingTimerTitleSubLabel.snp.makeConstraints{
-            $0.top.equalTo(fastingTimerTitleLabel.snp.bottom).offset(8)
+            $0.top.equalTo(fastingTimerTitleLabel.snp.bottom).offset(6)
             $0.leading.equalToSuperview()
             $0.width.equalToSuperview()
         }

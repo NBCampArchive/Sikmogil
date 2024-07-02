@@ -63,8 +63,8 @@ class DietAlbumViewController: UIViewController, UINavigationControllerDelegate 
         
         loadMoreImages()
         
-        let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress(_:)))
-        albumCollectionView.addGestureRecognizer(longPressGesture)
+//        let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress(_:)))
+//        albumCollectionView.addGestureRecognizer(longPressGesture)
         
         navigationController?.navigationBar.isHidden = false
     }
@@ -85,7 +85,7 @@ class DietAlbumViewController: UIViewController, UINavigationControllerDelegate 
             $0.leading.equalToSuperview().offset(16)
         }
         albumTitleSubLabel.snp.makeConstraints{
-            $0.top.equalTo(albumTitleLabel.snp.bottom).offset(8)
+            $0.top.equalTo(albumTitleLabel.snp.bottom).offset(6)
             $0.leading.equalToSuperview().offset(16)
             $0.width.equalToSuperview()
         }
@@ -151,40 +151,40 @@ class DietAlbumViewController: UIViewController, UINavigationControllerDelegate 
             }
         }
     }
-    //롱프레스 컬렉션뷰셀 데이터 삭제
-    @objc private func handleLongPress(_ gesture: UILongPressGestureRecognizer) {
-        let location = gesture.location(in: albumCollectionView)
-        
-        switch gesture.state {
-        case .began:
-            if let indexPath = albumCollectionView.indexPathForItem(at: location) {
-                confirmDeleteImage(at: indexPath)
-            }
-        default:
-            break
-        }
-    }
-    
-    private func confirmDeleteImage(at indexPath: IndexPath) {
-        let alert = UIAlertController(title: "사진 삭제", message: "이 사진을 삭제하시겠습니까?", preferredStyle: .alert)
-        let deleteAction = UIAlertAction(title: "삭제", style: .destructive) { _ in
-            let index = indexPath.item
-            self.viewModel.deleteImage(at: index) { result in
-                switch result {
-                case .success:
-                    DispatchQueue.main.async {
-                        self.albumCollectionView.reloadData()
-                    }
-                case .failure(let error):
-                    print("Failed to delete image: \(error)")
-                }
-            }
-        }
-        let cancelAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
-        alert.addAction(deleteAction)
-        alert.addAction(cancelAction)
-        present(alert, animated: true, completion: nil)
-    }
+//    //롱프레스 컬렉션뷰셀 데이터 삭제
+//    @objc private func handleLongPress(_ gesture: UILongPressGestureRecognizer) {
+//        let location = gesture.location(in: albumCollectionView)
+//        
+//        switch gesture.state {
+//        case .began:
+//            if let indexPath = albumCollectionView.indexPathForItem(at: location) {
+//                confirmDeleteImage(at: indexPath)
+//            }
+//        default:
+//            break
+//        }
+//    }
+//    
+//    private func confirmDeleteImage(at indexPath: IndexPath) {
+//        let alert = UIAlertController(title: "사진 삭제", message: "이 사진을 삭제하시겠습니까?", preferredStyle: .alert)
+//        let deleteAction = UIAlertAction(title: "삭제", style: .destructive) { _ in
+//            let index = indexPath.item
+//            self.viewModel.deleteImage(at: index) { result in
+//                switch result {
+//                case .success:
+//                    DispatchQueue.main.async {
+//                        self.albumCollectionView.reloadData()
+//                    }
+//                case .failure(let error):
+//                    print("Failed to delete image: \(error)")
+//                }
+//            }
+//        }
+//        let cancelAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
+//        alert.addAction(deleteAction)
+//        alert.addAction(cancelAction)
+//        present(alert, animated: true, completion: nil)
+//    }
 }
 
 // MARK: - UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
