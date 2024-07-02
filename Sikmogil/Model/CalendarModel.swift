@@ -11,8 +11,8 @@ struct CalendarModel: Decodable {
     var diaryDate: String
     var diaryWeight: Int?
     var diaryText: String?
-    var dietPictures: [CalendarDietPicture]?
-    var workoutLists: [CalendarWorkoutList]?
+    var dietPicture: CalendarDietPicture?
+    var workoutList: CalendarWorkoutList?
 }
 
 struct CalendarDietPicture: Decodable {
