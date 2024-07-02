@@ -9,7 +9,7 @@ import Foundation
 import Combine
 
 class CalendarViewModel: ObservableObject {
-    @Published var calendarModels: CalendarModel?
+    @Published var calendarModels: DailyCalendarModel?
     @Published var calendarListModels: [CalendarModel]?
     @Published var errorMessage: String?
     @Published var createDate: Date?
