@@ -157,6 +157,7 @@ class MainViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         viewModel.loadWeightData()
+        navigationController?.navigationBar.isHidden = true
     }
     
     private func setupViews() {
@@ -400,7 +401,7 @@ class MainViewController: UIViewController {
     
     @objc func tapCalendarButton() {
         let nextView = CalendarViewController()
-        
+        nextView.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(nextView, animated: true)
     }
     
