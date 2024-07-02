@@ -14,7 +14,7 @@ import FloatingPanel
 class ExerciseResultViewController: UIViewController, FloatingPanelControllerDelegate {
     
     // MARK: - Properties
-    var viewModel = ExerciseSelectionViewModel()
+    var viewModel: ExerciseSelectionViewModel?
     private var cancellables = Set<AnyCancellable>()
     var recodingPhotoPanel = FloatingPanelController()
     
@@ -159,6 +159,8 @@ class ExerciseResultViewController: UIViewController, FloatingPanelControllerDel
     
     // MARK: - Setup Binding
     private func bindViewModel() {
+        guard let viewModel = viewModel else { return }
+        
         viewModel.$expectedCalories
             .receive(on: DispatchQueue.main)
             .sink { [weak self] calories in
@@ -192,6 +194,7 @@ class ExerciseResultViewController: UIViewController, FloatingPanelControllerDel
     }
     
     private func updateExerciseImage(exercise: String) {
+        guard let viewModel = viewModel else { return }
         let iconName = viewModel.iconName(for: exercise)
         exerciseImage.image = UIImage(named: iconName)
     }
@@ -319,56 +322,60 @@ class ExerciseResultViewController: UIViewController, FloatingPanelControllerDel
         self.present(recodingPhotoPanel, animated: true)
     }
     
-    // TODO: - NVActivityIndicatorView, 추가 메서드 분리, 중복으로 누를 때!
+    // TODO: - 중복으로 누를 때 방지!, NVActivityIndicatorView 로딩 추가
     @objc private func addButtonTapped() {
-        var exerciseData = viewModel.saveExerciseData()
-        let day = DateHelper.shared.formatDateToYearMonthDay(Date())
+        guard let viewModel = viewModel else { return }
+        
+        let exerciseData = viewModel.saveExerciseData()
         
         // 운동 리스트에 이미지가 있는 경우
         if let exerciseImage = viewModel.selectedImageView {
-            viewModel.uploadExerciseImage(image: exerciseImage, directory: "exercise_images") { [weak self] result in
-                switch result {
-                case .success(let imageURL):
-                    // 이미지 업로드 후, 운동 리스트 데이터에 이미지 URL 설정
-                    exerciseData.workoutPicture = imageURL
-                    
-                    // 운동 리스트 데이터 서버에 추가
-                    self?.viewModel.addExerciseListData(exerciseList: exerciseData) { addResult in
-                        switch addResult {
-                        case .success:
-                            print("이미지, 운동 리스트 추가 성공")
-                            self?.showAlert(message: "운동 리스트 추가 성공") {
-                                // 네비게이션의 최상단 페이지로 이동
-                                self?.navigationController?.popToRootViewController(animated: true)
-                            }
-                        case .failure(let error):
-                            print("이미지, 운동 리스트 추가 실패", error)
-                        }
-                    }
-                    
-                case .failure(let error):
-                    print("이미지 업로드 실패", error)
-                    self?.showAlert(message: "이미지 업로드 실패") {}
-                }
-            }
+            uploadExerciseImageAndData(exerciseImage: exerciseImage, exerciseData: exerciseData)
         } else {
             // 운동 리스트에 이미지가 없는 경우 바로 서버에 추가
-            viewModel.addExerciseListData(exerciseList: exerciseData) { [weak self] result in
-                switch result {
-                case .success:
-                    print("운동 리스트 추가 성공")
-                    self?.showAlert(message: "운동 리스트 추가 성공") {
-                        // 네비게이션의 최상단 페이지로 이동
-                        self?.navigationController?.popToRootViewController(animated: true)
-                    }
-                    
-                case .failure(let error):
-                    print("운동 리스트 추가 실패", error)
+            addExerciseListData(exerciseData: exerciseData)
+        }
+    }
+    
+    private func uploadExerciseImageAndData(exerciseImage: UIImage, exerciseData: ExerciseListModel) {
+        guard let viewModel = viewModel else { return }
+        
+        viewModel.uploadExerciseImage(image: exerciseImage, directory: "exercise_images") { [weak self] result in
+            switch result {
+            case .success(let imageURL):
+                // 이미지 업로드 후, 운동 리스트 데이터에 이미지 URL 설정
+                var updatedExerciseData = exerciseData
+                updatedExerciseData.workoutPicture = imageURL
+                
+                // 운동 리스트 데이터 서버에 추가
+                self?.addExerciseListData(exerciseData: updatedExerciseData)
+                
+            case .failure(let error):
+                print("이미지 업로드 실패", error)
+                self?.showAlert(message: "이미지 업로드 실패") {
                 }
             }
         }
     }
-
+    
+    private func addExerciseListData(exerciseData: ExerciseListModel) {
+        guard let viewModel = viewModel else { return }
+        viewModel.addExerciseListData(exerciseList: exerciseData) { [weak self] result in
+            switch result {
+            case .success:
+                print("운동 리스트 추가 성공")
+                self?.showAlert(message: "운동 리스트 추가 성공") {
+                    // 네비게이션의 최상단 페이지로 이동
+                    self?.navigationController?.popToRootViewController(animated: true)
+                }
+            case .failure(let error):
+                print("운동 리스트 추가 실패", error)
+                self?.showAlert(message: "운동 리스트 추가 실패") {
+                    self?.viewModel?.isAdding = false
+                }
+            }
+        }
+    }
     
     private func showAlert(message: String, completion: @escaping () -> Void) {
         let alertController = UIAlertController(title: nil, message: message, preferredStyle: .alert)
