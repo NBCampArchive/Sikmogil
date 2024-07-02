@@ -20,7 +20,7 @@ class ReminderSettingsViewController: UIViewController {
     
     private let titleLabel = UILabel().then {
         $0.text = "리마인드 알림 시간 설정"
-        $0.font = Suite.bold.of(size: 28)
+        $0.font = Suite.bold.of(size: 24)
         $0.textColor = .appBlack
     }
     

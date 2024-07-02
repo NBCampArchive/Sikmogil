@@ -24,7 +24,7 @@ class GoalSettingsViewController: UIViewController {
     
     private let goalSettingLabel = UILabel().then {
         $0.text = "목표 설정"
-        $0.font = Suite.bold.of(size: 28)
+        $0.font = Suite.bold.of(size: 24)
         $0.textColor = .appBlack
     }
     

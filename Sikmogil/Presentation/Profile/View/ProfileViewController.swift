@@ -24,7 +24,7 @@ class ProfileViewController: UIViewController {
     
     let profileLabel = UILabel().then {
         $0.text = "프로필"
-        $0.font = Suite.bold.of(size: 28)
+        $0.font = Suite.bold.of(size: 24)
     }
     
     let settingsButton = UIButton().then {
@@ -33,7 +33,7 @@ class ProfileViewController: UIViewController {
     }
     
     let profileImageView = UIImageView().then {
-        $0.image = UIImage(named: "defaultProfile")
+        $0.image = UIImage(named: "AppIcon")
         $0.contentMode = .scaleAspectFill
         $0.clipsToBounds = true
     }
