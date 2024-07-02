@@ -67,16 +67,6 @@ class ExerciseViewController: UIViewController {
         // 앨범 버튼 히든 처리
 //        $0.isHidden = true
     }
-
-    private let startExerciseButton = UIButton().then {
-        $0.setTitle("운동하기", for: .normal)
-        $0.titleLabel?.font = Suite.bold.of(size: 18)
-        $0.tintColor = .white
-        $0.backgroundColor = .appBlack
-        $0.layer.cornerRadius = 16
-        // 운동하기 버튼 히든 처리
-        $0.isHidden = true
-    }
     
     private let emptyLabel = UILabel().then {
         $0.text = "오늘의 운동 기록이 없어요!"
@@ -165,7 +155,7 @@ class ExerciseViewController: UIViewController {
         if viewModel.exercises.count != 0 {
             self.emptyLabel.isHidden = true
         }
-        // TODO: - willAppear 데이터 받아오는 부분
+        // TODO: - 값 바뀔 때 데이터 변경
     }
     
     // MARK: - Fetch Data
@@ -191,7 +181,7 @@ class ExerciseViewController: UIViewController {
         tableView.dataSource = self
         tableView.register(ExerciseHistoryCell.self, forCellReuseIdentifier: ExerciseHistoryCell.identifier)
         
-        view.addSubviews(scrollView, startExerciseButton)
+        view.addSubview(scrollView)
         scrollView.addSubview(contentView)
         contentView.addSubviews(descriptionLabel, progressView, historyLabel, albumButton, tableView, emptyLabel)
         progressView.addSubviews(customCircularProgressBar, exerciseProgressBarIcon, progressTimeLabel, progressKcalLabel)
@@ -273,29 +263,11 @@ class ExerciseViewController: UIViewController {
         contentView.snp.makeConstraints {
             $0.bottom.equalTo(tableView.snp.bottom).offset(80)
         }
-        
-        startExerciseButton.snp.makeConstraints {
-            $0.leading.trailing.equalToSuperview().inset(16)
-            $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottomMargin).inset(26)
-            $0.height.equalTo(48)
-        }
     }
     
     // MARK: - Setup Button
     private func setupButtons() {
-        startExerciseButton.addTarget(self, action: #selector(startExerciseButtonTapped), for: .touchUpInside)
         albumButton.addTarget(self, action: #selector(albumButtonTapped), for: .touchUpInside)
-    }
-    
-    @objc private func startExerciseButtonTapped() {
-        let exerciseSelectionVC = ExerciseSelectionViewController()
-        exerciseSelectionVC.hidesBottomBarWhenPushed = true
-        navigationController?.pushViewController(exerciseSelectionVC, animated: true)
-    }
-    
-    @objc private func stepsMenuButtonTapped() {
-        let stepsVC = StepsViewController()
-        navigationController?.pushViewController(stepsVC, animated: true)
     }
     
     @objc private func albumButtonTapped() {
