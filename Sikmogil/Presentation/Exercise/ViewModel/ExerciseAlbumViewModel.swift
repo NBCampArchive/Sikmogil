@@ -63,7 +63,6 @@ class ExerciseAlbumViewModel: ObservableObject {
         getExercisePictures(page: nextPage)
     }
     
-    // TODO: - 사진 삭제
     func deleteExercisePictureData(date: String, workoutListId: Int, completion: @escaping (Result<Void, Error>) -> Void) {
         ExerciseAPIManager.shared.deleteExercisePictureData(exerciseDay: date, exerciseListId: workoutListId) { result in
             switch result {
