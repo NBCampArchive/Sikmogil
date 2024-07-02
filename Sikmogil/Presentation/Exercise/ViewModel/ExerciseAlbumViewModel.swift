@@ -64,13 +64,13 @@ class ExerciseAlbumViewModel: ObservableObject {
     }
     
     // TODO: - 사진 삭제
-    func deleteExercisePictureData(for day: String, exerciseListId: Int, completion: @escaping (Result<Void, Error>) -> Void) {
-        ExerciseAPIManager.shared.deleteExercisePictureData(exerciseDay: day, exerciseListId: exerciseListId) { result in
+    func deleteExercisePictureData(date: String, workoutListId: Int, completion: @escaping (Result<Void, Error>) -> Void) {
+        ExerciseAPIManager.shared.deleteExercisePictureData(exerciseDay: date, exerciseListId: workoutListId) { result in
             switch result {
             case .success:
                 completion(.success(()))
             case .failure(let error):
-                print("운동 사진 삭제 실패 \(day): \(error)")
+                print("운동 사진 삭제 실패 \(date): \(error)")
                 completion(.failure(error))
             }
         }
