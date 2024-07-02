@@ -20,6 +20,9 @@ class DayViewController: UIViewController {
     var viewModel: CalendarViewModel?
     private var cancellables = Set<AnyCancellable>()
     
+    private var dietPhotos: [String] = []
+    private var workoutPhotos: [String] = []
+    
     private let scrollView = UIScrollView().then {
         $0.backgroundColor = .clear
     }
@@ -111,11 +114,14 @@ class DayViewController: UIViewController {
             .store(in: &cancellables)
     }
     
-    private func updateUI(with calendarModel: CalendarModel?) {
+    private func updateUI(with calendarModel: DailyCalendarModel?) {
         guard let calendarModel = calendarModel else { return }
         
         dateLabel.text = calendarModel.diaryDate
         diaryTextView.text = calendarModel.diaryText
+        
+        dietPhotos = calendarModel.dietPictureDTOS?.compactMap { $0.foodPicture }.filter { !$0.isEmpty } ?? []
+        workoutPhotos = calendarModel.workoutLists?.compactMap { $0.workoutPicture }.filter { !$0.isEmpty } ?? []
         
         collectionView.reloadData()
     }
@@ -181,37 +187,38 @@ class DayViewController: UIViewController {
 
 extension DayViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 2
-        //        return Section.allCases.count
+        return Section.allCases.count
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 2
-        /*
-         switch Section(rawValue: section)! {
-         case .dietPhotos:
-         return dietPhotos.count
-         case .workoutPhotos:
-         return workoutPhotos.count
-         }
-         */
+        switch Section(rawValue: section)! {
+        case .dietPhotos:
+            return dietPhotos.count
+        case .workoutPhotos:
+            return workoutPhotos.count
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoCell.reuseIdentifier, for: indexPath) as? PhotoCell else {return UICollectionViewCell()}
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoCell.reuseIdentifier, for: indexPath) as? PhotoCell else { return UICollectionViewCell() }
         
         cell.backgroundColor = .clear
         
-        /*
-         let photo: UIImage
-         switch Section(rawValue: indexPath.section)! {
-         case .dietPhotos:
-         photo = dietPhotos[indexPath.item]
-         case .workoutPhotos:
-         photo = workoutPhotos[indexPath.item]
-         }
-         cell.imageView.image = photo
-         */
+        let photoURL: String
+        switch Section(rawValue: indexPath.section)! {
+        case .dietPhotos:
+            photoURL = dietPhotos[indexPath.item]
+        case .workoutPhotos:
+            photoURL = workoutPhotos[indexPath.item]
+        }
+        
+        if let url = URL(string: photoURL), !photoURL.isEmpty {
+            cell.imageView.kf.setImage(with: url, placeholder: UIImage(named: "placeholder_image_name"))
+            cell.noImageLabel.isHidden = true
+        } else {
+            cell.imageView.image = nil
+            cell.noImageLabel.isHidden = false
+        }
         
         return cell
     }
