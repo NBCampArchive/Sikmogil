@@ -56,18 +56,12 @@ class ProfileViewController: UIViewController {
 //    }
     
     var nicknameLabel = UILabel().then {
-        $0.text = "아무개"
+        $0.text = "(알 수 없음)"
         $0.font = Suite.bold.of(size: 24)
     }
     
     let profileInfoView = ProfileInfoView()
 //    let profileTableView = ProfileTableView()
-    
-//    let logoutButton = UIButton().then {
-//        $0.setTitle("로그아웃", for: .normal)
-//        $0.setTitleColor(.appBlack, for: .normal)
-//        $0.titleLabel?.font = Suite.bold.of(size: 16)
-//    }
     
     // MARK: - viewDidLoad
     override func viewDidLoad() {
@@ -92,7 +86,7 @@ class ProfileViewController: UIViewController {
         super.viewWillAppear(animated)
         viewModel.fetchUserProfile()
         setupBindings()
-//        navigationController?.navigationBar.isHidden = true
+        navigationController?.navigationBar.isHidden = true
     }
 
     // MARK: - Binding
@@ -165,7 +159,7 @@ class ProfileViewController: UIViewController {
         }
         
         topBar.snp.makeConstraints {
-            $0.top.equalTo(contentView).offset(32)
+            $0.top.equalTo(contentView).offset(26)
             $0.left.right.equalTo(contentView)
             $0.height.equalTo(60)
         }
@@ -178,7 +172,7 @@ class ProfileViewController: UIViewController {
         settingsButton.snp.makeConstraints {
             $0.right.equalTo(topBar).offset(-16)
             $0.top.equalToSuperview()
-            $0.width.height.equalTo(24)
+            $0.width.height.equalTo(28)
         }
         
         profileImageView.snp.makeConstraints {

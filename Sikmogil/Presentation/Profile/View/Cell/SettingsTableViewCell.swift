@@ -27,7 +27,7 @@ class SettingsTableViewCell: UITableViewCell {
     }
     
     let customSwitch = UISwitch().then {
-        $0.onTintColor = .appSkyBlue
+        $0.onTintColor = .appGreen
     }
     
     let separatorLine = UIView().then {
