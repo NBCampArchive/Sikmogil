@@ -12,7 +12,7 @@ import UserNotifications
 
 class SettingsViewController: UIViewController {
     
-    var viewModel = ProfileViewModel()
+    private var viewModel = ProfileViewModel()
     
     private let scrollView = UIScrollView().then {
         $0.backgroundColor = .clear
@@ -64,7 +64,7 @@ class SettingsViewController: UIViewController {
         $0.separatorStyle = .none
     }
     
-    // MARK: - viewDidLoad
+    // MARK: - View Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
@@ -73,32 +73,26 @@ class SettingsViewController: UIViewController {
         navigationController?.navigationBar.isHidden = false
     }
     
-    // MARK: - 알림설정 저장 및 예약제거
+    // MARK: - Notification Settings
     private func saveNotificationSetting(isEnabled: Bool) {
         print("알림 설정 저장 호출됨: \(isEnabled)")
         UserDefaults.standard.set(isEnabled, forKey: "NotificationEnabled")
     }
     
     private func checkAndRegisterNotification() {
-        let isEnabled = loadNotificationSetting()
+        _ = loadNotificationSetting()
     }
     
-    // 알림 설정 로드
     private func loadNotificationSetting() -> Bool {
         return UserDefaults.standard.bool(forKey: "NotificationEnabled")
     }
     
-    // MARK: - setupViews
+    // MARK: - Setup Views
     private func setupViews() {
         view.backgroundColor = .white
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
-        contentView.addSubview(userTitleLabel)
-        contentView.addSubview(userTableView)
-        contentView.addSubview(notificationTitleLabel)
-        contentView.addSubview(notificationTableView)
-        contentView.addSubview(informationTitleLabel)
-        contentView.addSubview(informationTableView)
+        contentView.addSubviews(userTitleLabel, userTableView, notificationTitleLabel, notificationTableView, informationTitleLabel, informationTableView)
         
         userTableView.delegate = self
         userTableView.dataSource = self
@@ -110,7 +104,7 @@ class SettingsViewController: UIViewController {
         informationTableView.dataSource = self
     }
     
-    // MARK: - setupConstraints
+    // MARK: - Setup Constraints
     private func setupConstraints() {
         scrollView.snp.makeConstraints {
             $0.edges.equalToSuperview()
@@ -266,8 +260,8 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
                 reminderVC.viewModel = ProfileViewModel()
                 navigationController?.pushViewController(reminderVC, animated: true)
             case 1:
-                let SpandrelVC = SpandrelSettingsViewController()
-                navigationController?.pushViewController(SpandrelVC, animated: true)
+                let spandrelVC = SpandrelSettingsViewController()
+                navigationController?.pushViewController(spandrelVC, animated: true)
             default:
                 break
             }
@@ -277,7 +271,6 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
             navigationController?.pushViewController(privacyPolicyVC, animated: true)
         }
     }
-    
     private func presentAccountManagementActionSheet() {
         let actionSheet = UIAlertController(title: "계정 관리", message: "회원 탈퇴 시 모든 정보가 지워집니다", preferredStyle: .actionSheet)
         
@@ -359,7 +352,7 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
     private func navigationRootView() {
         if let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate {
             let loginVC = SplashViewController()
-            let navController = CustomNavigationController(rootViewController:loginVC)
+            let navController = CustomNavigationController(rootViewController: loginVC)
             
             UIView.transition(with: sceneDelegate.window!, duration: 0.5, options: .transitionFlipFromRight, animations: {
                 sceneDelegate.window?.rootViewController = navController

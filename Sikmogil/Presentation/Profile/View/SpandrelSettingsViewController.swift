@@ -12,8 +12,6 @@ import Combine
 
 class SpandrelSettingsViewController: UIViewController {
     
-    //    var viewModel: ProfileViewModel?
-    
     private var cancellables = Set<AnyCancellable>()
     private let scrollView = UIScrollView()
     private let contentView = UIView()
@@ -51,14 +49,14 @@ class SpandrelSettingsViewController: UIViewController {
         $0.titleLabel?.font = Suite.bold.of(size: 18)
         $0.backgroundColor = .appBlack
         $0.layer.cornerRadius = 16
+        $0.addTarget(self, action: #selector(completeButtonTapped), for: .touchUpInside)
     }
     
-    // MARK: - 생명주기
+    // MARK: - View Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         setupConstraints()
-        setupAddTargets()
         hideKeyboardWhenTappedAround()
         setKeyboardObserver()
         loadSavedTime()
@@ -70,13 +68,15 @@ class SpandrelSettingsViewController: UIViewController {
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
-    private func setupAddTargets() {
-        completeButton.addTarget(self, action: #selector(completeButtonTapped), for: .touchUpInside)
-    }
+    //    @objc private func completeButtonTapped() {
+    //        saveSelectedTime(date: timePicker.date)
+    //        showCustomAlertAndNavigateToProfile()
+    //        print("Time saved: \(timePicker.date)")
+    //    }
     
     @objc private func completeButtonTapped() {
         saveSelectedTime(date: timePicker.date)
-        showCustomAlertAndNavigateToProfile()
+        showAlertAndNavigateToProfile()
         print("Time saved: \(timePicker.date)")
     }
     
@@ -105,34 +105,36 @@ class SpandrelSettingsViewController: UIViewController {
         }
     }
     
-    private func showCustomAlertAndNavigateToProfile() {
-        let customAlert = CustomAlertView().then {
-            $0.setTitle("✨ 성공 ✨")
-            $0.setMessage("공복 시간 설정이 완료되었습니다.")
-            $0.showButtons(confirm: false, cancel: false)
-        }
-        
-        customAlert.frame = self.view.bounds
-        self.view.addSubview(customAlert)
-
-        customAlert.show(animated: true)
+    
+    private func showAlertAndNavigateToProfile() {
+        let alert = UIAlertController(title: "성공", message: "공복 시간 설정이 완료되었습니다.", preferredStyle: .alert)
+        self.present(alert, animated: true, completion: nil)
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
-            customAlert.removeFromSuperview()
-            self?.navigationController?.popViewController(animated: true)
+            alert.dismiss(animated: true) {
+                self?.navigationController?.popViewController(animated: true)
+            }
         }
     }
-
-    // CustomAlertView를 닫는 액션
-    @objc private func dismissCustomAlert() {
-        if let customAlert = view.subviews.first(where: { $0 is CustomAlertView }) {
-            customAlert.removeFromSuperview()
-            navigationController?.popViewController(animated: true)
-        }
-    }
-
+    //    private func showCustomAlertAndNavigateToProfile() {
+    //        let customAlert = CustomAlertView().then {
+    //            $0.setTitle("✨ 성공 ✨")
+    //            $0.setMessage("공복 시간 설정이 완료되었습니다.")
+    //            $0.showButtons(confirm: false, cancel: false)
+    //        }
+    //
+    //        customAlert.frame = self.view.bounds
+    //        self.view.addSubview(customAlert)
+    //
+    //        customAlert.show(animated: true)
+    //
+    //        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
+    //            customAlert.removeFromSuperview()
+    //            self?.navigationController?.popViewController(animated: true)
+    //        }
+    //    }
     
-    // MARK: - setupConstraints
+    // MARK: - Setup Constraints
     private func setupConstraints() {
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
@@ -152,12 +154,12 @@ class SpandrelSettingsViewController: UIViewController {
         }
         
         titleLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(16)
+            $0.top.equalTo(view.safeAreaLayoutGuide)
             $0.leading.equalToSuperview().offset(16)
         }
         
         descriptionLabel.snp.makeConstraints {
-            $0.top.equalTo(titleLabel.snp.bottom).offset(8)
+            $0.top.equalTo(titleLabel.snp.bottom).offset(6)
             $0.leading.equalToSuperview().offset(16)
         }
         
@@ -177,8 +179,4 @@ class SpandrelSettingsViewController: UIViewController {
             $0.height.equalTo(48)
         }
     }
-    
 }
-
-
-
