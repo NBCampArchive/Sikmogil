@@ -17,7 +17,7 @@ class EditProfileViewController: UIViewController, UIImagePickerControllerDelega
     var viewModel: ProfileViewModel?
     
     private var cancellables = Set<AnyCancellable>()
-    private var selectedImage: UIImage? // 임시로 선택된 이미지를 저장할 변수
+    private var selectedImage: UIImage?
     
     let scrollView = UIScrollView().then {
         $0.backgroundColor = .white
@@ -28,15 +28,13 @@ class EditProfileViewController: UIViewController, UIImagePickerControllerDelega
     }
     
     let profileImageView = UIImageView().then {
-        $0.image = UIImage(named: "defaultProfile")
         $0.layer.cornerRadius = 75
         $0.layer.masksToBounds = true
-        $0.backgroundColor = .gray
+        $0.backgroundColor = .appSkyBlue
         $0.isUserInteractionEnabled = true
         $0.contentMode = .scaleAspectFill
         $0.clipsToBounds = true
-//        profileImageView.layer.cornerRadius = profileImageView.frame.height / 2
-//        profileImageView.layer.masksToBounds = true
+        $0.image = UIImage(named: "AppIcon")
     }
     
     let profileLabel = UILabel().then {
@@ -109,7 +107,7 @@ class EditProfileViewController: UIViewController, UIImagePickerControllerDelega
     }
     
     let weightUnitLabel = UILabel().then {
-        $0.text = "Kg"
+        $0.text = "kg"
         $0.font = Suite.regular.of(size: 16)
         $0.textColor = .appDarkGray
     }
@@ -119,7 +117,7 @@ class EditProfileViewController: UIViewController, UIImagePickerControllerDelega
         $0.setTitleColor(.white, for: .normal)
         $0.titleLabel?.font = Suite.bold.of(size: 22)
         $0.backgroundColor = .appBlack
-        $0.layer.cornerRadius = 8
+        $0.layer.cornerRadius = 16
     }
     
     let loadingIndicator = NVActivityIndicatorView(frame: .zero, type: .ballBeat, color: .appGreen, padding: 0)
@@ -135,6 +133,10 @@ class EditProfileViewController: UIViewController, UIImagePickerControllerDelega
         setKeyboardObserver()
         bindViewModel()
         
+        nickname.delegate = self
+        height.delegate = self
+        weight.delegate = self
+        
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(profileImageTapped))
         profileImageView.addGestureRecognizer(tapGestureRecognizer)
         
@@ -143,29 +145,18 @@ class EditProfileViewController: UIViewController, UIImagePickerControllerDelega
         
         navigationController?.navigationBar.isHidden = false
         
-        // 프로필 이미지 초기화
-        if let profileImageURL = viewModel?.picture {
-            loadImage(from: profileImageURL)
-        } else {
-            profileImageView.image = UIImage(named: "defaultProfile")
-        }
-        
         nickname.addTarget(self, action: #selector(nicknameDidChange(_:)), for: .editingChanged)
         height.addTarget(self, action: #selector(heightDidChange(_:)), for: .editingChanged)
         weight.addTarget(self, action: #selector(weightDidChange(_:)), for: .editingChanged)
         saveButton.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(handleCancelImageSelection), name: Notification.Name("CancelImageSelection"), object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         viewModel?.fetchUserProfile()
-//        setTabBar(hidden: true, animated: true)
     }
-    
-//    override func viewWillDisappear(_ animated: Bool) {
-//        super.viewWillDisappear(animated)
-//        setTabBar(hidden: false, animated: true)
-//    }
     
     @objc private func nicknameDidChange(_ textField: UITextField) {
         viewModel?.nickname = textField.text ?? ""
@@ -208,7 +199,11 @@ class EditProfileViewController: UIViewController, UIImagePickerControllerDelega
             .receive(on: DispatchQueue.main)
             .sink { [weak self] picture in
                 guard let self = self else { return }
-                self.loadImage(from: picture)
+                if picture.isEmpty {
+                    self.profileImageView.image = UIImage(named: "AppIcon")
+                } else {
+                    self.loadImage(from: picture)
+                }
             }
             .store(in: &cancellables)
     }
@@ -220,7 +215,6 @@ class EditProfileViewController: UIViewController, UIImagePickerControllerDelega
         }
         profileImageView.kf.setImage(with: URL(string: urlString))
     }
-    
     // 데이터를 저장하는 부분
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         picker.dismiss(animated: true, completion: nil)
@@ -234,9 +228,21 @@ class EditProfileViewController: UIViewController, UIImagePickerControllerDelega
         self.selectedImage = selectedImage
     }
     
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true, completion: nil)
+    }
+    
+    @objc private func handleCancelImageSelection() {
+        profileImageView.image = UIImage(named: "AppIcon")
+        selectedImage = nil
+        viewModel?.picture = ""
+    }
+    
     private func saveProfile() {
-        guard let viewModel = viewModel else { print("viewmodel")
-            return }
+        guard let viewModel = viewModel else {
+            print("viewmodel")
+            return
+        }
         loadingIndicator.startAnimating()
         // 업로드할 이미지가 있는지 확인하고 업로드
         if let selectedImage = self.selectedImage {
@@ -314,21 +320,38 @@ class EditProfileViewController: UIViewController, UIImagePickerControllerDelega
         view.addSubviews(scrollView, saveButton, loadingIndicator)
         scrollView.addSubview(contentView)
         
-        [profileImageView, profileLabel, profileSubLabel, nicknameView, heightView, weightView/*, saveButton*/].forEach {
+        [profileImageView, profileLabel, profileSubLabel, nicknameView, heightView, weightView].forEach {
             contentView.addSubview($0)
         }
-        nicknameView.addSubview(nicknameLabel)
-        nicknameView.addSubview(nickname)
         
-        heightView.addSubview(heightLabel)
-        heightView.addSubview(height)
+        let nicknameStackView = UIStackView(arrangedSubviews: [nicknameLabel, nickname]).then {
+            $0.axis = .vertical
+            $0.alignment = .fill
+            $0.spacing = 6
+        }
+        
+        nicknameView.addSubview(nicknameStackView)
+        
+        let heightStackView = UIStackView(arrangedSubviews: [heightLabel, height]).then {
+            $0.axis = .vertical
+            $0.alignment = .fill
+            $0.spacing = 6
+        }
+        
+        heightView.addSubview(heightStackView)
         heightView.addSubview(heightUnitLabel)
         
-        weightView.addSubview(weightLabel)
-        weightView.addSubview(weight)
+        let weightStackView = UIStackView(arrangedSubviews: [weightLabel, weight]).then {
+            $0.axis = .vertical
+            $0.alignment = .fill
+            $0.spacing = 6
+        }
+        
+        weightView.addSubview(weightStackView)
         weightView.addSubview(weightUnitLabel)
     }
     
+    // MARK: - setupConstraints
     private func setupConstraints() {
         scrollView.snp.makeConstraints {
             $0.top.leading.trailing.equalToSuperview()
@@ -350,76 +373,71 @@ class EditProfileViewController: UIViewController, UIImagePickerControllerDelega
             $0.centerX.equalToSuperview()
             $0.width.height.equalTo(150)
         }
+        
         profileLabel.snp.makeConstraints {
             $0.top.equalTo(profileImageView.snp.bottom).offset(20)
-            $0.leading.equalToSuperview().offset(16)
+            $0.leading.equalToSuperview().offset(20)
         }
         
         profileSubLabel.snp.makeConstraints {
             $0.top.equalTo(profileLabel.snp.bottom).offset(5)
-            $0.leading.equalToSuperview().offset(16)
+            $0.leading.equalToSuperview().offset(20)
         }
         
         nicknameView.snp.makeConstraints {
             $0.top.equalTo(profileSubLabel.snp.bottom).offset(20)
-            $0.leading.equalToSuperview().offset(20)
-            $0.trailing.equalToSuperview().offset(-20)
+            $0.leading.equalToSuperview().offset(16)
+            $0.trailing.equalToSuperview().offset(-16)
             $0.height.equalTo(80)
         }
         
-        nicknameLabel.snp.makeConstraints {
-            $0.top.equalTo(nicknameView.snp.top).offset(10)
-            $0.leading.equalTo(nicknameView.snp.leading).offset(10)
-        }
+        let nicknameStackView = nicknameView.subviews.first { $0 is UIStackView } as? UIStackView
         
-        nickname.snp.makeConstraints {
-            $0.top.equalTo(nicknameLabel.snp.bottom).offset(5)
-            $0.leading.equalTo(nicknameView.snp.leading).offset(10)
+        nicknameStackView?.snp.makeConstraints {
+            $0.centerY.equalToSuperview()
+            $0.leading.equalTo(nicknameView.snp.leading).offset(16)
             $0.trailing.equalTo(nicknameView.snp.trailing).offset(-10)
         }
         
         heightView.snp.makeConstraints {
             $0.top.equalTo(nicknameView.snp.bottom).offset(20)
-            $0.leading.equalToSuperview().offset(20)
-            $0.trailing.equalToSuperview().offset(-20)
+            $0.leading.equalToSuperview().offset(16)
+            $0.trailing.equalToSuperview().offset(-16)
             $0.height.equalTo(80)
         }
         
-        heightLabel.snp.makeConstraints {
-            $0.top.equalTo(heightView.snp.top).offset(10)
-            $0.leading.equalTo(heightView.snp.leading).offset(10)
-        }
+        let heightStackView = heightView.subviews.first { $0 is UIStackView } as? UIStackView
         
-        height.snp.makeConstraints {
-            $0.top.equalTo(heightLabel.snp.bottom).offset(5)
-            $0.leading.equalTo(heightView.snp.leading).offset(10)
+        heightStackView?.snp.makeConstraints {
+            $0.centerY.equalToSuperview()
+            $0.leading.equalTo(heightView.snp.leading).offset(16)
             $0.trailing.equalTo(heightUnitLabel.snp.leading).offset(-10)
         }
+        
         heightUnitLabel.snp.makeConstraints {
             $0.centerY.equalTo(height)
-            $0.trailing.equalTo(heightView.snp.trailing).offset(-10)
+            $0.trailing.equalTo(heightView.snp.trailing).offset(-16)
             $0.width.equalTo(30)
         }
+        
         weightView.snp.makeConstraints {
             $0.top.equalTo(heightView.snp.bottom).offset(20)
-            $0.leading.equalToSuperview().offset(20)
-            $0.trailing.equalToSuperview().offset(-20)
+            $0.leading.equalToSuperview().offset(16)
+            $0.trailing.equalToSuperview().offset(-16)
             $0.height.equalTo(80)
         }
-        weightLabel.snp.makeConstraints {
-            $0.top.equalTo(weightView.snp.top).offset(10)
-            $0.leading.equalTo(weightView.snp.leading).offset(10)
-        }
         
-        weight.snp.makeConstraints {
-            $0.top.equalTo(weightLabel.snp.bottom).offset(5)
-            $0.leading.equalTo(weightView.snp.leading).offset(10)
+        let weightStackView = weightView.subviews.first { $0 is UIStackView } as? UIStackView
+        
+        weightStackView?.snp.makeConstraints {
+            $0.centerY.equalToSuperview()
+            $0.leading.equalTo(weightView.snp.leading).offset(16)
             $0.trailing.equalTo(weightUnitLabel.snp.leading).offset(-10)
         }
         
         weightUnitLabel.snp.makeConstraints {
             $0.centerY.equalTo(weight)
-            $0.trailing.equalTo(weightView.snp.trailing).offset(-10)
+            $0.trailing.equalTo(weightView.snp.trailing).offset(-16)
             $0.width.equalTo(30)
         }
         
@@ -428,14 +446,14 @@ class EditProfileViewController: UIViewController, UIImagePickerControllerDelega
         }
         
         saveButton.snp.makeConstraints {
-            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.leading.trailing.equalToSuperview().inset(16)
             $0.bottom.equalTo(view.safeAreaLayoutGuide)
-            $0.height.equalTo(60)
+            $0.height.equalTo(48)
         }
     }
     
     @objc func profileImageTapped() {
-        let imagePickerController = UIImagePickerController()
+        let imagePickerController = CustomImagePickerController()
         imagePickerController.delegate = self
         imagePickerController.sourceType = .photoLibrary
         present(imagePickerController, animated: true, completion: nil)
