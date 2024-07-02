@@ -97,6 +97,7 @@ class CalendarViewController: UIViewController {
         detailButton.addTarget(self, action: #selector(tapDetailButton), for: .touchUpInside)
         writeButton.addTarget(self, action: #selector(tapWriteButton), for: .touchUpInside)
         
+        navigationController?.navigationBar.isHidden = false
         hideKeyboardWhenTappedAround()
         setKeyboardObserver()
     }
@@ -319,10 +320,10 @@ extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource, FSCa
         
         var colors: [UIColor] = []
         if let record = viewModel.calendarListModels?.first(where: { $0.diaryDate == dateString }) {
-            if let dietPictures = record.dietPictures, !dietPictures.isEmpty {
+            if record.dietPicture != nil {
                 colors.append(.appYellow)
             }
-            if let workoutLists = record.workoutLists, !workoutLists.isEmpty {
+            if record.workoutList != nil {
                 colors.append(.appGreen)
             }
         }
@@ -344,5 +345,18 @@ extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource, FSCa
         } else {
             return Suite.regular.of(size: 16) // 기본 배경 색상
         }
+    }
+    
+    // 선택된 날짜의 색상을 변경
+    func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, fillSelectionColorFor date: Date) -> UIColor? {
+        return .appGreen
+    }
+    
+    // 오늘 날짜의 색상을 변경
+    func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, fillDefaultColorFor date: Date) -> UIColor? {
+        if Calendar.current.isDateInToday(date) {
+            return .appYellow
+        }
+        return nil
     }
 }
