@@ -24,19 +24,19 @@ class SettingsViewController: UIViewController {
     
     private let userTitleLabel = UILabel().then {
         $0.text = "회원 정보"
-        $0.font = UIFont.boldSystemFont(ofSize: 24)
+        $0.font = Suite.bold.of(size: 24)
         $0.textColor = .black
     }
     
     private let notificationTitleLabel = UILabel().then {
         $0.text = "알림 설정"
-        $0.font = UIFont.boldSystemFont(ofSize: 24)
+        $0.font = Suite.bold.of(size: 24)
         $0.textColor = .black
     }
     
     private let informationTitleLabel = UILabel().then {
         $0.text = "이용 정보"
-        $0.font = UIFont.boldSystemFont(ofSize: 24)
+        $0.font = Suite.bold.of(size: 24)
         $0.textColor = .black
     }
     
