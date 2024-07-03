@@ -142,16 +142,15 @@ class ExerciseViewController: UIViewController {
             let progress = min(CGFloat(totalCalories) / recommendedCalories, 1.0)
             customCircularProgressBar.progress = progress
         }
+        
+        self.emptyLabel.isHidden = viewModel.exercises.count != 0
+        
     }
     
     private func updateTableViewHeight() {
         let tableViewHeight = viewModel.exercises.count * 88
         tableView.snp.updateConstraints {
             $0.height.equalTo(tableViewHeight)
-        }
-        
-        if viewModel.exercises.count != 0 {
-            self.emptyLabel.isHidden = true
         }
     }
     
