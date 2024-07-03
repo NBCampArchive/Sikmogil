@@ -25,6 +25,7 @@ class MainViewController: UIViewController {
     
     private let scrollView = UIScrollView().then {
         $0.backgroundColor = .clear
+        $0.showsVerticalScrollIndicator = false
     }
     
     private let scrollSubView = UIView().then {
