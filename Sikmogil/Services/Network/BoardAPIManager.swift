@@ -35,4 +35,14 @@ class BoardAPIManager {
             .mapError { $0 as Error }
             .eraseToAnyPublisher()
     }
+    
+    func createPost(board: PostModel) -> AnyPublisher<PostResponse, Error> {
+        let url = "\(baseURL)/api/boards"
+        
+        return session.request(url, method: .post, parameters: board)
+            .publishDecodable(type: PostResponse.self)
+            .value()
+            .mapError { $0 as Error }
+            .eraseToAnyPublisher()
+    }
 }

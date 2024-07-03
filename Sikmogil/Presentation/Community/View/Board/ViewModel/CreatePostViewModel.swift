@@ -8,28 +8,27 @@
 import Combine
 import Foundation
 
-class AddBoardViewModel {
-    @Published var errorMessage: String?
-    @Published var isLoading: Bool = false
-    
-    private var cancellables = Set<AnyCancellable>()
-    
-    func addBoard(category: String, title: String, content: String) {
-        guard !isLoading else { return }
-        isLoading = true
-        BoardAPIManager.shared.addBoard(category: category, title: title, content: content)
-            .print("addBoard")
-            .receive(on: DispatchQueue.main)
+class CreatePostViewModel {
+    @Published var title: String = ""
+        @Published var category: String = "DIET"
+        @Published var content: String = ""
+        @Published var imageUrl: [String] = []
+        
+        private var cancellables = Set<AnyCancellable>()
+        
+    func createPost() {
+        let post = PostModel(title: title, category: category, content: content, imageUrl: imageUrl.isEmpty ? nil : imageUrl)
+        
+        BoardAPIManager.shared.createPost(board: post)
             .sink(receiveCompletion: { completion in
-                self.isLoading = false
                 switch completion {
                 case .finished:
-                    break
+                    print("Post created successfully")
                 case .failure(let error):
-                    self.errorMessage = error.localizedDescription
+                    print("Failed to create post: \(error.localizedDescription)")
                 }
             }, receiveValue: { response in
-                print(response)
+                print("Server Response: \(response.message)")
             })
             .store(in: &cancellables)
     }
