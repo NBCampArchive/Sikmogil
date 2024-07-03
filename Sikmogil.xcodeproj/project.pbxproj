@@ -925,10 +925,10 @@
 			};
 			buildConfigurationList = B54ABF7F2C09BD43002E89DC /* Build configuration list for PBXProject "Sikmogil" */;
 			compatibilityVersion = "Xcode 14.0";
-			developmentRegion = en;
+			developmentRegion = ko;
 			hasScannedForEncodings = 0;
 			knownRegions = (
-				en,
+				ko,
 				Base,
 			);
 			mainGroup = B54ABF7B2C09BD43002E89DC;
