@@ -20,10 +20,15 @@ class HeaderView: UICollectionReusableView {
         $0.font = Suite.bold.of(size: 16)
     }
     
+    let subTitleLabel = UILabel().then {
+        $0.font = Suite.semiBold.of(size: 12)
+        $0.textColor = .gray
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        addSubviews(dot, titleLabel)
+        addSubviews(dot, titleLabel, subTitleLabel)
         
         dot.snp.makeConstraints {
             $0.centerY.equalToSuperview()
@@ -35,6 +40,11 @@ class HeaderView: UICollectionReusableView {
         titleLabel.snp.makeConstraints {
             $0.centerY.equalTo(dot.snp.centerY)
             $0.leading.equalTo(dot.snp.trailing).offset(8)
+        }
+        
+        subTitleLabel.snp.makeConstraints {
+            $0.centerY.equalTo(dot.snp.centerY)
+            $0.trailing.equalToSuperview()
         }
     }
     
