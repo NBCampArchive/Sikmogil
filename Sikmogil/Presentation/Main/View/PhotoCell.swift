@@ -13,8 +13,7 @@ class PhotoCell: UICollectionViewCell {
     let imageView = UIImageView().then {
         $0.contentMode = .scaleAspectFill
         $0.clipsToBounds = true
-        $0.layer.cornerRadius = 12
-        $0.backgroundColor = .appDarkGray
+        $0.layer.cornerRadius = 16
     }
     
     let noImageLabel = UILabel().then {
