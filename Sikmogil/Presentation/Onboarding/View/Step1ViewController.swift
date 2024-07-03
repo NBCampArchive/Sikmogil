@@ -21,7 +21,7 @@ class Step1ViewController: UIViewController {
     
     private let titleLabel = UILabel().then {
         $0.text = "프로필 설정"
-        $0.font = Suite.bold.of(size: 28)
+        $0.font = Suite.bold.of(size: 24)
     }
     
     private let descriptionLabel = UILabel().then {
@@ -32,7 +32,7 @@ class Step1ViewController: UIViewController {
     
     private let nicknameLabel = UILabel().then {
         $0.text = "닉네임"
-        $0.font = Suite.medium.of(size: 20)
+        $0.font = Suite.medium.of(size: 16)
     }
     
     private let nicknameTextField = UITextField().then {
@@ -51,7 +51,7 @@ class Step1ViewController: UIViewController {
     
     private let heightLabel = UILabel().then {
         $0.text = "키"
-        $0.font = Suite.medium.of(size: 20)
+        $0.font = Suite.medium.of(size: 16)
     }
     
     private let heightTextField = UITextField().then {
@@ -71,7 +71,7 @@ class Step1ViewController: UIViewController {
     
     private let weightLabel = UILabel().then {
         $0.text = "몸무게"
-        $0.font = Suite.medium.of(size: 20)
+        $0.font = Suite.medium.of(size: 16)
     }
     
     private let weightTextField = UITextField().then {
@@ -91,7 +91,7 @@ class Step1ViewController: UIViewController {
     
     private let genderLabel = UILabel().then {
         $0.text = "성별"
-        $0.font = Suite.medium.of(size: 20)
+        $0.font = Suite.medium.of(size: 16)
     }
     
     private let genderWarningLabel = UILabel().then {
@@ -128,9 +128,9 @@ class Step1ViewController: UIViewController {
     private let nextButton = UIButton(type: .system).then {
         $0.setTitle("다음", for: .normal)
         $0.setTitleColor(.white, for: .normal)
-        $0.titleLabel?.font = Suite.bold.of(size: 22)
+        $0.titleLabel?.font = Suite.bold.of(size: 18)
         $0.backgroundColor = .customBlack
-        $0.layer.cornerRadius = 8
+        $0.layer.cornerRadius = 16
     }
     
     override func viewDidLoad() {
@@ -286,7 +286,7 @@ class Step1ViewController: UIViewController {
             $0.bottom.equalTo(view.safeAreaLayoutGuide).offset(-16)
             $0.leading.equalToSuperview().offset(16)
             $0.trailing.equalToSuperview().offset(-16)
-            $0.height.equalTo(50)
+            $0.height.equalTo(48)
         }
     }
     

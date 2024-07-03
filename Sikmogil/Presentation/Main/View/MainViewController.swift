@@ -83,7 +83,7 @@ class MainViewController: UIViewController {
     
     private let weightLogLabel = UILabel().then {
         $0.text = "체중 기록"
-        $0.font = Suite.bold.of(size: 24)
+        $0.font = Suite.bold.of(size: 22)
     }
     
     private let weightNowLabel = UILabel().then {
@@ -114,7 +114,7 @@ class MainViewController: UIViewController {
     
     private let graphLabel = UILabel().then {
         $0.text = "진행 그래프"
-        $0.font = Suite.bold.of(size: 24)
+        $0.font = Suite.bold.of(size: 22)
     }
     
     private let graph = LineChartView().then {
