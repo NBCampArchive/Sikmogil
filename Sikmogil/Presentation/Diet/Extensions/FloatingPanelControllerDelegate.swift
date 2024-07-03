@@ -38,7 +38,7 @@ extension DietMainViewController: FloatingPanelControllerDelegate {
             tabBarController?.tabBar.isHidden = true
             vc.backdropView.dismissalTapGestureRecognizer.isEnabled = false
         } else if vc.state == .half  {
-            tabBarController?.tabBar.isHidden = false
+            tabBarController?.tabBar.isHidden = true
             vc.backdropView.dismissalTapGestureRecognizer.isEnabled = false
             
             // 상태가 .full에서 .half로 변경되었을 때 키보드를 숨김
