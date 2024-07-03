@@ -23,6 +23,9 @@ class DayViewController: UIViewController {
     private var dietPhotos: [String] = []
     private var workoutPhotos: [String] = []
     
+    private var eatKal: Int = 0
+    private var workoutKal: Int = 0
+    
     private let scrollView = UIScrollView().then {
         $0.backgroundColor = .clear
     }
@@ -33,7 +36,7 @@ class DayViewController: UIViewController {
     
     private let dateLabel = UILabel().then {
         $0.text = "6월 6일"
-        $0.font = Suite.bold.of(size: 22)
+        $0.font = Suite.bold.of(size: 20)
     }
     
     private let blueDot = UIView().then {
@@ -121,7 +124,9 @@ class DayViewController: UIViewController {
         diaryTextView.text = calendarModel.diaryText
         
         dietPhotos = calendarModel.dietPictureDTOS?.compactMap { $0.foodPicture }.filter { !$0.isEmpty } ?? []
+        eatKal = calendarModel.totalCalorieEaten ?? 0
         workoutPhotos = calendarModel.workoutLists?.compactMap { $0.workoutPicture }.filter { !$0.isEmpty } ?? []
+        workoutKal = calendarModel.workoutLists?.compactMap { $0.calorieBurned }.reduce(0, +) ?? 0
         
         collectionView.reloadData()
     }
@@ -228,10 +233,22 @@ extension DayViewController: UICollectionViewDelegate, UICollectionViewDataSourc
             let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: HeaderView.reuseIdentifier, for: indexPath) as! HeaderView
             switch Section(rawValue: indexPath.section)! {
             case .dietPhotos:
-                headerView.titleLabel.text = "음식 사진"
+                headerView.titleLabel.text = "식단"
+                if eatKal > 0 {
+                    headerView.subTitleLabel.text = "\(eatKal)kal"
+                } else {
+                    headerView.subTitleLabel.text = ""
+                }
+                headerView.subTitleLabel.textColor = .appYellow
                 headerView.dot.backgroundColor = .appYellow
             case .workoutPhotos:
-                headerView.titleLabel.text = "운동 사진"
+                headerView.titleLabel.text = "운동"
+                if workoutKal > 0 {
+                    headerView.subTitleLabel.text = "\(workoutKal)kal"
+                } else {
+                    headerView.subTitleLabel.text = ""
+                }
+                headerView.subTitleLabel.textColor = .appGreen
                 headerView.dot.backgroundColor = .appGreen
             }
             return headerView
