@@ -69,50 +69,40 @@ class GoalSettingsViewController: UIViewController {
     private let saveButton = UIButton().then {
         $0.setTitle("저장하기", for: .normal)
         $0.setTitleColor(.white, for: .normal)
-        $0.titleLabel?.font = Suite.bold.of(size: 22)
+        $0.titleLabel?.font = Suite.bold.of(size: 18)
         $0.backgroundColor = .appBlack
-        $0.layer.cornerRadius = 8
+        $0.layer.cornerRadius = 16
+        $0.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
     }
     
-    var targetDate = ""
+    private var targetDate = ""
     
-    // MARK: - viewDidLoad
+    // MARK: - View Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         setupViews()
         setupConstraints()
-        setupAddTargets()
         bindViewModel()
         hideKeyboardWhenTappedAround()
         setKeyboardObserver()
         navigationController?.navigationBar.isHidden = false
     }
     
-    private func setupAddTargets() {
-        saveButton.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
-    }
-    
-    // MARK: - binding
+    // MARK: - Binding
     private func bindViewModel() {
         guard let viewModel = viewModel else { return }
-
-        // goalWeightTextField 바인딩
+        
+        // Bind goalWeightTextField
         viewModel.$targetWeight
             .sink { [weak self] text in
                 self?.goalWeightTextField.text = text
             }
             .store(in: &cancellables)
-
+        
         goalWeightTextField.addTarget(self, action: #selector(goalWeightTextFieldDidChange), for: .editingChanged)
-
-        // goalDatePicker 바인딩
-//        viewModel.$targetDate
-//            .sink { [weak self] date in
-//                print("Date : \(date)")
-//                self?.goalDatePicker.date = date
-//            }
-//            .store(in: &cancellables)
+        
+        // Bind goalDatePicker
         let targetDateString = viewModel.userProfile.targetDate
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy.MM.dd"
@@ -120,24 +110,20 @@ class GoalSettingsViewController: UIViewController {
             goalDatePicker.date = targetDate
             viewModel.targetDate = targetDate
         }
-            
-
-        goalDatePicker.addTarget(self, action: #selector(goalDatePickerDidChange), for: .valueChanged)
         
-//        print("TargetDate :\(targetDate) = \(viewModel.targetDate)")
+        goalDatePicker.addTarget(self, action: #selector(goalDatePickerDidChange), for: .valueChanged)
     }
-
+    
     @objc private func goalWeightTextFieldDidChange(_ textField: UITextField) {
         viewModel?.targetWeight = textField.text ?? ""
     }
-
+    
     @objc private func goalDatePickerDidChange(_ datePicker: UIDatePicker) {
         let now = Date()
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy.MM.dd"
         
         if datePicker.date > now {
-            print("test")
             viewModel?.targetDate = datePicker.date
         } else {
             let alert = UIAlertController(title: "알림", message: "오늘 이후의 날짜를 선택해주세요.", preferredStyle: .alert)
@@ -151,8 +137,8 @@ class GoalSettingsViewController: UIViewController {
             }
         }
     }
-
-    // MARK: - setupViews
+    
+    // MARK: - Setup Views
     private func setupViews() {
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
@@ -160,7 +146,7 @@ class GoalSettingsViewController: UIViewController {
         view.addSubview(saveButton)
     }
     
-    // MARK: - setupConstraints
+    // MARK: - Setup Constraints
     private func setupConstraints() {
         scrollView.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide)
@@ -174,12 +160,12 @@ class GoalSettingsViewController: UIViewController {
         }
         
         goalSettingLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(32)
+            $0.top.equalTo(view.safeAreaLayoutGuide)
             $0.leading.equalToSuperview().offset(16)
         }
         
         descriptionLabel.snp.makeConstraints {
-            $0.top.equalTo(goalSettingLabel.snp.bottom).offset(4)
+            $0.top.equalTo(goalSettingLabel.snp.bottom).offset(6)
             $0.leading.equalToSuperview().offset(16)
         }
         
@@ -216,13 +202,13 @@ class GoalSettingsViewController: UIViewController {
             $0.bottom.equalTo(view.safeAreaLayoutGuide).offset(-16)
             $0.leading.equalToSuperview().offset(16)
             $0.trailing.equalToSuperview().offset(-16)
-            $0.height.equalTo(60)
+            $0.height.equalTo(48)
         }
     }
     
     @objc private func saveButtonTapped() {
         guard let viewModel = viewModel else { return }
-
+        
         if viewModel.targetValidateForm() {
             viewModel.saveTargetData()
             viewModel.submitProfile { [weak self] result in
@@ -237,6 +223,66 @@ class GoalSettingsViewController: UIViewController {
             }
         }
     }
+    
+    //    @objc private func saveButtonTapped() {
+    //        guard let viewModel = viewModel else { return }
+    //
+    //        if viewModel.targetValidateForm() {
+    //            viewModel.saveTargetData()
+    //            viewModel.submitProfile { [weak self] result in
+    //                switch result {
+    //                case .success:
+    //                    self?.showCustomAlertAndNavigateBack()
+    //                    print("목표 설정이 성공적으로 저장되었습니다.")
+    //                case .failure(let error):
+    //                    self?.showCustomErrorAlert(error)
+    //                    print("목표 설정 저장 실패: \(error.localizedDescription)")
+    //                }
+    //            }
+    //        }
+    //    }
+    
+    //    private func showCustomAlertAndNavigateBack(showConfirmButton: Bool = true, showCancelButton: Bool = true) {
+    //        let customAlert = CustomAlertView().then {
+    //            $0.setTitle("✨ 성공 ✨")
+    //            $0.setMessage("목표 설정이 완료되었습니다.")
+    //            $0.setCancelAction(self, action: #selector(dismissCustomAlert))
+    //            $0.setConfirmAction(self, action: #selector(dismissCustomAlert))
+    //            $0.showButtons(confirm: showConfirmButton, cancel: showCancelButton)
+    //        }
+    //
+    //        customAlert.frame = self.view.bounds
+    //        self.view.addSubview(customAlert)
+    //
+    //        customAlert.show(animated: true)
+    //
+    //        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
+    //            if !showConfirmButton && !showCancelButton {
+    //                customAlert.removeFromSuperview()
+    //                self?.navigationController?.popViewController(animated: true)
+    //            }
+    //        }
+    //    }
+    
+    //    private func showCustomErrorAlert(_ error: Error) {
+    //        let customAlert = CustomAlertView().then {
+    //            $0.setTitle("에러")
+    //            $0.setMessage(error.localizedDescription)
+    //            $0.setConfirmAction(self, action: #selector(dismissCustomAlert))
+    //            $0.showButtons(confirm: true, cancel: false)
+    //        }
+    //        customAlert.frame = self.view.bounds
+    //        self.view.addSubview(customAlert)
+    //
+    //        customAlert.show(animated: true)
+    //    }
+    
+    //    @objc private func dismissCustomAlert() {
+    //        if let customAlert = view.subviews.first(where: { $0 is CustomAlertView }) {
+    //            customAlert.removeFromSuperview()
+    //            navigationController?.popViewController(animated: true)
+    //        }
+    //    }
     
     private func showAlertAndNavigateBack() {
         let alert = UIAlertController(title: "성공", message: "목표 설정이 완료되었습니다.", preferredStyle: .alert)

@@ -6,125 +6,124 @@
 //  [프로필수정] 🖋️ 프로필 수정 🖋️
 
 import UIKit
-import SnapKit
-import Then
 import Combine
 import Kingfisher
 import NVActivityIndicatorView
+import SnapKit
+import Then
 
 class EditProfileViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     var viewModel: ProfileViewModel?
     
     private var cancellables = Set<AnyCancellable>()
-    private var selectedImage: UIImage? // 임시로 선택된 이미지를 저장할 변수
+    private var selectedImage: UIImage?
     
-    let scrollView = UIScrollView().then {
+    private let scrollView = UIScrollView().then {
         $0.backgroundColor = .white
     }
     
-    let contentView = UIView().then {
+    private let contentView = UIView().then {
         $0.backgroundColor = .white
     }
     
-    let profileImageView = UIImageView().then {
-        $0.image = UIImage(named: "defaultProfile")
+    private let profileImageView = UIImageView().then {
         $0.layer.cornerRadius = 75
         $0.layer.masksToBounds = true
-        $0.backgroundColor = .gray
+        $0.backgroundColor = .appSkyBlue
         $0.isUserInteractionEnabled = true
         $0.contentMode = .scaleAspectFill
         $0.clipsToBounds = true
-//        profileImageView.layer.cornerRadius = profileImageView.frame.height / 2
-//        profileImageView.layer.masksToBounds = true
+        $0.image = UIImage(named: "AppIcon")
     }
     
-    let profileLabel = UILabel().then {
+    private let profileLabel = UILabel().then {
         $0.text = "프로필 수정"
         $0.font = Suite.bold.of(size: 24)
         $0.textColor = .appBlack
     }
     
-    let profileSubLabel = UILabel().then {
+    private let profileSubLabel = UILabel().then {
         $0.text = "프로필을 새롭게 수정해보세요."
         $0.font = Suite.regular.of(size: 14)
         $0.textColor = .appDarkGray
     }
     
-    let nicknameView = UIView().then {
+    private let nicknameView = UIView().then {
         $0.backgroundColor = .appLightGray
         $0.layer.cornerRadius = 12
     }
     
-    let nicknameLabel = UILabel().then {
+    private let nicknameLabel = UILabel().then {
         $0.text = "닉네임"
         $0.font = Suite.regular.of(size: 14)
         $0.textColor = .appDarkGray
     }
     
-    let nickname = UITextField().then {
+    private let nickname = UITextField().then {
         $0.font = Suite.regular.of(size: 16)
         $0.textColor = .appBlack
         $0.tag = 1
     }
     
-    let heightView = UIView().then {
+    private let heightView = UIView().then {
         $0.backgroundColor = .appLightGray
         $0.layer.cornerRadius = 12
     }
     
-    let heightLabel = UILabel().then {
+    private let heightLabel = UILabel().then {
         $0.text = "키"
         $0.font = Suite.regular.of(size: 14)
         $0.textColor = .appDarkGray
     }
     
-    let height = UITextField().then {
+    private let height = UITextField().then {
         $0.font = Suite.regular.of(size: 16)
         $0.textColor = .appBlack
         $0.tag = 2
     }
     
-    let heightUnitLabel = UILabel().then {
+    private let heightUnitLabel = UILabel().then {
         $0.text = "cm"
         $0.font = Suite.regular.of(size: 16)
         $0.textColor = .appDarkGray
     }
     
-    let weightView = UIView().then {
+    private let weightView = UIView().then {
         $0.backgroundColor = .appLightGray
         $0.layer.cornerRadius = 12
     }
     
-    let weightLabel = UILabel().then {
+    private let weightLabel = UILabel().then {
         $0.text = "몸무게"
         $0.font = Suite.regular.of(size: 14)
         $0.textColor = .appDarkGray
     }
     
-    let weight = UITextField().then {
+    private let weight = UITextField().then {
         $0.font = Suite.regular.of(size: 16)
         $0.textColor = .appBlack
         $0.tag = 3
     }
     
-    let weightUnitLabel = UILabel().then {
-        $0.text = "Kg"
+    private let weightUnitLabel = UILabel().then {
+        $0.text = "kg"
         $0.font = Suite.regular.of(size: 16)
         $0.textColor = .appDarkGray
     }
     
-    let saveButton = UIButton(type: .system).then {
+    private let saveButton = UIButton(type: .system).then {
         $0.setTitle("저장하기", for: .normal)
         $0.setTitleColor(.white, for: .normal)
-        $0.titleLabel?.font = Suite.bold.of(size: 22)
+        $0.titleLabel?.font = Suite.bold.of(size: 18)
         $0.backgroundColor = .appBlack
-        $0.layer.cornerRadius = 8
+        $0.layer.cornerRadius = 16
+        $0.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
     }
     
-    let loadingIndicator = NVActivityIndicatorView(frame: .zero, type: .ballBeat, color: .appGreen, padding: 0)
+    private let loadingIndicator = NVActivityIndicatorView(frame: .zero, type: .ballBeat, color: .appGreen, padding: 0)
     
-    // MARK: - viewDidLoad
+    // MARK: - View Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
@@ -134,39 +133,17 @@ class EditProfileViewController: UIViewController, UIImagePickerControllerDelega
         hideKeyboardWhenTappedAround()
         setKeyboardObserver()
         bindViewModel()
-        
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(profileImageTapped))
-        profileImageView.addGestureRecognizer(tapGestureRecognizer)
-        
-        // 데이터를 받아오는 부분
-        viewModel?.fetchUserProfile()
-        
-        navigationController?.navigationBar.isHidden = false
-        
-        // 프로필 이미지 초기화
-        if let profileImageURL = viewModel?.picture {
-            loadImage(from: profileImageURL)
-        } else {
-            profileImageView.image = UIImage(named: "defaultProfile")
-        }
-        
-        nickname.addTarget(self, action: #selector(nicknameDidChange(_:)), for: .editingChanged)
-        height.addTarget(self, action: #selector(heightDidChange(_:)), for: .editingChanged)
-        weight.addTarget(self, action: #selector(weightDidChange(_:)), for: .editingChanged)
-        saveButton.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
+        setDelegates()
+        configureTapGesture()
+        configureNavigationBar()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         viewModel?.fetchUserProfile()
-//        setTabBar(hidden: true, animated: true)
     }
     
-//    override func viewWillDisappear(_ animated: Bool) {
-//        super.viewWillDisappear(animated)
-//        setTabBar(hidden: false, animated: true)
-//    }
-    
+    // MARK: - Actions
     @objc private func nicknameDidChange(_ textField: UITextField) {
         viewModel?.nickname = textField.text ?? ""
     }
@@ -179,7 +156,12 @@ class EditProfileViewController: UIViewController, UIImagePickerControllerDelega
         viewModel?.weight = textField.text ?? ""
     }
     
-    // MARK: - binding
+    @objc private func saveButtonTapped() {
+        print("tap save button")
+        saveProfile()
+    }
+    
+    // MARK: - Binding
     private func bindViewModel() {
         guard let viewModel = viewModel else { return }
         
@@ -208,31 +190,57 @@ class EditProfileViewController: UIViewController, UIImagePickerControllerDelega
             .receive(on: DispatchQueue.main)
             .sink { [weak self] picture in
                 guard let self = self else { return }
-                self.loadImage(from: picture)
+                if picture.isEmpty {
+                    self.profileImageView.image = UIImage(named: "AppIcon")
+                } else {
+                    self.loadImage(from: picture)
+                }
             }
             .store(in: &cancellables)
     }
     
-    // profileImageView에 뿌려주는 부분
     private func loadImage(from urlString: String?) {
-        guard let urlString = urlString else {
-            return
-        }
+        guard let urlString = urlString else { return }
         profileImageView.kf.setImage(with: URL(string: urlString))
     }
     
-    // 데이터를 저장하는 부분
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
         picker.dismiss(animated: true, completion: nil)
         
-        guard let selectedImage = info[.originalImage] as? UIImage else {
-            return
-        }
-        profileImageView.image = selectedImage
+        guard let selectedImage = info[.originalImage] as? UIImage else { return }
         
-        // 선택된 이미지를 임시 저장
         self.selectedImage = selectedImage
+        profileImageView.image = selectedImage
     }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true, completion: nil)
+    }
+    
+    //    private func saveProfile() {
+    //        guard let viewModel = viewModel else {
+    //            print("viewmodel")
+    //            return
+    //        }
+    //        loadingIndicator.startAnimating()
+    //        if let selectedImage = self.selectedImage {
+    //            viewModel.uploadImage(selectedImage) { [weak self] result in
+    //                DispatchQueue.main.async {
+    //                    switch result {
+    //                    case .success(let url):
+    //                        viewModel.picture = url
+    //                        self?.finalizeProfileSave()
+    //                    case .failure(let error):
+    //                        print("이미지 업로드 실패: \(error)")
+    //                        self?.showErrorAlert(message: "이미지 업로드 실패. 다시 시도해주세요.")
+    //                        self?.loadingIndicator.stopAnimating()
+    //                    }
+    //                }
+    //            }
+    //        } else {
+    //            finalizeProfileSave()
+    //        }
+    //    }
     
     private func saveProfile() {
         guard let viewModel = viewModel else { print("viewmodel")
@@ -260,6 +268,32 @@ class EditProfileViewController: UIViewController, UIImagePickerControllerDelega
             finalizeProfileSave()
         }
     }
+    
+    //    private func finalizeProfileSave() {
+    //        viewModel?.saveProfileData()
+    //        if let isNicknameChanged = viewModel?.isNicknameChanged, isNicknameChanged {
+    //            UserAPIManager.shared.checkNickname(nickname: viewModel?.nickname ?? "") { [weak self] result in
+    //                guard let self = self else { return }
+    //                switch result {
+    //                case .success(let data):
+    //                    if data.statusCode == 400 {
+    //                        DispatchQueue.main.async {
+    //                            self.showErrorAlert(message: "중복된 닉네임이에요!\n다른 닉네임으로 시도해 주세요")
+    //                        }
+    //                    } else {
+    //                        self.submitProfile()
+    //                    }
+    //                case .failure(let error):
+    //                    DispatchQueue.main.async {
+    //                        self.showErrorAlert(message: "서버가 불안정 합니다.\n잠시 후 다시 시도해주세요.")
+    //                        print("\(error.localizedDescription)")
+    //                    }
+    //                }
+    //            }
+    //        } else {
+    //            submitProfile()
+    //        }
+    //    }
     
     private func finalizeProfileSave() {
         viewModel?.saveProfileData()
@@ -302,33 +336,105 @@ class EditProfileViewController: UIViewController, UIImagePickerControllerDelega
             }
         }
     }
+    //
+    //    private func submitProfile() {
+    //        viewModel?.submitProfile { [weak self] result in
+    //            DispatchQueue.main.async {
+    //                self?.loadingIndicator.stopAnimating()
+    //                switch result {
+    //                case .success:
+    //                    print("프로필 업데이트 성공")
+    //                    self?.showCustomAlertAndNavigateBack()
+    //                case .failure(let error):
+    //                    print("업데이트 에러: \(error)")
+    //                    self?.showErrorAlert(message: "프로필 업데이트 실패. 다시 시도해주세요.")
+    //                }
+    //            }
+    //        }
+    //    }
+    
+    //    private func showErrorAlert(message: String) {
+    //        let customAlert = CustomAlertView().then {
+    //            $0.setTitle("오류 ❗️")
+    //            $0.setMessage(message)
+    //            $0.setConfirmAction(self, action: #selector(dismissCustomAlert))
+    //            $0.showButtons(confirm: true, cancel: false)
+    //        }
+    //
+    //        customAlert.frame = self.view.bounds
+    //        self.view.addSubview(customAlert)
+    //
+    //        customAlert.show(animated: true)
+    //    }
+    
+    //    private func showCustomAlertAndNavigateBack(showConfirmButton: Bool = false, showCancelButton: Bool = false) {
+    //        let customAlert = CustomAlertView().then {
+    //            $0.setTitle("✨ 성공 ✨")
+    //            $0.setMessage("프로필 수정이 완료되었습니다.")
+    //            $0.setCancelAction(self, action: #selector(dismissCustomAlert))
+    //            $0.setConfirmAction(self, action: #selector(dismissCustomAlert))
+    //            $0.showButtons(confirm: showConfirmButton, cancel: showCancelButton)
+    //        }
+    //
+    //        customAlert.frame = self.view.bounds
+    //        self.view.addSubview(customAlert)
+    //
+    //        customAlert.show(animated: true)
+    //
+    //        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
+    //            if !showConfirmButton && !showCancelButton {
+    //                customAlert.removeFromSuperview()
+    //                self?.navigationController?.popViewController(animated: true)
+    //            }
+    //        }
+    //    }
+    
+    //    @objc private func dismissCustomAlert() {
+    //        if let customAlert = view.subviews.first(where: { $0 is CustomAlertView }) {
+    //            customAlert.removeFromSuperview()
+    //            navigationController?.popViewController(animated: true)
+    //        }
+    //    }
     
     private func showErrorAlert(message: String) {
         let alert = UIAlertController(title: "오류 ❗️", message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         self.present(alert, animated: true, completion: nil)
     }
     
-    // MARK: - setupViews
+    private func createVerticalStackView(with views: [UIView]) -> UIStackView {
+        return UIStackView(arrangedSubviews: views).then {
+            $0.axis = .vertical
+            $0.alignment = .fill
+            $0.spacing = 6
+        }
+    }
+
+    // MARK: - Setup Views
     private func setupViews() {
         view.addSubviews(scrollView, saveButton, loadingIndicator)
         scrollView.addSubview(contentView)
         
-        [profileImageView, profileLabel, profileSubLabel, nicknameView, heightView, weightView/*, saveButton*/].forEach {
-            contentView.addSubview($0)
-        }
-        nicknameView.addSubview(nicknameLabel)
-        nicknameView.addSubview(nickname)
+        contentView.addSubview(profileImageView)
+        contentView.addSubview(profileLabel)
+        contentView.addSubview(profileSubLabel)
+        contentView.addSubview(nicknameView)
+        contentView.addSubview(heightView)
+        contentView.addSubview(weightView)
         
-        heightView.addSubview(heightLabel)
-        heightView.addSubview(height)
+        let nicknameStackView = createVerticalStackView(with: [nicknameLabel, nickname])
+        nicknameView.addSubview(nicknameStackView)
+        
+        let heightStackView = createVerticalStackView(with: [heightLabel, height])
+        heightView.addSubview(heightStackView)
         heightView.addSubview(heightUnitLabel)
         
-        weightView.addSubview(weightLabel)
-        weightView.addSubview(weight)
+        let weightStackView = createVerticalStackView(with: [weightLabel, weight])
+        weightView.addSubview(weightStackView)
         weightView.addSubview(weightUnitLabel)
     }
     
+    // MARK: - Setup Constraints
     private func setupConstraints() {
         scrollView.snp.makeConstraints {
             $0.top.leading.trailing.equalToSuperview()
@@ -350,76 +456,71 @@ class EditProfileViewController: UIViewController, UIImagePickerControllerDelega
             $0.centerX.equalToSuperview()
             $0.width.height.equalTo(150)
         }
+        
         profileLabel.snp.makeConstraints {
             $0.top.equalTo(profileImageView.snp.bottom).offset(20)
-            $0.leading.equalToSuperview().offset(16)
+            $0.leading.equalToSuperview().offset(20)
         }
         
         profileSubLabel.snp.makeConstraints {
             $0.top.equalTo(profileLabel.snp.bottom).offset(5)
-            $0.leading.equalToSuperview().offset(16)
+            $0.leading.equalToSuperview().offset(20)
         }
         
         nicknameView.snp.makeConstraints {
             $0.top.equalTo(profileSubLabel.snp.bottom).offset(20)
-            $0.leading.equalToSuperview().offset(20)
-            $0.trailing.equalToSuperview().offset(-20)
+            $0.leading.equalToSuperview().offset(16)
+            $0.trailing.equalToSuperview().offset(-16)
             $0.height.equalTo(80)
         }
         
-        nicknameLabel.snp.makeConstraints {
-            $0.top.equalTo(nicknameView.snp.top).offset(10)
-            $0.leading.equalTo(nicknameView.snp.leading).offset(10)
-        }
+        let nicknameStackView = nicknameView.subviews.first { $0 is UIStackView } as? UIStackView
         
-        nickname.snp.makeConstraints {
-            $0.top.equalTo(nicknameLabel.snp.bottom).offset(5)
-            $0.leading.equalTo(nicknameView.snp.leading).offset(10)
+        nicknameStackView?.snp.makeConstraints {
+            $0.centerY.equalToSuperview()
+            $0.leading.equalTo(nicknameView.snp.leading).offset(16)
             $0.trailing.equalTo(nicknameView.snp.trailing).offset(-10)
         }
         
         heightView.snp.makeConstraints {
             $0.top.equalTo(nicknameView.snp.bottom).offset(20)
-            $0.leading.equalToSuperview().offset(20)
-            $0.trailing.equalToSuperview().offset(-20)
+            $0.leading.equalToSuperview().offset(16)
+            $0.trailing.equalToSuperview().offset(-16)
             $0.height.equalTo(80)
         }
         
-        heightLabel.snp.makeConstraints {
-            $0.top.equalTo(heightView.snp.top).offset(10)
-            $0.leading.equalTo(heightView.snp.leading).offset(10)
-        }
+        let heightStackView = heightView.subviews.first { $0 is UIStackView } as? UIStackView
         
-        height.snp.makeConstraints {
-            $0.top.equalTo(heightLabel.snp.bottom).offset(5)
-            $0.leading.equalTo(heightView.snp.leading).offset(10)
+        heightStackView?.snp.makeConstraints {
+            $0.centerY.equalToSuperview()
+            $0.leading.equalTo(heightView.snp.leading).offset(16)
             $0.trailing.equalTo(heightUnitLabel.snp.leading).offset(-10)
         }
+        
         heightUnitLabel.snp.makeConstraints {
             $0.centerY.equalTo(height)
-            $0.trailing.equalTo(heightView.snp.trailing).offset(-10)
+            $0.trailing.equalTo(heightView.snp.trailing).offset(-16)
             $0.width.equalTo(30)
         }
+        
         weightView.snp.makeConstraints {
             $0.top.equalTo(heightView.snp.bottom).offset(20)
-            $0.leading.equalToSuperview().offset(20)
-            $0.trailing.equalToSuperview().offset(-20)
+            $0.leading.equalToSuperview().offset(16)
+            $0.trailing.equalToSuperview().offset(-16)
             $0.height.equalTo(80)
         }
-        weightLabel.snp.makeConstraints {
-            $0.top.equalTo(weightView.snp.top).offset(10)
-            $0.leading.equalTo(weightView.snp.leading).offset(10)
-        }
         
-        weight.snp.makeConstraints {
-            $0.top.equalTo(weightLabel.snp.bottom).offset(5)
-            $0.leading.equalTo(weightView.snp.leading).offset(10)
+        let weightStackView = weightView.subviews.first { $0 is UIStackView } as? UIStackView
+        
+        weightStackView?.snp.makeConstraints {
+            $0.centerY.equalToSuperview()
+            $0.leading.equalTo(weightView.snp.leading).offset(16)
             $0.trailing.equalTo(weightUnitLabel.snp.leading).offset(-10)
         }
         
         weightUnitLabel.snp.makeConstraints {
             $0.centerY.equalTo(weight)
-            $0.trailing.equalTo(weightView.snp.trailing).offset(-10)
+            $0.trailing.equalTo(weightView.snp.trailing).offset(-16)
             $0.width.equalTo(30)
         }
         
@@ -428,22 +529,63 @@ class EditProfileViewController: UIViewController, UIImagePickerControllerDelega
         }
         
         saveButton.snp.makeConstraints {
-            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.leading.trailing.equalToSuperview().inset(16)
             $0.bottom.equalTo(view.safeAreaLayoutGuide)
-            $0.height.equalTo(60)
+            $0.height.equalTo(48)
         }
     }
     
-    @objc func profileImageTapped() {
+    // MARK: - Configure Methods
+    private func setDelegates() {
+        nickname.delegate = self
+        height.delegate = self
+        weight.delegate = self
+    }
+    
+    private func configureTapGesture() {
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(profileImageTapped))
+        profileImageView.addGestureRecognizer(tapGestureRecognizer)
+    }
+    
+    private func configureNavigationBar() {
+        navigationController?.navigationBar.isHidden = false
+    }
+    
+    @objc private func profileImageTapped() {
         let imagePickerController = UIImagePickerController()
         imagePickerController.delegate = self
         imagePickerController.sourceType = .photoLibrary
         present(imagePickerController, animated: true, completion: nil)
     }
-    
-    // 데이터를 저장하는 부분 (프로필 저장)
-    @objc func saveButtonTapped() {
-        print("tap save button")
-        saveProfile()
+}
+
+// MARK: - UITextFieldDelegate
+extension EditProfileViewController: UITextFieldDelegate {
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        switch textField {
+        case nickname:
+            let allowedCharacters = CharacterSet.alphanumerics
+            let characterSet = CharacterSet(charactersIn: string)
+            let newLength = (textField.text?.count ?? 0) + string.count - range.length
+            return allowedCharacters.isSuperset(of: characterSet) && newLength <= 10
+        case height, weight:
+            let allowedCharacters = CharacterSet.decimalDigits
+            let characterSet = CharacterSet(charactersIn: string)
+            if !allowedCharacters.isSuperset(of: characterSet) {
+                return false
+            }
+            let currentText = textField.text ?? ""
+            let prospectiveText = (currentText as NSString).replacingCharacters(in: range, with: string)
+            if prospectiveText.isEmpty {
+                return true
+            }
+            if let value = Int(prospectiveText), value >= 0 && value <= 999 {
+                return true
+            } else {
+                return false
+            }
+        default:
+            return true
+        }
     }
 }

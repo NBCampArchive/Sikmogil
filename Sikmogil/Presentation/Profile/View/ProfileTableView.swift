@@ -11,7 +11,7 @@ import Then
 
 class ProfileTableView: UIView {
     
-    let tableView = UITableView().then {
+    private let tableView = UITableView().then {
         $0.register(ProfileTableViewCell.self, forCellReuseIdentifier: "ProfileCell")
         $0.separatorStyle = .none
         $0.rowHeight = 60
@@ -45,6 +45,7 @@ class ProfileTableView: UIView {
     }
 }
 
+// MARK: - UITableViewDataSource
 extension ProfileTableView: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return titles.count
@@ -62,6 +63,7 @@ extension ProfileTableView: UITableViewDataSource {
     }
 }
 
+// MARK: - UITableViewDelegate
 extension ProfileTableView: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
@@ -71,6 +73,7 @@ extension ProfileTableView: UITableViewDelegate {
     }
 }
 
+// MARK: - UIView Extension
 extension UIView {
     var parentViewController: UIViewController? {
         var parentResponder: UIResponder? = self

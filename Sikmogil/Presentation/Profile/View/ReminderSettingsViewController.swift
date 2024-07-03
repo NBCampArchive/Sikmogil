@@ -20,14 +20,14 @@ class ReminderSettingsViewController: UIViewController {
     
     private let titleLabel = UILabel().then {
         $0.text = "리마인드 알림 시간 설정"
-        $0.font = Suite.bold.of(size: 28)
-        $0.textColor = .black
+        $0.font = Suite.bold.of(size: 24)
+        $0.textColor = .appBlack
     }
     
     private let descriptionLabel = UILabel().then {
         $0.text = "하루 리마인드 알림을 원하는 시간을 선택해주세요"
-        $0.font = Suite.semiBold.of(size: 14)
-        $0.textColor = .darkGray
+        $0.font = Suite.regular.of(size: 14)
+        $0.textColor = .appDarkGray
     }
     
     private let timePicker = UIDatePicker().then {
@@ -46,17 +46,17 @@ class ReminderSettingsViewController: UIViewController {
     private let completeButton = UIButton(type: .system).then {
         $0.setTitle("저장하기", for: .normal)
         $0.setTitleColor(.white, for: .normal)
-        $0.titleLabel?.font = Suite.bold.of(size: 22)
+        $0.titleLabel?.font = Suite.bold.of(size: 18)
         $0.backgroundColor = .appBlack
-        $0.layer.cornerRadius = 8
+        $0.layer.cornerRadius = 16
+        $0.addTarget(self, action: #selector(completeButtonTapped), for: .touchUpInside)
     }
     
-    // MARK: - 생명주기
+    // MARK: - View Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         setupConstraints()
-        setupAddTargets()
         hideKeyboardWhenTappedAround()
         setKeyboardObserver()
         bindViewModel()
@@ -68,22 +68,18 @@ class ReminderSettingsViewController: UIViewController {
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
-    private func setupAddTargets() {
-        completeButton.addTarget(self, action: #selector(completeButtonTapped), for: .touchUpInside)
-    }
-    
-    // MARK: - 리마인드 시간 저장
+    // MARK: - Save Reminder Time
     private func saveReminderTime(_ time: String) {
         UserDefaults.standard.set(time, forKey: "ReminderTime")
         viewModel?.reminderTime = time
         viewModel?.saveReminderData()
     }
     
-    // MARK: - 뷰모델 바인딩
+    // MARK: - Bind ViewModel
     private func bindViewModel() {
         guard let viewModel = viewModel else { return }
         
-        // 뷰모델의 reminderTime과 timeTextField를 바인딩
+        // Bind viewModel's reminderTime to timePicker
         viewModel.$reminderTime
             .sink { [weak self] time in
                 guard let self = self else { return }
@@ -94,10 +90,9 @@ class ReminderSettingsViewController: UIViewController {
                 }
             }
             .store(in: &cancellables)
-
     }
     
-    // MARK: - setupConstraints
+    // MARK: - Setup Constraints
     private func setupConstraints() {
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
@@ -117,12 +112,12 @@ class ReminderSettingsViewController: UIViewController {
         }
         
         titleLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(32)
+            $0.top.equalTo(view.safeAreaLayoutGuide)
             $0.leading.equalToSuperview().offset(16)
         }
         
         descriptionLabel.snp.makeConstraints {
-            $0.top.equalTo(titleLabel.snp.bottom).offset(8)
+            $0.top.equalTo(titleLabel.snp.bottom).offset(6)
             $0.leading.equalToSuperview().offset(16)
         }
         
@@ -139,7 +134,7 @@ class ReminderSettingsViewController: UIViewController {
             $0.bottom.equalTo(view.safeAreaLayoutGuide).offset(-16)
             $0.leading.equalToSuperview().offset(16)
             $0.trailing.equalToSuperview().offset(-16)
-            $0.height.equalTo(60)
+            $0.height.equalTo(48)
         }
     }
     
@@ -149,19 +144,18 @@ class ReminderSettingsViewController: UIViewController {
             return
         }
         
-        // timeTextField의 값을 뷰모델에 업데이트
+        // Update viewModel with selected time from timePicker
         let formatter = DateFormatter()
         formatter.dateFormat = "HH:mm"
         let selectedTime = formatter.string(from: timePicker.date)
         
         viewModel.reminderTime = selectedTime
         
-        // 유효성 검사 후 저장 및 프로필 업데이트
+        // Validate, save and update profile
         timeTextFieldWarningLabel.isHidden = true
         viewModel.saveReminderData()
         saveReminderTime(viewModel.reminderTime)
         
-        // 데이터를 저장하는 부분 (submitProfile 호출)
         viewModel.submitProfile { [weak self] result in
             switch result {
             case .success:
@@ -172,7 +166,6 @@ class ReminderSettingsViewController: UIViewController {
                 self?.showErrorAlert(error: error)
             }
         }
-        
     }
     
     private func registerNotification(time: String) {
@@ -194,6 +187,35 @@ class ReminderSettingsViewController: UIViewController {
         alert.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
         self.present(alert, animated: true, completion: nil)
     }
+    
+    //    private func showAlertAndNavigateToProfile(showConfirmButton: Bool = false, showCancelButton: Bool = false) {
+    //        let customAlert = CustomAlertView().then {
+    //            $0.setTitle("✨ 성공 ✨")
+    //            $0.setMessage("리마인드 설정이 완료되었습니다.")
+    //            $0.setCancelAction(self, action: #selector(dismissCustomAlert))
+    //            $0.setConfirmAction(self, action: #selector(dismissCustomAlert))
+    //            $0.showButtons(confirm: showConfirmButton, cancel: showCancelButton)
+    //        }
+    //
+    //        customAlert.show(animated: true)
+    //
+    //        customAlert.frame = self.view.bounds
+    //        self.view.addSubview(customAlert)
+    //
+    //        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
+    //            if !showConfirmButton && !showCancelButton {
+    //                customAlert.removeFromSuperview()
+    //                self?.navigationController?.popViewController(animated: true)
+    //            }
+    //        }
+    //    }
+    
+    //    @objc private func dismissCustomAlert() {
+    //        if let customAlert = view.subviews.first(where: { $0 is CustomAlertView }) {
+    //            customAlert.removeFromSuperview()
+    //            navigationController?.popViewController(animated: true)
+    //        }
+    //    }
     
     private func showAlertAndNavigateToProfile() {
         let alert = UIAlertController(title: "성공", message: "리마인드 설정이 완료되었습니다.", preferredStyle: .alert)
