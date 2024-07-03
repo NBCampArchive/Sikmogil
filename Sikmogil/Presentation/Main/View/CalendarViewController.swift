@@ -103,15 +103,15 @@ class CalendarViewController: UIViewController {
         
         setupViews()
         setupConstraints()
-        setupDiaryPannel()
         
         bindViewModel()
         viewModel.loadCalendarData()
         viewModel.loadTargetData()
         
         let today = Date()
-            calendar.select(today)
-            updateDiaryLabel(for: today)
+        calendar.select(today)
+        updateDiaryLabel(for: today)
+        setupDiaryPannel(for: today)
         
         detailButton.addTarget(self, action: #selector(tapDetailButton), for: .touchUpInside)
         writeButton.addTarget(self, action: #selector(tapWriteButton), for: .touchUpInside)
@@ -209,8 +209,9 @@ class CalendarViewController: UIViewController {
                 self?.calendar.selectedDates.forEach { self?.calendar.deselect($0) }
                 self?.calendar.reloadData()
                 if let today = self?.calendar.today {
-                               self?.updateDiaryLabel(for: today)
-                           }
+                    self?.updateDiaryLabel(for: today)
+                    self?.setupDiaryPannel(for: today)
+                }
             }
             .store(in: &cancellables)
         
@@ -308,18 +309,44 @@ extension CalendarViewController: FloatingPanelControllerDelegate {
         
     }
     
-    func setupDiaryPannel(){
+//    func setupDiaryPannel(){
+//        editDiaryFloatingPanelController = FloatingPanelController()
+//
+//        let contentVC = DiaryRecordFloatingViewController()
+//        contentVC.viewModel = viewModel
+//        contentVC.diaryTextView.text = recordingText
+//        editDiaryFloatingPanelController.set(contentViewController: contentVC)
+//
+//        editDiaryFloatingPanelController.layout = CustomFloatingPanelLayout()
+//        editDiaryFloatingPanelController.isRemovalInteractionEnabled = true
+//        editDiaryFloatingPanelController.changePanelStyle()
+//        editDiaryFloatingPanelController.delegate = self
+//    }
+    func setupDiaryPannel(for date: Date) {
         editDiaryFloatingPanelController = FloatingPanelController()
         
         let contentVC = DiaryRecordFloatingViewController()
         contentVC.viewModel = viewModel
-        editDiaryFloatingPanelController.set(contentViewController: contentVC)
         
+        // 날짜 형식을 문자열로 변환
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy.MM.dd"
+        let dateString = dateFormatter.string(from: date)
+        
+        // 해당 날짜의 기록된 텍스트를 찾음
+        if let record = viewModel.calendarListModels?.first(where: { $0.diaryDate == dateString }) {
+            contentVC.diaryTextView.text = record.diaryText ?? ""
+        } else {
+            contentVC.diaryTextView.text = ""
+        }
+        
+        editDiaryFloatingPanelController.set(contentViewController: contentVC)
         editDiaryFloatingPanelController.layout = CustomFloatingPanelLayout()
         editDiaryFloatingPanelController.isRemovalInteractionEnabled = true
         editDiaryFloatingPanelController.changePanelStyle()
         editDiaryFloatingPanelController.delegate = self
     }
+
 }
 
 extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource, FSCalendarDelegateAppearance {
@@ -380,6 +407,7 @@ extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource, FSCa
     func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
         viewModel.selectedDate = date
         updateDiaryLabel(for: date)
+        setupDiaryPannel(for: date)
     }
     
     private func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, fillDefaultColorFor date: Date) -> UIFont? {

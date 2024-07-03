@@ -21,7 +21,7 @@ class DiaryRecordFloatingViewController: UIViewController {
         $0.textAlignment = .center
     }
     
-    private let diaryTextView = UITextView().then {
+    var diaryTextView = UITextView().then {
         $0.layer.cornerRadius = 12
         $0.backgroundColor = .appLightGray
         $0.font = Suite.regular.of(size: 14)
@@ -40,7 +40,7 @@ class DiaryRecordFloatingViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .white
         
         setupViews()
         setupConstraints()
