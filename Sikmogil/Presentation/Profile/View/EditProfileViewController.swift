@@ -120,7 +120,6 @@ class EditProfileViewController: UIViewController, UIImagePickerControllerDelega
         $0.titleLabel?.font = Suite.bold.of(size: 18)
         $0.backgroundColor = .appBlack
         $0.layer.cornerRadius = 16
-        $0.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
     }
     
     private let loadingIndicator = NVActivityIndicatorView(frame: .zero, type: .ballBeat, color: .appGreen, padding: 0)
@@ -138,6 +137,11 @@ class EditProfileViewController: UIViewController, UIImagePickerControllerDelega
         setDelegates()
         configureTapGesture()
         configureNavigationBar()
+        
+        nickname.addTarget(self, action: #selector(nicknameDidChange(_:)), for: .editingChanged)
+        height.addTarget(self, action: #selector(heightDidChange(_:)), for: .editingChanged)
+        weight.addTarget(self, action: #selector(weightDidChange(_:)), for: .editingChanged)
+        saveButton.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
     }
     
     override func viewWillAppear(_ animated: Bool) {

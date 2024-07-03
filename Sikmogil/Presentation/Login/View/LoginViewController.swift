@@ -159,10 +159,14 @@ class LoginViewController: UIViewController {
     private func navigateToMainScreen() {
         print("로그인 성공, 메인 화면으로 이동")
         let bottomTabBarController = BottomTabBarController()
+        setRootViewController(bottomTabBarController)
+    }
+
+    private func setRootViewController(_ viewController: UIViewController) {
         if let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate,
            let window = sceneDelegate.window {
             UIView.transition(with: window, duration: 0.7, options: .transitionFlipFromRight, animations: {
-                window.rootViewController = bottomTabBarController
+                window.rootViewController = viewController
             })
             window.makeKeyAndVisible()
         }
