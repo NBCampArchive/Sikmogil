@@ -5,6 +5,7 @@
 //  Created by 박현렬 on 7/2/24.
 //
 
+import Combine
 import UIKit
 import SnapKit
 import Then
@@ -13,6 +14,9 @@ import MobileCoreServices
 class WriteViewController: UIViewController, UINavigationControllerDelegate {
     
     //MARK: - Properties
+    private let viewModel = CreatePostViewModel()
+    private var cancellables = Set<AnyCancellable>()
+    
     private let scrollView = UIScrollView().then {
         $0.showsVerticalScrollIndicator = false
     }
@@ -124,6 +128,8 @@ class WriteViewController: UIViewController, UINavigationControllerDelegate {
         scrollView.delaysContentTouches = false
         collectionView.isScrollEnabled = true
         collectionView.showsHorizontalScrollIndicator = false
+        
+        bindViewModel()
     }
     
     private func setupViews() {
@@ -211,19 +217,27 @@ class WriteViewController: UIViewController, UINavigationControllerDelegate {
         workoutButton.addTarget(self, action: #selector(categoryButtonTapped(_:)), for: .touchUpInside)
         freeButton.addTarget(self, action: #selector(categoryButtonTapped(_:)), for: .touchUpInside)
         addPhotoButton.addTarget(self, action: #selector(addPhotoButtonTapped), for: .touchUpInside)
+        submitButton.addTarget(self, action: #selector(submitButtonTapped), for: .touchUpInside)
     }
     
     @objc private func categoryButtonTapped(_ sender: UIButton) {
         switch sender.tag {
         case 0:
             updateButtonSelection(selectedButton: dietButton)
+            viewModel.category = "DIET"
         case 1:
             updateButtonSelection(selectedButton: workoutButton)
+            viewModel.category = "WORKOUT"
         case 2:
             updateButtonSelection(selectedButton: freeButton)
+            viewModel.category = "FREE"
         default:
             break
         }
+    }
+    
+    @objc private func submitButtonTapped() {
+        viewModel.createPost()
     }
     
     private func updateButtonSelection(selectedButton: UIButton) {
@@ -270,6 +284,19 @@ class WriteViewController: UIViewController, UINavigationControllerDelegate {
             alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
             present(alertController, animated: true, completion: nil)
         }
+    }
+    
+    private func bindViewModel() {
+        titleTextField.addTarget(self, action: #selector(titleTextFieldChanged), for: .editingChanged)
+        contentTextView.delegate = self
+    }
+
+    @objc private func titleTextFieldChanged(_ textField: UITextField) {
+        viewModel.title = textField.text ?? ""
+    }
+
+    func textViewDidChange(_ textView: UITextView) {
+        viewModel.content = textView.text
     }
 }
 
