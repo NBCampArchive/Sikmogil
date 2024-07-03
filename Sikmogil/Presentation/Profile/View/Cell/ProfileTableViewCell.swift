@@ -12,16 +12,16 @@ import Then
 class ProfileTableViewCell: UITableViewCell {
 
     // MARK: - 속성
-    let iconImageView = UIImageView()
-    let titleLabel = UILabel().then {
+    private let iconImageView = UIImageView()
+    private let titleLabel = UILabel().then {
         $0.font = Suite.regular.of(size: 16)
         $0.textColor = .appBlack
     }
-    let arrowImageView = UIImageView().then {
+    private let arrowImageView = UIImageView().then {
         $0.image = UIImage(systemName: "chevron.right")
         $0.tintColor = .appBlack
     }
-    let separator = UIView().then {
+    private let separator = UIView().then {
         $0.backgroundColor = .appDarkGray
     }
 

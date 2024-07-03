@@ -16,6 +16,7 @@ class DietMainViewController: UIViewController {
     var addMealViewModel: AddMealViewModel = AddMealViewModel.shared
     var dietViewModel = DietViewModel()
     var floatingPanel: FloatingPanelController!
+    var previousPanelState: FloatingPanelState = .hidden
     
     private var cancellables = Set<AnyCancellable>()
     
@@ -29,7 +30,7 @@ class DietMainViewController: UIViewController {
     let dietTitleLabel = UILabel().then {
         $0.text = "식단"
         $0.textColor = .appBlack
-        $0.font = Suite.bold.of(size: 28)
+        $0.font = Suite.bold.of(size: 24)
         $0.textAlignment = .left
     }
     let dietTitleSubLabel = UILabel().then {
@@ -39,7 +40,7 @@ class DietMainViewController: UIViewController {
         $0.textAlignment = .left
     }
     let dietAddTabButton = UIButton().then {
-        $0.setImage(UIImage(named: "plusIcon"), for: .normal)
+        $0.setImage(UIImage(named: "listPlusButton"), for: .normal)
     }
     let dietCircularProgressBar = CustomCircularProgressBar().then {
         $0.backgroundColor = .clear
@@ -52,13 +53,13 @@ class DietMainViewController: UIViewController {
     }
     let dietKcalLabel = UILabel().then {
         $0.text = "kcalkcalkcal"
-        $0.textColor = .appDarkGray
-        $0.font = Suite.semiBold.of(size: 18)
+        $0.textColor = .appDeepDarkGray
+        $0.font = Suite.semiBold.of(size: 16)
         $0.textAlignment = .center
     }
     let dietInfoLabel = UILabel().then {
         $0.text = "아직 더 먹을 수 있어요!"
-        $0.textColor = .appDarkGray
+        $0.textColor = .appDeepDarkGray
         $0.font = Suite.semiBold.of(size: 16)
         $0.textAlignment = .center
         $0.numberOfLines = 0
@@ -72,7 +73,7 @@ class DietMainViewController: UIViewController {
     let waterTitleLabel = UILabel().then {
         $0.text = "물마시기"
         $0.textColor = .appBlack
-        $0.font = Suite.bold.of(size: 28)
+        $0.font = Suite.bold.of(size: 24)
         $0.textAlignment = .left
     }
     let waterTitleSubLabel = UILabel().then {
@@ -82,7 +83,7 @@ class DietMainViewController: UIViewController {
         $0.textAlignment = .left
     }
     let waterAddTabButton = UIButton().then {
-        $0.setImage(UIImage(named: "plusIcon"), for: .normal)
+        $0.setImage(UIImage(named: "listPlusButton"), for: .normal)
     }
     let waterCircularProgressBar = WaveProgressView().then {
         $0.layer.cornerRadius = 150
@@ -92,7 +93,7 @@ class DietMainViewController: UIViewController {
     }
     let waterLiterLabel = UILabel().then {
         $0.text = "000ml / 2L"
-        $0.textColor = .appDarkGray
+        $0.textColor = .appDeepDarkGray
         $0.font = Suite.bold.of(size: 26)
         $0.textAlignment = .center
     }
@@ -103,7 +104,7 @@ class DietMainViewController: UIViewController {
     let fastingTimerTitleLabel = UILabel().then {
         $0.text = "공복 타이머"
         $0.textColor = .appBlack
-        $0.font = Suite.bold.of(size: 28)
+        $0.font = Suite.bold.of(size: 24)
         $0.textAlignment = .left
     }
     let fastingTimerTitleSubLabel = UILabel().then {
@@ -123,8 +124,8 @@ class DietMainViewController: UIViewController {
     }
     let fastingTimerInfoLabel = UILabel().then {
         $0.text = "공복시간을 측정하세요"
-        $0.textColor = .appDarkGray
-        $0.font = Suite.bold.of(size: 20)
+        $0.textColor = .appDeepDarkGray
+        $0.font = Suite.bold.of(size: 16)
         $0.textAlignment = .center
     }
     let fastingTimerStartStopButton = UIButton().then{
@@ -177,6 +178,12 @@ class DietMainViewController: UIViewController {
         waterAddTabButton.addTarget(self, action: #selector(showWaterBottomSheet), for: .touchUpInside)
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        navigationController?.navigationBar.isHidden = true
+    }
+    
     // MARK: - Setup Methods
     private func setupViews() {
         view.addSubview(scrollView)
@@ -197,7 +204,7 @@ class DietMainViewController: UIViewController {
         contentView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
             make.width.equalToSuperview()
-            make.bottom.equalTo(fastingTimerStartStopButton.snp.bottom).offset(32)
+            make.bottom.equalTo(fastingTimerStartStopButton.snp.bottom).offset(40)
         }
         // 🍳 Diet
         dietTitleView.snp.makeConstraints {
@@ -212,7 +219,7 @@ class DietMainViewController: UIViewController {
             $0.width.equalToSuperview()
         }
         dietTitleSubLabel.snp.makeConstraints {
-            $0.top.equalTo(dietTitleLabel.snp.bottom)
+            $0.top.equalTo(dietTitleLabel.snp.bottom).offset(6)
             $0.leading.equalToSuperview()
             $0.width.equalToSuperview()
         }
@@ -221,17 +228,18 @@ class DietMainViewController: UIViewController {
             $0.trailing.equalToSuperview()
         }
         dietCircularProgressBar.snp.makeConstraints {
-            $0.top.equalTo(dietTitleSubLabel.snp.bottom).offset(32)
+            $0.top.equalTo(dietTitleSubLabel.snp.bottom).offset(30)
             $0.centerX.equalToSuperview()
             $0.width.height.equalTo(300)
         }
         dietProgressBarIcon.snp.makeConstraints {
             $0.centerX.equalTo(dietCircularProgressBar)
-            $0.centerY.equalTo(dietCircularProgressBar).offset(-40)
+            $0.width.height.equalTo(80)
+            $0.top.equalTo(dietCircularProgressBar.snp.top).inset(60)
         }
         dietKcalLabel.snp.makeConstraints{
             $0.centerX.equalTo(dietCircularProgressBar)
-            $0.top.equalTo(dietProgressBarIcon.snp.bottom).offset(16)
+            $0.top.equalTo(dietProgressBarIcon.snp.bottom).offset(18)
         }
         dietInfoLabel.snp.makeConstraints{
             $0.centerX.equalTo(dietCircularProgressBar)
@@ -250,7 +258,7 @@ class DietMainViewController: UIViewController {
             $0.width.equalToSuperview()
         }
         waterTitleSubLabel.snp.makeConstraints {
-            $0.top.equalTo(waterTitleLabel.snp.bottom)
+            $0.top.equalTo(waterTitleLabel.snp.bottom).offset(6)
             $0.leading.equalToSuperview()
             $0.width.equalToSuperview()
         }
@@ -259,7 +267,7 @@ class DietMainViewController: UIViewController {
             $0.trailing.equalToSuperview()
         }
         waterCircularProgressBar.snp.makeConstraints{
-            $0.top.equalTo(waterTitleSubLabel.snp.bottom).offset(32)
+            $0.top.equalTo(waterTitleSubLabel.snp.bottom).offset(30)
             $0.centerX.equalToSuperview()
             $0.width.height.equalTo(300)
         }
@@ -280,22 +288,23 @@ class DietMainViewController: UIViewController {
             $0.width.equalToSuperview()
         }
         fastingTimerTitleSubLabel.snp.makeConstraints{
-            $0.top.equalTo(fastingTimerTitleLabel.snp.bottom)
+            $0.top.equalTo(fastingTimerTitleLabel.snp.bottom).offset(6)
             $0.leading.equalToSuperview()
             $0.width.equalToSuperview()
         }
         fastingTimerCircularProgressBar.snp.makeConstraints{
-            $0.top.equalTo(fastingTimerTitleSubLabel.snp.bottom).offset(32)
+            $0.top.equalTo(fastingTimerTitleSubLabel.snp.bottom).offset(30)
             $0.centerX.equalToSuperview()
             $0.width.height.equalTo(300)
         }
         fastingTimerProgressBarIcon.snp.makeConstraints {
             $0.centerX.equalTo(fastingTimerCircularProgressBar)
-            $0.centerY.equalTo(fastingTimerCircularProgressBar).offset(-30)
+            $0.width.height.equalTo(80)
+            $0.top.equalTo(fastingTimerCircularProgressBar.snp.top).inset(90)
         }
         fastingTimerInfoLabel.snp.makeConstraints{
             $0.centerX.equalTo(fastingTimerCircularProgressBar)
-            $0.top.equalTo(fastingTimerProgressBarIcon.snp.bottom).offset(16)
+            $0.top.equalTo(fastingTimerProgressBarIcon.snp.bottom).offset(18)
         }
         fastingTimerStartStopButton.snp.makeConstraints {
             $0.top.equalTo(fastingTimerCircularProgressBar.snp.bottom).offset(16)
@@ -368,6 +377,14 @@ class DietMainViewController: UIViewController {
             let elapsedTime = Date().timeIntervalSince(startTime)
             print("타이머 정지 시간: \(Date())") // 디버깅용 print문
             print("경과 시간: \(elapsedTime)초") // 디버깅용 print문
+            
+            let hours = Int(elapsedTime) / 3600
+            let minutes = (Int(elapsedTime) % 3600) / 60
+            let alertMessage = String(format: "%d시간 %d분 동안 공복을 유지했습니다.", hours, minutes)
+            
+            let alert = UIAlertController(title: "공복 타이머 종료", message: alertMessage, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "확인", style: .default, handler: nil))
+            present(alert, animated: true, completion: nil)
         }
         
         // 공복 알림 제거
@@ -417,7 +434,7 @@ class DietMainViewController: UIViewController {
             return
         }
         
-        let alert = UIAlertController(title: "아침 식사가 처음으로 추가되었습니다.", message: "공복 타이머를 멈추시겠습니까?", preferredStyle: .alert)
+        let alert = UIAlertController(title: "오늘의 식사가 처음으로 추가되었습니다.", message: "공복 타이머를 멈추시겠습니까?", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "네", style: .default, handler: { _ in
             self.startStopButtonTapped()
         }))

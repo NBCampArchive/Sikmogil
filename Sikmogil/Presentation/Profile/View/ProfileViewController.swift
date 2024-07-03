@@ -17,23 +17,23 @@ class ProfileViewController: UIViewController {
     
     private var cancellables = Set<AnyCancellable>()
     
-    let spacerView = UIView()
-    let scrollView = UIScrollView()
-    let contentView = UIView()
-    let topBar = UIView()
+    private let spacerView = UIView()
+    private let scrollView = UIScrollView()
+    private let contentView = UIView()
+    private let topBar = UIView()
     
-    let profileLabel = UILabel().then {
+    private let profileLabel = UILabel().then {
         $0.text = "프로필"
-        $0.font = Suite.bold.of(size: 28)
+        $0.font = Suite.bold.of(size: 24)
     }
     
-    let settingsButton = UIButton().then {
+    private let settingsButton = UIButton().then {
         $0.setImage(.setting, for: .normal)
         $0.tintColor = .appBlack
     }
     
-    let profileImageView = UIImageView().then {
-        $0.image = UIImage(named: "defaultProfile")
+    private let profileImageView = UIImageView().then {
+        $0.image = UIImage(named: "AppIcon")
         $0.contentMode = .scaleAspectFill
         $0.clipsToBounds = true
     }
@@ -56,18 +56,12 @@ class ProfileViewController: UIViewController {
 //    }
     
     var nicknameLabel = UILabel().then {
-        $0.text = "아무개"
+        $0.text = "(알 수 없음)"
         $0.font = Suite.bold.of(size: 24)
     }
     
-    let profileInfoView = ProfileInfoView()
-//    let profileTableView = ProfileTableView()
-    
-//    let logoutButton = UIButton().then {
-//        $0.setTitle("로그아웃", for: .normal)
-//        $0.setTitleColor(.appBlack, for: .normal)
-//        $0.titleLabel?.font = Suite.bold.of(size: 16)
-//    }
+    private let profileInfoView = ProfileInfoView()
+//    private let profileTableView = ProfileTableView()
     
     // MARK: - viewDidLoad
     override func viewDidLoad() {
@@ -92,7 +86,7 @@ class ProfileViewController: UIViewController {
         super.viewWillAppear(animated)
         viewModel.fetchUserProfile()
         setupBindings()
-//        navigationController?.navigationBar.isHidden = true
+        navigationController?.navigationBar.isHidden = true
     }
 
     // MARK: - Binding
@@ -178,7 +172,7 @@ class ProfileViewController: UIViewController {
         settingsButton.snp.makeConstraints {
             $0.right.equalTo(topBar).offset(-16)
             $0.top.equalToSuperview()
-            $0.width.height.equalTo(24)
+            $0.width.height.equalTo(28)
         }
         
         profileImageView.snp.makeConstraints {

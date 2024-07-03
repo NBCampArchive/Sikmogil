@@ -12,7 +12,7 @@ import Then
 class ExerciseTimerViewController: UIViewController {
     
     // MARK: - Properties
-    var viewModel = ExerciseSelectionViewModel()
+    var viewModel: ExerciseSelectionViewModel?
     var initialTime: TimeInterval
     var selectedTime: TimeInterval // 선택한 시간을 저장할 변수: 30분(30 * 60 = 1800)
     
@@ -97,8 +97,8 @@ class ExerciseTimerViewController: UIViewController {
         }
         
         recordButton.snp.makeConstraints {
-            $0.bottom.equalTo(view.safeAreaLayoutGuide).inset(32)
-            $0.height.equalTo(60)
+            $0.bottom.equalTo(view.safeAreaLayoutGuide).inset(16)
+            $0.height.equalTo(48)
             $0.leading.trailing.equalToSuperview().inset(16)
         }
     }

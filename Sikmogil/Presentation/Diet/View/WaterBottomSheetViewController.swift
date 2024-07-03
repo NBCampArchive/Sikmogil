@@ -21,7 +21,7 @@ class WaterBottomSheetViewController: UIViewController {
     let titleLabel = UILabel().then {
         $0.text = "마신 물을 기록해보세요!"
         $0.textColor = .appBlack
-        $0.font = Suite.medium.of(size: 16)
+        $0.font = Suite.semiBold.of(size: 20)
         $0.textAlignment = .center
     }
     let waterRecordTextField = UITextField().then {
@@ -35,8 +35,8 @@ class WaterBottomSheetViewController: UIViewController {
         $0.setTitle("완료", for: .normal)
         $0.backgroundColor = .appBlack
         $0.setTitleColor(.white, for: .normal)
-        $0.titleLabel?.font = Suite.bold.of(size: 22)
-        $0.layer.cornerRadius = 14
+        $0.titleLabel?.font = Suite.bold.of(size: 18)
+        $0.layer.cornerRadius = 16
         $0.clipsToBounds = true
         $0.addTarget(self, action: #selector(doneButtonTapped), for: .touchUpInside)
     }
@@ -83,18 +83,18 @@ class WaterBottomSheetViewController: UIViewController {
             $0.edges.equalTo(view.safeAreaLayoutGuide)
         }
         titleLabel.snp.makeConstraints{
-            $0.top.equalToSuperview().offset(26)
+            $0.top.equalToSuperview().offset(60)
             $0.centerX.equalToSuperview()
         }
         waterRecordTextField.snp.makeConstraints {
-            $0.top.equalTo(titleLabel).offset(55)
+            $0.top.equalTo(titleLabel).offset(75)
             $0.centerX.equalToSuperview()
         }
         doneButton.snp.makeConstraints{
-            $0.top.equalTo(waterRecordTextField.snp.bottom).offset(66)
-            $0.centerX.equalToSuperview()
-            $0.width.equalTo(361)
-            $0.height.equalTo(60)
+            $0.top.equalTo(waterRecordTextField.snp.bottom).offset(65)
+            $0.leading.equalToSuperview().offset(16)
+            $0.trailing.equalToSuperview().offset(-16)
+            $0.height.equalTo(49)
         }
     }
     
@@ -161,9 +161,9 @@ extension WaterBottomSheetViewController: UITextFieldDelegate {
         // 텍스트 업데이트
         let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
         
-        // 새로운 텍스트가 3자리를 넘지 않도록 제한
+        // 새로운 텍스트가 4자리를 넘지 않도록 제한
         let newNumbers = updatedText.components(separatedBy: CharacterSet.decimalDigits.inverted).joined()
-        guard newNumbers.count <= 3 else { return false }
+        guard newNumbers.count <= 4 else { return false }
         
         // 새로운 형식의 텍스트 설정
         let formattedText = "\(newNumbers) ml"

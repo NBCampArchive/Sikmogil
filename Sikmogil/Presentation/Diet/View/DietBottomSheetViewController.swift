@@ -22,7 +22,7 @@ class DietBottomSheetViewController: UIViewController {
     let titleLabel = UILabel().then {
         $0.text = "식사"
         $0.textColor = .appBlack
-        $0.font = Suite.bold.of(size: 28)
+        $0.font = Suite.bold.of(size: 24)
         $0.textAlignment = .left
     }
     let albumButton = UIButton().then {
@@ -30,9 +30,18 @@ class DietBottomSheetViewController: UIViewController {
         $0.backgroundColor = .appBlack
         $0.setTitleColor(.white, for: .normal)
         $0.titleLabel?.font = Suite.semiBold.of(size: 16)
-        
-        $0.layer.cornerRadius = 14
+        $0.tintColor = .white
+        $0.layer.cornerRadius = 16
         $0.clipsToBounds = true
+        // 앨범 버튼 히든 처리
+//        $0.isHidden = true
+    }
+    let scrollView = UIScrollView().then {
+        $0.backgroundColor = .clear
+    }
+    
+    let innerContentView = UIView().then {
+        $0.backgroundColor = .clear
     }
     // 🍎 breakfastView
     let breakfastView = UIView().then {
@@ -145,7 +154,7 @@ class DietBottomSheetViewController: UIViewController {
         breakfastAddTabButton.addTarget(self, action: #selector(breakfastAddTabButtonTapped), for: .touchUpInside)
         lunchAddTabButton.addTarget(self, action: #selector(lunchAddTabButtonTapped), for: .touchUpInside)
         dinnerAddTabButton.addTarget(self, action: #selector(dinnerAddTabButtonTapped), for: .touchUpInside)
-        //albumButton.addTarget(self, action: #selector(albumButtonTapped), for: .touchUpInside)
+        albumButton.addTarget(self, action: #selector(albumButtonTapped), for: .touchUpInside)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -153,10 +162,17 @@ class DietBottomSheetViewController: UIViewController {
         tabBarController?.tabBar.isHidden = true
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        updateInnerContentViewHeight()
+    }
+    
     // MARK: - Setup Methods
     private func setupViews() {
         view.addSubview(contentView)
-        contentView.addSubviews(titleLabel,breakfastView,lunchView,dinnerView) //albumButton 제외처리
+        contentView.addSubviews(titleLabel, albumButton, scrollView) //albumButton 제외처리
+        scrollView.addSubview(innerContentView)
+        innerContentView.addSubviews(breakfastView, lunchView, dinnerView) //,lunchView,dinnerView
         breakfastView.addSubviews(breakfastIcon,breakfastTitleLabel,breakfastKcalLabel,breakfastAddTabButton,breakfastTableView)
         lunchView.addSubviews(lunchIcon,lunchTitleLabel,lunchKcalLabel,lunchAddTabButton,lunchTableView)
         dinnerView.addSubviews(dinnerIcon,dinnerTitleLabel,dinnerKcalLabel,dinnerAddTabButton,dinnerTableView)
@@ -182,24 +198,34 @@ class DietBottomSheetViewController: UIViewController {
             $0.top.equalToSuperview().offset(40)
             $0.leading.equalToSuperview().offset(16)
         }
-//        albumButton.snp.makeConstraints{
-//            $0.top.equalTo(titleLabel)
-//            $0.trailing.equalToSuperview().inset(16)
-//            $0.height.equalTo(30)
-//            $0.width.equalTo(91)
-//        }
+        albumButton.snp.makeConstraints{
+            $0.top.equalTo(titleLabel)
+            $0.trailing.equalToSuperview().inset(16)
+            $0.height.equalTo(32)
+            $0.width.equalTo(80)
+        }
+        scrollView.snp.makeConstraints{
+            $0.top.equalTo(titleLabel.snp.bottom).offset(16)
+            $0.leading.equalTo(titleLabel)
+            $0.trailing.equalTo(albumButton)
+            $0.bottom.equalToSuperview().inset(24)
+        }
+        innerContentView.snp.makeConstraints{
+            $0.top.equalToSuperview()
+            $0.width.equalToSuperview()
+            $0.bottom.equalTo(dinnerView.snp.bottom).offset(16)
+        }
         // 🍎 breakfastView
         breakfastView.snp.makeConstraints{
-            $0.top.equalTo(titleLabel.snp.bottom).offset(24)
-            $0.leading.equalToSuperview().offset(16)
-            $0.trailing.equalToSuperview().inset(16)
+            $0.top.equalToSuperview()
+            $0.leading.equalToSuperview()
+            $0.trailing.equalToSuperview()
             self.breakfastViewHeightConstraint = $0.height.equalTo(64).constraint
         }
         breakfastIcon.snp.makeConstraints{
             $0.top.equalToSuperview().offset(26)
             $0.leading.equalToSuperview().offset(16)
-            $0.width.equalTo(32)
-            $0.height.equalTo(32)
+            $0.width.height.equalTo(32)
         }
         breakfastTitleLabel.snp.makeConstraints{
             $0.centerY.equalTo(breakfastIcon)
@@ -223,8 +249,8 @@ class DietBottomSheetViewController: UIViewController {
         // 🍎 lunchView
         lunchView.snp.makeConstraints{
             $0.top.equalTo(breakfastView.snp.bottom).offset(16)
-            $0.leading.equalToSuperview().offset(16)
-            $0.trailing.equalToSuperview().inset(16)
+            $0.leading.equalToSuperview()
+            $0.trailing.equalToSuperview()
             self.lunchViewHeightConstraint = $0.height.equalTo(64).constraint
         }
         lunchIcon.snp.makeConstraints{
@@ -255,8 +281,8 @@ class DietBottomSheetViewController: UIViewController {
         // 🍎 dinnerView
         dinnerView.snp.makeConstraints{
             $0.top.equalTo(lunchView.snp.bottom).offset(16)
-            $0.leading.equalToSuperview().offset(16)
-            $0.trailing.equalToSuperview().inset(16)
+            $0.leading.equalToSuperview()
+            $0.trailing.equalToSuperview()
             self.dinnerViewHeightConstraint = $0.height.equalTo(64).constraint
         }
         dinnerIcon.snp.makeConstraints{
@@ -412,23 +438,33 @@ class DietBottomSheetViewController: UIViewController {
     private func updateBreakfastViewHeight() {
         let defaultHeight: CGFloat = 80
         let tableViewHeight = breakfastTableView.contentSize.height
-        let maxAllowedHeight: CGFloat = 280 // 최대 허용 높이
-        let newHeight = defaultHeight + min(tableViewHeight, maxAllowedHeight - defaultHeight)
+        //let maxAllowedHeight: CGFloat = 280 // 최대 허용 높이
+        let newHeight = defaultHeight + tableViewHeight
         breakfastViewHeightConstraint?.update(offset: newHeight)
+        updateInnerContentViewHeight()
     }
     private func updatelunchViewHeight() {
         let defaultHeight: CGFloat = 80
         let tableViewHeight = lunchTableView.contentSize.height
-        let maxAllowedHeight: CGFloat = 280 // 최대 허용 높이
-        let newHeight = defaultHeight + min(tableViewHeight, maxAllowedHeight - defaultHeight)
+        let newHeight = defaultHeight + tableViewHeight
         lunchViewHeightConstraint?.update(offset: newHeight)
+        updateInnerContentViewHeight()
     }
     private func updatedinnerViewHeight() {
         let defaultHeight: CGFloat = 80
         let tableViewHeight = dinnerTableView.contentSize.height
-        let maxAllowedHeight: CGFloat = 280 // 최대 허용 높이
-        let newHeight = defaultHeight + min(tableViewHeight, maxAllowedHeight - defaultHeight)
+        //let maxAllowedHeight: CGFloat = 280 // 최대 허용 높이
+        let newHeight = defaultHeight + tableViewHeight
         dinnerViewHeightConstraint?.update(offset: newHeight)
+        updateInnerContentViewHeight()
+    }
+    
+    private func updateInnerContentViewHeight() {
+        let totalHeight = breakfastView.frame.height + lunchView.frame.height + dinnerView.frame.height + 16 * 3
+        innerContentView.snp.updateConstraints {
+            $0.bottom.equalTo(dinnerView.snp.bottom)
+        }
+        scrollView.contentSize = CGSize(width: scrollView.frame.width, height: totalHeight)
     }
 }
 
@@ -475,7 +511,7 @@ extension DietBottomSheetViewController : UITableViewDelegate, UITableViewDataSo
     
     //셀 높이 지정: 수동지정이 안되어있으면 컨텐츠크기 계산에 오류발생
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 45 // 모든 셀의 높이를 55로 설정합니다.
+        return 45 // 모든 셀의 높이를 45로 설정
     }
     
     // 테이블뷰 셀 삭제 액션

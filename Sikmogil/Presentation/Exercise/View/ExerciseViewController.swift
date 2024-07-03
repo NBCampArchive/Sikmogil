@@ -11,6 +11,9 @@ import SnapKit
 import Then
 
 class ExerciseViewController: UIViewController {
+
+    private var viewModel = ExerciseViewModel()
+    private var cancellables = Set<AnyCancellable>()
     
     // MARK: - Components
     private let scrollView = UIScrollView()
@@ -21,19 +24,7 @@ class ExerciseViewController: UIViewController {
         $0.font = Suite.semiBold.of(size: 14)
         $0.textColor = .appDarkGray
     }
-
-    let exerciseMenuButton = UIButton(type: .system).then {
-        $0.setTitle("운동", for: .normal)
-        $0.titleLabel?.font = Suite.bold.of(size: 28)
-        $0.tintColor = .appBlack
-    }
-
-    let stepsMenuButton = UIButton(type: .system).then {
-        $0.setTitle("걸음 수", for: .normal)
-        $0.titleLabel?.font = Suite.bold.of(size: 28)
-        $0.tintColor = .appDarkGray
-    }
-
+    
     private let progressView = UIView().then {
         $0.backgroundColor = .clear
     }
@@ -43,21 +34,30 @@ class ExerciseViewController: UIViewController {
         $0.progressColor = .appGreen
         $0.trackColor = .appLightGray
     }
+    
     private let exerciseProgressBarIcon = UIImageView().then {
         $0.image = UIImage.exerciseIconFill
     }
 
-    private let progressLabel = UILabel().then {
-        $0.text = "활동시간 00분\n소모칼로리 0kcal"
+    private let progressTimeLabel = UILabel().then {
+        $0.text = "활동시간 00분"
         $0.numberOfLines = 2
         $0.textAlignment = .center
-        $0.font = Suite.semiBold.of(size: 18)
-        $0.textColor = .appDarkGray
+        $0.font = Suite.semiBold.of(size: 16)
+        $0.textColor = .appDeepDarkGray
+    }
+    
+    private let progressKcalLabel = UILabel().then {
+        $0.text = "소모칼로리 0kcal"
+        $0.numberOfLines = 2
+        $0.textAlignment = .center
+        $0.font = Suite.semiBold.of(size: 16)
+        $0.textColor = .appDeepDarkGray
     }
 
     private let historyLabel = UILabel().then {
         $0.text = "운동 기록"
-        $0.font = Suite.bold.of(size: 28)
+        $0.font = Suite.bold.of(size: 22)
         $0.textColor = .appBlack
     }
 
@@ -67,14 +67,15 @@ class ExerciseViewController: UIViewController {
         $0.tintColor = .white
         $0.backgroundColor = .appBlack
         $0.layer.cornerRadius = 16
+        // 앨범 버튼 히든 처리
+//        $0.isHidden = true
     }
-
-    private let startExerciseButton = UIButton().then {
-        $0.setTitle("운동하기", for: .normal)
-        $0.titleLabel?.font = Suite.bold.of(size: 20)
-        $0.tintColor = .white
-        $0.backgroundColor = .appBlack
-        $0.layer.cornerRadius = 16
+    
+    private let emptyLabel = UILabel().then {
+        $0.text = "오늘의 운동 기록이 없어요!"
+        $0.textAlignment = .center
+        $0.font = Suite.semiBold.of(size: 16)
+        $0.textColor = .appDeepDarkGray
     }
 
     private let tableView = UITableView().then {
@@ -82,11 +83,6 @@ class ExerciseViewController: UIViewController {
         $0.isScrollEnabled = false
         $0.separatorStyle = .none
     }
-    
-    // MARK: - Properties
-    let day = DateHelper.shared.formatDateToYearMonthDay(Date())
-    private var viewModel = ExerciseViewModel()
-    private var cancellables = Set<AnyCancellable>()
     
     // MARK: - View Life Cycle
     override func viewDidLoad() {
@@ -99,6 +95,7 @@ class ExerciseViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        navigationController?.navigationBar.isHidden = true
         fetchExerciseData()
     }
     
@@ -137,13 +134,17 @@ class ExerciseViewController: UIViewController {
     private func updateProgress() {
         let totalTime = viewModel.totalWorkoutTime
         let totalCalories = viewModel.totalCaloriesBurned
-        progressLabel.text = "활동시간 \(totalTime)분\n소모칼로리 \(totalCalories)kcal"
+        progressTimeLabel.text = "활동시간 \(totalTime)분"
+        progressKcalLabel.text = "소모칼로리 \(totalCalories)kcal"
         
         if let canEatCalorie = viewModel.canEatCalorie {
             let recommendedCalories = CGFloat(canEatCalorie) * 0.5
             let progress = min(CGFloat(totalCalories) / recommendedCalories, 1.0)
             customCircularProgressBar.progress = progress
         }
+        
+        self.emptyLabel.isHidden = viewModel.exercises.count != 0
+        
     }
     
     private func updateTableViewHeight() {
@@ -153,15 +154,15 @@ class ExerciseViewController: UIViewController {
         }
     }
     
-    // MARK: - API
+    // MARK: - Fetch Data
     private func fetchExerciseData() {
-        viewModel.getExerciseData(for: day) { result in
+        viewModel.fetchExerciseData() { [weak self] result in
             switch result {
             case .success(_):
                 DispatchQueue.main.async {
-                    self.updateProgress()
-                    self.viewModel.fetchExerciseList(for: self.day)
-                    self.tableView.reloadData()
+                    self?.updateProgress()
+                    self?.viewModel.fetchExerciseList()
+                    self?.tableView.reloadData()
                 }
             case .failure(let error):
                 print("운동 데이터 불러오기 실패:", error)
@@ -176,10 +177,10 @@ class ExerciseViewController: UIViewController {
         tableView.dataSource = self
         tableView.register(ExerciseHistoryCell.self, forCellReuseIdentifier: ExerciseHistoryCell.identifier)
         
-        view.addSubviews(scrollView, startExerciseButton)
+        view.addSubview(scrollView)
         scrollView.addSubview(contentView)
-        contentView.addSubviews(descriptionLabel, progressView, historyLabel, tableView)
-        progressView.addSubviews(customCircularProgressBar, exerciseProgressBarIcon, progressLabel)
+        contentView.addSubviews(descriptionLabel, progressView, historyLabel, albumButton, tableView, emptyLabel)
+        progressView.addSubviews(customCircularProgressBar, exerciseProgressBarIcon, progressTimeLabel, progressKcalLabel)
     }
     
     private func setupConstraints() {
@@ -213,9 +214,14 @@ class ExerciseViewController: UIViewController {
             $0.top.equalToSuperview().inset(60)
         }
         
-        progressLabel.snp.makeConstraints {
+        progressTimeLabel.snp.makeConstraints {
             $0.centerX.equalToSuperview()
-            $0.top.equalTo(exerciseProgressBarIcon.snp.bottom).offset(16)
+            $0.top.equalTo(exerciseProgressBarIcon.snp.bottom).offset(18)
+        }
+        
+        progressKcalLabel.snp.makeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.top.equalTo(progressTimeLabel.snp.bottom).offset(6)
         }
         
         historyLabel.snp.makeConstraints {
@@ -223,12 +229,17 @@ class ExerciseViewController: UIViewController {
             $0.top.equalTo(progressView.snp.bottom)
         }
         
-//        albumButton.snp.makeConstraints {
-//            $0.trailing.equalTo(contentView).inset(16)
-//            $0.width.equalTo(90)
-//            $0.height.equalTo(30)
-//            $0.centerY.equalTo(historyLabel)
-//        }
+        albumButton.snp.makeConstraints {
+            $0.trailing.equalTo(contentView).inset(16)
+            $0.width.equalTo(80)
+            $0.height.equalTo(32)
+            $0.centerY.equalTo(historyLabel)
+        }
+        
+        emptyLabel.snp.makeConstraints{
+            $0.top.equalTo(historyLabel.snp.bottom).offset(100)
+            $0.centerX.equalToSuperview()
+        }
         
         tableView.snp.makeConstraints {
             $0.top.equalTo(historyLabel.snp.bottom).offset(16)
@@ -246,42 +257,29 @@ class ExerciseViewController: UIViewController {
         
         // contentView의 높이 설정
         contentView.snp.makeConstraints {
-            $0.bottom.equalTo(tableView.snp.bottom).offset(100)
-        }
-        
-        startExerciseButton.snp.makeConstraints {
-            $0.leading.trailing.equalToSuperview().inset(16)
-            $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottomMargin).inset(26)
-            $0.height.equalTo(60)
+            $0.bottom.equalTo(tableView.snp.bottom).offset(80)
         }
     }
     
     // MARK: - Setup Button
     private func setupButtons() {
-        startExerciseButton.addTarget(self, action: #selector(startExerciseButtonTapped), for: .touchUpInside)
-        stepsMenuButton.addTarget(self, action: #selector(stepsMenuButtonTapped), for: .touchUpInside)
+        albumButton.addTarget(self, action: #selector(albumButtonTapped), for: .touchUpInside)
     }
     
-    @objc private func startExerciseButtonTapped() {
-        let exerciseSelectionVC = ExerciseSelectionViewController()
-        exerciseSelectionVC.hidesBottomBarWhenPushed = true
-        navigationController?.pushViewController(exerciseSelectionVC, animated: true)
-    }
-    
-    @objc private func stepsMenuButtonTapped() {
-        let stepsVC = StepsViewController()
-        navigationController?.pushViewController(stepsVC, animated: true)
+    @objc private func albumButtonTapped() {
+        let albumVC = ExerciseAlbumViewController()
+        albumVC.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(albumVC, animated: true)
     }
 }
 
-// MARK: - UITableView
+// MARK: - UITableViewDataSource
 extension ExerciseViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return viewModel.exercises.count
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
         let reversedIndex = viewModel.exercises.count - 1 - indexPath.row
         
         guard let cell = tableView.dequeueReusableCell(withIdentifier: ExerciseHistoryCell.identifier, for: indexPath) as? ExerciseHistoryCell else {
@@ -292,12 +290,13 @@ extension ExerciseViewController: UITableViewDataSource {
         cell.configure(exercise: exercise)
         return cell
     }
-    
+}
+
+// MARK: - UITableViewDelegate
+extension ExerciseViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 88
     }
-}
-extension ExerciseViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let deleteAction = UIContextualAction(style: .destructive, title: "") { [weak self] (action, view, completion) in
             guard let self = self else { return }
@@ -311,7 +310,7 @@ extension ExerciseViewController: UITableViewDelegate {
                 let exercise = self.viewModel.exercises[reversedIndex]
                 let listId = exercise.workoutListId
                 
-                self.viewModel.deleteExerciseListData(for: self.day, exerciseListId: listId) { result in
+                self.viewModel.deleteExerciseListData(exerciseListId: listId) { result in
                     switch result {
                     case .success:
                         DispatchQueue.main.async {

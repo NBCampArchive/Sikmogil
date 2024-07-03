@@ -51,7 +51,7 @@ class ExerciseAPIManager {
             "performedWorkout": exerciseList.performedWorkout,
             "workoutTime": exerciseList.workoutTime,
             "workoutIntensity": exerciseList.workoutIntensity,
-            //                "workoutPicture": exerciseList.workoutPicture,(사진 추가시 사용할 예정)
+            "workoutPicture": exerciseList.workoutPicture ?? "", // (사진 추가시 사용할 예정)
             "calorieBurned": exerciseList.calorieBurned
             
         ]
@@ -71,6 +71,27 @@ class ExerciseAPIManager {
     // MARK: - 특정 날짜의 운동 리스트 삭제
     func deleteExerciseListData(exerciseDay: String, exerciseListId: Int, completion: @escaping (Result<Void, Error>) -> Void) {
         let url = "\(baseURL)/api/workoutLog/workoutList/deleteWorkoutList"
+        
+        let parameters: [String: Any] = [
+            "date": exerciseDay,
+            "workoutListId": exerciseListId
+        ]
+        
+        session.request(url, method: .post, parameters: parameters, encoding: URLEncoding.default).validate().response { response in
+            switch response.result {
+            case .success:
+                print("deleteExerciseListData success")
+                completion(.success(()))
+            case .failure(let error):
+                print("deleteExerciseListData failure")
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    // MARK: - 특정 날짜의 운동사진만! 삭제
+    func deleteExercisePictureData(exerciseDay: String, exerciseListId: Int, completion: @escaping (Result<Void, Error>) -> Void) {
+        let url = "\(baseURL)/api/workoutLog/workoutList/deleteWorkoutPicture"
         
         let parameters: [String: Any] = [
             "date": exerciseDay,
@@ -146,10 +167,14 @@ class ExerciseAPIManager {
     }
     
     // MARK: - 운동 사진 출력
-    func getExercisePicture(completion: @escaping (Result<[ExerciseListModel], Error>) -> Void) {
+    func getExercisePicture(page: Int, completion: @escaping (Result<ExerciseAlbum, Error>) -> Void) {
         let url = "\(baseURL)/api/workoutLog/findWorkoutPictures"
         
-        session.request(url, method: .get).validate(statusCode: 200..<300).responseDecodable(of: [ExerciseListModel].self, emptyResponseCodes: [200]) { response in
+        let parameters: Parameters = [
+            "page": page
+        ]
+
+        session.request(url, method: .get, parameters: parameters).validate(statusCode: 200..<300).responseDecodable(of: ExerciseAlbum.self, emptyResponseCodes: [200]) { response in
             switch response.result {
             case .success(let data):
                 print("getExercisePicture success")

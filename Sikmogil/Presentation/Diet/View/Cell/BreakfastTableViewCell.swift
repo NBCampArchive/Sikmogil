@@ -19,6 +19,8 @@ class BreakfastTableViewCell: UITableViewCell {
         $0.textColor = .appDarkGray
         $0.font = Suite.semiBold.of(size: 14)
         $0.textAlignment = .left
+        $0.lineBreakMode = .byTruncatingTail
+        $0.numberOfLines = 1
     }
     let kcalLabel = UILabel().then {
         $0.text = "칼로리"
@@ -49,7 +51,7 @@ class BreakfastTableViewCell: UITableViewCell {
             $0.top.equalToSuperview()
             $0.bottom.equalToSuperview()
             $0.leading.equalToSuperview().offset(28)
-            $0.trailing.equalTo(kcalLabel.snp.leading).offset(8)
+            $0.trailing.equalTo(kcalLabel.snp.leading).offset(-8)
         }
         kcalLabel.snp.makeConstraints{
             $0.top.equalToSuperview()

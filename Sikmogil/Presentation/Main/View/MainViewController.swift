@@ -17,11 +17,15 @@ class MainViewController: UIViewController {
     
     private let viewModel = MainViewModel()
     private var cancellables = Set<AnyCancellable>()
+    
     var recodingWeightPanel: FloatingPanelController!
+    private var previousPanelState: FloatingPanelState = .hidden
+    
     var dimmingView: UIView!
     
     private let scrollView = UIScrollView().then {
         $0.backgroundColor = .clear
+        $0.showsVerticalScrollIndicator = false
     }
     
     private let scrollSubView = UIView().then {
@@ -35,12 +39,12 @@ class MainViewController: UIViewController {
     
     private let goalLabel = UILabel().then {
         $0.text = "목표"
-        $0.font = Suite.bold.of(size: 28)
+        $0.font = Suite.bold.of(size: 24)
     }
     
-//    private lazy var calendarButton = UIButton().then {
-//        $0.setImage(.calendar, for: .normal)
-//    }
+    private lazy var calendarButton = UIButton().then {
+        $0.setImage(.calendar, for: .normal)
+    }
     
     private let weightLabel = UILabel().then {
         $0.text = "목표까지 남은기간 N일!"
@@ -80,7 +84,7 @@ class MainViewController: UIViewController {
     
     private let weightLogLabel = UILabel().then {
         $0.text = "체중 기록"
-        $0.font = Suite.bold.of(size: 28)
+        $0.font = Suite.bold.of(size: 22)
     }
     
     private let weightNowLabel = UILabel().then {
@@ -103,7 +107,7 @@ class MainViewController: UIViewController {
     
     private let recordButton = UIButton().then {
         $0.setTitle("기록하기", for: .normal)
-        $0.titleLabel?.font = Suite.bold.of(size: 22)
+        $0.titleLabel?.font = Suite.bold.of(size: 18)
         $0.tintColor = .white
         $0.backgroundColor = .appBlack
         $0.layer.cornerRadius = 16
@@ -111,7 +115,7 @@ class MainViewController: UIViewController {
     
     private let graphLabel = UILabel().then {
         $0.text = "진행 그래프"
-        $0.font = Suite.bold.of(size: 28)
+        $0.font = Suite.bold.of(size: 22)
     }
     
     private let graph = LineChartView().then {
@@ -125,8 +129,8 @@ class MainViewController: UIViewController {
         $0.leftAxis.drawLabelsEnabled = false
         $0.rightAxis.drawLabelsEnabled = false
         $0.legend.enabled = false
-        $0.extraLeftOffset = 16
-        $0.extraRightOffset = 16
+        $0.extraLeftOffset = 32
+        $0.extraRightOffset = 32
         $0.scaleXEnabled = false // X축 확대/축소 비활성화
         $0.scaleYEnabled = false // Y축 확대/축소 비활성화
         $0.isUserInteractionEnabled = false // 사용자 상호작용 비활성화
@@ -150,13 +154,14 @@ class MainViewController: UIViewController {
         hideKeyboardWhenTappedAround()
         setKeyboardObserver()
         
-//        calendarButton.addTarget(self, action: #selector(tapCalendarButton), for: .touchUpInside)
+        calendarButton.addTarget(self, action: #selector(tapCalendarButton), for: .touchUpInside)
         recordButton.addTarget(self, action: #selector(tapRecordButton), for: .touchUpInside)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         viewModel.loadWeightData()
+        navigationController?.navigationBar.isHidden = true
     }
     
     private func setupViews() {
@@ -165,7 +170,7 @@ class MainViewController: UIViewController {
         scrollView.addSubview(scrollSubView)
         
         scrollSubView.addSubviews(goalStackView,
-//                                  calendarButton,
+                                  calendarButton,
                                   dateProgressView,
                                   weightLogLabel,
                                   weightNowLabel,
@@ -199,12 +204,12 @@ class MainViewController: UIViewController {
             $0.leading.equalToSuperview().offset(16)
         }
         
-//        calendarButton.snp.makeConstraints {
-//            $0.centerY.equalTo(goalLabel.snp.centerY)
-//            $0.trailing.equalTo(view.safeAreaLayoutGuide).offset(-16)
-//            $0.width.equalTo(24)
-//            $0.height.equalTo(24)
-//        }
+        calendarButton.snp.makeConstraints {
+            $0.centerY.equalTo(goalLabel.snp.centerY)
+            $0.trailing.equalTo(view.safeAreaLayoutGuide).offset(-16)
+            $0.width.equalTo(24)
+            $0.height.equalTo(24)
+        }
         
         dateProgressView.snp.makeConstraints {
             $0.top.equalTo(goalStackView.snp.bottom).offset(20)
@@ -261,8 +266,8 @@ class MainViewController: UIViewController {
         
         graph.snp.makeConstraints {
             $0.top.equalTo(graphLabel.snp.bottom).offset(16)
-            $0.leading.equalTo(view.safeAreaLayoutGuide).offset(16)
-            $0.trailing.equalTo(view.safeAreaLayoutGuide).offset(-16)
+            $0.leading.equalTo(view.safeAreaLayoutGuide).offset(8)
+            $0.trailing.equalTo(view.safeAreaLayoutGuide).offset(-8)
             $0.height.equalTo(300)
         }
     }
@@ -286,6 +291,9 @@ class MainViewController: UIViewController {
                     self?.percentLabel.text = String(format: "%.0f%%", displayedPercentage)
                     if displayedPercentage == 100 {
                         let alert = UIAlertController(title: "목표 기간 종료!", message: "설정해둔 목표기간이 종료되었습니다.\n새로운 목표를 포함한 새로운 기간을 설정해주세요!", preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: "확인", style: .default) { [weak self] _ in
+                            self?.moveToGoalSetting()
+                        })
                         self?.present(alert, animated: true, completion: nil)
                     }
                 }
@@ -333,6 +341,12 @@ class MainViewController: UIViewController {
             }
             .store(in: &cancellables)
         
+    }
+    
+    private func moveToGoalSetting() {
+        if let tabBarController = self.tabBarController as? BottomTabBarController {
+            tabBarController.moveToProfileAndGoalSetting()
+        }
     }
     
     private func updateUI(with targetModel: TargetModel?) {
@@ -391,7 +405,7 @@ class MainViewController: UIViewController {
     
     @objc func tapCalendarButton() {
         let nextView = CalendarViewController()
-        
+        nextView.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(nextView, animated: true)
     }
     
@@ -416,13 +430,21 @@ class MainViewController: UIViewController {
 
 extension MainViewController: FloatingPanelControllerDelegate {
     func floatingPanelDidChangeState(_ vc: FloatingPanelController) {
-        if vc.state == .full || vc.state == .half {
+        if vc.state == .full {
             tabBarController?.tabBar.isHidden = true
             vc.backdropView.dismissalTapGestureRecognizer.isEnabled = false
+        } else if vc.state == .half  {
+            tabBarController?.tabBar.isHidden = true
+            vc.backdropView.dismissalTapGestureRecognizer.isEnabled = false
+            
+            // 상태가 .full에서 .half로 변경되었을 때 키보드를 숨김
+            if previousPanelState == .full {
+                view.endEditing(true)
+            }
         } else {
-            tabBarController?.tabBar.isHidden = false
             vc.backdropView.dismissalTapGestureRecognizer.isEnabled = true
         }
+        previousPanelState = vc.state
     }
     
     func floatingPanelDidRemove(_ vc: FloatingPanelController) {
@@ -435,6 +457,6 @@ extension MainViewController: FloatingPanelControllerDelegate {
 
 class IntegerValueFormatter: ValueFormatter {
     func stringForValue(_ value: Double, entry: DGCharts.ChartDataEntry, dataSetIndex: Int, viewPortHandler: DGCharts.ViewPortHandler?) -> String {
-        return String(format: "%.0fKg", value)
+        return String(format: "%.1fKg", value)
     }
 }

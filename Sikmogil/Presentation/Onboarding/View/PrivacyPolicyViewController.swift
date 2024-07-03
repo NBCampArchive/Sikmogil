@@ -83,9 +83,9 @@ class PrivacyPolicyViewController: UIViewController {
     let nextButton = UIButton(type: .system).then {
         $0.setTitle("동의", for: .normal)
         $0.setTitleColor(.white, for: .normal)
-        $0.titleLabel?.font = Suite.bold.of(size: 22)
+        $0.titleLabel?.font = Suite.bold.of(size: 18)
         $0.backgroundColor = .customBlack
-        $0.layer.cornerRadius = 8
+        $0.layer.cornerRadius = 16
     }
     
     override func viewDidLoad() {
@@ -118,7 +118,7 @@ class PrivacyPolicyViewController: UIViewController {
             $0.bottom.equalTo(view.safeAreaLayoutGuide).offset(-16)
             $0.leading.equalToSuperview().offset(16)
             $0.trailing.equalToSuperview().offset(-16)
-            $0.height.equalTo(50)
+            $0.height.equalTo(48)
         }
         
     }
