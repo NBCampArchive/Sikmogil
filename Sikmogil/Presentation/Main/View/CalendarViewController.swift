@@ -18,6 +18,8 @@ class CalendarViewController: UIViewController {
     private var cancellables = Set<AnyCancellable>()
     
     var editDiaryFloatingPanelController: FloatingPanelController!
+    private var previousPanelState: FloatingPanelState = .hidden
+    
     var secondDimmingView: UIView!
     
     private let scrollView = UIScrollView().then {
@@ -241,7 +243,7 @@ class CalendarViewController: UIViewController {
     }
     
     @objc func tapWriteButton() {
-        self.present(editDiaryFloatingPanelController, animated: true)
+        editDiaryFloatingPanelController.addPanel(toParent: self)
     }
     
     // 키보드가 나타날 때 호출되는 메서드
@@ -264,17 +266,39 @@ class CalendarViewController: UIViewController {
 }
 
 extension CalendarViewController: FloatingPanelControllerDelegate {
+    func floatingPanelDidChangeState(_ vc: FloatingPanelController) {
+        if vc.state == .full {
+            vc.backdropView.dismissalTapGestureRecognizer.isEnabled = false
+        } else if vc.state == .half {
+            vc.backdropView.dismissalTapGestureRecognizer.isEnabled = false
+
+            // 상태가 .full에서 .half로 변경되었을 때 키보드를 숨김
+            if previousPanelState == .full {
+                view.endEditing(true)
+            }
+        } else {
+            vc.backdropView.dismissalTapGestureRecognizer.isEnabled = true
+        }
+        previousPanelState = vc.state
+    }
+
+    
+    func floatingPanelDidRemove(_ vc: FloatingPanelController) {
+        vc.backdropView.dismissalTapGestureRecognizer.isEnabled = true
+        
+    }
+    
     func setupDiaryPannel(){
         editDiaryFloatingPanelController = FloatingPanelController()
-        editDiaryFloatingPanelController.layout = CustomFloatingPanelLayout()
-        editDiaryFloatingPanelController.delegate = self
         
         let contentVC = DiaryRecordFloatingViewController()
         contentVC.viewModel = viewModel
         editDiaryFloatingPanelController.set(contentViewController: contentVC)
         
+        editDiaryFloatingPanelController.layout = CustomFloatingPanelLayout()
         editDiaryFloatingPanelController.isRemovalInteractionEnabled = true
         editDiaryFloatingPanelController.changePanelStyle()
+        editDiaryFloatingPanelController.delegate = self
     }
 }
 

@@ -17,7 +17,10 @@ class MainViewController: UIViewController {
     
     private let viewModel = MainViewModel()
     private var cancellables = Set<AnyCancellable>()
+    
     var recodingWeightPanel: FloatingPanelController!
+    private var previousPanelState: FloatingPanelState = .hidden
+    
     var dimmingView: UIView!
     
     private let scrollView = UIScrollView().then {
@@ -35,7 +38,7 @@ class MainViewController: UIViewController {
     
     private let goalLabel = UILabel().then {
         $0.text = "목표"
-        $0.font = Suite.bold.of(size: 28)
+        $0.font = Suite.bold.of(size: 24)
     }
     
     private lazy var calendarButton = UIButton().then {
@@ -80,7 +83,7 @@ class MainViewController: UIViewController {
     
     private let weightLogLabel = UILabel().then {
         $0.text = "체중 기록"
-        $0.font = Suite.bold.of(size: 28)
+        $0.font = Suite.bold.of(size: 24)
     }
     
     private let weightNowLabel = UILabel().then {
@@ -111,7 +114,7 @@ class MainViewController: UIViewController {
     
     private let graphLabel = UILabel().then {
         $0.text = "진행 그래프"
-        $0.font = Suite.bold.of(size: 28)
+        $0.font = Suite.bold.of(size: 24)
     }
     
     private let graph = LineChartView().then {
@@ -426,13 +429,21 @@ class MainViewController: UIViewController {
 
 extension MainViewController: FloatingPanelControllerDelegate {
     func floatingPanelDidChangeState(_ vc: FloatingPanelController) {
-        if vc.state == .full || vc.state == .half {
+        if vc.state == .full {
             tabBarController?.tabBar.isHidden = true
             vc.backdropView.dismissalTapGestureRecognizer.isEnabled = false
-        } else {
+        } else if vc.state == .half  {
             tabBarController?.tabBar.isHidden = false
+            vc.backdropView.dismissalTapGestureRecognizer.isEnabled = false
+            
+            // 상태가 .full에서 .half로 변경되었을 때 키보드를 숨김
+            if previousPanelState == .full {
+                view.endEditing(true)
+            }
+        } else {
             vc.backdropView.dismissalTapGestureRecognizer.isEnabled = true
         }
+        previousPanelState = vc.state
     }
     
     func floatingPanelDidRemove(_ vc: FloatingPanelController) {

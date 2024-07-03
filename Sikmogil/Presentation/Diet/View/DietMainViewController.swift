@@ -16,6 +16,7 @@ class DietMainViewController: UIViewController {
     var addMealViewModel: AddMealViewModel = AddMealViewModel.shared
     var dietViewModel = DietViewModel()
     var floatingPanel: FloatingPanelController!
+    var previousPanelState: FloatingPanelState = .hidden
     
     private var cancellables = Set<AnyCancellable>()
     
