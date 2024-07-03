@@ -129,6 +129,10 @@
 		B5AD4FB22C327C2300AA6695 /* BoardAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5AD4FB12C327C2300AA6695 /* BoardAPIManager.swift */; };
 		B5AD4FB42C327CBC00AA6695 /* BoardListResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5AD4FB32C327CBC00AA6695 /* BoardListResponseModel.swift */; };
 		B5AD4FB72C32BB5300AA6695 /* BoardListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5AD4FB62C32BB5300AA6695 /* BoardListCell.swift */; };
+		B5AD4FB92C32FD8300AA6695 /* WriteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5AD4FB82C32FD8300AA6695 /* WriteViewController.swift */; };
+		B5AD4FBB2C33ADC300AA6695 /* CreatePostViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5AD4FBA2C33ADC300AA6695 /* CreatePostViewModel.swift */; };
+		B5AD4FBD2C33AE9A00AA6695 /* PostModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5AD4FBC2C33AE9A00AA6695 /* PostModel.swift */; };
+		B5AD4FBF2C34C3B600AA6695 /* DailyCalendarModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5AD4FBE2C34C3B600AA6695 /* DailyCalendarModel.swift */; };
 		B5CBB2102C2D0EE000C672DB /* TokenStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CBB20F2C2D0EE000C672DB /* TokenStorage.swift */; };
 		B5CBB2122C2D12F300C672DB /* AuthInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CBB2112C2D12F300C672DB /* AuthInterceptor.swift */; };
 		CA13FDE62C22E483007B3DBE /* BreakfastTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA13FDE52C22E483007B3DBE /* BreakfastTableViewCell.swift */; };
@@ -268,6 +272,10 @@
 		B5AD4FB12C327C2300AA6695 /* BoardAPIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardAPIManager.swift; sourceTree = "<group>"; };
 		B5AD4FB32C327CBC00AA6695 /* BoardListResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardListResponseModel.swift; sourceTree = "<group>"; };
 		B5AD4FB62C32BB5300AA6695 /* BoardListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardListCell.swift; sourceTree = "<group>"; };
+		B5AD4FB82C32FD8300AA6695 /* WriteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WriteViewController.swift; sourceTree = "<group>"; };
+		B5AD4FBA2C33ADC300AA6695 /* CreatePostViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePostViewModel.swift; sourceTree = "<group>"; };
+		B5AD4FBC2C33AE9A00AA6695 /* PostModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostModel.swift; sourceTree = "<group>"; };
+		B5AD4FBE2C34C3B600AA6695 /* DailyCalendarModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyCalendarModel.swift; sourceTree = "<group>"; };
 		B5CBB20F2C2D0EE000C672DB /* TokenStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenStorage.swift; sourceTree = "<group>"; };
 		B5CBB2112C2D12F300C672DB /* AuthInterceptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthInterceptor.swift; sourceTree = "<group>"; };
 		CA13FDE52C22E483007B3DBE /* BreakfastTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreakfastTableViewCell.swift; sourceTree = "<group>"; };
@@ -408,6 +416,7 @@
 			isa = PBXGroup;
 			children = (
 				B52001BA2C1325110083CBDF /* BoardListViewModel.swift */,
+				B5AD4FBA2C33ADC300AA6695 /* CreatePostViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -523,6 +532,8 @@
 				B52001EF2C1C8D7E0083CBDF /* TargetModel.swift */,
 				CACA65C72C1B5D0C0030D8D5 /* FoodDbModel.swift */,
 				B5AD4FB32C327CBC00AA6695 /* BoardListResponseModel.swift */,
+				B5AD4FBC2C33AE9A00AA6695 /* PostModel.swift */,
+				B5AD4FBE2C34C3B600AA6695 /* DailyCalendarModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -807,6 +818,7 @@
 			children = (
 				B5825BAC2C219C2B00ADAA66 /* BoardMainViewController.swift */,
 				B5AD4FB62C32BB5300AA6695 /* BoardListCell.swift */,
+				B5AD4FB82C32FD8300AA6695 /* WriteViewController.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1002,6 +1014,7 @@
 				B54ABFCB2C0CB770002E89DC /* Extension.swift in Sources */,
 				F35E465A2C2BE3E900917AE1 /* PhotoRecordFloatingViewController.swift in Sources */,
 				62578CFE2C15A395005035BB /* PhotoCell.swift in Sources */,
+				B5AD4FBD2C33AE9A00AA6695 /* PostModel.swift in Sources */,
 				B52001F02C1C8D7E0083CBDF /* TargetModel.swift in Sources */,
 				B52001E42C1971CD0083CBDF /* ImageModel.swift in Sources */,
 				540768882C12EAD900543A72 /* ProfileTableView.swift in Sources */,
@@ -1011,6 +1024,7 @@
 				546E32332C1078E600E94C2A /* SettingsViewController.swift in Sources */,
 				540768862C12EAB200543A72 /* ProfileInfoView.swift in Sources */,
 				F35E46562C2BE1B800917AE1 /* ExerciseAlbumViewController.swift in Sources */,
+				B5AD4FBF2C34C3B600AA6695 /* DailyCalendarModel.swift in Sources */,
 				B5825BAF2C219FE500ADAA66 /* CustomSegmentedControl.swift in Sources */,
 				B54ABFE92C0D69CD002E89DC /* Font.swift in Sources */,
 				B54AC00E2C105475002E89DC /* UserProfile.swift in Sources */,
@@ -1070,6 +1084,7 @@
 				F36105B72C1BFF7600237572 /* Double.swift in Sources */,
 				B54AC01C2C1056A4002E89DC /* Step2ViewController.swift in Sources */,
 				B54ABFEC2C0D6BA6002E89DC /* BottomTabBarController.swift in Sources */,
+				B5AD4FB92C32FD8300AA6695 /* WriteViewController.swift in Sources */,
 				F319910F2C2DD3EB004730D7 /* ExerciseAlbumViewModel.swift in Sources */,
 				B54AC0122C1054B1002E89DC /* OnboardingViewModel.swift in Sources */,
 				B52001B02C11D7FA0083CBDF /* UserAPIManager.swift in Sources */,
@@ -1085,6 +1100,7 @@
 				CACA65D22C1E0F6F0030D8D5 /* addMealViewModel.swift in Sources */,
 				CACA65CC2C1C7BC50030D8D5 /* DietViewModel.swift in Sources */,
 				B52001D42C171B8C0083CBDF /* DietAlbumViewController.swift in Sources */,
+				B5AD4FBB2C33ADC300AA6695 /* CreatePostViewModel.swift in Sources */,
 				B52001EA2C19865E0083CBDF /* CalendarModel.swift in Sources */,
 				F3094EC12C0D91310099DE2C /* ExerciseViewController.swift in Sources */,
 				CA13FDEA2C22E791007B3DBE /* DinnerTableViewCell.swift in Sources */,

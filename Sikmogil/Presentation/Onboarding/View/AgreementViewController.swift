@@ -36,10 +36,11 @@ class AgreementViewController: UIViewController {
     
     private let proceedButton = UIButton(type: .system).then {
         $0.setTitle("다음", for: .normal)
-        $0.titleLabel?.font = Suite.bold.of(size: 22)
+        $0.titleLabel?.font = Suite.bold.of(size: 18)
         $0.setTitleColor(.white, for: .normal)
-        $0.backgroundColor = .appLightGray
-        $0.layer.cornerRadius = 10
+        $0.backgroundColor = .appDeepDarkGray
+        $0.layer.cornerRadius = 16
+        $0.isEnabled = false
     }
     
     override func viewDidLoad() {
@@ -47,6 +48,7 @@ class AgreementViewController: UIViewController {
         setupLayout()
         setupBindings()
         addTarget()
+        proceedButton.isEnabled = false
     }
     
     private func addTarget() {
@@ -81,7 +83,7 @@ class AgreementViewController: UIViewController {
             $0.bottom.equalTo(view.safeAreaLayoutGuide).offset(-16)
             $0.leading.equalToSuperview().offset(16)
             $0.trailing.equalToSuperview().offset(-16)
-            $0.height.equalTo(50)
+            $0.height.equalTo(48)
         }
     }
     
@@ -102,7 +104,8 @@ class AgreementViewController: UIViewController {
     
     private func setupBindings() {
         agreementPrivacyCheckBox.didToggleCheckBox = { [weak self] isChecked in
-            self?.proceedButton.backgroundColor = isChecked ? .appBlack : .appLightGray
+            self?.proceedButton.isEnabled = isChecked
+            self?.proceedButton.backgroundColor = isChecked ? .appBlack : .appDeepDarkGray
         }
     }
     
@@ -111,7 +114,6 @@ class AgreementViewController: UIViewController {
         let privacyPolicyVC = PrivacyPolicyViewController()
         privacyPolicyVC.onAgree = { [weak self] in
             self?.agreementPrivacyCheckBox.setChecked(true)
-            self?.proceedButton.backgroundColor = .appBlack
             self?.proceedButton.isEnabled = true
         }
         self.present(privacyPolicyVC, animated: true)

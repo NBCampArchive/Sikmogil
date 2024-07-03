@@ -34,13 +34,21 @@ extension DietMainViewController: FloatingPanelControllerDelegate {
 //    }
     
     func floatingPanelDidChangeState(_ vc: FloatingPanelController) {
-        if vc.state == .full || vc.state == .half {
+        if vc.state == .full {
             tabBarController?.tabBar.isHidden = true
             vc.backdropView.dismissalTapGestureRecognizer.isEnabled = false
+        } else if vc.state == .half  {
+            tabBarController?.tabBar.isHidden = true
+            vc.backdropView.dismissalTapGestureRecognizer.isEnabled = false
+            
+            // 상태가 .full에서 .half로 변경되었을 때 키보드를 숨김
+            if previousPanelState == .full {
+                view.endEditing(true)
+            }
         } else {
-            tabBarController?.tabBar.isHidden = false
             vc.backdropView.dismissalTapGestureRecognizer.isEnabled = true
         }
+        previousPanelState = vc.state
     }
     
     func floatingPanelDidRemove(_ vc: FloatingPanelController) {

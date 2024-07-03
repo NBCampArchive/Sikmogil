@@ -21,7 +21,7 @@ class Step1ViewController: UIViewController {
     
     private let titleLabel = UILabel().then {
         $0.text = "프로필 설정"
-        $0.font = Suite.bold.of(size: 28)
+        $0.font = Suite.bold.of(size: 24)
     }
     
     private let descriptionLabel = UILabel().then {
@@ -32,7 +32,7 @@ class Step1ViewController: UIViewController {
     
     private let nicknameLabel = UILabel().then {
         $0.text = "닉네임"
-        $0.font = Suite.medium.of(size: 20)
+        $0.font = Suite.medium.of(size: 16)
     }
     
     private let nicknameTextField = UITextField().then {
@@ -51,11 +51,11 @@ class Step1ViewController: UIViewController {
     
     private let heightLabel = UILabel().then {
         $0.text = "키"
-        $0.font = Suite.medium.of(size: 20)
+        $0.font = Suite.medium.of(size: 16)
     }
     
     private let heightTextField = UITextField().then {
-        $0.keyboardType = .numberPad
+        $0.keyboardType = .decimalPad
         $0.layer.cornerRadius = 8
         $0.layer.borderColor = UIColor.appDarkGray.cgColor
         $0.layer.borderWidth = 1
@@ -71,11 +71,11 @@ class Step1ViewController: UIViewController {
     
     private let weightLabel = UILabel().then {
         $0.text = "몸무게"
-        $0.font = Suite.medium.of(size: 20)
+        $0.font = Suite.medium.of(size: 16)
     }
     
     private let weightTextField = UITextField().then {
-        $0.keyboardType = .numberPad
+        $0.keyboardType = .decimalPad
         $0.layer.cornerRadius = 8
         $0.layer.borderColor = UIColor.appDarkGray.cgColor
         $0.layer.borderWidth = 1
@@ -91,7 +91,7 @@ class Step1ViewController: UIViewController {
     
     private let genderLabel = UILabel().then {
         $0.text = "성별"
-        $0.font = Suite.medium.of(size: 20)
+        $0.font = Suite.medium.of(size: 16)
     }
     
     private let genderWarningLabel = UILabel().then {
@@ -128,9 +128,9 @@ class Step1ViewController: UIViewController {
     private let nextButton = UIButton(type: .system).then {
         $0.setTitle("다음", for: .normal)
         $0.setTitleColor(.white, for: .normal)
-        $0.titleLabel?.font = Suite.bold.of(size: 22)
+        $0.titleLabel?.font = Suite.bold.of(size: 18)
         $0.backgroundColor = .customBlack
-        $0.layer.cornerRadius = 8
+        $0.layer.cornerRadius = 16
     }
     
     override func viewDidLoad() {
@@ -286,7 +286,7 @@ class Step1ViewController: UIViewController {
             $0.bottom.equalTo(view.safeAreaLayoutGuide).offset(-16)
             $0.leading.equalToSuperview().offset(16)
             $0.trailing.equalToSuperview().offset(-16)
-            $0.height.equalTo(50)
+            $0.height.equalTo(48)
         }
     }
     
@@ -362,8 +362,38 @@ class Step1ViewController: UIViewController {
 
 extension Step1ViewController: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-            let allowedCharacters = CharacterSet.decimalDigits
+        switch textField {
+        case nicknameTextField:
+            let allowedCharacters = CharacterSet.alphanumerics
             let characterSet = CharacterSet(charactersIn: string)
-            return allowedCharacters.isSuperset(of: characterSet)
+            let newLength = (textField.text?.count ?? 0) + string.count - range.length
+            return allowedCharacters.isSuperset(of: characterSet) && newLength <= 10
+        case heightTextField, weightTextField:
+            let currentText = textField.text ?? ""
+            let prospectiveText = (currentText as NSString).replacingCharacters(in: range, with: string)
+            
+            // 소수점이 두 번 이상 입력되지 않도록 제한
+            let decimalSeparator = Locale.current.decimalSeparator ?? "."
+            let decimalCount = prospectiveText.components(separatedBy: decimalSeparator).count - 1
+            if decimalCount > 1 {
+                return false
+            }
+            
+            // 자연수 3자리와 소수점 이하 1자리까지 허용
+            let components = prospectiveText.components(separatedBy: decimalSeparator)
+            if components.count == 1 {
+                // 소수점이 없는 경우
+                return components[0].count <= 3
+            } else if components.count == 2 {
+                // 소수점이 있는 경우
+                let integerPart = components[0]
+                let fractionPart = components[1]
+                return integerPart.count <= 3 && fractionPart.count <= 1
+            } else {
+                return false
+            }
+        default:
+            return true
         }
+    }
 }

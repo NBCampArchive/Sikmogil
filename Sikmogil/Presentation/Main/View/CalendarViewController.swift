@@ -18,6 +18,8 @@ class CalendarViewController: UIViewController {
     private var cancellables = Set<AnyCancellable>()
     
     var editDiaryFloatingPanelController: FloatingPanelController!
+    private var previousPanelState: FloatingPanelState = .hidden
+    
     var secondDimmingView: UIView!
     
     private let scrollView = UIScrollView().then {
@@ -32,10 +34,11 @@ class CalendarViewController: UIViewController {
         $0.appearance.headerDateFormat = "YYYY년 MM월"
         $0.appearance.headerTitleFont = Suite.bold.of(size: 22)
         $0.appearance.headerMinimumDissolvedAlpha = 0.0
-        $0.appearance.headerTitleOffset = .init(x: -110, y: 0)
+        $0.appearance.headerTitleOffset = .init(x: -110, y: -10)
         $0.locale = Locale(identifier: "ko_KR")
         $0.appearance.headerTitleColor = .black
         $0.appearance.weekdayTextColor = .appDarkGray
+        $0.scrollDirection = .vertical
     }
     
     private let diaryView = UIView().then {
@@ -45,24 +48,40 @@ class CalendarViewController: UIViewController {
     
     private let dayLabel = UILabel().then {
         $0.text = "6.5 금요일"
-        $0.font = Suite.bold.of(size: 22)
+        $0.font = Suite.bold.of(size: 20)
     }
     
     private let mentLabel = UILabel().then {
         $0.text = "한 줄 일기 내용"
-        $0.font = Suite.bold.of(size: 18)
+        $0.font = Suite.semiBold.of(size: 16)
+        $0.textColor = .appDarkGray
     }
     
     private let diaryLabel = UILabel().then {
         $0.text = ""
         $0.font = Suite.regular.of(size: 16)
+        $0.numberOfLines = 2
     }
     
     private let detailButton = UIButton().then {
-        $0.setTitle("자세한 내용을 확인해보세요!", for: .normal)
-        $0.titleLabel?.font = Suite.semiBold.of(size: 16)
-        $0.backgroundColor = .clear
-        $0.setTitleColor(.appDarkGray, for: .normal)
+        var configuration = UIButton.Configuration.plain()
+        let imageConfig = UIImage.SymbolConfiguration(pointSize: 10, weight: .regular)
+        configuration.image = UIImage(systemName: "chevron.right", withConfiguration: imageConfig)
+        configuration.imagePlacement = .trailing
+        configuration.imagePadding = 5
+        configuration.background.backgroundColor = .white
+        configuration.baseBackgroundColor = .white
+        configuration.baseForegroundColor = .black
+        configuration.cornerStyle = .capsule
+        configuration.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 10 , bottom: 5, trailing: 10)
+        
+        let title = AttributedString("자세히 보기", attributes: AttributeContainer([
+            .font: Suite.semiBold.of(size: 14),
+            .foregroundColor: UIColor.black
+        ]))
+        configuration.attributedTitle = title
+        
+        $0.configuration = configuration
     }
     
     private let writeButton = UIButton().then {
@@ -84,19 +103,20 @@ class CalendarViewController: UIViewController {
         
         setupViews()
         setupConstraints()
-        setupDiaryPannel()
         
         bindViewModel()
         viewModel.loadCalendarData()
         viewModel.loadTargetData()
         
         let today = Date()
-            calendar.select(today)
-            updateDiaryLabel(for: today)
+        calendar.select(today)
+        updateDiaryLabel(for: today)
+        setupDiaryPannel(for: today)
         
         detailButton.addTarget(self, action: #selector(tapDetailButton), for: .touchUpInside)
         writeButton.addTarget(self, action: #selector(tapWriteButton), for: .touchUpInside)
         
+        navigationController?.navigationBar.isHidden = false
         hideKeyboardWhenTappedAround()
         setKeyboardObserver()
     }
@@ -108,11 +128,11 @@ class CalendarViewController: UIViewController {
     }
     
     private func setupViews() {
-        view.addSubviews(scrollView)
+        view.addSubviews(scrollView, writeButton)
         
         scrollView.addSubview(scrollSubView)
         
-        scrollSubView.addSubviews(calendar, diaryView, writeButton)
+        scrollSubView.addSubviews(calendar, diaryView)
         
         diaryView.addSubviews(dayLabel, mentLabel, diaryLabel, detailButton)
     }
@@ -125,11 +145,11 @@ class CalendarViewController: UIViewController {
         scrollSubView.snp.makeConstraints {
             $0.edges.equalTo(scrollView.contentLayoutGuide)
             $0.width.equalTo(scrollView.frameLayoutGuide)
-            $0.bottom.equalTo(detailButton.snp.bottom).offset(100)
+//            $0.height.equalTo(1500)
         }
         
         calendar.snp.makeConstraints {
-            $0.top.equalToSuperview()
+            $0.top.equalTo(view.safeAreaLayoutGuide)
             $0.leading.equalToSuperview().offset(16)
             $0.trailing.equalToSuperview().offset(-16)
             $0.height.equalTo(450)
@@ -139,26 +159,28 @@ class CalendarViewController: UIViewController {
             $0.top.equalTo(calendar.snp.bottom).offset(8)
             $0.leading.equalTo(view.safeAreaLayoutGuide).offset(16)
             $0.trailing.equalTo(view.safeAreaLayoutGuide).offset(-16)
-            $0.height.equalTo(200)
+            $0.bottom.equalToSuperview().offset(-16)
         }
         
         dayLabel.snp.makeConstraints {
             $0.top.equalToSuperview().offset(16)
             $0.leading.equalToSuperview().offset(16)
+            $0.trailing.equalTo(detailButton.snp.leading).offset(-16)
         }
         
         mentLabel.snp.makeConstraints {
-            $0.top.equalTo(dayLabel.snp.bottom).offset(16)
+            $0.top.equalTo(dayLabel.snp.bottom).offset(8)
             $0.leading.equalToSuperview().offset(16)
         }
         
         diaryLabel.snp.makeConstraints {
-            $0.top.equalTo(mentLabel.snp.bottom).offset(12)
-            $0.leading.equalToSuperview().offset(16)
+            $0.top.equalTo(mentLabel.snp.bottom).offset(16)
+            $0.leading.trailing.equalToSuperview().inset(16)
+            $0.bottom.equalToSuperview().offset(-16)
         }
         
         detailButton.snp.makeConstraints {
-            $0.bottom.equalToSuperview().offset(-16)
+            $0.top.equalTo(dayLabel.snp.top)
             $0.trailing.equalToSuperview().offset(-16)
         }
         
@@ -187,8 +209,9 @@ class CalendarViewController: UIViewController {
                 self?.calendar.selectedDates.forEach { self?.calendar.deselect($0) }
                 self?.calendar.reloadData()
                 if let today = self?.calendar.today {
-                               self?.updateDiaryLabel(for: today)
-                           }
+                    self?.updateDiaryLabel(for: today)
+                    self?.setupDiaryPannel(for: today)
+                }
             }
             .store(in: &cancellables)
         
@@ -215,6 +238,7 @@ class CalendarViewController: UIViewController {
             diaryLabel.text = record.diaryText ?? "기록이 없습니다."
             if record.diaryText != nil {
                 diaryLabel.textColor = .black
+                DiaryRecordFloatingViewController().diaryTextView.text = record.diaryText
             } else {
                 diaryLabel.textColor = .appDarkGray
             }
@@ -240,7 +264,7 @@ class CalendarViewController: UIViewController {
     }
     
     @objc func tapWriteButton() {
-        self.present(editDiaryFloatingPanelController, animated: true)
+        editDiaryFloatingPanelController.addPanel(toParent: self)
     }
     
     // 키보드가 나타날 때 호출되는 메서드
@@ -263,18 +287,66 @@ class CalendarViewController: UIViewController {
 }
 
 extension CalendarViewController: FloatingPanelControllerDelegate {
-    func setupDiaryPannel(){
+    func floatingPanelDidChangeState(_ vc: FloatingPanelController) {
+        if vc.state == .full {
+            vc.backdropView.dismissalTapGestureRecognizer.isEnabled = false
+        } else if vc.state == .half {
+            vc.backdropView.dismissalTapGestureRecognizer.isEnabled = false
+
+            // 상태가 .full에서 .half로 변경되었을 때 키보드를 숨김
+            if previousPanelState == .full {
+                view.endEditing(true)
+            }
+        } else {
+            vc.backdropView.dismissalTapGestureRecognizer.isEnabled = true
+        }
+        previousPanelState = vc.state
+    }
+
+    
+    func floatingPanelDidRemove(_ vc: FloatingPanelController) {
+        vc.backdropView.dismissalTapGestureRecognizer.isEnabled = true
+        
+    }
+    
+//    func setupDiaryPannel(){
+//        editDiaryFloatingPanelController = FloatingPanelController()
+//
+//        let contentVC = DiaryRecordFloatingViewController()
+//        contentVC.viewModel = viewModel
+//        contentVC.diaryTextView.text = recordingText
+//        editDiaryFloatingPanelController.set(contentViewController: contentVC)
+//
+//        editDiaryFloatingPanelController.layout = CustomFloatingPanelLayout()
+//        editDiaryFloatingPanelController.isRemovalInteractionEnabled = true
+//        editDiaryFloatingPanelController.changePanelStyle()
+//        editDiaryFloatingPanelController.delegate = self
+//    }
+    func setupDiaryPannel(for date: Date) {
         editDiaryFloatingPanelController = FloatingPanelController()
-        editDiaryFloatingPanelController.layout = CustomFloatingPanelLayout()
-        editDiaryFloatingPanelController.delegate = self
         
         let contentVC = DiaryRecordFloatingViewController()
         contentVC.viewModel = viewModel
-        editDiaryFloatingPanelController.set(contentViewController: contentVC)
         
+        // 날짜 형식을 문자열로 변환
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy.MM.dd"
+        let dateString = dateFormatter.string(from: date)
+        
+        // 해당 날짜의 기록된 텍스트를 찾음
+        if let record = viewModel.calendarListModels?.first(where: { $0.diaryDate == dateString }) {
+            contentVC.diaryTextView.text = record.diaryText ?? ""
+        } else {
+            contentVC.diaryTextView.text = ""
+        }
+        
+        editDiaryFloatingPanelController.set(contentViewController: contentVC)
+        editDiaryFloatingPanelController.layout = CustomFloatingPanelLayout()
         editDiaryFloatingPanelController.isRemovalInteractionEnabled = true
         editDiaryFloatingPanelController.changePanelStyle()
+        editDiaryFloatingPanelController.delegate = self
     }
+
 }
 
 extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource, FSCalendarDelegateAppearance {
@@ -303,7 +375,7 @@ extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource, FSCa
         if boldDates.contains(where: { calendar.isDate($0, inSameDayAs: date) }) {
             return .appBlack // 볼드 처리된 날짜의 텍스트 색상
         } else {
-            return .appLightGray // 기본 텍스트 색상
+            return .appDarkGray // 기본 텍스트 색상
         }
     }
     
@@ -319,10 +391,10 @@ extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource, FSCa
         
         var colors: [UIColor] = []
         if let record = viewModel.calendarListModels?.first(where: { $0.diaryDate == dateString }) {
-            if let dietPictures = record.dietPictures, !dietPictures.isEmpty {
+            if record.dietPicture != nil {
                 colors.append(.appYellow)
             }
-            if let workoutLists = record.workoutLists, !workoutLists.isEmpty {
+            if record.workoutList != nil {
                 colors.append(.appGreen)
             }
         }
@@ -335,6 +407,7 @@ extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource, FSCa
     func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
         viewModel.selectedDate = date
         updateDiaryLabel(for: date)
+        setupDiaryPannel(for: date)
     }
     
     private func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, fillDefaultColorFor date: Date) -> UIFont? {
@@ -344,5 +417,18 @@ extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource, FSCa
         } else {
             return Suite.regular.of(size: 16) // 기본 배경 색상
         }
+    }
+    
+    // 선택된 날짜의 색상을 변경
+    func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, fillSelectionColorFor date: Date) -> UIColor? {
+        return .appGreen
+    }
+    
+    // 오늘 날짜의 색상을 변경
+    func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, fillDefaultColorFor date: Date) -> UIColor? {
+        if Calendar.current.isDateInToday(date) {
+            return .appYellow
+        }
+        return nil
     }
 }
