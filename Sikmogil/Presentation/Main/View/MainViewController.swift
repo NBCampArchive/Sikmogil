@@ -106,7 +106,7 @@ class MainViewController: UIViewController {
     
     private let recordButton = UIButton().then {
         $0.setTitle("기록하기", for: .normal)
-        $0.titleLabel?.font = Suite.bold.of(size: 22)
+        $0.titleLabel?.font = Suite.bold.of(size: 18)
         $0.tintColor = .white
         $0.backgroundColor = .appBlack
         $0.layer.cornerRadius = 16
@@ -128,8 +128,8 @@ class MainViewController: UIViewController {
         $0.leftAxis.drawLabelsEnabled = false
         $0.rightAxis.drawLabelsEnabled = false
         $0.legend.enabled = false
-        $0.extraLeftOffset = 16
-        $0.extraRightOffset = 16
+        $0.extraLeftOffset = 32
+        $0.extraRightOffset = 32
         $0.scaleXEnabled = false // X축 확대/축소 비활성화
         $0.scaleYEnabled = false // Y축 확대/축소 비활성화
         $0.isUserInteractionEnabled = false // 사용자 상호작용 비활성화
@@ -265,8 +265,8 @@ class MainViewController: UIViewController {
         
         graph.snp.makeConstraints {
             $0.top.equalTo(graphLabel.snp.bottom).offset(16)
-            $0.leading.equalTo(view.safeAreaLayoutGuide).offset(16)
-            $0.trailing.equalTo(view.safeAreaLayoutGuide).offset(-16)
+            $0.leading.equalTo(view.safeAreaLayoutGuide).offset(8)
+            $0.trailing.equalTo(view.safeAreaLayoutGuide).offset(-8)
             $0.height.equalTo(300)
         }
     }
@@ -433,7 +433,7 @@ extension MainViewController: FloatingPanelControllerDelegate {
             tabBarController?.tabBar.isHidden = true
             vc.backdropView.dismissalTapGestureRecognizer.isEnabled = false
         } else if vc.state == .half  {
-            tabBarController?.tabBar.isHidden = false
+            tabBarController?.tabBar.isHidden = true
             vc.backdropView.dismissalTapGestureRecognizer.isEnabled = false
             
             // 상태가 .full에서 .half로 변경되었을 때 키보드를 숨김
@@ -456,6 +456,6 @@ extension MainViewController: FloatingPanelControllerDelegate {
 
 class IntegerValueFormatter: ValueFormatter {
     func stringForValue(_ value: Double, entry: DGCharts.ChartDataEntry, dataSetIndex: Int, viewPortHandler: DGCharts.ViewPortHandler?) -> String {
-        return String(format: "%.0fKg", value)
+        return String(format: "%.1fKg", value)
     }
 }
