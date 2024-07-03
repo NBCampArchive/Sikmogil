@@ -218,7 +218,13 @@ extension DayViewController: UICollectionViewDelegate, UICollectionViewDataSourc
         }
         
         if let url = URL(string: photoURL), !photoURL.isEmpty {
-            cell.imageView.kf.setImage(with: url, placeholder: UIImage(named: "placeholder_image_name"))
+            cell.imageView.kf.setImage(
+                with: url,
+                placeholder: nil,
+                options: [
+                    .transition(.fade(0.5))
+                ],
+                progressBlock: nil)
             cell.noImageLabel.isHidden = true
         } else {
             cell.imageView.image = nil

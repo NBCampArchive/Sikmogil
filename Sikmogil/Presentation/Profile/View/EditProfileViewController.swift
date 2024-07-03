@@ -571,36 +571,6 @@ extension EditProfileViewController: UITextFieldDelegate {
             let newLength = (textField.text?.count ?? 0) + string.count - range.length
             return allowedCharacters.isSuperset(of: characterSet) && newLength <= 10
         case height, weight:
-            let allowedCharacters = CharacterSet.decimalDigits
-            let characterSet = CharacterSet(charactersIn: string)
-            if !allowedCharacters.isSuperset(of: characterSet) {
-                return false
-            }
-            let currentText = textField.text ?? ""
-            let prospectiveText = (currentText as NSString).replacingCharacters(in: range, with: string)
-            if prospectiveText.isEmpty {
-                return true
-            }
-            if let value = Int(prospectiveText), value >= 0 && value <= 999 {
-                return true
-            } else {
-                return false
-            }
-        default:
-            return true
-        }
-    }
-}
-
-extension EditProfileViewController: UITextFieldDelegate {
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        switch textField {
-        case nickname:
-            let allowedCharacters = CharacterSet.alphanumerics
-            let characterSet = CharacterSet(charactersIn: string)
-            let newLength = (textField.text?.count ?? 0) + string.count - range.length
-            return allowedCharacters.isSuperset(of: characterSet) && newLength <= 10
-        case height, weight:
             let currentText = textField.text ?? ""
             let prospectiveText = (currentText as NSString).replacingCharacters(in: range, with: string)
             
