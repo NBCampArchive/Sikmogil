@@ -34,10 +34,11 @@ class CalendarViewController: UIViewController {
         $0.appearance.headerDateFormat = "YYYY년 MM월"
         $0.appearance.headerTitleFont = Suite.bold.of(size: 22)
         $0.appearance.headerMinimumDissolvedAlpha = 0.0
-        $0.appearance.headerTitleOffset = .init(x: -110, y: 0)
+        $0.appearance.headerTitleOffset = .init(x: -110, y: -10)
         $0.locale = Locale(identifier: "ko_KR")
         $0.appearance.headerTitleColor = .black
         $0.appearance.weekdayTextColor = .appDarkGray
+        $0.scrollDirection = .vertical
     }
     
     private let diaryView = UIView().then {
@@ -47,24 +48,40 @@ class CalendarViewController: UIViewController {
     
     private let dayLabel = UILabel().then {
         $0.text = "6.5 금요일"
-        $0.font = Suite.bold.of(size: 22)
+        $0.font = Suite.bold.of(size: 20)
     }
     
     private let mentLabel = UILabel().then {
         $0.text = "한 줄 일기 내용"
-        $0.font = Suite.bold.of(size: 18)
+        $0.font = Suite.semiBold.of(size: 16)
+        $0.textColor = .appDarkGray
     }
     
     private let diaryLabel = UILabel().then {
         $0.text = ""
         $0.font = Suite.regular.of(size: 16)
+        $0.numberOfLines = 2
     }
     
     private let detailButton = UIButton().then {
-        $0.setTitle("자세한 내용을 확인해보세요!", for: .normal)
-        $0.titleLabel?.font = Suite.semiBold.of(size: 16)
-        $0.backgroundColor = .clear
-        $0.setTitleColor(.appDarkGray, for: .normal)
+        var configuration = UIButton.Configuration.plain()
+        let imageConfig = UIImage.SymbolConfiguration(pointSize: 10, weight: .regular)
+        configuration.image = UIImage(systemName: "chevron.right", withConfiguration: imageConfig)
+        configuration.imagePlacement = .trailing
+        configuration.imagePadding = 5
+        configuration.background.backgroundColor = .white
+        configuration.baseBackgroundColor = .white
+        configuration.baseForegroundColor = .black
+        configuration.cornerStyle = .capsule
+        configuration.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 10 , bottom: 5, trailing: 10)
+        
+        let title = AttributedString("자세히 보기", attributes: AttributeContainer([
+            .font: Suite.semiBold.of(size: 14),
+            .foregroundColor: UIColor.black
+        ]))
+        configuration.attributedTitle = title
+        
+        $0.configuration = configuration
     }
     
     private let writeButton = UIButton().then {
@@ -111,11 +128,11 @@ class CalendarViewController: UIViewController {
     }
     
     private func setupViews() {
-        view.addSubviews(scrollView)
+        view.addSubviews(scrollView, writeButton)
         
         scrollView.addSubview(scrollSubView)
         
-        scrollSubView.addSubviews(calendar, diaryView, writeButton)
+        scrollSubView.addSubviews(calendar, diaryView)
         
         diaryView.addSubviews(dayLabel, mentLabel, diaryLabel, detailButton)
     }
@@ -128,11 +145,11 @@ class CalendarViewController: UIViewController {
         scrollSubView.snp.makeConstraints {
             $0.edges.equalTo(scrollView.contentLayoutGuide)
             $0.width.equalTo(scrollView.frameLayoutGuide)
-            $0.bottom.equalTo(detailButton.snp.bottom).offset(100)
+//            $0.height.equalTo(1500)
         }
         
         calendar.snp.makeConstraints {
-            $0.top.equalToSuperview()
+            $0.top.equalTo(view.safeAreaLayoutGuide)
             $0.leading.equalToSuperview().offset(16)
             $0.trailing.equalToSuperview().offset(-16)
             $0.height.equalTo(450)
@@ -142,26 +159,28 @@ class CalendarViewController: UIViewController {
             $0.top.equalTo(calendar.snp.bottom).offset(8)
             $0.leading.equalTo(view.safeAreaLayoutGuide).offset(16)
             $0.trailing.equalTo(view.safeAreaLayoutGuide).offset(-16)
-            $0.height.equalTo(200)
+            $0.bottom.equalToSuperview().offset(-16)
         }
         
         dayLabel.snp.makeConstraints {
             $0.top.equalToSuperview().offset(16)
             $0.leading.equalToSuperview().offset(16)
+            $0.trailing.equalTo(detailButton.snp.leading).offset(-16)
         }
         
         mentLabel.snp.makeConstraints {
-            $0.top.equalTo(dayLabel.snp.bottom).offset(16)
+            $0.top.equalTo(dayLabel.snp.bottom).offset(8)
             $0.leading.equalToSuperview().offset(16)
         }
         
         diaryLabel.snp.makeConstraints {
-            $0.top.equalTo(mentLabel.snp.bottom).offset(12)
-            $0.leading.equalToSuperview().offset(16)
+            $0.top.equalTo(mentLabel.snp.bottom).offset(16)
+            $0.leading.trailing.equalToSuperview().inset(16)
+            $0.bottom.equalToSuperview().offset(-16)
         }
         
         detailButton.snp.makeConstraints {
-            $0.bottom.equalToSuperview().offset(-16)
+            $0.top.equalTo(dayLabel.snp.top)
             $0.trailing.equalToSuperview().offset(-16)
         }
         
@@ -218,6 +237,7 @@ class CalendarViewController: UIViewController {
             diaryLabel.text = record.diaryText ?? "기록이 없습니다."
             if record.diaryText != nil {
                 diaryLabel.textColor = .black
+                DiaryRecordFloatingViewController().diaryTextView.text = record.diaryText
             } else {
                 diaryLabel.textColor = .appDarkGray
             }
@@ -328,7 +348,7 @@ extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource, FSCa
         if boldDates.contains(where: { calendar.isDate($0, inSameDayAs: date) }) {
             return .appBlack // 볼드 처리된 날짜의 텍스트 색상
         } else {
-            return .appLightGray // 기본 텍스트 색상
+            return .appDarkGray // 기본 텍스트 색상
         }
     }
     
