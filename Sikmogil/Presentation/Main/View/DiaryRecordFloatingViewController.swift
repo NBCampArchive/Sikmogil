@@ -17,7 +17,7 @@ class DiaryRecordFloatingViewController: UIViewController {
     
     private let label = UILabel().then {
         $0.text = "오늘의 한 줄 일기를 작성해보세요!"
-        $0.font = Suite.regular.of(size: 22)
+        $0.font = Suite.regular.of(size: 20)
         $0.textAlignment = .center
     }
     
@@ -32,7 +32,7 @@ class DiaryRecordFloatingViewController: UIViewController {
     
     let doneButton = UIButton().then {
         $0.setTitle("작성 완료", for: .normal)
-        $0.titleLabel?.font = Suite.bold.of(size: 22)
+        $0.titleLabel?.font = Suite.bold.of(size: 18)
         $0.backgroundColor = .appBlack
         $0.layer.cornerRadius = 16
     }
@@ -72,7 +72,7 @@ class DiaryRecordFloatingViewController: UIViewController {
             $0.top.equalTo(diaryTextView.snp.bottom).offset(32)
             $0.leading.equalToSuperview().offset(16)
             $0.trailing.equalToSuperview().offset(-16)
-            $0.height.equalTo(60)
+            $0.height.equalTo(48)
         }
     }
     
