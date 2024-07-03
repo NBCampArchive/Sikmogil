@@ -55,7 +55,7 @@ class Step1ViewController: UIViewController {
     }
     
     private let heightTextField = UITextField().then {
-        $0.keyboardType = .numberPad
+        $0.keyboardType = .decimalPad
         $0.layer.cornerRadius = 8
         $0.layer.borderColor = UIColor.appDarkGray.cgColor
         $0.layer.borderWidth = 1
@@ -75,7 +75,7 @@ class Step1ViewController: UIViewController {
     }
     
     private let weightTextField = UITextField().then {
-        $0.keyboardType = .numberPad
+        $0.keyboardType = .decimalPad
         $0.layer.cornerRadius = 8
         $0.layer.borderColor = UIColor.appDarkGray.cgColor
         $0.layer.borderWidth = 1
@@ -362,8 +362,38 @@ class Step1ViewController: UIViewController {
 
 extension Step1ViewController: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-            let allowedCharacters = CharacterSet.decimalDigits
+        switch textField {
+        case nicknameTextField:
+            let allowedCharacters = CharacterSet.alphanumerics
             let characterSet = CharacterSet(charactersIn: string)
-            return allowedCharacters.isSuperset(of: characterSet)
+            let newLength = (textField.text?.count ?? 0) + string.count - range.length
+            return allowedCharacters.isSuperset(of: characterSet) && newLength <= 10
+        case heightTextField, weightTextField:
+            let currentText = textField.text ?? ""
+            let prospectiveText = (currentText as NSString).replacingCharacters(in: range, with: string)
+            
+            // 소수점이 두 번 이상 입력되지 않도록 제한
+            let decimalSeparator = Locale.current.decimalSeparator ?? "."
+            let decimalCount = prospectiveText.components(separatedBy: decimalSeparator).count - 1
+            if decimalCount > 1 {
+                return false
+            }
+            
+            // 자연수 3자리와 소수점 이하 1자리까지 허용
+            let components = prospectiveText.components(separatedBy: decimalSeparator)
+            if components.count == 1 {
+                // 소수점이 없는 경우
+                return components[0].count <= 3
+            } else if components.count == 2 {
+                // 소수점이 있는 경우
+                let integerPart = components[0]
+                let fractionPart = components[1]
+                return integerPart.count <= 3 && fractionPart.count <= 1
+            } else {
+                return false
+            }
+        default:
+            return true
         }
+    }
 }
