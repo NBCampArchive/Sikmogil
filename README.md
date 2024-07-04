@@ -92,45 +92,68 @@
 
 ## 기술적 의사결정
 
+
 ### 🌱 Architecture
-**MVVM 패턴**
-   - <details><summary><b>효율적인 데이터 바인딩</b></summary> 식단, 운동, 스케줄을 관리하는 어플리케이션 특성상 화면 간 데이터 전달이 빈번하게 발생합니다. 이를 효율적으로 처리하기 위해 MVVM 패턴을 도입하였습니다. 뷰모델과 컴바인을 사용한 데이터 바인딩으로 데이터 흐름을 간편하게 관리할 수 있습니다. </details>
-   - <details><summary><b>기술 역량 향상</b></summary> 팀원들이 기존에 MVC 패턴에 익숙했기 때문에, 새로운 아키텍처를 도입하여 개인의 기술 역량을 향상시키고자 하였습니다. MVVM 패턴을 통해 보다 구조적이고 유지보수가 용이한 코드를 작성할 수 있게 되었습니다.</details>
+<details><summary><b>MVVM 패턴</b></summary>
   
- **컴바인 데이터 바인딩**
-  - <details><summary><b>신뢰성 및 호환성</b></summary> 컴바인은 애플에서 직접 개발한 프레임워크로, 향후 지원과 호환성 측면에서 신뢰할 수 있습니다. </details>
-  - <details><summary><b>학습 용이성</b></summary> RXSwift에 비해 학습 곡선이 완만하여, MVVM을 처음 접하는 팀원들도 쉽게 적용할 수 있었습니다. 이를 통해 개발 속도를 높이고 코드의 일관성을 유지할 수 있었습니다. </details>
+- **효율적인 데이터 바인딩**
+   - 식단, 운동, 스케줄을 관리하는 어플리케이션 특성상 화면 간 데이터 전달이 빈번하게 발생합니다. 이를 효율적으로 처리하기 위해 MVVM 패턴을 도입하였습니다. 뷰모델과 컴바인을 사용한 데이터 바인딩으로 데이터 흐름을 간편하게 관리할 수 있습니다.
+- **기술 역량 향상**
+   - 팀원들이 기존에 MVC 패턴에 익숙했기 때문에, 새로운 아키텍처를 도입하여 개인의 기술 역량을 향상시키고자 하였습니다. MVVM 패턴을 통해 보다 구조적이고 유지보수가 용이한 코드를 작성할 수 있게 되었습니다.
+</details>
+   
+<details><summary><b>컴바인 데이터 바인딩</b></summary>
+
+- **신뢰성 및 호환성**
+   - 컴바인은 애플에서 직접 개발한 프레임워크로, 향후 지원과 호환성 측면에서 신뢰할 수 있습니다.
+- **학습 용이성**
+   - RXSwift에 비해 학습 곡선이 완만하여, MVVM을 처음 접하는 팀원들도 쉽게 적용할 수 있었습니다. 이를 통해 개발 속도를 높이고 코드의 일관성을 유지할 수 있었습니다.
+ </details>
  
 </br>
 
  ### 🌱 Networking
-**백앤드 서버 연결**
- - <details><summary><b>자체 데이터베이스 설계</b></summary> 파이어베이스 대신 자체적으로 설계한 데이터베이스를 서버에서 운영하고 있습니다. 사진 앨범, 캘린더 기록등 앱을 사용하는 기간이 길어질 수록 저장되는 데이터의 증가로 내부 저장소 사용시에 앱 크기가 증가하는 현상을 방지할 수 있었습니다.
+<details><summary><b>백앤드 서버 연결</b></summary>
+
+- **자체 데이터베이스 설계**
+   - 파이어베이스 대신 자체적으로 설계한 데이터베이스를 서버에서 운영하고 있습니다. 사진 앨범, 캘린더 기록등 앱을 사용하는 기간이 길어질 수록 저장되는 데이터의 증가로 내부 저장소 사용시에 앱 크기가 증가하는 현상을 방지할 수 있었습니다.
  </details>
+
 
 </br>
 
  ### 🌱 Data Storage
-**UserDefaults**
- - 알림 시간, 타이머 시작 시간 등 서버에 저장하기엔 단기간 저장되는 데이터를 보관하기 위해 사용하였습니다.
+ <details><summary><b>UserDefaults</b></summary>
+  
+- 알림 시간, 타이머 시작 시간 등 서버에 저장하기엔 단기간 저장되는 데이터를 보관하기 위해 사용하였습니다.
+ </details>
  
-**KeychainSwift**
- - JWT token 을 안전하게 저장하기 위해 사용하였습니다.
-
+ <details><summary><b>KeychainSwift</b></summary>
+  
+- JWT token 을 안전하게 저장하기 위해 사용하였습니다.
+ </details>
+ 
 </br>
 
  ### 🌱 UI / Asset Management
- **UI 구성**
- - <details><summary><b>Snapkit 및 Then 라이브러리 도입</b></summary> 코드를 간결하게 구성하고 유지보수를 용이하게 하기 위해 스냅킷과 댄 라이브러리를 도입하였습니다. 이를 통해 UI 레이아웃 작업을 효율적으로 처리할 수 있었습니다.
+
+<details><summary><b>UI 구성</b></summary>
+
+- **Snapkit 및 Then 라이브러리 도입**
+   - 코드를 간결하게 구성하고 유지보수를 용이하게 하기 위해 스냅킷과 댄 라이브러리를 도입하였습니다. 이를 통해 UI 레이아웃 작업을 효율적으로 처리할 수 있었습니다.
+ </details>
+ 
+<details><summary><b>Asset</b></summary>
+
+- **SVG 파일 사용**
+   - 이미지 확장자를 SVG 파일로 통일하여 Asset 저장소 용량을 관리하였습니다. 이는 앱의 성능 최적화와 용량 관리를 효과적으로 할 수 있게 해줍니다.
+- **공통 자원 관리**
+   - 컬러, 폰트, 아이콘 등 앱 전반에 공통적으로 사용되는 파일을 Asset으로 관리하여, 일관된 디자인과 효율적인 자원 관리를 실현하였습니다
  </details>
 
- **Asset**
- - <details><summary><b>SVG 파일 사용</b></summary> 이미지 확장자를 SVG 파일로 통일하여 Asset 저장소 용량을 관리하였습니다. 이는 앱의 성능 최적화와 용량 관리를 효과적으로 할 수 있게 해줍니다.
- </details>
- - <details><summary><b>공통 자원 관리</b></summary> 컬러, 폰트, 아이콘 등 앱 전반에 공통적으로 사용되는 파일을 Asset으로 관리하여, 일관된 디자인과 효율적인 자원 관리를 실현하였습니다
- </details>
 
 </br>
+
 
 ## Trouble Shooting
 
@@ -146,16 +169,10 @@
 </br>
 
 ## Developer
-<table>
-  <tbody>
-    <tr>
-      <td align="center"><a href="https://github.com/devpark435"><img src="" width=100><br/><sub><b>박현렬</b></sub></a><br/></a></td>
-      <td align="center"><a href="https://github.com/yyujnn"><img src="" width=100><br/><sub><b>정유진</b></sub></a><br/></a></td>
-      <td align="center"><a href="https://github.com/Neo-agnes"><img src="" width=100><br/><sub><b>박준영</b></sub></a><br/></a></td>
-      <td align="center"><a href="https://github.com/Heather-Cho"><img src="" width=100px><br/><sub><b>조희라</b></sub></a><br/></a></td>
-     <tr/>
-  </tbody>
-</table>
+|<img src="https://avatars.githubusercontent.com/u/112539563?v=4" width="100" height="100"/>|<img src="https://avatars.githubusercontent.com/u/129912074?v=4" width="100" height="100"/>|<img src="https://avatars.githubusercontent.com/u/112465877?v=4" width="100" height="100"/>|<img src="https://avatars.githubusercontent.com/u/161270633?v=4" width="100" height="100"/>|
+|:-:|:-:|:-:|:-:|
+|박현렬<br/>[@devpark435](https://github.com/devpark435)|정유진<br/>[@yyujnn](https://github.com/yyujnn)|박준영<br/>[@Neo-agnes](https://github.com/Neo-agnes)|조희라<br/>[@Heather-Cho](https://github.com/Heather-Cho)|
+
 
  *  **박현렬** 
     - 회원 가입, 온보딩
