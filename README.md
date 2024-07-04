@@ -16,10 +16,16 @@
 
 
 ## Table of Contents
-1. [Description](#-description)
-2. [Stacks](#-stacks)
-3. [Requirements](#-requirements)
-4. [Main Feature](#-main-feature)
+1. [Description](#description)
+2. [Main Stacks](#main-stacks)
+3. [Requirements](#requirements)
+4. [Main Feature](#main-feature)
+5. [기술적 의사소통](#기술적-의사결정)
+6. [Trouble Shooting](#trouble-shooting)
+7. [Period](#period)
+8. [Developer](#developer)
+9. [Contact](#contact)
+
 
 
 <br/>
@@ -157,6 +163,11 @@
 
 ## Trouble Shooting
 
+- [**2.1.0 Performance: App Completeness**](https://github.com/NBCampArchive/Sikmogil/wiki/Trouble-Shooting#210-performance-app-completeness)
+- [**UITabBarController 설정 문제**](https://github.com/NBCampArchive/Sikmogil/wiki/Trouble-Shooting#uitabbarcontroller-%EC%84%A4%EC%A0%95-%EB%AC%B8%EC%A0%9C)
+- [**한번에 여러 화면 이동**](https://github.com/NBCampArchive/Sikmogil/wiki/Trouble-Shooting#%ED%95%9C%EB%B2%88%EC%97%90--%EC%97%AC%EB%9F%AC-%ED%99%94%EB%A9%B4-%EC%9D%B4%EB%8F%99)
+- [**페이징 처리를 통한 데이터 로드**](https://github.com/NBCampArchive/Sikmogil/wiki/Trouble-Shooting#%ED%8E%98%EC%9D%B4%EC%A7%95-%EC%B2%98%EB%A6%AC%EB%A5%BC-%ED%86%B5%ED%95%9C-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EB%A1%9C%EB%93%9C)
+- [**네트워크 요청과 UI업데이트 싱크**](https://github.com/NBCampArchive/Sikmogil/wiki/Trouble-Shooting#%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC-%EC%9A%94%EC%B2%AD%EA%B3%BC-ui%EC%97%85%EB%8D%B0%EC%9D%B4%ED%8A%B8-%EC%8B%B1%ED%81%AC)
 
 
 </br>
