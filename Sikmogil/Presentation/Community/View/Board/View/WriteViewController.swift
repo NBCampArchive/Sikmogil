@@ -10,6 +10,7 @@ import UIKit
 import SnapKit
 import Then
 import MobileCoreServices
+import PhotosUI
 
 class WriteViewController: UIViewController, UINavigationControllerDelegate {
     
@@ -253,38 +254,49 @@ class WriteViewController: UIViewController, UINavigationControllerDelegate {
     }
     
     @objc private func addPhotoButtonTapped() {
-        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        
-        let cameraAction = UIAlertAction(title: "사진 찍기", style: .default) { _ in
-            self.presentImagePicker(sourceType: .camera)
+            let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+            
+            let cameraAction = UIAlertAction(title: "사진 찍기", style: .default) { _ in
+                self.presentImagePicker(sourceType: .camera)
+            }
+            
+            let photoLibraryAction = UIAlertAction(title: "앨범에서 가져오기", style: .default) { _ in
+                self.presentPHPicker()
+            }
+            
+            let cancelAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
+            
+            alert.addAction(cameraAction)
+            alert.addAction(photoLibraryAction)
+            alert.addAction(cancelAction)
+            
+            present(alert, animated: true, completion: nil)
         }
-        
-        let photoLibraryAction = UIAlertAction(title: "앨범에서 가져오기", style: .default) { _ in
-            self.presentImagePicker(sourceType: .photoLibrary)
+
+        private func presentImagePicker(sourceType: UIImagePickerController.SourceType) {
+            if UIImagePickerController.isSourceTypeAvailable(sourceType) {
+                let imagePicker = UIImagePickerController()
+                imagePicker.sourceType = sourceType
+                imagePicker.delegate = self
+                imagePicker.mediaTypes = [UTType.image.identifier]
+                present(imagePicker, animated: true, completion: nil)
+            } else {
+                let alertController = UIAlertController(title: nil, message: "JPG 또는 PNG 이미지만 선택 가능합니다.", preferredStyle: .alert)
+                alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                present(alertController, animated: true, completion: nil)
+            }
         }
-        
-        let cancelAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
-        
-        alert.addAction(cameraAction)
-        alert.addAction(photoLibraryAction)
-        alert.addAction(cancelAction)
-        
-        present(alert, animated: true, completion: nil)
-    }
-    
-    private func presentImagePicker(sourceType: UIImagePickerController.SourceType) {
-        if UIImagePickerController.isSourceTypeAvailable(sourceType) {
-            let imagePicker = UIImagePickerController()
-            imagePicker.sourceType = sourceType
-            imagePicker.delegate = self
-            imagePicker.mediaTypes = [kUTTypeImage as String] // JPG 또는 PNG 이미지만 선택 가능하도록 설정
-            present(imagePicker, animated: true, completion: nil)
-        } else {
-            let alertController = UIAlertController(title: nil, message: "JPG 또는 PNG 이미지만 선택 가능합니다.", preferredStyle: .alert)
-            alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-            present(alertController, animated: true, completion: nil)
+
+        private func presentPHPicker() {
+            var configuration = PHPickerConfiguration()
+            configuration.selectionLimit = 5
+            configuration.filter = .images
+
+            let picker = PHPickerViewController(configuration: configuration)
+            picker.delegate = self
+            present(picker, animated: true, completion: nil)
         }
-    }
+
     
     private func bindViewModel() {
         titleTextField.addTarget(self, action: #selector(titleTextFieldChanged), for: .editingChanged)
@@ -345,6 +357,25 @@ extension WriteViewController: UIImagePickerControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         
         picker.dismiss(animated: true, completion: nil)
+    }
+}
+
+extension WriteViewController: PHPickerViewControllerDelegate {
+    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+        picker.dismiss(animated: true, completion: nil)
+        
+        for result in results {
+            result.itemProvider.loadObject(ofClass: UIImage.self) { (object, error) in
+                if let image = object as? UIImage {
+                    // 선택된 이미지를 처리하는 코드
+                    DispatchQueue.main.async {
+                        print(image)
+                    }
+                } else if let error = error {
+                    print("Error loading image: \(error.localizedDescription)")
+                }
+            }
+        }
     }
 }
 
