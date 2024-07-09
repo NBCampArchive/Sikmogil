@@ -16,6 +16,7 @@ struct PostModel: Codable {
 
 // 응답 데이터 모델
 struct PostResponse: Decodable {
-    var success: Bool
+    var statusCode: Int
     var message: String
+    var data: String
 }
