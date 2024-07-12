@@ -123,6 +123,8 @@ class WriteViewController: UIViewController, UINavigationControllerDelegate {
         $0.backgroundColor = .appLightGray
     }
     
+    private let loadingIndicator = NVActivityIndicatorView(frame: .zero, type: .ballBeat, color: .appGreen, padding: 0)
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -141,7 +143,7 @@ class WriteViewController: UIViewController, UINavigationControllerDelegate {
     
     private func setupViews() {
         view.backgroundColor = .white
-        view.addSubviews(scrollView, submitButton)
+        view.addSubviews(scrollView, submitButton, loadingIndicator)
         scrollView.addSubview(contentView)
         contentView.addSubviews(titleTextField, buttonStackView, contentTextView, imageLabel, collectionView, dividerView1, dividerView2, addPhotoButton)
         buttonStackView.addArrangedSubviews(dietButton, workoutButton, freeButton)
@@ -162,6 +164,11 @@ class WriteViewController: UIViewController, UINavigationControllerDelegate {
             $0.edges.equalToSuperview()
             $0.width.equalToSuperview()
             $0.height.greaterThanOrEqualTo(view.snp.height)
+        }
+        
+        loadingIndicator.snp.makeConstraints {
+            $0.center.equalToSuperview()
+            $0.width.height.equalTo(50)
         }
         
         titleTextField.snp.makeConstraints {
@@ -304,10 +311,21 @@ class WriteViewController: UIViewController, UINavigationControllerDelegate {
         titleTextField.addTarget(self, action: #selector(titleTextFieldChanged), for: .editingChanged)
         contentTextView.delegate = self
         
+        viewModel.category = "DIET"
+        
         viewModel.$images
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
                 self?.collectionView.reloadData()
+            }
+            .store(in: &cancellables)
+        
+        viewModel.$postCreationCompleted
+            .sink { [weak self] completed in
+                guard let self = self else { return }
+                if completed {
+                    self.handlePostCreation()
+                }
             }
             .store(in: &cancellables)
     }
@@ -321,7 +339,13 @@ class WriteViewController: UIViewController, UINavigationControllerDelegate {
     }
     
     @objc private func submitButtonTapped() {
+        loadingIndicator.startAnimating()
         viewModel.createPost()
+    }
+    
+    private func handlePostCreation() {
+        loadingIndicator.startAnimating()
+        navigationController?.popViewController(animated: true)
     }
 }
 
@@ -395,6 +419,7 @@ extension WriteViewController: PHPickerViewControllerDelegate {
 }
 
 import UIKit
+import NVActivityIndicatorView
 
 class ImageCell: UICollectionViewCell {
     
