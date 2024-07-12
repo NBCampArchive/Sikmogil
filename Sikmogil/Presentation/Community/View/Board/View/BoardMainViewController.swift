@@ -63,7 +63,11 @@ class BoardMainViewController: UIViewController {
         setupTableView()
         bindViewModel()
         setupButton()
-//        viewModel.fetchBoardList(category: categoryForIndex(currentCategoryIndex), reset: true)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.fetchBoardList(category: categoryForIndex(currentCategoryIndex), reset: true)
     }
     
     private func setupButton() {
