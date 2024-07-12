@@ -70,6 +70,8 @@ class BoardMainViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         startSkeletonLoading()
+        self.navigationController?.navigationBar.isHidden = true
+        self.tabBarController?.tabBar.isHidden = false
         viewModel.fetchBoardList(category: categoryForIndex(currentCategoryIndex), reset: true)
     }
     
