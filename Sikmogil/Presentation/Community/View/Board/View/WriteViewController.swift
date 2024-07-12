@@ -10,6 +10,7 @@ import UIKit
 import SnapKit
 import Then
 import MobileCoreServices
+import PhotosUI
 
 class WriteViewController: UIViewController, UINavigationControllerDelegate {
     
@@ -30,6 +31,12 @@ class WriteViewController: UIViewController, UINavigationControllerDelegate {
             .foregroundColor: UIColor.appDeepDarkGray
         ]
         $0.attributedPlaceholder = NSAttributedString(string: placeholderText, attributes: placeholderAttributes)
+
+        let textAttributes: [NSAttributedString.Key: Any] = [
+            .font: Suite.bold.of(size: 24),
+            .foregroundColor: UIColor.appDeepDarkGray
+        ]
+        $0.defaultTextAttributes = textAttributes
     }
     
     private let dietButton = UIButton(type: .system).then {
@@ -116,6 +123,8 @@ class WriteViewController: UIViewController, UINavigationControllerDelegate {
         $0.backgroundColor = .appLightGray
     }
     
+    private let loadingIndicator = NVActivityIndicatorView(frame: .zero, type: .ballBeat, color: .appGreen, padding: 0)
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -134,7 +143,7 @@ class WriteViewController: UIViewController, UINavigationControllerDelegate {
     
     private func setupViews() {
         view.backgroundColor = .white
-        view.addSubviews(scrollView, submitButton)
+        view.addSubviews(scrollView, submitButton, loadingIndicator)
         scrollView.addSubview(contentView)
         contentView.addSubviews(titleTextField, buttonStackView, contentTextView, imageLabel, collectionView, dividerView1, dividerView2, addPhotoButton)
         buttonStackView.addArrangedSubviews(dietButton, workoutButton, freeButton)
@@ -155,6 +164,11 @@ class WriteViewController: UIViewController, UINavigationControllerDelegate {
             $0.edges.equalToSuperview()
             $0.width.equalToSuperview()
             $0.height.greaterThanOrEqualTo(view.snp.height)
+        }
+        
+        loadingIndicator.snp.makeConstraints {
+            $0.center.equalToSuperview()
+            $0.width.height.equalTo(50)
         }
         
         titleTextField.snp.makeConstraints {
@@ -236,10 +250,6 @@ class WriteViewController: UIViewController, UINavigationControllerDelegate {
         }
     }
     
-    @objc private func submitButtonTapped() {
-        viewModel.createPost()
-    }
-    
     private func updateButtonSelection(selectedButton: UIButton) {
         [dietButton, workoutButton, freeButton].forEach { button in
             if button == selectedButton {
@@ -253,42 +263,71 @@ class WriteViewController: UIViewController, UINavigationControllerDelegate {
     }
     
     @objc private func addPhotoButtonTapped() {
-        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        
-        let cameraAction = UIAlertAction(title: "사진 찍기", style: .default) { _ in
-            self.presentImagePicker(sourceType: .camera)
+            let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+            
+            let cameraAction = UIAlertAction(title: "사진 찍기", style: .default) { _ in
+                self.presentImagePicker(sourceType: .camera)
+            }
+            
+            let photoLibraryAction = UIAlertAction(title: "앨범에서 가져오기", style: .default) { _ in
+                self.presentPHPicker()
+            }
+            
+            let cancelAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
+            
+            alert.addAction(cameraAction)
+            alert.addAction(photoLibraryAction)
+            alert.addAction(cancelAction)
+            
+            present(alert, animated: true, completion: nil)
         }
-        
-        let photoLibraryAction = UIAlertAction(title: "앨범에서 가져오기", style: .default) { _ in
-            self.presentImagePicker(sourceType: .photoLibrary)
+
+        private func presentImagePicker(sourceType: UIImagePickerController.SourceType) {
+            if UIImagePickerController.isSourceTypeAvailable(sourceType) {
+                let imagePicker = UIImagePickerController()
+                imagePicker.sourceType = sourceType
+                imagePicker.delegate = self
+                imagePicker.mediaTypes = [UTType.image.identifier]
+                present(imagePicker, animated: true, completion: nil)
+            } else {
+                let alertController = UIAlertController(title: nil, message: "JPG 또는 PNG 이미지만 선택 가능합니다.", preferredStyle: .alert)
+                alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                present(alertController, animated: true, completion: nil)
+            }
         }
-        
-        let cancelAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
-        
-        alert.addAction(cameraAction)
-        alert.addAction(photoLibraryAction)
-        alert.addAction(cancelAction)
-        
-        present(alert, animated: true, completion: nil)
-    }
-    
-    private func presentImagePicker(sourceType: UIImagePickerController.SourceType) {
-        if UIImagePickerController.isSourceTypeAvailable(sourceType) {
-            let imagePicker = UIImagePickerController()
-            imagePicker.sourceType = sourceType
-            imagePicker.delegate = self
-            imagePicker.mediaTypes = [kUTTypeImage as String] // JPG 또는 PNG 이미지만 선택 가능하도록 설정
-            present(imagePicker, animated: true, completion: nil)
-        } else {
-            let alertController = UIAlertController(title: nil, message: "JPG 또는 PNG 이미지만 선택 가능합니다.", preferredStyle: .alert)
-            alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-            present(alertController, animated: true, completion: nil)
+
+        private func presentPHPicker() {
+            var configuration = PHPickerConfiguration()
+            configuration.selectionLimit = 5
+            configuration.filter = .images
+
+            let picker = PHPickerViewController(configuration: configuration)
+            picker.delegate = self
+            present(picker, animated: true, completion: nil)
         }
-    }
+
     
     private func bindViewModel() {
         titleTextField.addTarget(self, action: #selector(titleTextFieldChanged), for: .editingChanged)
         contentTextView.delegate = self
+        
+        viewModel.category = "DIET"
+        
+        viewModel.$images
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                self?.collectionView.reloadData()
+            }
+            .store(in: &cancellables)
+        
+        viewModel.$postCreationCompleted
+            .sink { [weak self] completed in
+                guard let self = self else { return }
+                if completed {
+                    self.handlePostCreation()
+                }
+            }
+            .store(in: &cancellables)
     }
 
     @objc private func titleTextFieldChanged(_ textField: UITextField) {
@@ -298,24 +337,32 @@ class WriteViewController: UIViewController, UINavigationControllerDelegate {
     func textViewDidChange(_ textView: UITextView) {
         viewModel.content = textView.text
     }
+    
+    @objc private func submitButtonTapped() {
+        loadingIndicator.startAnimating()
+        viewModel.createPost()
+    }
+    
+    private func handlePostCreation() {
+        loadingIndicator.startAnimating()
+        navigationController?.popViewController(animated: true)
+    }
 }
 
 extension WriteViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 3 // 임시 데이터
+        return viewModel.images.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageCell", for: indexPath) as? ImageCell else {
             return UICollectionViewCell()
         }
-        // 임시 이미지
-        let imageURLs = [
-            "https://d35sohbc9et6k7.cloudfront.net/profile/8ddbb613-ef4d-430c-a313-c2f87a84300f_image0.jpeg",
-            "https://d35sohbc9et6k7.cloudfront.net/profile/8ddbb613-ef4d-430c-a313-c2f87a84300f_image0.jpeg",
-            "https://d35sohbc9et6k7.cloudfront.net/profile/8ddbb613-ef4d-430c-a313-c2f87a84300f_image0.jpeg"
-        ]
-        cell.imageView.kf.setImage(with: URL(string: imageURLs[indexPath.item]))
+        
+        cell.imageView.image = viewModel.images[indexPath.item]
+        cell.deleteAction = { [weak self] in
+            self?.viewModel.images.remove(at: indexPath.item)
+        }
         return cell
     }
 }
@@ -341,12 +388,38 @@ extension WriteViewController: UITextViewDelegate {
     }
 }
 
+// MARK: - UIImagePickerControllerDelegate
 extension WriteViewController: UIImagePickerControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        
         picker.dismiss(animated: true, completion: nil)
+        
+        if let selectedImage = info[.originalImage] as? UIImage {
+            viewModel.images.append(selectedImage)
+        }
     }
 }
+
+// MARK: - PHPickerViewControllerDelegate
+extension WriteViewController: PHPickerViewControllerDelegate {
+    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+        picker.dismiss(animated: true, completion: nil)
+        
+        for result in results {
+            result.itemProvider.loadObject(ofClass: UIImage.self) { [weak self] (object, error) in
+                if let image = object as? UIImage {
+                    DispatchQueue.main.async {
+                        self?.viewModel.images.append(image)
+                    }
+                } else if let error = error {
+                    print("Error loading image: \(error.localizedDescription)")
+                }
+            }
+        }
+    }
+}
+
+import UIKit
+import NVActivityIndicatorView
 
 class ImageCell: UICollectionViewCell {
     
@@ -357,15 +430,34 @@ class ImageCell: UICollectionViewCell {
         $0.backgroundColor = .gray
     }
     
+    let deleteButton = UIButton().then {
+        $0.setImage(.removePhoto, for: .normal)
+    }
+    
+    var deleteAction: (() -> Void)?
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         contentView.addSubview(imageView)
+        contentView.addSubview(deleteButton)
+        
         imageView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
+        
+        deleteButton.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(8)
+            $0.trailing.equalToSuperview().offset(-8)
+            $0.width.height.equalTo(16)
+        }
+        deleteButton.addTarget(self, action: #selector(deleteButtonTapped), for: .touchUpInside)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    @objc private func deleteButtonTapped() {
+        deleteAction?()
     }
 }

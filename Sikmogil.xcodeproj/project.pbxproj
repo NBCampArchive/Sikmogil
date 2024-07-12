@@ -146,6 +146,7 @@
 		CACA65C82C1B5D0C0030D8D5 /* FoodDbModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CACA65C72C1B5D0C0030D8D5 /* FoodDbModel.swift */; };
 		CACA65CC2C1C7BC50030D8D5 /* DietViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CACA65CB2C1C7BC50030D8D5 /* DietViewModel.swift */; };
 		CACA65D22C1E0F6F0030D8D5 /* addMealViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CACA65D12C1E0F6F0030D8D5 /* addMealViewModel.swift */; };
+		D6A2CA9B2C40FEAD00547C60 /* SkeletonView in Frameworks */ = {isa = PBXBuildFile; productRef = D6A2CA9A2C40FEAD00547C60 /* SkeletonView */; };
 		F3094EC12C0D91310099DE2C /* ExerciseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3094EC02C0D91310099DE2C /* ExerciseViewController.swift */; };
 		F3094EC42C0DB1940099DE2C /* ExerciseHistoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3094EC32C0DB1940099DE2C /* ExerciseHistoryCell.swift */; };
 		F3094EC62C0E40040099DE2C /* ExerciseSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3094EC52C0E40040099DE2C /* ExerciseSelectionViewController.swift */; };
@@ -315,6 +316,7 @@
 			files = (
 				B54ABFA62C0CB43A002E89DC /* Alamofire in Frameworks */,
 				B54ABFFD2C0F1CA3002E89DC /* RxBlocking in Frameworks */,
+				D6A2CA9B2C40FEAD00547C60 /* SkeletonView in Frameworks */,
 				B54ABFFF2C0F1CA3002E89DC /* RxCocoa in Frameworks */,
 				B54ABFB42C0CB507002E89DC /* FloatingPanel in Frameworks */,
 				B54ABFA32C0CB42B002E89DC /* Kingfisher in Frameworks */,
@@ -903,6 +905,7 @@
 				B53786C82C2405E1007B362F /* MarkdownView */,
 				B566DF322C2ABA1E0050CF60 /* NVActivityIndicatorView */,
 				B566DF342C2ABA1E0050CF60 /* NVActivityIndicatorViewExtended */,
+				D6A2CA9A2C40FEAD00547C60 /* SkeletonView */,
 			);
 			productName = Sikmogil;
 			productReference = B54ABF842C09BD43002E89DC /* Sikmogil.app */;
@@ -946,6 +949,7 @@
 				B54AC0062C0F45DF002E89DC /* XCRemoteSwiftPackageReference "keychain-swift" */,
 				B53786C72C2405E1007B362F /* XCRemoteSwiftPackageReference "MarkdownView" */,
 				B566DF312C2ABA1E0050CF60 /* XCRemoteSwiftPackageReference "NVActivityIndicatorView" */,
+				D6A2CA992C40FEAD00547C60 /* XCRemoteSwiftPackageReference "SkeletonView" */,
 			);
 			productRefGroup = B54ABF852C09BD43002E89DC /* Products */;
 			projectDirPath = "";
@@ -1433,6 +1437,14 @@
 				minimumVersion = 5.2.0;
 			};
 		};
+		D6A2CA992C40FEAD00547C60 /* XCRemoteSwiftPackageReference "SkeletonView" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Juanpe/SkeletonView";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.31.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1525,6 +1537,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = B566DF312C2ABA1E0050CF60 /* XCRemoteSwiftPackageReference "NVActivityIndicatorView" */;
 			productName = NVActivityIndicatorViewExtended;
+		};
+		D6A2CA9A2C40FEAD00547C60 /* SkeletonView */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D6A2CA992C40FEAD00547C60 /* XCRemoteSwiftPackageReference "SkeletonView" */;
+			productName = SkeletonView;
 		};
 /* End XCSwiftPackageProductDependency section */
 

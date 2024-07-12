@@ -37,9 +37,18 @@ class BoardAPIManager {
     }
     
     func createPost(board: PostModel) -> AnyPublisher<PostResponse, Error> {
-        let url = "\(baseURL)/api/boards"
+        let url = "\(baseURL)/api/boards/"
         
-        return session.request(url, method: .post, parameters: board)
+        print("Creating post: \(board)")
+        
+        return session.request(url, method: .post, parameters: board, encoder: URLEncodedFormParameterEncoder.default)
+            .validate()
+            .responseData { response in
+                debugPrint(response)
+                if let data = response.data, let responseString = String(data: data, encoding: .utf8) {
+                    print("Response data: \(responseString)")
+                }
+            }
             .publishDecodable(type: PostResponse.self)
             .value()
             .mapError { $0 as Error }

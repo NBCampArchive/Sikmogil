@@ -36,7 +36,7 @@ struct Page: Codable {
 // MARK: - BoardContent
 struct BoardContent: Codable {
     let myMemberId, writerMemberId, boardId: Int
-    let category, title, content: String
+    let category, title, content: String?
     let imageUrl: [String]
     let likeCount: Int
     let isLike: Bool

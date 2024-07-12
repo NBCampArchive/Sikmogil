@@ -11,7 +11,6 @@ import Then
 
 class CommunityNavigationViewController: UIViewController {
     // MARK: - Components
-    private let scrollView = UIScrollView()
     private let contentView = UIView()
     
     private let headerStackView = UIStackView().then {
@@ -46,20 +45,14 @@ class CommunityNavigationViewController: UIViewController {
     // MARK: - Setup Views
     private func setupViews() {
         view.backgroundColor = .white
-        view.addSubview(scrollView)
-        scrollView.addSubview(contentView)
+        view.addSubview(contentView)
         contentView.addSubviews(headerStackView)
         headerStackView.addArrangedSubviews(exerciseMenuButton, stepsMenuButton)
     }
 
     private func setupConstraints() {
-        scrollView.snp.makeConstraints {
-            $0.edges.equalTo(view.safeAreaLayoutGuide)
-        }
-
         contentView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
-            $0.width.equalToSuperview()
+            $0.edges.equalTo(view.safeAreaLayoutGuide)
         }
 
         headerStackView.snp.makeConstraints {
@@ -75,7 +68,6 @@ class CommunityNavigationViewController: UIViewController {
         viewController.view.snp.makeConstraints {
             $0.top.equalTo(headerStackView.snp.bottom).offset(8)
             $0.leading.trailing.bottom.equalToSuperview()
-            $0.height.equalTo(scrollView.snp.height).offset(-36)
         }
         viewController.didMove(toParent: self)
         currentChildViewController = viewController
@@ -118,5 +110,4 @@ class CommunityNavigationViewController: UIViewController {
             button.tintColor = (button == selectedButton) ? .appBlack : .appDarkGray
         }
     }
-
 }
