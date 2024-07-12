@@ -9,6 +9,7 @@ import UIKit
 import SnapKit
 import Then
 import Kingfisher
+import SkeletonView
 
 class BoardListCell: UITableViewCell {
     
@@ -18,26 +19,32 @@ class BoardListCell: UITableViewCell {
         $0.layer.cornerRadius = 16
         $0.layer.borderColor = UIColor.appDeepDarkGray.cgColor
         $0.layer.borderWidth = 1
+        $0.isSkeletonable = true
     }
+    
     let titleLabel = UILabel().then {
         $0.font = Suite.semiBold.of(size: 16)
         $0.numberOfLines = 2
+        $0.isSkeletonable = true
     }
     
     let contentLabel = UILabel().then {
         $0.font = Suite.medium.of(size: 14)
         $0.numberOfLines = 2
         $0.textColor = .gray
+        $0.isSkeletonable = true
     }
     
     let nicknameLabel = UILabel().then {
         $0.font = Suite.light.of(size: 12)
         $0.textColor = .gray
+        $0.isSkeletonable = true
     }
     
     let dateLabel = UILabel().then {
         $0.font = UIFont.systemFont(ofSize: 12)
         $0.textColor = .gray
+        $0.isSkeletonable = true
     }
     
     let likeButton = UIButton(type: .system).then {
@@ -47,6 +54,7 @@ class BoardListCell: UITableViewCell {
         config.baseForegroundColor = .gray
         config.titleAlignment = .center
         $0.configuration = config
+        $0.isSkeletonable = true
     }
 
     let commentButton = UIButton(type: .system).then {
@@ -56,18 +64,21 @@ class BoardListCell: UITableViewCell {
         config.baseForegroundColor = .gray
         config.titleAlignment = .center
         $0.configuration = config
+        $0.isSkeletonable = true
     }
     
     let thumbnailImageView = UIImageView().then {
         $0.contentMode = .scaleAspectFill
         $0.clipsToBounds = true
         $0.layer.cornerRadius = 8
+        $0.isSkeletonable = true
     }
     
     // MARK: - Initializer
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupUI()
+        isSkeletonable = true
     }
     
     required init?(coder: NSCoder) {
@@ -87,6 +98,7 @@ class BoardListCell: UITableViewCell {
         backgroundCardView.snp.makeConstraints {
             $0.top.equalToSuperview()
             $0.leading.trailing.bottom.equalToSuperview().inset(16)
+            $0.height.greaterThanOrEqualTo(120)
         }
         
         titleLabel.snp.makeConstraints {
@@ -101,14 +113,16 @@ class BoardListCell: UITableViewCell {
         }
         
         likeButton.snp.makeConstraints {
-            $0.top.equalTo(nicknameLabel.snp.top)
+//            $0.top.equalTo(nicknameLabel.snp.top)
             $0.leading.equalToSuperview().inset(11)
+            $0.height.equalTo(24)
             $0.bottom.equalToSuperview().inset(16)
         }
         
         commentButton.snp.makeConstraints {
-            $0.top.equalTo(nicknameLabel.snp.top)
+//            $0.top.equalTo(nicknameLabel.snp.top)
             $0.leading.equalTo(likeButton.snp.trailing).offset(4)
+            $0.height.equalTo(24)
             $0.bottom.equalToSuperview().inset(16)
         }
         
