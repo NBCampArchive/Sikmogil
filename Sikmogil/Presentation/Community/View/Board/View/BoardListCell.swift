@@ -56,7 +56,7 @@ class BoardListCell: UITableViewCell {
         $0.configuration = config
         $0.isSkeletonable = true
     }
-
+    
     let commentButton = UIButton(type: .system).then {
         var config = UIButton.Configuration.plain()
         config.image = UIImage(systemName: "ellipsis.message.fill")
@@ -113,14 +113,14 @@ class BoardListCell: UITableViewCell {
         }
         
         likeButton.snp.makeConstraints {
-//            $0.top.equalTo(nicknameLabel.snp.top)
+            //            $0.top.equalTo(nicknameLabel.snp.top)
             $0.leading.equalToSuperview().inset(11)
             $0.height.equalTo(24)
             $0.bottom.equalToSuperview().inset(16)
         }
         
         commentButton.snp.makeConstraints {
-//            $0.top.equalTo(nicknameLabel.snp.top)
+            //            $0.top.equalTo(nicknameLabel.snp.top)
             $0.leading.equalTo(likeButton.snp.trailing).offset(4)
             $0.height.equalTo(24)
             $0.bottom.equalToSuperview().inset(16)
