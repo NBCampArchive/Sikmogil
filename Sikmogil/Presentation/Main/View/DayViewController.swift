@@ -64,6 +64,8 @@ class DayViewController: UIViewController {
         $0.backgroundColor = .clear
         $0.font = Suite.regular.of(size: 16)
         $0.text = ""
+        $0.isEditable = false  // 수정 불가능하게 설정
+        $0.isSelectable = false  // 텍스트 선택 비활성화
     }
     
     private lazy var collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: createCompositionalLayout()).then {
