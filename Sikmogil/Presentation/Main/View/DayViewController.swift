@@ -288,7 +288,7 @@ extension DayViewController: UICollectionViewDelegate, UICollectionViewDataSourc
                 cell.imageView.kf.setImage(
                     with: url,
                     placeholder: nil,
-                    options: [.transition(.fade(0.5))],
+                    options: [.transition(.fade(0.5)), .forceRefresh],
                     progressBlock: nil) { result in
                         switch result {
                         case .success(_):
