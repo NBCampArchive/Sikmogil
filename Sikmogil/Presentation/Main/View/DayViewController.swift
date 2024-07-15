@@ -11,7 +11,9 @@ import Then
 import Combine
 
 enum Section: Int, CaseIterable {
+    case dietText
     case dietPhotos
+    case workoutText
     case workoutPhotos
 }
 
@@ -22,6 +24,10 @@ class DayViewController: UIViewController {
     
     private var dietPhotos: [String] = []
     private var workoutPhotos: [String] = []
+    private var workoutTexts: [String] = ["a", "b", "c"]
+    private var workoutSubtexts: [String] = ["d", "e", "f"]
+    private var dietTexts: [String] = ["a", "b", "c"]
+    private var dietSubtexts: [String] = ["a", "b", "c"]
     
     private var eatKal: Int = 0
     private var workoutKal: Int = 0
@@ -60,33 +66,75 @@ class DayViewController: UIViewController {
         $0.text = ""
     }
     
-    private lazy var  collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: createCompositionalLayout()).then {
+    private lazy var collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: createCompositionalLayout()).then {
         $0.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         $0.backgroundColor = .clear
         $0.isScrollEnabled = false
         $0.register(PhotoCell.self, forCellWithReuseIdentifier: PhotoCell.reuseIdentifier)
         $0.register(HeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: HeaderView.reuseIdentifier)
+        $0.register(DetailListCell.self, forCellWithReuseIdentifier: DetailListCell.reuseIdentifier)
     }
     
     func createCompositionalLayout() -> UICollectionViewCompositionalLayout {
         return UICollectionViewCompositionalLayout { (sectionIndex, layoutEnvironment) -> NSCollectionLayoutSection? in
-            let itemSize = NSCollectionLayoutSize(widthDimension: .absolute(200), heightDimension: .absolute(200))
-            let item = NSCollectionLayoutItem(layoutSize: itemSize)
+            let section = Section(rawValue: sectionIndex)!
             
-            let groupSize = NSCollectionLayoutSize(widthDimension: .absolute(210), heightDimension: .absolute(210))
-            let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+            let sectionLayout: NSCollectionLayoutSection
+            switch section {
+            case .dietPhotos, .workoutPhotos:
+                sectionLayout = self.createPhotoSection()
+            case .dietText, .workoutText:
+                sectionLayout = self.createTextSection()
+            }
             
-            let section = NSCollectionLayoutSection(group: group)
-            section.orthogonalScrollingBehavior = .continuous
-            section.interGroupSpacing = 8
+            // 텍스트 섹션에만 헤더 추가
+            if case .dietText = section, case .workoutText = section {
+                let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(44))
+                let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
+                sectionLayout.boundarySupplementaryItems = [header]
+            }
             
-            // Create header size and item
-            let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(44))
-            let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
-            section.boundarySupplementaryItems = [header]
-            
-            return section
+            return sectionLayout
         }
+    }
+
+    private func createPhotoSection() -> NSCollectionLayoutSection {
+        let itemSize = NSCollectionLayoutSize(widthDimension: .absolute(200), heightDimension: .absolute(200))
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        item.contentInsets = NSDirectionalEdgeInsets(top: 2, leading: 2, bottom: 2, trailing: 2)
+        
+        let groupSize = NSCollectionLayoutSize(widthDimension: .estimated(200), heightDimension: .absolute(200))
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+        
+        let section = NSCollectionLayoutSection(group: group)
+        section.orthogonalScrollingBehavior = .continuous
+        section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 10)
+        section.interGroupSpacing = 10
+        
+        let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(44))
+        let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
+        section.boundarySupplementaryItems = [header]
+        
+        return section
+    }
+
+    private func createTextSection() -> NSCollectionLayoutSection {
+        let itemSize = NSCollectionLayoutSize(widthDimension: .estimated(100), heightDimension: .absolute(50))
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        
+        let groupSize = NSCollectionLayoutSize(widthDimension: .estimated(100), heightDimension: .absolute(50))
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+        
+        let section = NSCollectionLayoutSection(group: group)
+        section.orthogonalScrollingBehavior = .continuous
+        section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 10)
+        section.interGroupSpacing = 10
+        
+        let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(44))
+        let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
+        section.boundarySupplementaryItems = [header]
+        
+        return section
     }
     
     override func viewDidLoad() {
@@ -129,6 +177,7 @@ class DayViewController: UIViewController {
         workoutKal = calendarModel.workoutLists?.compactMap { $0.calorieBurned }.reduce(0, +) ?? 0
         
         collectionView.reloadData()
+        collectionView.layoutIfNeeded()
     }
     
     private func setupViews() {
@@ -147,7 +196,7 @@ class DayViewController: UIViewController {
         scrollSubView.snp.makeConstraints {
             $0.edges.equalTo(scrollView.contentLayoutGuide)
             $0.width.equalTo(scrollView.frameLayoutGuide)
-            $0.bottom.equalTo(collectionView.snp.top).offset(550)
+            $0.bottom.equalTo(collectionView.snp.top).offset(850)
         }
         
         dateLabel.snp.makeConstraints {
@@ -196,67 +245,92 @@ extension DayViewController: UICollectionViewDelegate, UICollectionViewDataSourc
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        let count: Int
         switch Section(rawValue: section)! {
+        case .dietText:
+            count = dietTexts.count
         case .dietPhotos:
-            return dietPhotos.count
+            count = dietPhotos.count
+        case .workoutText:
+            count = workoutTexts.count
         case .workoutPhotos:
-            return workoutPhotos.count
+            count = workoutPhotos.count
         }
+        print("Section \(section) has \(count) items")
+        return count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoCell.reuseIdentifier, for: indexPath) as? PhotoCell else { return UICollectionViewCell() }
-        
-        cell.backgroundColor = .clear
-        
-        let photoURL: String
         switch Section(rawValue: indexPath.section)! {
-        case .dietPhotos:
-            photoURL = dietPhotos[indexPath.item]
-        case .workoutPhotos:
-            photoURL = workoutPhotos[indexPath.item]
-        }
+        case .dietPhotos, .workoutPhotos:
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoCell.reuseIdentifier, for: indexPath) as? PhotoCell else { return UICollectionViewCell() }
+            cell.backgroundColor = .clear
+            
+            let photoURL: String
+            if Section(rawValue: indexPath.section) == .dietPhotos {
+                photoURL = dietPhotos[indexPath.item]
+            } else {
+                photoURL = workoutPhotos[indexPath.item]
+            }
+            
+            if let url = URL(string: photoURL), !photoURL.isEmpty {
+                cell.imageView.kf.setImage(
+                    with: url,
+                    placeholder: nil,
+                    options: [
+                        .transition(.fade(0.5))
+                    ],
+                    progressBlock: nil)
+                cell.noImageLabel.isHidden = true
+            } else {
+                cell.imageView.image = nil
+                cell.noImageLabel.isHidden = false
+            }
+            return cell
         
-        if let url = URL(string: photoURL), !photoURL.isEmpty {
-            cell.imageView.kf.setImage(
-                with: url,
-                placeholder: nil,
-                options: [
-                    .transition(.fade(0.5))
-                ],
-                progressBlock: nil)
-            cell.noImageLabel.isHidden = true
-        } else {
-            cell.imageView.image = nil
-            cell.noImageLabel.isHidden = false
+        case .dietText, .workoutText:
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DetailListCell.reuseIdentifier, for: indexPath) as? DetailListCell else { return UICollectionViewCell() }
+            cell.backgroundColor = .clear
+            
+            let title: String
+            let subtitle: String
+            if Section(rawValue: indexPath.section) == .dietText {
+                title = dietTexts[indexPath.item]
+                subtitle = dietSubtexts[indexPath.item]
+            } else {
+                title = workoutTexts[indexPath.item]
+                subtitle = workoutSubtexts[indexPath.item]
+            }
+            
+            cell.titleLabel.text = title
+            cell.subtitleLabel.text = subtitle
+            return cell
         }
-        
-        return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         if kind == UICollectionView.elementKindSectionHeader {
-            let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: HeaderView.reuseIdentifier, for: indexPath) as! HeaderView
+            guard let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: HeaderView.reuseIdentifier, for: indexPath) as? HeaderView else {
+                return UICollectionReusableView()
+            }
+            
             switch Section(rawValue: indexPath.section)! {
-            case .dietPhotos:
+            case .dietText:
                 headerView.titleLabel.text = "식단"
-                if eatKal > 0 {
-                    headerView.subTitleLabel.text = "\(eatKal)kal"
-                } else {
-                    headerView.subTitleLabel.text = ""
-                }
+                headerView.subTitleLabel.text = eatKal > 0 ? "\(eatKal)kal" : ""
                 headerView.subTitleLabel.textColor = .appYellow
                 headerView.dot.backgroundColor = .appYellow
-            case .workoutPhotos:
+                headerView.isHidden = false
+            case .workoutText:
                 headerView.titleLabel.text = "운동"
-                if workoutKal > 0 {
-                    headerView.subTitleLabel.text = "\(workoutKal)kal"
-                } else {
-                    headerView.subTitleLabel.text = ""
-                }
+                headerView.subTitleLabel.text = workoutKal > 0 ? "\(workoutKal)kal" : ""
                 headerView.subTitleLabel.textColor = .appGreen
                 headerView.dot.backgroundColor = .appGreen
+                headerView.isHidden = false
+            case .dietPhotos, .workoutPhotos:
+                headerView.isHidden = true
             }
+            
             return headerView
         }
         return UICollectionReusableView()
