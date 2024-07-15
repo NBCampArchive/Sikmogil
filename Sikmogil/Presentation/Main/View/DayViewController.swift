@@ -24,10 +24,10 @@ class DayViewController: UIViewController {
     
     private var dietPhotos: [String] = []
     private var workoutPhotos: [String] = []
-    private var workoutTexts: [String] = ["a", "b", "c"]
+    private var workoutTexts: [String] = ["aasdfasdfasdfa", "b", "c"]
     private var workoutSubtexts: [String] = ["d", "e", "f"]
-    private var dietTexts: [String] = ["a", "b", "c"]
-    private var dietSubtexts: [String] = ["a", "b", "c"]
+    private var dietTexts: [String] = ["aasdfasdfasdfasdf", "basdf", "c","aasdfasdfasdfasdf", "basdf", "c"]
+    private var dietSubtexts: [String] = ["aasdds", "basdf", "c","aasdfasdfasdfasdf", "basdf", "c"]
     
     private var eatKal: Int = 0
     private var workoutKal: Int = 0
@@ -95,11 +95,11 @@ class DayViewController: UIViewController {
         let itemSize = NSCollectionLayoutSize(widthDimension: .estimated(100), heightDimension: .absolute(50))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(50))
+        let groupSize = NSCollectionLayoutSize(widthDimension: .estimated(100), heightDimension: .absolute(50))
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
-        group.interItemSpacing = .fixed(10) // 아이템 간 간격 설정
         
         let section = NSCollectionLayoutSection(group: group)
+        section.orthogonalScrollingBehavior = .continuous
         section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 10)
         section.interGroupSpacing = 10 // 그룹 간 간격 설정
         
@@ -311,6 +311,7 @@ extension DayViewController: UICollectionViewDelegate, UICollectionViewDataSourc
             
             cell.titleLabel.text = title
             cell.subtitleLabel.text = subtitle
+            cell.contentView.widthAnchor.constraint(greaterThanOrEqualToConstant: 100).isActive = true
             return cell
         }
     }

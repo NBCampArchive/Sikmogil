@@ -29,9 +29,14 @@ class DetailListCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func systemLayoutSizeFitting(_ targetSize: CGSize, withHorizontalFittingPriority horizontalFittingPriority: UILayoutPriority, verticalFittingPriority: UILayoutPriority) -> CGSize {
+        let size = super.systemLayoutSizeFitting(targetSize, withHorizontalFittingPriority: horizontalFittingPriority, verticalFittingPriority: verticalFittingPriority)
+        return CGSize(width: max(size.width, 100), height: size.height)
+    }
+    
     private func setupViews() {
         contentView.backgroundColor = .white
-        contentView.layer.cornerRadius = 8
+        contentView.layer.cornerRadius = 25
         
         contentView.addSubview(titleLabel)
         contentView.addSubview(subtitleLabel)
@@ -45,6 +50,7 @@ class DetailListCell: UICollectionViewCell {
         
         subtitleLabel.snp.makeConstraints {
             $0.centerY.equalToSuperview()
+            $0.leading.equalTo(titleLabel.snp.trailing).offset(8).priority(.low)
             $0.trailing.equalToSuperview().offset(-8)
         }
     }
