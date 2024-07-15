@@ -9,6 +9,8 @@ import UIKit
 import SnapKit
 import Then
 import Combine
+import Kingfisher
+import SkeletonView
 
 enum Section: Int, CaseIterable {
     case dietText
@@ -69,6 +71,7 @@ class DayViewController: UIViewController {
     }
     
     private lazy var collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: createCompositionalLayout()).then {
+        $0.isSkeletonable = true
         $0.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         $0.backgroundColor = .clear
         $0.showsHorizontalScrollIndicator = false
@@ -281,17 +284,24 @@ extension DayViewController: UICollectionViewDelegate, UICollectionViewDataSourc
             }
             
             if let url = URL(string: photoURL), !photoURL.isEmpty {
+                cell.showSkeleton()  // 스켈레톤 표시
                 cell.imageView.kf.setImage(
                     with: url,
                     placeholder: nil,
-                    options: [
-                        .transition(.fade(0.5))
-                    ],
-                    progressBlock: nil)
+                    options: [.transition(.fade(0.5))],
+                    progressBlock: nil) { result in
+                        switch result {
+                        case .success(_):
+                            cell.hideSkeleton()
+                        case .failure(_):
+                            cell.showSkeleton()
+                        }
+                    }
                 cell.noImageLabel.isHidden = true
             } else {
                 cell.imageView.image = nil
                 cell.noImageLabel.isHidden = false
+                cell.hideSkeleton()  // 이미지 URL이 없는 경우 스켈레톤 숨김
             }
             return cell
             

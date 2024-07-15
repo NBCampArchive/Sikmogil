@@ -6,6 +6,9 @@
 //
 
 import UIKit
+import SnapKit
+import Then
+import SkeletonView
 
 class PhotoCell: UICollectionViewCell {
     static let reuseIdentifier = "PhotoCell"
@@ -26,11 +29,26 @@ class PhotoCell: UICollectionViewCell {
         super.init(frame: frame)
         
         setupViews()
+        setupSkeleton()
         noImageLabel.isHidden = true
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func setupSkeleton() {
+        imageView.isSkeletonable = true
+        noImageLabel.isSkeletonable = true
+        contentView.isSkeletonable = true
+    }
+    
+    func showSkeleton() {
+        contentView.showAnimatedGradientSkeleton()
+    }
+    
+    func hideSkeleton() {
+        contentView.hideSkeleton()
     }
     
     private func setupViews() {
