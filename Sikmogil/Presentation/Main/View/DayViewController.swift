@@ -81,6 +81,7 @@ class DayViewController: UIViewController {
         $0.register(DetailListCell.self, forCellWithReuseIdentifier: DetailListCell.reuseIdentifier)
     }
     
+    // MARK: - Compositional Layout
     func createCompositionalLayout() -> UICollectionViewCompositionalLayout {
         return UICollectionViewCompositionalLayout { (sectionIndex, layoutEnvironment) -> NSCollectionLayoutSection? in
             let section = Section(rawValue: sectionIndex)!
@@ -129,6 +130,7 @@ class DayViewController: UIViewController {
         return section
     }
     
+    // MARK: - life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -143,6 +145,7 @@ class DayViewController: UIViewController {
         bindeViewModel()
     }
     
+    // MARK: - ViewModel Binding
     private func bindeViewModel() {
         guard let viewModel = viewModel else { return }
         
@@ -157,6 +160,7 @@ class DayViewController: UIViewController {
             .store(in: &cancellables)
     }
     
+    // MARK: - UI functions
     private func updateUI(with calendarModel: DailyCalendarModel?) {
         guard let calendarModel = calendarModel else { return }
         
@@ -180,6 +184,7 @@ class DayViewController: UIViewController {
         scrollSubView.addSubviews(dateLabel, blueDot, diaryLabel, diaryView, diaryTextView, collectionView)
     }
     
+    // MARK: - Constraints
     private func setupConstraints() {
         scrollView.snp.makeConstraints {
             $0.edges.equalToSuperview()
@@ -231,6 +236,7 @@ class DayViewController: UIViewController {
     }
 }
 
+// MARK: - UICollectionViewDelegate, UICollectionViewDataSource
 extension DayViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return Section.allCases.filter { section in
@@ -284,7 +290,7 @@ extension DayViewController: UICollectionViewDelegate, UICollectionViewDataSourc
             }
             
             if let url = URL(string: photoURL), !photoURL.isEmpty {
-                cell.showSkeleton()  // 스켈레톤 표시
+                cell.showSkeleton()
                 cell.imageView.kf.setImage(
                     with: url,
                     placeholder: nil,
@@ -301,7 +307,7 @@ extension DayViewController: UICollectionViewDelegate, UICollectionViewDataSourc
             } else {
                 cell.imageView.image = nil
                 cell.noImageLabel.isHidden = false
-                cell.hideSkeleton()  // 이미지 URL이 없는 경우 스켈레톤 숨김
+                cell.hideSkeleton()
             }
             return cell
             
