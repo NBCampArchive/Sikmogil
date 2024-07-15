@@ -24,16 +24,6 @@ class DayViewController: UIViewController {
     var viewModel: CalendarViewModel?
     private var cancellables = Set<AnyCancellable>()
     
-    private var dietPhotos: [String] = []
-    private var workoutPhotos: [String] = []
-    private var workoutTexts: [String] = ["aasdfasdfasdfa", "b", "c"]
-    private var workoutSubtexts: [String] = ["d", "e", "f"]
-    private var dietTexts: [String] = ["aasdfasdfasdfasdf", "basdf", "c","aasdfasdfasdfasdf", "basdf", "c"]
-    private var dietSubtexts: [String] = ["aasdds", "basdf", "c","aasdfasdfasdfasdf", "basdf", "c"]
-    
-    private var eatKal: Int = 0
-    private var workoutKal: Int = 0
-    
     private let scrollView = UIScrollView().then {
         $0.backgroundColor = .clear
     }
@@ -155,25 +145,20 @@ class DayViewController: UIViewController {
         viewModel.$calendarModels
             .receive(on: DispatchQueue.main)
             .sink { calendarModel in
-                self.updateUI(with: calendarModel)
+                self.updateUI()
             }
             .store(in: &cancellables)
     }
     
     // MARK: - UI functions
-    private func updateUI(with calendarModel: DailyCalendarModel?) {
-        guard let calendarModel = calendarModel else { return }
+    private func updateUI() {
+        guard let viewModel = viewModel else { return }
         
-        dateLabel.text = calendarModel.diaryDate
-        diaryTextView.text = calendarModel.diaryText
-        
-        dietPhotos = calendarModel.dietPictureDTOS?.compactMap { $0.foodPicture }.filter { !$0.isEmpty } ?? []
-        eatKal = calendarModel.totalCalorieEaten ?? 0
-        workoutPhotos = calendarModel.workoutLists?.compactMap { $0.workoutPicture }.filter { !$0.isEmpty } ?? []
-        workoutKal = calendarModel.workoutLists?.compactMap { $0.calorieBurned }.reduce(0, +) ?? 0
-        
+        dateLabel.text = viewModel.diaryDate
+        diaryTextView.text = viewModel.diaryText
+
         collectionView.reloadData()
-        collectionView.layoutIfNeeded()
+//        collectionView.layoutIfNeeded()
     }
     
     private func setupViews() {
@@ -239,54 +224,47 @@ class DayViewController: UIViewController {
 // MARK: - UICollectionViewDelegate, UICollectionViewDataSource
 extension DayViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return Section.allCases.filter { section in
-            switch section {
-            case .dietText: return !dietTexts.isEmpty
-            case .dietPhotos: return !dietPhotos.isEmpty
-            case .workoutText: return !workoutTexts.isEmpty
-            case .workoutPhotos: return !workoutPhotos.isEmpty
-            }
-        }.count
+        return viewModel?.numberOfSections() ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        let nonEmptySections = Section.allCases.filter { section in
-            switch section {
-            case .dietText: return !dietTexts.isEmpty
-            case .dietPhotos: return !dietPhotos.isEmpty
-            case .workoutText: return !workoutTexts.isEmpty
-            case .workoutPhotos: return !workoutPhotos.isEmpty
-            }
-        }
+        guard let viewModel = viewModel else { return 0 }
         
-        let currentSection = nonEmptySections[section]
-        switch currentSection {
-        case .dietText: return dietTexts.count
-        case .dietPhotos: return dietPhotos.count
-        case .workoutText: return workoutTexts.count
-        case .workoutPhotos: return workoutPhotos.count
+        switch Section(rawValue: section)! {
+        case .dietText:
+            return viewModel.dietTexts.count
+        case .dietPhotos:
+            return viewModel.dietPhotos.count
+        case .workoutText:
+            return viewModel.workoutTexts.count
+        case .workoutPhotos:
+            return viewModel.workoutPhotos.count
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        switch Section(rawValue: indexPath.section)! {
+        guard let viewModel = viewModel else { return UICollectionViewCell() }
+        let sections = viewModel.sections()
+        let section = sections[indexPath.section]
+        
+        switch section {
         case .dietPhotos, .workoutPhotos:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoCell.reuseIdentifier, for: indexPath) as? PhotoCell else { return UICollectionViewCell() }
             cell.backgroundColor = .clear
             
             let photoURL: String
             if Section(rawValue: indexPath.section) == .dietPhotos {
-                guard indexPath.item < dietPhotos.count else {
+                guard indexPath.item < viewModel.dietPhotos.count else {
                     // 범위를 벗어난 경우 빈 셀 반환
                     return cell
                 }
-                photoURL = dietPhotos[indexPath.item]
+                photoURL = viewModel.dietPhotos[indexPath.item]
             } else {
-                guard indexPath.item < workoutPhotos.count else {
+                guard indexPath.item < viewModel.workoutPhotos.count else {
                     // 범위를 벗어난 경우 빈 셀 반환
                     return cell
                 }
-                photoURL = workoutPhotos[indexPath.item]
+                photoURL = viewModel.workoutPhotos[indexPath.item]
             }
             
             if let url = URL(string: photoURL), !photoURL.isEmpty {
@@ -318,11 +296,11 @@ extension DayViewController: UICollectionViewDelegate, UICollectionViewDataSourc
             let title: String
             let subtitle: String
             if Section(rawValue: indexPath.section) == .dietText {
-                title = dietTexts[indexPath.item]
-                subtitle = dietSubtexts[indexPath.item]
+                title = viewModel.dietTexts[indexPath.item]
+                subtitle = viewModel.dietSubtexts[indexPath.item]
             } else {
-                title = workoutTexts[indexPath.item]
-                subtitle = workoutSubtexts[indexPath.item]
+                title = viewModel.workoutTexts[indexPath.item]
+                subtitle = viewModel.workoutSubtexts[indexPath.item]
             }
             
             cell.titleLabel.text = title
@@ -341,13 +319,13 @@ extension DayViewController: UICollectionViewDelegate, UICollectionViewDataSourc
             switch Section(rawValue: indexPath.section)! {
             case .dietText:
                 headerView.titleLabel.text = "식단"
-                headerView.subTitleLabel.text = eatKal > 0 ? "\(eatKal)kal" : ""
+                headerView.subTitleLabel.text = (viewModel?.eatKal.description ?? "") + " Kal"
                 headerView.subTitleLabel.textColor = .appYellow
                 headerView.dot.backgroundColor = .appYellow
                 headerView.isHidden = false
             case .workoutText:
                 headerView.titleLabel.text = "운동"
-                headerView.subTitleLabel.text = workoutKal > 0 ? "\(workoutKal)kal" : ""
+                headerView.subTitleLabel.text = (viewModel?.workoutKal.description ?? "") + " Kal"
                 headerView.subTitleLabel.textColor = .appGreen
                 headerView.dot.backgroundColor = .appGreen
                 headerView.isHidden = false

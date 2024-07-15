@@ -16,7 +16,18 @@ class CalendarViewModel: ObservableObject {
     @Published var targetDate: Date?
     @Published var postSuccess: Bool = false
     @Published var selectedDate: Date?
- 
+    
+    @Published var dietPhotos: [String] = []
+    @Published var workoutPhotos: [String] = []
+    @Published var eatKal: Int = 0
+    @Published var workoutKal: Int = 0
+    @Published var diaryDate: String = ""
+    @Published var diaryText: String = ""
+    @Published var workoutTexts: [String] = []
+    @Published var workoutSubtexts: [String] = []
+    @Published var dietTexts: [String] = []
+    @Published var dietSubtexts: [String] = []
+    
     private var cancellables = Set<AnyCancellable>()
     private let calendarService = CalendarAPIManager.shared
     
@@ -73,7 +84,58 @@ class CalendarViewModel: ObservableObject {
                 }
             } receiveValue: { calendarModels in
                 self.calendarModels = calendarModels
+                self.loadDayDiet(calendarDate: calendarDate)
+                self.updateDerivedData(from: calendarModels)
             }
             .store(in: &cancellables)
+    }
+    
+    private func updateDerivedData(from calendarModel: DailyCalendarModel) {
+        self.diaryDate = calendarModel.diaryDate
+        self.diaryText = calendarModel.diaryText ?? ""
+        
+        self.dietPhotos = calendarModel.dietPictureDTOS?.compactMap { $0.foodPicture }.filter { !$0.isEmpty } ?? []
+        self.workoutPhotos = calendarModel.workoutLists?.compactMap { $0.workoutPicture }.filter { !$0.isEmpty } ?? []
+        self.workoutKal = calendarModel.workoutLists?.compactMap { $0.calorieBurned }.reduce(0, +) ?? 0
+        self.workoutTexts = calendarModel.workoutLists?.compactMap { $0.performedWorkout } ?? []
+        self.workoutSubtexts = calendarModel.workoutLists?.compactMap { $0.calorieBurned }.compactMap { "\($0) Kal" } ?? []
+    }
+    
+    // MARK: - 특정 날짜 식단 정보 불러오기
+    func loadDayDiet(calendarDate: String) {
+        DietAPIManager.shared.getDietListByDate(date: calendarDate) { result in
+            switch result {
+            case .success(let dietList):
+                self.eatKal = dietList.map { $0.calorie }.reduce(0, +)
+                self.dietTexts = dietList.map { $0.foodName }
+                self.dietSubtexts = dietList.map { "\($0.calorie) Kal" }
+                print("Loaded Diet List: \(dietList) date:\(calendarDate)")
+            case .failure(let error):
+                self.errorMessage = error.localizedDescription
+            }
+        }
+    }
+    
+    // MARK: - collectinView Sections
+    func numberOfSections() -> Int {
+        return Section.allCases.filter { section in
+            switch section {
+            case .dietText: return !self.dietTexts.isEmpty
+            case .dietPhotos: return !self.dietPhotos.isEmpty
+            case .workoutText: return !self.workoutTexts.isEmpty
+            case .workoutPhotos: return !self.workoutPhotos.isEmpty
+            }
+        }.count
+    }
+    
+    func sections() -> [Section] {
+        return Section.allCases.filter { section in
+            switch section {
+            case .dietText: return !self.dietTexts.isEmpty
+            case .dietPhotos: return !self.dietPhotos.isEmpty
+            case .workoutText: return !self.workoutTexts.isEmpty
+            case .workoutPhotos: return !self.workoutPhotos.isEmpty
+            }
+        }
     }
 }
