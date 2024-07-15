@@ -69,6 +69,7 @@ class DayViewController: UIViewController {
     private lazy var collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: createCompositionalLayout()).then {
         $0.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         $0.backgroundColor = .clear
+        $0.showsHorizontalScrollIndicator = false
         $0.isScrollEnabled = false
         $0.register(PhotoCell.self, forCellWithReuseIdentifier: PhotoCell.reuseIdentifier)
         $0.register(HeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: HeaderView.reuseIdentifier)
@@ -79,26 +80,35 @@ class DayViewController: UIViewController {
         return UICollectionViewCompositionalLayout { (sectionIndex, layoutEnvironment) -> NSCollectionLayoutSection? in
             let section = Section(rawValue: sectionIndex)!
             
-            let sectionLayout: NSCollectionLayoutSection
             switch section {
-            case .dietPhotos, .workoutPhotos:
-                sectionLayout = self.createPhotoSection()
             case .dietText, .workoutText:
-                sectionLayout = self.createTextSection()
+                return self.createTextSectionWithHeader()
+            case .dietPhotos, .workoutPhotos:
+                return self.createPhotoSectionWithoutHeader()
             }
-            
-            // 텍스트 섹션에만 헤더 추가
-            if case .dietText = section, case .workoutText = section {
-                let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(44))
-                let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
-                sectionLayout.boundarySupplementaryItems = [header]
-            }
-            
-            return sectionLayout
         }
     }
-
-    private func createPhotoSection() -> NSCollectionLayoutSection {
+    
+    private func createTextSectionWithHeader() -> NSCollectionLayoutSection {
+        let itemSize = NSCollectionLayoutSize(widthDimension: .estimated(100), heightDimension: .absolute(50))
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(50))
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+        group.interItemSpacing = .fixed(10) // 아이템 간 간격 설정
+        
+        let section = NSCollectionLayoutSection(group: group)
+        section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 10)
+        section.interGroupSpacing = 10 // 그룹 간 간격 설정
+        
+        let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(44))
+        let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
+        section.boundarySupplementaryItems = [header]
+        
+        return section
+    }
+    
+    private func createPhotoSectionWithoutHeader() -> NSCollectionLayoutSection {
         let itemSize = NSCollectionLayoutSize(widthDimension: .absolute(200), heightDimension: .absolute(200))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         item.contentInsets = NSDirectionalEdgeInsets(top: 2, leading: 2, bottom: 2, trailing: 2)
@@ -109,30 +119,7 @@ class DayViewController: UIViewController {
         let section = NSCollectionLayoutSection(group: group)
         section.orthogonalScrollingBehavior = .continuous
         section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 10)
-        section.interGroupSpacing = 10
-        
-        let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(44))
-        let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
-        section.boundarySupplementaryItems = [header]
-        
-        return section
-    }
-
-    private func createTextSection() -> NSCollectionLayoutSection {
-        let itemSize = NSCollectionLayoutSize(widthDimension: .estimated(100), heightDimension: .absolute(50))
-        let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        
-        let groupSize = NSCollectionLayoutSize(widthDimension: .estimated(100), heightDimension: .absolute(50))
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
-        
-        let section = NSCollectionLayoutSection(group: group)
-        section.orthogonalScrollingBehavior = .continuous
-        section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 10)
-        section.interGroupSpacing = 10
-        
-        let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(44))
-        let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
-        section.boundarySupplementaryItems = [header]
+        section.interGroupSpacing = 10 // 이미지 간 간격
         
         return section
     }
@@ -241,23 +228,33 @@ class DayViewController: UIViewController {
 
 extension DayViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return Section.allCases.count
+        return Section.allCases.filter { section in
+            switch section {
+            case .dietText: return !dietTexts.isEmpty
+            case .dietPhotos: return !dietPhotos.isEmpty
+            case .workoutText: return !workoutTexts.isEmpty
+            case .workoutPhotos: return !workoutPhotos.isEmpty
+            }
+        }.count
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        let count: Int
-        switch Section(rawValue: section)! {
-        case .dietText:
-            count = dietTexts.count
-        case .dietPhotos:
-            count = dietPhotos.count
-        case .workoutText:
-            count = workoutTexts.count
-        case .workoutPhotos:
-            count = workoutPhotos.count
+        let nonEmptySections = Section.allCases.filter { section in
+            switch section {
+            case .dietText: return !dietTexts.isEmpty
+            case .dietPhotos: return !dietPhotos.isEmpty
+            case .workoutText: return !workoutTexts.isEmpty
+            case .workoutPhotos: return !workoutPhotos.isEmpty
+            }
         }
-        print("Section \(section) has \(count) items")
-        return count
+        
+        let currentSection = nonEmptySections[section]
+        switch currentSection {
+        case .dietText: return dietTexts.count
+        case .dietPhotos: return dietPhotos.count
+        case .workoutText: return workoutTexts.count
+        case .workoutPhotos: return workoutPhotos.count
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -268,8 +265,16 @@ extension DayViewController: UICollectionViewDelegate, UICollectionViewDataSourc
             
             let photoURL: String
             if Section(rawValue: indexPath.section) == .dietPhotos {
+                guard indexPath.item < dietPhotos.count else {
+                    // 범위를 벗어난 경우 빈 셀 반환
+                    return cell
+                }
                 photoURL = dietPhotos[indexPath.item]
             } else {
+                guard indexPath.item < workoutPhotos.count else {
+                    // 범위를 벗어난 경우 빈 셀 반환
+                    return cell
+                }
                 photoURL = workoutPhotos[indexPath.item]
             }
             
@@ -287,7 +292,7 @@ extension DayViewController: UICollectionViewDelegate, UICollectionViewDataSourc
                 cell.noImageLabel.isHidden = false
             }
             return cell
-        
+            
         case .dietText, .workoutText:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DetailListCell.reuseIdentifier, for: indexPath) as? DetailListCell else { return UICollectionViewCell() }
             cell.backgroundColor = .clear
