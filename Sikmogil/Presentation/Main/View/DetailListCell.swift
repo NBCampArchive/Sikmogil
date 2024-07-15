@@ -34,6 +34,12 @@ class DetailListCell: UICollectionViewCell {
         return CGSize(width: max(size.width, 100), height: size.height)
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        titleLabel.text = nil
+        subtitleLabel.text = nil
+    }
+    
     private func setupViews() {
         contentView.backgroundColor = .white
         contentView.layer.cornerRadius = 25
