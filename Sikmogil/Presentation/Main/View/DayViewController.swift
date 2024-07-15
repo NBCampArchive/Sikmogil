@@ -141,6 +141,7 @@ class DayViewController: UIViewController {
         
         viewModel.loadDayCalendar(calendarDate: DateHelper.shared.formatDateToYearMonthDay( viewModel.selectedDate ?? Date()))
         print(DateHelper.shared.formatDateToYearMonthDay( viewModel.selectedDate ?? Date()))
+        viewModel.loadDayDiet(calendarDate: DateHelper.shared.formatDateToYearMonthDay( viewModel.selectedDate ?? Date()))
         
         viewModel.$calendarModels
             .receive(on: DispatchQueue.main)

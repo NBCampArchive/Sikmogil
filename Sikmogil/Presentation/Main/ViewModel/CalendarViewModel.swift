@@ -84,7 +84,6 @@ class CalendarViewModel: ObservableObject {
                 }
             } receiveValue: { calendarModels in
                 self.calendarModels = calendarModels
-                self.loadDayDiet(calendarDate: calendarDate)
                 self.updateDerivedData(from: calendarModels)
             }
             .store(in: &cancellables)
