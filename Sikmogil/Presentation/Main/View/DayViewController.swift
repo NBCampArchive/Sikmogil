@@ -159,7 +159,7 @@ class DayViewController: UIViewController {
         diaryTextView.text = viewModel.diaryText
         
         collectionView.reloadData()
-        //        collectionView.layoutIfNeeded()
+        collectionView.layoutIfNeeded()
     }
     
     private func setupViews() {
