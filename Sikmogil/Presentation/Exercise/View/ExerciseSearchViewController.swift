@@ -109,18 +109,17 @@ class ExerciseSearchViewController: UIViewController {
 
 extension ExerciseSearchViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        if searchText.isEmpty {
-            searchResults = exerciseList
-        } else {
-            searchResults = exerciseList.filter { $0.lowercased().contains(searchText.lowercased()) }
-        }
-        tableView.reloadData()
+        filterExercises(searchText: searchText)
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        filterExercises(searchText: searchBar.text ?? "")
+        dismissKeyboard()
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         searchBar.text = ""
-        searchResults = exerciseList
-        tableView.reloadData()
+        filterExercises(searchText: "")
         dismissKeyboard()
     }
     
@@ -130,6 +129,15 @@ extension ExerciseSearchViewController: UISearchBarDelegate {
     
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
         searchBar.setShowsCancelButton(false, animated: true)
+    }
+    
+    private func filterExercises(searchText: String) {
+        if searchText.isEmpty {
+            searchResults = []
+        } else {
+            searchResults = exerciseList.filter { $0.lowercased().contains(searchText.lowercased()) }
+        }
+        tableView.reloadData()
     }
 }
 
