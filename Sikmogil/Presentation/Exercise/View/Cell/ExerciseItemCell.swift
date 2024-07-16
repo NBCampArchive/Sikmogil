@@ -20,7 +20,7 @@ class ExerciseItemCell: UITableViewCell {
     }
 
     let exerciseLabel = UILabel().then {
-        $0.font = Suite.semiBold.of(size: 18)
+        $0.font = Suite.medium.of(size: 16)
     }
 
     let plusButton = UIButton().then {
@@ -53,7 +53,7 @@ class ExerciseItemCell: UITableViewCell {
     private func setupConstraints() {
         cardView.snp.makeConstraints {
             $0.top.bottom.equalToSuperview().inset(8)
-            $0.horizontalEdges.equalToSuperview().inset(16)
+            $0.horizontalEdges.equalToSuperview().inset(8)
         }
         
         exerciseLabel.snp.makeConstraints {
@@ -64,6 +64,7 @@ class ExerciseItemCell: UITableViewCell {
         plusButton.snp.makeConstraints{
             $0.trailing.equalToSuperview().inset(16)
             $0.width.height.equalTo(24)
+            $0.centerY.equalToSuperview()
         }
     }
 
