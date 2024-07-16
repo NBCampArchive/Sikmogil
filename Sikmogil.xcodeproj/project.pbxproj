@@ -156,6 +156,8 @@
 		F3094F0E2C19A1BE0099DE2C /* ExerciseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3094F0D2C19A1BE0099DE2C /* ExerciseViewModel.swift */; };
 		F319910F2C2DD3EB004730D7 /* ExerciseAlbumViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F319910E2C2DD3EB004730D7 /* ExerciseAlbumViewModel.swift */; };
 		F31991112C306587004730D7 /* PhotoSelectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F31991102C306587004730D7 /* PhotoSelectViewController.swift */; };
+		F31991132C4657F0004730D7 /* ExerciseSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F31991122C4657F0004730D7 /* ExerciseSearchViewController.swift */; };
+		F31991152C465A85004730D7 /* ExerciseItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F31991142C465A84004730D7 /* ExerciseItemCell.swift */; };
 		F35E46562C2BE1B800917AE1 /* ExerciseAlbumViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F35E46552C2BE1B800917AE1 /* ExerciseAlbumViewController.swift */; };
 		F35E46582C2BE22D00917AE1 /* ExerciseAlbumCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F35E46572C2BE22D00917AE1 /* ExerciseAlbumCell.swift */; };
 		F35E465A2C2BE3E900917AE1 /* PhotoRecordFloatingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F35E46592C2BE3E900917AE1 /* PhotoRecordFloatingViewController.swift */; };
@@ -299,6 +301,8 @@
 		F3094F0D2C19A1BE0099DE2C /* ExerciseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseViewModel.swift; sourceTree = "<group>"; };
 		F319910E2C2DD3EB004730D7 /* ExerciseAlbumViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExerciseAlbumViewModel.swift; sourceTree = "<group>"; };
 		F31991102C306587004730D7 /* PhotoSelectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoSelectViewController.swift; sourceTree = "<group>"; };
+		F31991122C4657F0004730D7 /* ExerciseSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseSearchViewController.swift; sourceTree = "<group>"; };
+		F31991142C465A84004730D7 /* ExerciseItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseItemCell.swift; sourceTree = "<group>"; };
 		F35E46552C2BE1B800917AE1 /* ExerciseAlbumViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseAlbumViewController.swift; sourceTree = "<group>"; };
 		F35E46572C2BE22D00917AE1 /* ExerciseAlbumCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseAlbumCell.swift; sourceTree = "<group>"; };
 		F35E46592C2BE3E900917AE1 /* PhotoRecordFloatingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoRecordFloatingViewController.swift; sourceTree = "<group>"; };
@@ -829,6 +833,7 @@
 			isa = PBXGroup;
 			children = (
 				F3094EC32C0DB1940099DE2C /* ExerciseHistoryCell.swift */,
+				F31991142C465A84004730D7 /* ExerciseItemCell.swift */,
 				F35E46572C2BE22D00917AE1 /* ExerciseAlbumCell.swift */,
 			);
 			path = Cell;
@@ -849,6 +854,7 @@
 				F3094F052C1841240099DE2C /* ExerciseMenuViewController.swift */,
 				B52001B52C12F4570083CBDF /* StepsViewController.swift */,
 				F3094EC02C0D91310099DE2C /* ExerciseViewController.swift */,
+				F31991122C4657F0004730D7 /* ExerciseSearchViewController.swift */,
 				F3094EC52C0E40040099DE2C /* ExerciseSelectionViewController.swift */,
 				F3094EEE2C0EEDA40099DE2C /* ExerciseTimerViewController.swift */,
 				F3094EF02C0EEDBA0099DE2C /* ExerciseResultViewController.swift */,
@@ -1077,12 +1083,14 @@
 				B54ABF8A2C09BD43002E89DC /* SceneDelegate.swift in Sources */,
 				CA13FDE82C22E76C007B3DBE /* LunchTableViewCell.swift in Sources */,
 				B52001D22C171B8C0083CBDF /* DietAlbumCollectionViewCell.swift in Sources */,
+				F31991152C465A85004730D7 /* ExerciseItemCell.swift in Sources */,
 				546E32352C1078FA00E94C2A /* GoalSettingsViewController.swift in Sources */,
 				B54ABFD12C0CBC55002E89DC /* DateHelper.swift in Sources */,
 				543B10AE2C20265B00C700B1 /* ProfileAPIManager.swift in Sources */,
 				B52001B22C1217DA0083CBDF /* WaveProgressView.swift in Sources */,
 				B54AC0152C1055DA002E89DC /* OnboardingProgressBar.swift in Sources */,
 				B54ABFF82C0F0DC7002E89DC /* LoginAPIManager.swift in Sources */,
+				F31991132C4657F0004730D7 /* ExerciseSearchViewController.swift in Sources */,
 				B5CBB2122C2D12F300C672DB /* AuthInterceptor.swift in Sources */,
 				B54AC01E2C1056C3002E89DC /* Step3ViewController.swift in Sources */,
 				F36105B72C1BFF7600237572 /* Double.swift in Sources */,

@@ -114,9 +114,9 @@ class ExerciseMenuViewController: UIViewController {
     }
     
     @objc private func plusMenuButtonButtonTapped() {
-        let exerciseSelectionVC = ExerciseSelectionViewController()
-        exerciseSelectionVC.hidesBottomBarWhenPushed = true
-        navigationController?.pushViewController(exerciseSelectionVC, animated: true)
+        let exerciseSearchVC = ExerciseSearchViewController()
+        exerciseSearchVC.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(exerciseSearchVC, animated: true)
     }
 
     private func transition(to viewController: UIViewController) {
