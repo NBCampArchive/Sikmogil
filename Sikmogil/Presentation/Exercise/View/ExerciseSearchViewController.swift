@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import SnapKit
+import Then
 
 class ExerciseSearchViewController: UIViewController {
     // MARK: - Properties
@@ -40,6 +42,7 @@ class ExerciseSearchViewController: UIViewController {
     let tableView = UITableView().then {
         $0.backgroundColor = .clear
         $0.separatorStyle = .none
+        $0.register(ExerciseItemCell.self, forCellReuseIdentifier: ExerciseItemCell.identifier)
     }
     
     // MARK: - View Life Cycle
@@ -49,6 +52,7 @@ class ExerciseSearchViewController: UIViewController {
         setupConstraints()
         
         navigationController?.navigationBar.isHidden = false
+        configureKeyboard()
     }
     
     // MARK: - Setup View
@@ -58,6 +62,7 @@ class ExerciseSearchViewController: UIViewController {
         
         searchBar.delegate = self
         tableView.dataSource = self
+        tableView.delegate = self
     }
 
     private func setupConstraints() {
@@ -77,7 +82,31 @@ class ExerciseSearchViewController: UIViewController {
             $0.bottom.equalToSuperview().inset(16)
         }
     }
+    
+    // MARK: - Keyboard Configuration
+    private func configureKeyboard() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        view.addGestureRecognizer(tapGesture)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    @objc override func dismissKeyboard() {
+        view.endEditing(true)
+    }
+    
+    @objc private func keyboardWillShow(_ notification: Notification) {
+        if let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect {
+            tableView.contentInset.bottom = keyboardFrame.height
+        }
+    }
+    
+    @objc private func keyboardWillHide(_ notification: Notification) {
+        tableView.contentInset.bottom = 0
+    }
 }
+
 extension ExerciseSearchViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if searchText.isEmpty {
@@ -87,7 +116,23 @@ extension ExerciseSearchViewController: UISearchBarDelegate {
         }
         tableView.reloadData()
     }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.text = ""
+        searchResults = exerciseList
+        tableView.reloadData()
+        dismissKeyboard()
+    }
+    
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        searchBar.setShowsCancelButton(true, animated: true)
+    }
+    
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        searchBar.setShowsCancelButton(false, animated: true)
+    }
 }
+
 extension ExerciseSearchViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return searchResults.count
