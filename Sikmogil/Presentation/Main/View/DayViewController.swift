@@ -157,9 +157,9 @@ class DayViewController: UIViewController {
         
         dateLabel.text = viewModel.diaryDate
         diaryTextView.text = viewModel.diaryText
-
+        
         collectionView.reloadData()
-//        collectionView.layoutIfNeeded()
+        //        collectionView.layoutIfNeeded()
     }
     
     private func setupViews() {
@@ -225,30 +225,20 @@ class DayViewController: UIViewController {
 // MARK: - UICollectionViewDelegate, UICollectionViewDataSource
 extension DayViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return viewModel?.numberOfSections() ?? 0
+        return viewModel?.sections().count ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         guard let viewModel = viewModel else { return 0 }
-        
-        switch Section(rawValue: section)! {
-        case .dietText:
-            return viewModel.dietTexts.count
-        case .dietPhotos:
-            return viewModel.dietPhotos.count
-        case .workoutText:
-            return viewModel.workoutTexts.count
-        case .workoutPhotos:
-            return viewModel.workoutPhotos.count
-        }
+        let sectionType = viewModel.sections()[section]
+        return viewModel.numberOfItems(in: sectionType)
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let viewModel = viewModel else { return UICollectionViewCell() }
-        let sections = viewModel.sections()
-        let section = sections[indexPath.section]
+        let sectionType = viewModel.sections()[indexPath.section]
         
-        switch section {
+        switch sectionType {
         case .dietPhotos, .workoutPhotos:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoCell.reuseIdentifier, for: indexPath) as? PhotoCell else { return UICollectionViewCell() }
             cell.backgroundColor = .clear
@@ -312,26 +302,35 @@ extension DayViewController: UICollectionViewDelegate, UICollectionViewDataSourc
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        guard let viewModel = viewModel else { return UICollectionReusableView() }
+        let sectionType = viewModel.sections()[indexPath.section]
+        
         if kind == UICollectionView.elementKindSectionHeader {
             guard let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: HeaderView.reuseIdentifier, for: indexPath) as? HeaderView else {
                 return UICollectionReusableView()
             }
             
-            switch Section(rawValue: indexPath.section)! {
-            case .dietText:
-                headerView.titleLabel.text = "식단"
-                headerView.subTitleLabel.text = (viewModel?.eatKal.description ?? "") + " Kal"
-                headerView.subTitleLabel.textColor = .appYellow
-                headerView.dot.backgroundColor = .appYellow
-                headerView.isHidden = false
-            case .workoutText:
-                headerView.titleLabel.text = "운동"
-                headerView.subTitleLabel.text = (viewModel?.workoutKal.description ?? "") + " Kal"
-                headerView.subTitleLabel.textColor = .appGreen
-                headerView.dot.backgroundColor = .appGreen
-                headerView.isHidden = false
-            case .dietPhotos, .workoutPhotos:
-                headerView.isHidden = true
+            switch sectionType {
+            case .dietText, .dietPhotos:
+                if viewModel.shouldShowHeader(for: sectionType) {
+                    headerView.titleLabel.text = "식단"
+                    headerView.subTitleLabel.text = viewModel.eatKal > 0 ? "\(viewModel.eatKal)kal" : ""
+                    headerView.subTitleLabel.textColor = .appYellow
+                    headerView.dot.backgroundColor = .appYellow
+                    headerView.isHidden = false
+                } else {
+                    headerView.isHidden = true
+                }
+            case .workoutText, .workoutPhotos:
+                if viewModel.shouldShowHeader(for: sectionType) {
+                    headerView.titleLabel.text = "운동"
+                    headerView.subTitleLabel.text = viewModel.workoutKal > 0 ? "\(viewModel.workoutKal)kal" : ""
+                    headerView.subTitleLabel.textColor = .appGreen
+                    headerView.dot.backgroundColor = .appGreen
+                    headerView.isHidden = false
+                } else {
+                    headerView.isHidden = true
+                }
             }
             
             return headerView

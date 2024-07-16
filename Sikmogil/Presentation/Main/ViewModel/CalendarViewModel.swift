@@ -116,25 +116,34 @@ class CalendarViewModel: ObservableObject {
     }
     
     // MARK: - collectinView Sections
-    func numberOfSections() -> Int {
-        return Section.allCases.filter { section in
-            switch section {
-            case .dietText: return !self.dietTexts.isEmpty
-            case .dietPhotos: return !self.dietPhotos.isEmpty
-            case .workoutText: return !self.workoutTexts.isEmpty
-            case .workoutPhotos: return !self.workoutPhotos.isEmpty
-            }
-        }.count
+    func sections() -> [Section] {
+        return Section.allCases
     }
     
-    func sections() -> [Section] {
-        return Section.allCases.filter { section in
-            switch section {
-            case .dietText: return !self.dietTexts.isEmpty
-            case .dietPhotos: return !self.dietPhotos.isEmpty
-            case .workoutText: return !self.workoutTexts.isEmpty
-            case .workoutPhotos: return !self.workoutPhotos.isEmpty
-            }
+    func isEmpty(_ section: Section) -> Bool {
+        switch section {
+        case .dietText: return self.dietTexts.isEmpty
+        case .dietPhotos: return self.dietPhotos.isEmpty
+        case .workoutText: return self.workoutTexts.isEmpty
+        case .workoutPhotos: return self.workoutPhotos.isEmpty
+        }
+    }
+    
+    func numberOfItems(in section: Section) -> Int {
+        switch section {
+        case .dietText: return self.dietTexts.count
+        case .dietPhotos: return self.dietPhotos.count
+        case .workoutText: return self.workoutTexts.count
+        case .workoutPhotos: return self.workoutPhotos.count
+        }
+    }
+    
+    func shouldShowHeader(for section: Section) -> Bool {
+        switch section {
+        case .dietText, .dietPhotos:
+            return !self.dietTexts.isEmpty || !self.dietPhotos.isEmpty
+        case .workoutText, .workoutPhotos:
+            return !self.workoutTexts.isEmpty || !self.workoutPhotos.isEmpty
         }
     }
 }
