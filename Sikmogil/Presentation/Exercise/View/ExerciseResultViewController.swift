@@ -407,7 +407,7 @@ class ExerciseResultViewController: UIViewController, FloatingPanelControllerDel
         
         recodingPhotoPanel = FloatingPanelController()
         
-        let contentVC = PhotoRecordFloatingViewController()
+        let contentVC = PhotoRecordViewController()
         contentVC.viewModel = self.viewModel
 
         recodingPhotoPanel.set(contentViewController: contentVC)

@@ -10,7 +10,7 @@ import SnapKit
 import Then
 import Kingfisher
 
-class PhotoSelectViewController: UIViewController {
+class ExercisePhotoViewController: UIViewController {
     
     private var imageURL: URL
     private var titleText: String

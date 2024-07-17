@@ -8,11 +8,14 @@
 import UIKit
 import SnapKit
 import Then
+import FloatingPanel
+import NVActivityIndicatorView
 
-class ExerciseSearchViewController: UIViewController {
+class ExerciseSearchViewController: UIViewController, FloatingPanelControllerDelegate {
     // MARK: - Properties
     var searchResults: [String] = []
     var exerciseList: [String] = ["운동1", "운동2", "운동3", "운동4", "운동5", "운동6", "운동7"]
+    var addDirectPanel = FloatingPanelController()
     
     // MARK: - Components
     let titleLabel = UILabel().then {
@@ -26,6 +29,8 @@ class ExerciseSearchViewController: UIViewController {
         $0.setTitle("+ 직접 추가", for: .normal)
         $0.backgroundColor = .appBlack
         $0.layer.cornerRadius = 16
+        $0.titleLabel?.font = Suite.semiBold.of(size: 14)
+        $0.setTitleColor(.white, for: .normal)
     }
    
     let searchBar = UISearchBar().then {
@@ -48,11 +53,11 @@ class ExerciseSearchViewController: UIViewController {
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationController?.navigationBar.isHidden = false
         setupViews()
         setupConstraints()
-        
-        navigationController?.navigationBar.isHidden = false
         configureKeyboard()
+        setupFloatingPanel()
     }
     
     // MARK: - Setup View
@@ -63,12 +68,20 @@ class ExerciseSearchViewController: UIViewController {
         searchBar.delegate = self
         tableView.dataSource = self
         tableView.delegate = self
+        addDirectButton.addTarget(self, action: #selector(addDirectButtonTapped), for: .touchUpInside)
     }
 
     private func setupConstraints() {
         titleLabel.snp.makeConstraints{
             $0.top.equalToSuperview().offset(100)
             $0.leading.equalToSuperview().offset(16)
+        }
+        
+        addDirectButton.snp.makeConstraints {
+            $0.centerY.equalTo(titleLabel)
+            $0.trailing.equalToSuperview().inset(16)
+            $0.width.equalTo(100)
+            $0.height.equalTo(34)
         }
         
         searchBar.snp.makeConstraints{
@@ -104,6 +117,16 @@ class ExerciseSearchViewController: UIViewController {
     
     @objc private func keyboardWillHide(_ notification: Notification) {
         tableView.contentInset.bottom = 0
+    }
+    
+    // MARK: - FloatingPanel
+    
+    @objc private func addDirectButtonTapped() {
+        self.present(addDirectPanel, animated: true)
+    }
+    
+    func setupFloatingPanel() {
+       
     }
 }
 

@@ -155,12 +155,13 @@
 		F3094F062C1841240099DE2C /* ExerciseMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3094F052C1841240099DE2C /* ExerciseMenuViewController.swift */; };
 		F3094F0E2C19A1BE0099DE2C /* ExerciseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3094F0D2C19A1BE0099DE2C /* ExerciseViewModel.swift */; };
 		F319910F2C2DD3EB004730D7 /* ExerciseAlbumViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F319910E2C2DD3EB004730D7 /* ExerciseAlbumViewModel.swift */; };
-		F31991112C306587004730D7 /* PhotoSelectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F31991102C306587004730D7 /* PhotoSelectViewController.swift */; };
+		F31991112C306587004730D7 /* ExercisePhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F31991102C306587004730D7 /* ExercisePhotoViewController.swift */; };
 		F31991132C4657F0004730D7 /* ExerciseSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F31991122C4657F0004730D7 /* ExerciseSearchViewController.swift */; };
 		F31991152C465A85004730D7 /* ExerciseItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F31991142C465A84004730D7 /* ExerciseItemCell.swift */; };
+		F31991172C47CECB004730D7 /* CustomExerciseInputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F31991162C47CECB004730D7 /* CustomExerciseInputViewController.swift */; };
 		F35E46562C2BE1B800917AE1 /* ExerciseAlbumViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F35E46552C2BE1B800917AE1 /* ExerciseAlbumViewController.swift */; };
 		F35E46582C2BE22D00917AE1 /* ExerciseAlbumCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F35E46572C2BE22D00917AE1 /* ExerciseAlbumCell.swift */; };
-		F35E465A2C2BE3E900917AE1 /* PhotoRecordFloatingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F35E46592C2BE3E900917AE1 /* PhotoRecordFloatingViewController.swift */; };
+		F35E465A2C2BE3E900917AE1 /* PhotoRecordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F35E46592C2BE3E900917AE1 /* PhotoRecordViewController.swift */; };
 		F36105B32C1BE05800237572 /* ExerciseCategoryAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F36105B22C1BE05800237572 /* ExerciseCategoryAPIManager.swift */; };
 		F36105B52C1BFF6500237572 /* UILabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F36105B42C1BFF6500237572 /* UILabel.swift */; };
 		F36105B72C1BFF7600237572 /* Double.swift in Sources */ = {isa = PBXBuildFile; fileRef = F36105B62C1BFF7600237572 /* Double.swift */; };
@@ -300,12 +301,13 @@
 		F3094F052C1841240099DE2C /* ExerciseMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseMenuViewController.swift; sourceTree = "<group>"; };
 		F3094F0D2C19A1BE0099DE2C /* ExerciseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseViewModel.swift; sourceTree = "<group>"; };
 		F319910E2C2DD3EB004730D7 /* ExerciseAlbumViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExerciseAlbumViewModel.swift; sourceTree = "<group>"; };
-		F31991102C306587004730D7 /* PhotoSelectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoSelectViewController.swift; sourceTree = "<group>"; };
+		F31991102C306587004730D7 /* ExercisePhotoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExercisePhotoViewController.swift; sourceTree = "<group>"; };
 		F31991122C4657F0004730D7 /* ExerciseSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseSearchViewController.swift; sourceTree = "<group>"; };
 		F31991142C465A84004730D7 /* ExerciseItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseItemCell.swift; sourceTree = "<group>"; };
+		F31991162C47CECB004730D7 /* CustomExerciseInputViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomExerciseInputViewController.swift; sourceTree = "<group>"; };
 		F35E46552C2BE1B800917AE1 /* ExerciseAlbumViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseAlbumViewController.swift; sourceTree = "<group>"; };
 		F35E46572C2BE22D00917AE1 /* ExerciseAlbumCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseAlbumCell.swift; sourceTree = "<group>"; };
-		F35E46592C2BE3E900917AE1 /* PhotoRecordFloatingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoRecordFloatingViewController.swift; sourceTree = "<group>"; };
+		F35E46592C2BE3E900917AE1 /* PhotoRecordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoRecordViewController.swift; sourceTree = "<group>"; };
 		F36105B22C1BE05800237572 /* ExerciseCategoryAPIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseCategoryAPIManager.swift; sourceTree = "<group>"; };
 		F36105B42C1BFF6500237572 /* UILabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabel.swift; sourceTree = "<group>"; };
 		F36105B62C1BFF7600237572 /* Double.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Double.swift; sourceTree = "<group>"; };
@@ -859,8 +861,8 @@
 				F3094EEE2C0EEDA40099DE2C /* ExerciseTimerViewController.swift */,
 				F3094EF02C0EEDBA0099DE2C /* ExerciseResultViewController.swift */,
 				F35E46552C2BE1B800917AE1 /* ExerciseAlbumViewController.swift */,
-				F35E46592C2BE3E900917AE1 /* PhotoRecordFloatingViewController.swift */,
-				F31991102C306587004730D7 /* PhotoSelectViewController.swift */,
+				F31991102C306587004730D7 /* ExercisePhotoViewController.swift */,
+				F31991182C47CF66004730D7 /* FloatingPanel */,
 				F3094EC22C0DB1730099DE2C /* Cell */,
 			);
 			path = View;
@@ -874,6 +876,15 @@
 				F319910E2C2DD3EB004730D7 /* ExerciseAlbumViewModel.swift */,
 			);
 			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		F31991182C47CF66004730D7 /* FloatingPanel */ = {
+			isa = PBXGroup;
+			children = (
+				F31991162C47CECB004730D7 /* CustomExerciseInputViewController.swift */,
+				F35E46592C2BE3E900917AE1 /* PhotoRecordViewController.swift */,
+			);
+			path = FloatingPanel;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1022,7 +1033,7 @@
 				B54AC01A2C105646002E89DC /* Step1ViewController.swift in Sources */,
 				B5CBB2102C2D0EE000C672DB /* TokenStorage.swift in Sources */,
 				B54ABFCB2C0CB770002E89DC /* Extension.swift in Sources */,
-				F35E465A2C2BE3E900917AE1 /* PhotoRecordFloatingViewController.swift in Sources */,
+				F35E465A2C2BE3E900917AE1 /* PhotoRecordViewController.swift in Sources */,
 				62578CFE2C15A395005035BB /* PhotoCell.swift in Sources */,
 				B5AD4FBD2C33AE9A00AA6695 /* PostModel.swift in Sources */,
 				B52001F02C1C8D7E0083CBDF /* TargetModel.swift in Sources */,
@@ -1052,7 +1063,7 @@
 				B54ABF922C09BD43002E89DC /* Sikmogil.xcdatamodeld in Sources */,
 				5485F0882C0DFE2D00A2A71E /* ProfileTableViewCell.swift in Sources */,
 				546E32312C1078D100E94C2A /* EditProfileViewController.swift in Sources */,
-				F31991112C306587004730D7 /* PhotoSelectViewController.swift in Sources */,
+				F31991112C306587004730D7 /* ExercisePhotoViewController.swift in Sources */,
 				B54ABFCD2C0CB78F002E89DC /* Helpers.swift in Sources */,
 				F36105B32C1BE05800237572 /* ExerciseCategoryAPIManager.swift in Sources */,
 				B54ABFBD2C0CB60D002E89DC /* Network.swift in Sources */,
@@ -1061,6 +1072,7 @@
 				B54ABFCD2C0CB78F002E89DC /* Helpers.swift in Sources */,
 				B52001D52C171B8C0083CBDF /* DietBottomSheetViewController.swift in Sources */,
 				CA7517782C3302100076452D /* DietPhotoSelectViewController.swift in Sources */,
+				F31991172C47CECB004730D7 /* CustomExerciseInputViewController.swift in Sources */,
 				F36105BD2C2056E100237572 /* AnimationProgressBar.swift in Sources */,
 				F3094F062C1841240099DE2C /* ExerciseMenuViewController.swift in Sources */,
 				B54ABFBD2C0CB60D002E89DC /* Network.swift in Sources */,

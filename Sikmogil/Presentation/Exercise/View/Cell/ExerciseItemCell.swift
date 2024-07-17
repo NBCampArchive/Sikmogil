@@ -53,7 +53,7 @@ class ExerciseItemCell: UITableViewCell {
     private func setupConstraints() {
         cardView.snp.makeConstraints {
             $0.top.bottom.equalToSuperview().inset(8)
-            $0.horizontalEdges.equalToSuperview().inset(8)
+            $0.horizontalEdges.equalToSuperview()
         }
         
         exerciseLabel.snp.makeConstraints {
