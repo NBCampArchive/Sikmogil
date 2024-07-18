@@ -147,6 +147,7 @@
 		CACA65CC2C1C7BC50030D8D5 /* DietViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CACA65CB2C1C7BC50030D8D5 /* DietViewModel.swift */; };
 		CACA65D22C1E0F6F0030D8D5 /* addMealViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CACA65D12C1E0F6F0030D8D5 /* addMealViewModel.swift */; };
 		D6A2CA9B2C40FEAD00547C60 /* SkeletonView in Frameworks */ = {isa = PBXBuildFile; productRef = D6A2CA9A2C40FEAD00547C60 /* SkeletonView */; };
+		D6A2CA9D2C4570C300547C60 /* DetailListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6A2CA9C2C4570C300547C60 /* DetailListCell.swift */; };
 		F3094EC12C0D91310099DE2C /* ExerciseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3094EC02C0D91310099DE2C /* ExerciseViewController.swift */; };
 		F3094EC42C0DB1940099DE2C /* ExerciseHistoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3094EC32C0DB1940099DE2C /* ExerciseHistoryCell.swift */; };
 		F3094EC62C0E40040099DE2C /* ExerciseSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3094EC52C0E40040099DE2C /* ExerciseSelectionViewController.swift */; };
@@ -290,6 +291,7 @@
 		CACA65C72C1B5D0C0030D8D5 /* FoodDbModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoodDbModel.swift; sourceTree = "<group>"; };
 		CACA65CB2C1C7BC50030D8D5 /* DietViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DietViewModel.swift; sourceTree = "<group>"; };
 		CACA65D12C1E0F6F0030D8D5 /* addMealViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = addMealViewModel.swift; sourceTree = "<group>"; };
+		D6A2CA9C2C4570C300547C60 /* DetailListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailListCell.swift; sourceTree = "<group>"; };
 		F3094EC02C0D91310099DE2C /* ExerciseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseViewController.swift; sourceTree = "<group>"; };
 		F3094EC32C0DB1940099DE2C /* ExerciseHistoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseHistoryCell.swift; sourceTree = "<group>"; };
 		F3094EC52C0E40040099DE2C /* ExerciseSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseSelectionViewController.swift; sourceTree = "<group>"; };
@@ -401,6 +403,7 @@
 				62578CFD2C15A395005035BB /* PhotoCell.swift */,
 				62578CFF2C15A487005035BB /* HeaderView.swift */,
 				B52001ED2C1C5CD60083CBDF /* CalendarCell.swift */,
+				D6A2CA9C2C4570C300547C60 /* DetailListCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1099,6 +1102,7 @@
 				B5825BAD2C219C2B00ADAA66 /* BoardMainViewController.swift in Sources */,
 				B52001E62C1972330083CBDF /* ImageAPIManager.swift in Sources */,
 				B52001D32C171B8C0083CBDF /* AddDietMenuViewController.swift in Sources */,
+				D6A2CA9D2C4570C300547C60 /* DetailListCell.swift in Sources */,
 				F36105B52C1BFF6500237572 /* UILabel.swift in Sources */,
 				B54ABFBF2C0CB639002E89DC /* PersistentStorage.swift in Sources */,
 				CACA65D22C1E0F6F0030D8D5 /* addMealViewModel.swift in Sources */,
