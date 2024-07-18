@@ -267,6 +267,12 @@ extension BoardMainViewController: UITableViewDelegate, UITableViewDataSource {
             viewModel.fetchNextPage(category: categoryForIndex(currentCategoryIndex))
         }
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let detailViewController = BoardDetailViewController()
+        detailViewController.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(detailViewController, animated: true)
+    }
 }
 
 extension BoardMainViewController: SkeletonTableViewDataSource {

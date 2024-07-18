@@ -26,13 +26,13 @@ class BottomTabBarController: UITabBarController {
         let exerciseVC = ExerciseMenuViewController()
         exerciseVC.tabBarItem = UITabBarItem(title: "운동", image: UIImage(named: "exercise"), tag: 2)
         
-//        let communicationVC = CommunityNavigationViewController()
-//        communicationVC.tabBarItem = UITabBarItem(title: "소통", image: UIImage(named: "communication"), tag: 3)
+        let communicationVC = CommunityNavigationViewController()
+        communicationVC.tabBarItem = UITabBarItem(title: "소통", image: UIImage(named: "communication"), tag: 3)
         
         let profileVC = ProfileViewController()
         profileVC.tabBarItem = UITabBarItem(title: "프로필", image: UIImage(named: "profile"), tag: 4)
         
-        let controllers = [homeVC, dietVC, exerciseVC, /*communicationVC,*/ profileVC]
+        let controllers = [homeVC, dietVC, exerciseVC, communicationVC, profileVC]
         
         viewControllers = controllers.map { CustomNavigationController(rootViewController: $0) }
         

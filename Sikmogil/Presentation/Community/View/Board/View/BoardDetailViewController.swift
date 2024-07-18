@@ -13,5 +13,9 @@ import Kingfisher
 import SkeletonView
 
 class BoardDetailViewController: UIViewController {
-    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        view.backgroundColor = .appGreen
+    }
 }
