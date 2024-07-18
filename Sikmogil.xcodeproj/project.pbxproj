@@ -150,7 +150,6 @@
 		D6A2CA9D2C4570C300547C60 /* DetailListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6A2CA9C2C4570C300547C60 /* DetailListCell.swift */; };
 		D6A2CA9F2C49555A00547C60 /* BoardDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6A2CA9E2C49555A00547C60 /* BoardDetailViewController.swift */; };
 		D6A2CAA12C49558F00547C60 /* BoardDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6A2CAA02C49558F00547C60 /* BoardDetailViewModel.swift */; };
-		D6A2CAA32C495DCC00547C60 /* BoardDetailHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6A2CAA22C495DCC00547C60 /* BoardDetailHeaderView.swift */; };
 		F3094EC12C0D91310099DE2C /* ExerciseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3094EC02C0D91310099DE2C /* ExerciseViewController.swift */; };
 		F3094EC42C0DB1940099DE2C /* ExerciseHistoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3094EC32C0DB1940099DE2C /* ExerciseHistoryCell.swift */; };
 		F3094EC62C0E40040099DE2C /* ExerciseSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3094EC52C0E40040099DE2C /* ExerciseSelectionViewController.swift */; };
@@ -297,7 +296,6 @@
 		D6A2CA9C2C4570C300547C60 /* DetailListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailListCell.swift; sourceTree = "<group>"; };
 		D6A2CA9E2C49555A00547C60 /* BoardDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardDetailViewController.swift; sourceTree = "<group>"; };
 		D6A2CAA02C49558F00547C60 /* BoardDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardDetailViewModel.swift; sourceTree = "<group>"; };
-		D6A2CAA22C495DCC00547C60 /* BoardDetailHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardDetailHeaderView.swift; sourceTree = "<group>"; };
 		F3094EC02C0D91310099DE2C /* ExerciseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseViewController.swift; sourceTree = "<group>"; };
 		F3094EC32C0DB1940099DE2C /* ExerciseHistoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseHistoryCell.swift; sourceTree = "<group>"; };
 		F3094EC52C0E40040099DE2C /* ExerciseSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseSelectionViewController.swift; sourceTree = "<group>"; };
@@ -832,7 +830,6 @@
 				B5AD4FB62C32BB5300AA6695 /* BoardListCell.swift */,
 				B5AD4FB82C32FD8300AA6695 /* WriteViewController.swift */,
 				D6A2CA9E2C49555A00547C60 /* BoardDetailViewController.swift */,
-				D6A2CAA22C495DCC00547C60 /* BoardDetailHeaderView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1062,7 +1059,6 @@
 				B54ABFCD2C0CB78F002E89DC /* Helpers.swift in Sources */,
 				F36105B32C1BE05800237572 /* ExerciseCategoryAPIManager.swift in Sources */,
 				B54ABFBD2C0CB60D002E89DC /* Network.swift in Sources */,
-				D6A2CAA32C495DCC00547C60 /* BoardDetailHeaderView.swift in Sources */,
 				545AA5182C11F4760083D893 /* ReminderSettingsViewController.swift in Sources */,
 				F3094EF12C0EEDBA0099DE2C /* ExerciseResultViewController.swift in Sources */,
 				B54ABFCD2C0CB78F002E89DC /* Helpers.swift in Sources */,
