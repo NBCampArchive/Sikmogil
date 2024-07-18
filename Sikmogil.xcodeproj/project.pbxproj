@@ -148,6 +148,8 @@
 		CACA65D22C1E0F6F0030D8D5 /* addMealViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CACA65D12C1E0F6F0030D8D5 /* addMealViewModel.swift */; };
 		D6A2CA9B2C40FEAD00547C60 /* SkeletonView in Frameworks */ = {isa = PBXBuildFile; productRef = D6A2CA9A2C40FEAD00547C60 /* SkeletonView */; };
 		D6A2CA9D2C4570C300547C60 /* DetailListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6A2CA9C2C4570C300547C60 /* DetailListCell.swift */; };
+		D6A2CA9F2C49555A00547C60 /* BoardDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6A2CA9E2C49555A00547C60 /* BoardDetailViewController.swift */; };
+		D6A2CAA12C49558F00547C60 /* BoardDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6A2CAA02C49558F00547C60 /* BoardDetailViewModel.swift */; };
 		F3094EC12C0D91310099DE2C /* ExerciseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3094EC02C0D91310099DE2C /* ExerciseViewController.swift */; };
 		F3094EC42C0DB1940099DE2C /* ExerciseHistoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3094EC32C0DB1940099DE2C /* ExerciseHistoryCell.swift */; };
 		F3094EC62C0E40040099DE2C /* ExerciseSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3094EC52C0E40040099DE2C /* ExerciseSelectionViewController.swift */; };
@@ -292,6 +294,8 @@
 		CACA65CB2C1C7BC50030D8D5 /* DietViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DietViewModel.swift; sourceTree = "<group>"; };
 		CACA65D12C1E0F6F0030D8D5 /* addMealViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = addMealViewModel.swift; sourceTree = "<group>"; };
 		D6A2CA9C2C4570C300547C60 /* DetailListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailListCell.swift; sourceTree = "<group>"; };
+		D6A2CA9E2C49555A00547C60 /* BoardDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardDetailViewController.swift; sourceTree = "<group>"; };
+		D6A2CAA02C49558F00547C60 /* BoardDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardDetailViewModel.swift; sourceTree = "<group>"; };
 		F3094EC02C0D91310099DE2C /* ExerciseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseViewController.swift; sourceTree = "<group>"; };
 		F3094EC32C0DB1940099DE2C /* ExerciseHistoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseHistoryCell.swift; sourceTree = "<group>"; };
 		F3094EC52C0E40040099DE2C /* ExerciseSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseSelectionViewController.swift; sourceTree = "<group>"; };
@@ -422,6 +426,7 @@
 			children = (
 				B52001BA2C1325110083CBDF /* BoardListViewModel.swift */,
 				B5AD4FBA2C33ADC300AA6695 /* CreatePostViewModel.swift */,
+				D6A2CAA02C49558F00547C60 /* BoardDetailViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -824,6 +829,7 @@
 				B5825BAC2C219C2B00ADAA66 /* BoardMainViewController.swift */,
 				B5AD4FB62C32BB5300AA6695 /* BoardListCell.swift */,
 				B5AD4FB82C32FD8300AA6695 /* WriteViewController.swift */,
+				D6A2CA9E2C49555A00547C60 /* BoardDetailViewController.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1078,6 +1084,7 @@
 				B54ABF882C09BD43002E89DC /* AppDelegate.swift in Sources */,
 				B566DF292C2772990050CF60 /* UITabBarExtension.swift in Sources */,
 				B54ABF8A2C09BD43002E89DC /* SceneDelegate.swift in Sources */,
+				D6A2CAA12C49558F00547C60 /* BoardDetailViewModel.swift in Sources */,
 				CA13FDE82C22E76C007B3DBE /* LunchTableViewCell.swift in Sources */,
 				B52001D22C171B8C0083CBDF /* DietAlbumCollectionViewCell.swift in Sources */,
 				546E32352C1078FA00E94C2A /* GoalSettingsViewController.swift in Sources */,
@@ -1110,6 +1117,7 @@
 				B52001D42C171B8C0083CBDF /* DietAlbumViewController.swift in Sources */,
 				B5AD4FBB2C33ADC300AA6695 /* CreatePostViewModel.swift in Sources */,
 				B52001EA2C19865E0083CBDF /* CalendarModel.swift in Sources */,
+				D6A2CA9F2C49555A00547C60 /* BoardDetailViewController.swift in Sources */,
 				F3094EC12C0D91310099DE2C /* ExerciseViewController.swift in Sources */,
 				CA13FDEA2C22E791007B3DBE /* DinnerTableViewCell.swift in Sources */,
 				B52001B62C12F4570083CBDF /* StepsViewController.swift in Sources */,
