@@ -31,9 +31,8 @@ class FoodDbAPIManager {
             return
         }
 
-        let urlString = "\(baseURLString)?serviceKey=\(serviceKey)&pageNo=1&numOfRows=\(index)&type=json&FOOD_NM_KR=\(encodedQuery)"
-        //print("요청 URL:", urlString)
-
+        let urlString = "\(baseURLString)?serviceKey=\(serviceKey)&pageNo=\(index/10 + 1)&numOfRows=10&type=json&FOOD_NM_KR=\(encodedQuery)"
+        
         guard let url = URL(string: urlString) else {
             let error = NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "유효하지 않은 URL입니다."])
             completion(.failure(error))
