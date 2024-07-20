@@ -9,13 +9,13 @@ import Foundation
 
 struct Response: Codable {
     let body: Body
-
+    
     struct Body: Codable {
         let pageNo: Int
         let totalCount: Int
         let numOfRows: Int
         let items: [FoodItem]
-
+        
         enum CodingKeys: String, CodingKey {
             case pageNo, totalCount, numOfRows, items
         }
@@ -78,7 +78,7 @@ struct FoodItem: Codable {
     let crtMthNm: String // 데이터생성방법명
     let researchYmd: String? // 데이터생성일자 (옵셔널)
     let updateYmd: String? // 데이터기준일자 (옵셔널)
-
+    
     enum CodingKeys: String, CodingKey {
         case num = "NUM"
         case foodCd = "FOOD_CD"
@@ -135,5 +135,63 @@ struct FoodItem: Codable {
         case crtMthNm = "CRT_MTH_NM"
         case researchYmd = "RESEARCH_YMD"
         case updateYmd = "UPDATE_YMD"
+    }
+    // 초기화 메서드 추가
+    init(foodNmKr: String, amtNum1: String) {
+        self.num = "0"
+        self.foodCd = "0"
+        self.foodNmKr = foodNmKr
+        self.dbGrpCm = "0"
+        self.dbGrpNm = nil
+        self.foodOrCd = "0"
+        self.foodOrNm = nil
+        self.foodCat1Cd = "0"
+        self.foodCat1Nm = nil
+        self.foodCat2Cd = nil
+        self.foodCat2Nm = nil
+        self.foodCat3Cd = nil
+        self.foodCat3Nm = nil
+        self.foodCat4Cd = nil
+        self.foodCat4Nm = nil
+        self.servingSize = "0"
+        self.amtNum1 = amtNum1
+        self.amtNum2 = nil
+        self.amtNum3 = nil
+        self.amtNum4 = nil
+        self.amtNum5 = nil
+        self.amtNum6 = nil
+        self.amtNum7 = nil
+        self.amtNum8 = nil
+        self.amtNum9 = nil
+        self.amtNum10 = nil
+        self.amtNum11 = nil
+        self.amtNum12 = nil
+        self.amtNum13 = nil
+        self.amtNum14 = nil
+        self.amtNum15 = nil
+        self.amtNum16 = nil
+        self.amtNum17 = nil
+        self.amtNum18 = nil
+        self.amtNum19 = nil
+        self.amtNum20 = nil
+        self.amtNum21 = nil
+        self.amtNum22 = nil
+        self.amtNum23 = nil
+        self.amtNum24 = nil
+        self.subRefCm = "0"
+        self.subRefName = "0"
+        self.nutriAmountServing = nil
+        self.z10500 = nil
+        self.itemReportNo = nil
+        self.makerNm = nil
+        self.impManufacNm = nil
+        self.sellerManufacNm = nil
+        self.impYn = nil
+        self.nationCm = nil
+        self.nationNm = nil
+        self.crtMthCd = "0"
+        self.crtMthNm = "0"
+        self.researchYmd = nil
+        self.updateYmd = nil
     }
 }
