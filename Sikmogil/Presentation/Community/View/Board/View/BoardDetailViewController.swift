@@ -35,6 +35,7 @@ class BoardDetailViewController: UIViewController {
     private let settingButton = UIButton().then {
         $0.setImage(UIImage(systemName: "ellipsis"), for: .normal)
         $0.tintColor = .appBlack
+        $0.showsMenuAsPrimaryAction = true
     }
     
     // 헤더뷰 요소들
@@ -254,7 +255,6 @@ class BoardDetailViewController: UIViewController {
         settingButton.isUserInteractionEnabled = true
         likeButton.addTarget(self, action: #selector(likeButtonTapped), for: .touchUpInside)
         commentButton.addTarget(self, action: #selector(commentButtonTapped), for: .touchUpInside)
-        settingButton.addTarget(self, action: #selector(settingButtonTapped), for: .touchUpInside)
         commentListButton.addTarget(self, action: #selector(commentListButtonTapped), for: .touchUpInside)
     }
     
@@ -271,6 +271,8 @@ class BoardDetailViewController: UIViewController {
         
         contentLabel.text = detail.content
         imageCollectionView.reloadData()
+        
+        settingButton.menu = createMenu(for: detail)
         
         // 프로필 이미지 로딩 로직 (예: Kingfisher 사용)
         // profileImageView.kf.setImage(with: URL(string: detail.profileImageUrl))
@@ -311,14 +313,51 @@ class BoardDetailViewController: UIViewController {
         viewModel.toggleLike()
     }
     
-    @objc private func commentButtonTapped() {
-        print("댓글 버튼 탭됨")
-        // 여기에 댓글 화면으로 이동하는 로직을 추가할 수 있습니다.
+    private func createMenu(for detail: BoardDetailData) -> UIMenu {
+        let shareAction = UIAction(title: "공유하기", image: UIImage(systemName: "square.and.arrow.up")) { [weak self] _ in
+            self?.sharePost()
+        }
+        
+        let reportAction = UIAction(title: "신고하기", image: UIImage(systemName: "flag"), attributes: .destructive) { [weak self] _ in
+            self?.reportPost()
+        }
+        
+        let editAction = UIAction(title: "수정하기", image: UIImage(systemName: "pencil")) { [weak self] _ in
+            self?.editPost()
+        }
+        
+        let deleteAction = UIAction(title: "삭제하기", image: UIImage(systemName: "trash"), attributes: .destructive) { [weak self] _ in
+            self?.deletePost()
+        }
+        
+        if detail.myMemberId == detail.writerMemberId {
+            return UIMenu(title: "", children: [shareAction, editAction, deleteAction])
+        } else {
+            return UIMenu(title: "", children: [shareAction, reportAction])
+        }
     }
     
-    @objc private func settingButtonTapped() {
-        print("설정 버튼 탭됨")
-        // 여기에 게시글 설정 화면으로 이동하는 로직을 추가할 수 있습니다.
+    // MARK: - Menu Actions
+    
+    private func sharePost() {
+        // 공유 기능 구현
+        
+        print("공유하기")
+    }
+    
+    private func reportPost() {
+        // 신고 기능 구현
+        print("신고하기")
+    }
+    
+    private func editPost() {
+        // 수정 기능 구현
+        print("수정하기")
+    }
+    
+    private func deletePost() {
+        // 삭제 기능 구현
+        print("삭제하기")
     }
     
     private func setupFloatingPanel() {
