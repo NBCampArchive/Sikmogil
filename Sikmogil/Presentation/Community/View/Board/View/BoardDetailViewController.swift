@@ -55,6 +55,27 @@ class BoardDetailViewController: UIViewController {
         $0.backgroundColor = .appDeepDarkGray
     }
     
+    private lazy var imageCollectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        layout.itemSize = CGSize(width: 300, height: 300)
+        layout.minimumLineSpacing = 10
+        
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.register(BoardImageCell.self, forCellWithReuseIdentifier: "BoardImageCell")
+        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.backgroundColor = .clear
+        collectionView.dataSource = self
+        collectionView.delegate = self
+        return collectionView
+    }()
+    
+    private let contentLabel = UILabel().then {
+        $0.numberOfLines = 0
+        $0.font = Suite.regular.of(size: 16)
+        $0.textColor = .appBlack
+    }
+    
     private lazy var likeButton = UIButton(configuration: .plain()).then {
         var config = UIButton.Configuration.plain()
         config.image = UIImage(systemName: "heart")?.withTintColor(.appBlack, renderingMode: .alwaysOriginal)
@@ -111,7 +132,7 @@ class BoardDetailViewController: UIViewController {
         view.backgroundColor = .white
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
-        contentView.addSubviews(titleLabel, settingButton, profileImageView, nicknameLabel, dateLabel, likeButton, commentButton, divider)
+        contentView.addSubviews(titleLabel, settingButton, profileImageView, nicknameLabel, dateLabel, likeButton, commentButton, divider, imageCollectionView, contentLabel)
     }
     
     private func setupConstraints() {
@@ -122,12 +143,13 @@ class BoardDetailViewController: UIViewController {
         contentView.snp.makeConstraints {
             $0.edges.equalToSuperview()
             $0.width.equalToSuperview()
-            $0.height.equalTo(800)
+//            $0.height.equalTo(800)
         }
         
         titleLabel.snp.makeConstraints {
             $0.top.equalToSuperview().offset(16)
             $0.leading.equalToSuperview().offset(16)
+            $0.trailing.equalTo(settingButton.snp.leading).offset(-4)
         }
         
         settingButton.snp.makeConstraints {
@@ -159,13 +181,25 @@ class BoardDetailViewController: UIViewController {
         
         likeButton.snp.makeConstraints {
             $0.centerY.equalTo(profileImageView)
-            $0.trailing.equalTo(commentButton.snp.leading).offset(-8)
+            $0.trailing.equalTo(commentButton.snp.leading).offset(-4)
         }
         
         divider.snp.makeConstraints {
             $0.top.equalTo(profileImageView.snp.bottom).offset(16)
             $0.leading.trailing.equalToSuperview().inset(16)
             $0.height.equalTo(1)
+        }
+        
+        imageCollectionView.snp.makeConstraints {
+            $0.top.equalTo(divider.snp.bottom).offset(16)
+            $0.leading.trailing.equalToSuperview().inset(16)
+            $0.height.equalTo(300)
+        }
+        
+        contentLabel.snp.makeConstraints {
+            $0.top.equalTo(imageCollectionView.snp.bottom).offset(20)
+            $0.leading.trailing.equalToSuperview().inset(16)
+            $0.bottom.equalToSuperview().inset(16)
         }
     }
     
@@ -208,6 +242,9 @@ class BoardDetailViewController: UIViewController {
         dateLabel.text = detail.date
         updateLikeButton(count: detail.likeCount, isLiked: detail.isLike)
         updateCommentButton(count: detail.commentCount)
+        
+        contentLabel.text = detail.content
+        imageCollectionView.reloadData()
         
         // 프로필 이미지 로딩 로직 (예: Kingfisher 사용)
         // profileImageView.kf.setImage(with: URL(string: detail.profileImageUrl))
@@ -256,5 +293,25 @@ class BoardDetailViewController: UIViewController {
     @objc private func settingButtonTapped() {
         print("설정 버튼 탭됨")
         // 여기에 게시글 설정 화면으로 이동하는 로직을 추가할 수 있습니다.
+    }
+}
+
+extension BoardDetailViewController: UICollectionViewDelegate {
+    
+}
+
+extension BoardDetailViewController: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return viewModel.boardDetail?.imageUrl.count ?? 0
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "BoardImageCell", for: indexPath) as? BoardImageCell,
+              let imageUrl = viewModel.boardDetail?.imageUrl[indexPath.item] else {
+            return UICollectionViewCell()
+        }
+        
+        cell.configure(with: imageUrl)
+        return cell
     }
 }
