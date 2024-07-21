@@ -9,42 +9,36 @@ import Foundation
 import Combine
 
 class BoardDetailViewModel {
-    @Published var boardDetail: BoardDetail?
+    @Published private(set) var boardDetail: BoardDetailData?
+    @Published private(set) var localLikeCount: Int = 0
+    @Published private(set) var isLikedLocally: Bool = false
     
     init() {
         loadBoardDetail()
     }
     
     func loadBoardDetail() {
-        // 임시 데이터로 초기화
-        boardDetail = BoardDetail(
-            id: "1",
-            title: "2024 시크모길 여름 행사 안내",
-            author: "관리자",
-            date: "2024.07.18",
-            likeCount: 10,
-            commentCount: 5,
-            isLiked: false
-        )
+        // 실제 API 호출 대신 임시 데이터 사용
+        let detail = BoardDetailData.mockData()
+        self.boardDetail = detail
+        self.localLikeCount = detail.likeCount
+        self.isLikedLocally = detail.isLike
     }
     
     func toggleLike() {
-        guard var detail = boardDetail else { return }
-        detail.isLiked.toggle()
-        detail.likeCount += detail.isLiked ? 1 : -1
-        boardDetail = detail
+        isLikedLocally.toggle()
+        localLikeCount += isLikedLocally ? 1 : -1
         
-        // 실제 API 호출 대신 콘솔에 로그 출력
-        print("좋아요 상태 변경: isLiked = \(detail.isLiked), likeCount = \(detail.likeCount)")
+        // API 호출
+        sendLikeStatusToServer()
+        
+        print("좋아요 상태 변경 (로컬): isLike = \(isLikedLocally), likeCount = \(localLikeCount)")
     }
-}
-
-struct BoardDetail {
-    let id: String
-    let title: String
-    let author: String
-    let date: String
-    var likeCount: Int
-    var commentCount: Int
-    var isLiked: Bool
+    
+    private func sendLikeStatusToServer() {
+        // 여기에 실제 API 호출 로직 구현
+        // 예: API.postLikeStatus(boardId: boardDetail?.boardId, isLiked: isLikedLocally)
+        //     .sink(receiveCompletion: { ... }, receiveValue: { ... })
+        //     .store(in: &cancellables)
+    }
 }
