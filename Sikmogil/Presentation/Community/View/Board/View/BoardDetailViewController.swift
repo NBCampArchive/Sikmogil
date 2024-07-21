@@ -38,6 +38,7 @@ class BoardDetailViewController: UIViewController {
         $0.contentMode = .scaleAspectFill
         $0.clipsToBounds = true
         $0.layer.cornerRadius = 20
+        $0.backgroundColor = .appBlack
     }
     
     private let nicknameLabel = UILabel().then {
@@ -47,24 +48,50 @@ class BoardDetailViewController: UIViewController {
     
     private let dateLabel = UILabel().then {
         $0.font = Suite.regular.of(size: 14)
-        $0.textColor = .appDarkGray
+        $0.textColor = .appDeepDarkGray
     }
     
-    private lazy var likeButton = UIButton().then {
+    private let divider = UIView().then {
+        $0.backgroundColor = .appDeepDarkGray
+    }
+    
+    private lazy var likeButton = UIButton(configuration: .plain()).then {
         var config = UIButton.Configuration.plain()
-        config.image = UIImage(systemName: "heart")
+        config.image = UIImage(systemName: "heart")?.withTintColor(.appBlack, renderingMode: .alwaysOriginal)
         config.imagePlacement = .leading
         config.imagePadding = 8
+        
+        // 텍스트 스타일 설정
         config.baseForegroundColor = .appBlack
+        config.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
+            var outgoing = incoming
+            outgoing.foregroundColor = .appBlack
+            return outgoing
+        }
+        
+        // 버튼 배경 스타일 설정
+        config.background.backgroundColor = .clear
+        
         $0.configuration = config
+        
+        // 추가적인 버튼 상태별 스타일 설정
+        $0.configurationUpdateHandler = { button in
+            var config = button.configuration
+            config?.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
+                var outgoing = incoming
+                outgoing.foregroundColor = .appBlack
+                return outgoing
+            }
+            button.configuration = config
+        }
     }
     
     private lazy var commentButton = UIButton().then {
         var config = UIButton.Configuration.plain()
         config.image = UIImage(systemName: "ellipsis.message")
         config.imagePlacement = .leading
-        config.imagePadding = 8
-        config.baseForegroundColor = .appDeepDarkGray
+        config.imagePadding = 4
+        config.baseForegroundColor = .appBlack
         $0.configuration = config
     }
     
@@ -72,7 +99,6 @@ class BoardDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .appGreen
         navigationController?.navigationBar.isHidden = false
         setupViews()
         setupConstraints()
@@ -82,9 +108,10 @@ class BoardDetailViewController: UIViewController {
     
     // MARK: - Setup
     private func setupViews() {
+        view.backgroundColor = .white
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
-        contentView.addSubviews(titleLabel, settingButton, profileImageView, nicknameLabel, dateLabel, likeButton, commentButton)
+        contentView.addSubviews(titleLabel, settingButton, profileImageView, nicknameLabel, dateLabel, likeButton, commentButton, divider)
     }
     
     private func setupConstraints() {
@@ -95,6 +122,7 @@ class BoardDetailViewController: UIViewController {
         contentView.snp.makeConstraints {
             $0.edges.equalToSuperview()
             $0.width.equalToSuperview()
+            $0.height.equalTo(800)
         }
         
         titleLabel.snp.makeConstraints {
@@ -131,7 +159,13 @@ class BoardDetailViewController: UIViewController {
         
         likeButton.snp.makeConstraints {
             $0.centerY.equalTo(profileImageView)
-            $0.trailing.equalTo(commentButton.snp.leading).offset(-16)
+            $0.trailing.equalTo(commentButton.snp.leading).offset(-8)
+        }
+        
+        divider.snp.makeConstraints {
+            $0.top.equalTo(profileImageView.snp.bottom).offset(16)
+            $0.leading.trailing.equalToSuperview().inset(16)
+            $0.height.equalTo(1)
         }
     }
     
@@ -140,6 +174,20 @@ class BoardDetailViewController: UIViewController {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] detail in
                 self?.updateUI(with: detail)
+            }
+            .store(in: &cancellables)
+        
+        viewModel.$localLikeCount
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] count in
+                self?.updateLikeButton(count: count, isLiked: self?.viewModel.isLikedLocally ?? false)
+            }
+            .store(in: &cancellables)
+        
+        viewModel.$isLikedLocally
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] isLiked in
+                self?.updateLikeButton(count: self?.viewModel.localLikeCount ?? 0, isLiked: isLiked)
             }
             .store(in: &cancellables)
     }
@@ -152,13 +200,13 @@ class BoardDetailViewController: UIViewController {
     }
     
     // MARK: - UI Update
-    private func updateUI(with detail: BoardDetail?) {
+    private func updateUI(with detail: BoardDetailData?) {
         guard let detail = detail else { return }
         
         titleLabel.text = detail.title
-        nicknameLabel.text = detail.author
+        nicknameLabel.text = detail.nickname
         dateLabel.text = detail.date
-        updateLikeButton(count: detail.likeCount, isLiked: detail.isLiked)
+        updateLikeButton(count: detail.likeCount, isLiked: detail.isLike)
         updateCommentButton(count: detail.commentCount)
         
         // 프로필 이미지 로딩 로직 (예: Kingfisher 사용)
@@ -167,10 +215,25 @@ class BoardDetailViewController: UIViewController {
     
     private func updateLikeButton(count: Int, isLiked: Bool) {
         var config = likeButton.configuration
-        config?.image = UIImage(systemName: isLiked ? "heart.fill" : "heart")
+        
+        // 이미지 설정 및 색상 변경
+        let heartImage = UIImage(systemName: isLiked ? "heart.fill" : "heart")
+        config?.image = heartImage?.withTintColor(isLiked ? .red : .appBlack, renderingMode: .alwaysOriginal)
+        
+        // 텍스트 설정
         config?.title = "\(count)"
-        config?.baseForegroundColor = isLiked ? .red : .appBlack
+        
+        // 텍스트 색상 설정 (항상 .appBlack으로 유지)
+        config?.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
+            var outgoing = incoming
+            outgoing.foregroundColor = .appBlack
+            return outgoing
+        }
+        
         likeButton.configuration = config
+        
+        // 버튼 상태 업데이트를 강제로 트리거
+        likeButton.setNeedsUpdateConfiguration()
     }
     
     private func updateCommentButton(count: Int) {
