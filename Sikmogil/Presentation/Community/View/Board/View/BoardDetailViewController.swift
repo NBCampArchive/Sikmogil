@@ -116,6 +116,18 @@ class BoardDetailViewController: UIViewController {
         $0.configuration = config
     }
     
+    private let commentListButton = UIButton().then {
+        var config = UIButton.Configuration.plain()
+        config.image = UIImage(systemName: "ellipsis.message.fill")
+        config.imagePlacement = .leading
+        config.imagePadding = 4
+        config.buttonSize = .large
+        config.cornerStyle = .capsule
+        config.background.backgroundColor = .appBlack
+        config.baseForegroundColor = .white
+        $0.configuration = config
+    }
+    
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -132,7 +144,7 @@ class BoardDetailViewController: UIViewController {
         view.backgroundColor = .white
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
-        contentView.addSubviews(titleLabel, settingButton, profileImageView, nicknameLabel, dateLabel, likeButton, commentButton, divider, imageCollectionView, contentLabel)
+        contentView.addSubviews(titleLabel, settingButton, profileImageView, nicknameLabel, dateLabel, likeButton, commentButton, divider, imageCollectionView, contentLabel, commentListButton)
     }
     
     private func setupConstraints() {
@@ -200,6 +212,11 @@ class BoardDetailViewController: UIViewController {
             $0.top.equalTo(imageCollectionView.snp.bottom).offset(20)
             $0.leading.trailing.equalToSuperview().inset(16)
             $0.bottom.equalToSuperview().inset(16)
+        }
+        
+        commentListButton.snp.makeConstraints {
+            $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).inset(16)
+            $0.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing).inset(16)
         }
     }
     
