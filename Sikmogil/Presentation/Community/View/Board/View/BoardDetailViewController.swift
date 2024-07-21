@@ -11,12 +11,16 @@ import Then
 import Combine
 import Kingfisher
 import SkeletonView
+import FloatingPanel
 
 class BoardDetailViewController: UIViewController {
     
     // MARK: - Properties
     private var cancellables = Set<AnyCancellable>()
     private let viewModel = BoardDetailViewModel()
+    
+    private var commentPanel: FloatingPanelController!
+    private var previousPanelState: FloatingPanelState = .hidden
     
     private let scrollView = UIScrollView()
     
@@ -137,6 +141,9 @@ class BoardDetailViewController: UIViewController {
         setupConstraints()
         setupBindings()
         setupActions()
+        setupFloatingPanel()
+        hideKeyboardWhenTappedAround()
+        setKeyboardObserver()
     }
     
     // MARK: - Setup
@@ -155,7 +162,7 @@ class BoardDetailViewController: UIViewController {
         contentView.snp.makeConstraints {
             $0.edges.equalToSuperview()
             $0.width.equalToSuperview()
-//            $0.height.equalTo(800)
+            //            $0.height.equalTo(800)
         }
         
         titleLabel.snp.makeConstraints {
@@ -248,6 +255,7 @@ class BoardDetailViewController: UIViewController {
         likeButton.addTarget(self, action: #selector(likeButtonTapped), for: .touchUpInside)
         commentButton.addTarget(self, action: #selector(commentButtonTapped), for: .touchUpInside)
         settingButton.addTarget(self, action: #selector(settingButtonTapped), for: .touchUpInside)
+        commentListButton.addTarget(self, action: #selector(commentListButtonTapped), for: .touchUpInside)
     }
     
     // MARK: - UI Update
@@ -311,6 +319,24 @@ class BoardDetailViewController: UIViewController {
         print("설정 버튼 탭됨")
         // 여기에 게시글 설정 화면으로 이동하는 로직을 추가할 수 있습니다.
     }
+    
+    private func setupFloatingPanel() {
+        commentPanel = FloatingPanelController()
+        
+        let contentVC = CommentListViewController()
+        commentPanel.set(contentViewController: contentVC)
+        
+        commentPanel.layout = CustomFloatingPanelLayout()
+        commentPanel.isRemovalInteractionEnabled = true
+        commentPanel.changePanelStyle()
+        commentPanel.delegate = self
+    }
+    
+    @objc private func commentListButtonTapped() {
+        commentPanel.addPanel(toParent: self)
+        commentPanel.move(to: .half, animated: true)
+    }
+    
 }
 
 extension BoardDetailViewController: UICollectionViewDelegate {
@@ -330,5 +356,46 @@ extension BoardDetailViewController: UICollectionViewDataSource {
         
         cell.configure(with: imageUrl)
         return cell
+    }
+}
+
+extension BoardDetailViewController: FloatingPanelControllerDelegate {
+    func floatingPanelDidChangeState(_ vc: FloatingPanelController) {
+        if vc.state == .full {
+            tabBarController?.tabBar.isHidden = true
+            vc.backdropView.dismissalTapGestureRecognizer.isEnabled = false
+        } else if vc.state == .half  {
+            tabBarController?.tabBar.isHidden = true
+            vc.backdropView.dismissalTapGestureRecognizer.isEnabled = false
+            
+            if previousPanelState == .full {
+                view.endEditing(true)
+            }
+        } else {
+            vc.backdropView.dismissalTapGestureRecognizer.isEnabled = true
+        }
+        previousPanelState = vc.state
+    }
+    
+    func floatingPanelDidRemove(_ vc: FloatingPanelController) {
+        tabBarController?.tabBar.isHidden = false
+        vc.backdropView.dismissalTapGestureRecognizer.isEnabled = true
+    }
+}
+
+// MARK: - Keyboard Handling
+extension BoardDetailViewController {
+    // 키보드가 나타날 때 호출되는 메서드
+    @objc override func keyboardWillShow(notification: NSNotification) {
+        guard let userInfo = notification.userInfo else { return }
+        if userInfo[UIResponder.keyboardFrameEndUserInfoKey] is CGRect {
+            // FloatingPanel 높이 수정
+            commentPanel.move(to: .full, animated: true)
+        }
+    }
+    
+    // 키보드가 사라질 때 호출되는 메서드
+    @objc override func keyboardWillHide(notification: NSNotification) {
+        commentPanel.move(to: .half, animated: true)
     }
 }
