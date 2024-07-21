@@ -264,7 +264,8 @@ class BoardDetailViewController: UIViewController {
         
         titleLabel.text = detail.title
         nicknameLabel.text = detail.nickname
-        dateLabel.text = detail.date
+        dateLabel.text = DateHelper.shared.formatServerDateYMD(from: detail.date)
+        
         updateLikeButton(count: detail.likeCount, isLiked: detail.isLike)
         updateCommentButton(count: detail.commentCount)
         

@@ -85,12 +85,12 @@ class CommentTableViewCell: UITableViewCell {
     func configure(with comment: CommentInfo) {
         nicknameLabel.text = comment.writerNickname
         contentLabel.text = comment.content
-        dateLabel.text = comment.createdAt
+        dateLabel.text = DateHelper.shared.formatServerDateYMD(from: comment.createdAt)
         
         if let imageUrl = comment.writerProfileImage {
             profileImageView.kf.setImage(with: URL(string: imageUrl))
         } else {
-            profileImageView.image = UIImage(named: "defaultProfileImage")
+            profileImageView.image = UIImage(named: "AppIcon")
         }
     }
 }
