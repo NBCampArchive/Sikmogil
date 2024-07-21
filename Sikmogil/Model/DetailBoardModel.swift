@@ -52,7 +52,7 @@ extension BoardDetailData {
             isLike: false,
             commentCount: 3,
             nickname: "건강지킴이",
-            date: "2024-07-18T10:30:00Z"
+            date: "2024-07-12T16:32:44.937042368"
         )
     }
 }
