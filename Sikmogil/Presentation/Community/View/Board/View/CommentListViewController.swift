@@ -72,8 +72,7 @@ class CommentListViewController: UIViewController {
     
     private func setupConstraints() {
         tableView.snp.makeConstraints {
-            $0.top.leading.trailing.equalToSuperview()
-            $0.bottom.equalTo(inputContainerView.snp.top)
+            $0.edges.equalToSuperview()
         }
         
         inputContainerView.snp.makeConstraints {
@@ -91,7 +90,7 @@ class CommentListViewController: UIViewController {
         sendButton.snp.makeConstraints {
             $0.trailing.equalToSuperview().offset(-16)
             $0.centerY.equalToSuperview()
-            $0.width.equalTo(50)
+            $0.width.height.equalTo(30)
         }
     }
     

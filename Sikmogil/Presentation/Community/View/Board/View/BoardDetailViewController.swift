@@ -335,7 +335,7 @@ class BoardDetailViewController: UIViewController {
     
     @objc private func commentListButtonTapped() {
         commentPanel.addPanel(toParent: self)
-        commentPanel.move(to: .half, animated: true)
+        commentPanel.move(to: .full, animated: true)
     }
     
 }
@@ -381,22 +381,5 @@ extension BoardDetailViewController: FloatingPanelControllerDelegate {
     func floatingPanelDidRemove(_ vc: FloatingPanelController) {
         tabBarController?.tabBar.isHidden = false
         vc.backdropView.dismissalTapGestureRecognizer.isEnabled = true
-    }
-}
-
-// MARK: - Keyboard Handling
-extension BoardDetailViewController {
-    // 키보드가 나타날 때 호출되는 메서드
-    @objc override func keyboardWillShow(notification: NSNotification) {
-        guard let userInfo = notification.userInfo else { return }
-        if userInfo[UIResponder.keyboardFrameEndUserInfoKey] is CGRect {
-            // FloatingPanel 높이 수정
-            commentPanel.move(to: .full, animated: true)
-        }
-    }
-    
-    // 키보드가 사라질 때 호출되는 메서드
-    @objc override func keyboardWillHide(notification: NSNotification) {
-        commentPanel.move(to: .half, animated: true)
     }
 }
