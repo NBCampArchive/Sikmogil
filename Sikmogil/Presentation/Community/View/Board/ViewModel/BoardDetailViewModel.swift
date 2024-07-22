@@ -30,15 +30,25 @@ class BoardDetailViewModel {
         localLikeCount += isLikedLocally ? 1 : -1
         
         // API 호출
-        sendLikeStatusToServer()
+//        toggleLike(for: boardDetail?.boardId ?? 0)
         
         print("좋아요 상태 변경 (로컬): isLike = \(isLikedLocally), likeCount = \(localLikeCount)")
     }
     
-    private func sendLikeStatusToServer() {
+    func reportPost(boardId: Int, reason: String) {
         // 여기에 실제 API 호출 로직 구현
-        // 예: API.postLikeStatus(boardId: boardDetail?.boardId, isLiked: isLikedLocally)
+        // 예: API.reportPost(boardId: boardDetail?.boardId)
         //     .sink(receiveCompletion: { ... }, receiveValue: { ... })
         //     .store(in: &cancellables)
     }
+    
+    
+    
+    func deletePost(boardId: Int) {
+        // 여기에 실제 API 호출 로직 구현
+        // 예: API.deletePost(boardId: boardDetail?.boardId)
+        //     .sink(receiveCompletion: { ... }, receiveValue: { ... })
+        //     .store(in: &cancellables)
+    }
+    
 }

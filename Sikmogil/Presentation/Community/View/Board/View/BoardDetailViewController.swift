@@ -252,9 +252,7 @@ class BoardDetailViewController: UIViewController {
     }
     
     private func setupActions() {
-        settingButton.isUserInteractionEnabled = true
         likeButton.addTarget(self, action: #selector(likeButtonTapped), for: .touchUpInside)
-        commentButton.addTarget(self, action: #selector(commentButtonTapped), for: .touchUpInside)
         commentListButton.addTarget(self, action: #selector(commentListButtonTapped), for: .touchUpInside)
     }
     
@@ -341,23 +339,93 @@ class BoardDetailViewController: UIViewController {
     
     private func sharePost() {
         // 공유 기능 구현
-        
         print("공유하기")
+        guard let detail = viewModel.boardDetail else { return }
+        
+        // 공유할 텍스트 생성
+        let shareText = "제목: \(detail.title)\n작성자: \(detail.nickname)\n\n\(detail.content)"
+        
+        // 공유할 아이템 배열 생성 (우선 텍스트만 포함)
+        var shareItems: [Any] = [shareText]
+        
+        // 이미지 URL이 있는 경우 Kingfisher를 사용하여 비동기적으로 이미지 로드
+        if let firstImageUrlString = detail.imageUrl.first,
+           let firstImageUrl = URL(string: firstImageUrlString) {
+            
+            KingfisherManager.shared.retrieveImage(with: firstImageUrl) { [weak self] result in
+                switch result {
+                case .success(let imageResult):
+                    shareItems.append(imageResult.image)
+                case .failure(let error):
+                    print("이미지 로드 실패: \(error.localizedDescription)")
+                }
+                
+                DispatchQueue.main.async {
+                    // UIActivityViewController를 사용하여 공유 시트 표시
+                    let activityViewController = UIActivityViewController(activityItems: shareItems, applicationActivities: nil)
+                    self?.present(activityViewController, animated: true, completion: nil)
+                }
+            }
+        } else {
+            // 이미지 URL이 없는 경우 바로 공유 시트 표시
+            let activityViewController = UIActivityViewController(activityItems: shareItems, applicationActivities: nil)
+            present(activityViewController, animated: true, completion: nil)
+        }
     }
     
     private func reportPost() {
         // 신고 기능 구현
         print("신고하기")
+        guard let boardId = viewModel.boardDetail?.boardId else { return }
+        
+        // 신고 사유 선택을 위한 액션 시트 표시
+        let alertController = UIAlertController(title: "게시글 신고", message: "신고 사유를 선택해주세요", preferredStyle: .actionSheet)
+        
+        let reasons = ["부적절한 콘텐츠", "스팸", "혐오 발언", "기타"]
+        
+        for reason in reasons {
+            alertController.addAction(UIAlertAction(title: reason, style: .default) { [weak self] _ in
+                self?.viewModel.reportPost(boardId: boardId, reason: reason)
+            })
+        }
+        
+        alertController.addAction(UIAlertAction(title: "취소", style: .cancel, handler: nil))
+        
+        present(alertController, animated: true, completion: nil)
     }
     
     private func editPost() {
         // 수정 기능 구현
         print("수정하기")
+        guard let detail = viewModel.boardDetail else { return }
+        
+        // 게시글 수정 화면으로 이동
+        let editVC = WriteViewController()
+        //            editVC.delegate = self
+        navigationController?.pushViewController(editVC, animated: true)
     }
     
     private func deletePost() {
         // 삭제 기능 구현
         print("삭제하기")
+        guard let boardId = viewModel.boardDetail?.boardId else { return }
+        
+        let alertController = UIAlertController(title: "게시글 삭제", message: "정말로 이 게시글을 삭제하시겠습니까?", preferredStyle: .alert)
+        
+        alertController.addAction(UIAlertAction(title: "취소", style: .cancel, handler: nil))
+        alertController.addAction(UIAlertAction(title: "삭제", style: .destructive) { [weak self] _ in
+            viewModel.deletePost(boardId: boardId)
+        })
+        
+        present(alertController, animated: true, completion: nil)
+    }
+    
+    private func showAlert(title: String, message: String, completion: (() -> Void)? = nil) {
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "확인", style: .default) { _ in
+            completion?()
+        })
+        present(alertController, animated: true, completion: nil)
     }
     
     private func setupFloatingPanel() {
