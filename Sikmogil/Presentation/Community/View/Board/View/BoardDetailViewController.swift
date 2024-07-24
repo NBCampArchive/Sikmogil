@@ -414,7 +414,7 @@ class BoardDetailViewController: UIViewController {
         
         alertController.addAction(UIAlertAction(title: "취소", style: .cancel, handler: nil))
         alertController.addAction(UIAlertAction(title: "삭제", style: .destructive) { [weak self] _ in
-            viewModel.deletePost(boardId: boardId)
+//            viewModel.deletePost(boardId: boardId)
         })
         
         present(alertController, animated: true, completion: nil)
