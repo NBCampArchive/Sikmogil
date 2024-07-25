@@ -10,7 +10,10 @@ import SnapKit
 import Combine
 import FloatingPanel
 
-class CustomExerciseInputViewController: UIViewController, UINavigationControllerDelegate {
+class CustomExerciseInputViewController: UIViewController {
+    
+    var viewModel = ExerciseSelectionViewModel()
+    var onDone: (() -> Void)?
     
     private let titleLabel = UILabel().then {
         $0.text = "운동 직접 입력"
@@ -99,6 +102,7 @@ class CustomExerciseInputViewController: UIViewController, UINavigationControlle
     private func setupViews() {
         view.backgroundColor = .white
         view.addSubviews(titleLabel, nameLabel, nameTextField, timeLabel, textFieldStackView, kcalLabel, timeUnitLabel, kcalUnitLabel, doneButton)
+        doneButton.addTarget(self, action: #selector(doneButtonTapped), for: .touchUpInside)
     }
     
     private func setupConstraints() {
@@ -197,4 +201,18 @@ class CustomExerciseInputViewController: UIViewController, UINavigationControlle
         timeTextField.inputAccessoryView = toolbar
         kcalTextField.inputAccessoryView = toolbar
     }
- }
+    
+    // MARK: - Button Action
+    @objc private func doneButtonTapped() {
+        // 입력 값 저장
+        viewModel.selectedExercise = nameTextField.text
+        viewModel.selectedTime = timeTextField.text
+        
+        if let kcalText = kcalTextField.text, let kcal = Int(kcalText) {
+            viewModel.expectedCalories = kcal
+        } else {
+            viewModel.expectedCalories = 0
+        }
+        self.onDone?()
+    }
+}
