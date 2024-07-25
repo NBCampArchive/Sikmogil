@@ -14,7 +14,13 @@ import NVActivityIndicatorView
 class ExerciseSearchViewController: UIViewController, FloatingPanelControllerDelegate {
     // MARK: - Properties
     var searchResults: [String] = []
-    var exerciseList: [String] = ["운동1", "운동2", "운동3", "운동4", "운동5", "운동6", "운동7"]
+    var exerciseList: [String] = [
+        "런닝", "수영", "자전거", "등산",
+        "걷기", "요가", "줄넘기", "필라테스",
+        "웨이트 트레이닝", "복합 유산소 운동",
+        "고강도 인터벌 트레이닝", "근력 강화 운동", "기타"
+    ]
+
     var addDirectPanel = FloatingPanelController()
     
     // MARK: - Components
@@ -59,6 +65,7 @@ class ExerciseSearchViewController: UIViewController, FloatingPanelControllerDel
         configureKeyboard()
         setupFloatingPanel()
         setupGesture()
+        filterExercises(searchText: "")
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -183,7 +190,7 @@ extension ExerciseSearchViewController: UISearchBarDelegate {
     
     private func filterExercises(searchText: String) {
         if searchText.isEmpty {
-            searchResults = []
+            searchResults = exerciseList
         } else {
             searchResults = exerciseList.filter { $0.lowercased().contains(searchText.lowercased()) }
         }
@@ -201,10 +208,19 @@ extension ExerciseSearchViewController: UITableViewDataSource, UITableViewDelega
             return UITableViewCell()
         }
         cell.exerciseLabel.text = searchResults[indexPath.row]
+        cell.delegate = self
         return cell
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 88
+    }
+}
+
+extension ExerciseSearchViewController: ExerciseItemCellDelegate {
+    func didTapPlusButton(with text: String) {
+        let selectionVC = ExerciseSelectionViewController()
+        selectionVC.handleExerciseSelection(exercise: text)
+        navigationController?.pushViewController(selectionVC, animated: true)
     }
 }
