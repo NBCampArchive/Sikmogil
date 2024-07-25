@@ -39,8 +39,7 @@ class ExerciseSelectionViewController: UIViewController {
 
     private let exerciseSelectionLabel = UILabel().then {
         $0.font = Suite.medium.of(size: 16)
-        $0.text = "-종목을 선택해 주세요-"
-        $0.textColor = .appDarkGray
+        $0.textColor = .appBlack
     }
 
     private let timeSelectionButton = UIButton(type: .system).then {
@@ -239,26 +238,13 @@ class ExerciseSelectionViewController: UIViewController {
     }
     
     // MARK: -  Setup Binding
+    func handleExerciseSelection(exercise: String) {
+        exerciseSelectionLabel.text = exercise
+        viewModel.selectedExercise = exercise
+    }
+    
     private func setupMenus() {
-        let exercises = [
-            "런닝", "수영", "자전거", "등산",
-            "걷기", "요가", "줄넘기", "필라테스",
-            "웨이트 트레이닝", "복합 유산소 운동",
-            "고강도 인터벌 트레이닝", "근력 강화 운동", "기타"
-        ]
-
         let times = ["15분", "30분", "60분", "90분"]
-        
-        let exerciseActions = exercises.map { exercise in
-            UIAction(title: exercise) { [weak self] _ in
-                self?.exerciseSelectionLabel.text = exercise
-                self?.exerciseSelectionLabel.textColor = .appBlack
-                self?.viewModel.selectedExercise = exercise
-            }
-        }
-        
-        let exerciseMenu = UIMenu(title: "", children: exerciseActions)
-        
         let timeActions = times.map { time in
             UIAction(title: time) { [weak self] _ in
                 self?.timeSelectionLabel.text = time
@@ -268,10 +254,7 @@ class ExerciseSelectionViewController: UIViewController {
         }
         
         let timeMenu = UIMenu(title: "", children: timeActions)
-        
-        exerciseSelectionButton.menu = exerciseMenu
-        exerciseSelectionButton.showsMenuAsPrimaryAction = true
-        
+
         timeSelectionButton.menu = timeMenu
         timeSelectionButton.showsMenuAsPrimaryAction = true
     }
