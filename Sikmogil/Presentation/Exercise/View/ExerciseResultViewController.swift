@@ -155,6 +155,11 @@ class ExerciseResultViewController: UIViewController, FloatingPanelControllerDel
         startProgressBarAnimation()
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        recodingPhotoPanel.dismiss(animated: true, completion: nil)
+    }
+    
     private func startProgressBarAnimation() {
         circularProgressBar.animateProgress(to: 1.0, duration: 3.0)
     }
