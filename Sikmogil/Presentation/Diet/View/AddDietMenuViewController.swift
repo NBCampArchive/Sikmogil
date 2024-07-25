@@ -10,6 +10,9 @@ import FloatingPanel
 
 class AddDietMenuViewController: UIViewController {
     
+    var floatingPanel: FloatingPanelController!
+    var previousPanelState: FloatingPanelState = .hidden
+    
     // MARK: - UI components
     let TitleLabel = UILabel().then {
         $0.text = "식사 추가"
@@ -32,13 +35,26 @@ class AddDietMenuViewController: UIViewController {
         $0.register(AddDietMenuTableViewCell.self, forCellReuseIdentifier: "AddDietMenuTableViewCell")
         $0.separatorStyle = .none
     }
-    var overlayView: UIView!
+    let handWrittenButton = UIButton().then {
+        $0.setTitle("+ 직접추가", for: .normal)
+        $0.backgroundColor = .appBlack
+        $0.setTitleColor(.white, for: .normal)
+        $0.titleLabel?.font = Suite.semiBold.of(size: 16)
+        $0.tintColor = .white
+        $0.layer.cornerRadius = 16
+        $0.clipsToBounds = true
+        $0.addTarget(self, action: #selector(showHandWrittenButtonBottomSheet), for: .touchUpInside)
+        // 버튼 히든 처리
+        //        $0.isHidden = true
+    }
+    var overlayView: UIView! //키보드 활성화시 호출
     
     // MARK: - Properties
     var foodItems: [FoodItem] = []  // 데이터 저장 배열
     var addMeal: ((FoodItem) -> Void)?
     
     var scrollIndex = 10
+    var isLoading = false
     
     // MARK: - View Lifecycle
     override func viewDidLoad() {
@@ -52,6 +68,14 @@ class AddDietMenuViewController: UIViewController {
         searchBar.delegate = self
         
         setupOverlayView()
+        setupFloatingPanel()
+        
+        // NotificationCenter에 옵저버 추가
+        NotificationCenter.default.addObserver(self, selector: #selector(navigateToDietBottomSheet), name: .didAddMeal, object: nil)
+    }
+    deinit {
+        // 옵저버 제거
+        NotificationCenter.default.removeObserver(self, name: .didAddMeal, object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -61,7 +85,7 @@ class AddDietMenuViewController: UIViewController {
     
     // MARK: - Setup Methods
     private func setupViews() {
-        view.addSubviews(TitleLabel, searchBar, searchResultTableView)
+        view.addSubviews(TitleLabel, searchBar, searchResultTableView, handWrittenButton)
     }
     
     private func setupOverlayView() {
@@ -78,18 +102,18 @@ class AddDietMenuViewController: UIViewController {
     }
     
     private func fetchFoodData(searchText: String) {
+        isLoading = true
         FoodDbAPIManager.shared.fetchFoodItems(searchQuery: searchText, index: scrollIndex) { [weak self] result in
             guard let self = self else { return }
             
-            switch result {
-            case .success(let items):
-                DispatchQueue.main.async {
-                    // API 응답 처리
-                    self.handleSuccessResponse(items)
-                }
-            case .failure(let error):
-                DispatchQueue.main.async {
-                    // 에러 처리
+            DispatchQueue.main.async {
+                self.isLoading = false
+                switch result {
+                case .success(let items):
+                    // 기존 데이터를 유지하고 새로운 데이터만 추가
+                    self.foodItems.append(contentsOf: items)
+                    self.searchResultTableView.reloadData()
+                case .failure(let error):
                     self.handleError(error)
                 }
             }
@@ -111,6 +135,45 @@ class AddDietMenuViewController: UIViewController {
             $0.leading.equalToSuperview().offset(16)
             $0.trailing.equalToSuperview().inset(16)
             $0.bottom.equalToSuperview().inset(16)
+        }
+        handWrittenButton.snp.makeConstraints{
+            $0.centerY.equalTo(TitleLabel)
+            $0.trailing.equalToSuperview().inset(16)
+            $0.height.equalTo(32)
+            $0.width.equalTo(88)
+        }
+    }
+    
+    func setupFloatingPanel() {
+        floatingPanel = FloatingPanelController()
+        floatingPanel.layout = CustomFloatingPanelLayout()
+        floatingPanel.isRemovalInteractionEnabled = true
+        floatingPanel.changePanelStyle()
+        floatingPanel.delegate = self
+    }
+    
+    private func showBottomSheet(contentVC: UIViewController) {
+        guard let floatingPanel = floatingPanel else {
+            print("Error: FloatingPanelController is not initialized")
+            return
+        }
+        floatingPanel.set(contentViewController: contentVC)
+        floatingPanel.addPanel(toParent: self)
+    }
+    
+    @objc private func showHandWrittenButtonBottomSheet() {
+        let contentVC = AddDietMenuBottomSheetViewController()
+        contentVC.addMealAction = { [weak self] foodItem in
+            self?.addMeal?(foodItem)
+            self?.floatingPanel.move(to: .hidden, animated: true)
+        }
+        showBottomSheet(contentVC: contentVC)
+    }
+    
+    @objc private func navigateToDietBottomSheet() {
+        // DietBottomSheetViewController로 화면 이동
+        if let navigationController = self.navigationController {
+            navigationController.popViewController(animated: true)
         }
     }
 }
@@ -146,17 +209,17 @@ extension AddDietMenuViewController: UITableViewDelegate, UITableViewDataSource 
         let contentHeight = scrollView.contentSize.height
         let frameHeight = scrollView.frame.size.height
         
-        if contentOffsetY > contentHeight - frameHeight {
+        if contentOffsetY > contentHeight - frameHeight - 100 { // 약간의 여유를 둠
             // 스크롤이 끝에 도달했을 때 추가 데이터를 로드
             loadMoreData()
         }
     }
     
+    
     private func loadMoreData() {
-        // scrollIndex를 10 증가시킴
-        if scrollIndex < 50 {
-            scrollIndex += 10
-        }
+        guard !isLoading else { return }
+        
+        scrollIndex += 10 // 증가된 인덱스
         
         // 현재 검색어에 맞는 추가 데이터를 로드
         guard let searchText = searchBar.text?.trimmingCharacters(in: .whitespacesAndNewlines) else {
@@ -194,31 +257,18 @@ extension AddDietMenuViewController: UISearchBarDelegate {
             return
         }
         
-        // scrollIndex를 10으로 초기화
-        scrollIndex = 10
+        // scrollIndex를 0으로 초기화
+        scrollIndex = 0
         
-        FoodDbAPIManager.shared.fetchFoodItems(searchQuery: searchText, index: scrollIndex) { [weak self] result in
-            guard let self = self else { return }
-            
-            switch result {
-            case .success(let items):
-                DispatchQueue.main.async {
-                    // API 응답 처리
-                    self.handleSuccessResponse(items)
-                }
-            case .failure(let error):
-                DispatchQueue.main.async {
-                    // 에러 처리
-                    self.handleError(error)
-                }
-            }
-        }
+        foodItems.removeAll() // 새로운 검색어에 대한 기존 데이터 제거
+        searchResultTableView.reloadData()
+        
+        fetchFoodData(searchText: searchText)
     }
     
     private func handleSuccessResponse(_ items: [FoodItem]) {
-        self.foodItems = items
+        foodItems.append(contentsOf: items)
         searchResultTableView.reloadData()
-        searchResultTableView.setContentOffset(.zero, animated: true)
     }
     
     private func handleError(_ error: Error) {
@@ -231,4 +281,34 @@ extension AddDietMenuViewController: UISearchBarDelegate {
         searchBar.text = nil  // 검색어 초기화
         overlayView.isHidden = true
     }
+}
+
+extension AddDietMenuViewController: FloatingPanelControllerDelegate {
+    
+    func floatingPanelDidChangeState(_ vc: FloatingPanelController) {
+        if vc.state == .full {
+            tabBarController?.tabBar.isHidden = true
+            vc.backdropView.dismissalTapGestureRecognizer.isEnabled = false
+        } else if vc.state == .half  {
+            tabBarController?.tabBar.isHidden = true
+            vc.backdropView.dismissalTapGestureRecognizer.isEnabled = false
+            
+            // 상태가 .full에서 .half로 변경되었을 때 키보드를 숨김
+            if previousPanelState == .full {
+                view.endEditing(true)
+            }
+        } else {
+            vc.backdropView.dismissalTapGestureRecognizer.isEnabled = true
+        }
+        previousPanelState = vc.state
+    }
+    
+    func floatingPanelDidRemove(_ vc: FloatingPanelController) {
+        tabBarController?.tabBar.isHidden = false
+        vc.backdropView.dismissalTapGestureRecognizer.isEnabled = true
+    }
+}
+
+extension Notification.Name {
+    static let didAddMeal = Notification.Name("didAddMeal")
 }
