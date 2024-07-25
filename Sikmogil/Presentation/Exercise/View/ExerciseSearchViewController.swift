@@ -58,6 +58,12 @@ class ExerciseSearchViewController: UIViewController, FloatingPanelControllerDel
         setupConstraints()
         configureKeyboard()
         setupFloatingPanel()
+        setupGesture()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        addDirectPanel.dismiss(animated: true, completion: nil)
     }
     
     // MARK: - Setup View
@@ -120,16 +126,37 @@ class ExerciseSearchViewController: UIViewController, FloatingPanelControllerDel
     }
     
     // MARK: - FloatingPanel
-    
     @objc private func addDirectButtonTapped() {
         self.present(addDirectPanel, animated: true)
     }
     
     func setupFloatingPanel() {
-       
+        addDirectPanel = FloatingPanelController()
+        
+        let contentVC = CustomExerciseInputViewController()
+        
+        addDirectPanel.set(contentViewController: contentVC)
+        addDirectPanel.layout = CustomFloatingPanelLayout()
+        addDirectPanel.isRemovalInteractionEnabled = true
+    
+        addDirectPanel.changePanelStyle()
+        addDirectPanel.delegate = self
     }
+    
+    // MARK: - Handle Tap Outside Panel
+    private func setupGesture() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTapOutsidePanel(_:)))
+        tapGesture.cancelsTouchesInView = false
+        view.addGestureRecognizer(tapGesture)
+    }
+    
+     @objc private func handleTapOutsidePanel(_ sender: UITapGestureRecognizer) {
+         if addDirectPanel.state == .half || addDirectPanel.state == .tip {
+             addDirectPanel.dismiss(animated: true, completion: nil)
+         }
+     }
 }
-
+// MARK: - UISearchBar
 extension ExerciseSearchViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         filterExercises(searchText: searchText)
@@ -163,7 +190,7 @@ extension ExerciseSearchViewController: UISearchBarDelegate {
         tableView.reloadData()
     }
 }
-
+// MARK: - UITableView
 extension ExerciseSearchViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return searchResults.count
