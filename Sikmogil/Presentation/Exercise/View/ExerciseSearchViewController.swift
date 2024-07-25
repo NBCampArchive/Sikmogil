@@ -148,6 +148,13 @@ class ExerciseSearchViewController: UIViewController, FloatingPanelControllerDel
     
         addDirectPanel.changePanelStyle()
         addDirectPanel.delegate = self
+        
+        contentVC.onDone = { [weak self] in
+            let resultVC = ExerciseResultViewController()
+            resultVC.viewModel = contentVC.viewModel
+            self?.navigationController?.pushViewController(resultVC, animated: true)
+        }
+        
     }
     
     // MARK: - Handle Tap Outside Panel
