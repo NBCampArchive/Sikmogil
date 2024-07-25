@@ -92,6 +92,7 @@ class CustomExerciseInputViewController: UIViewController, UINavigationControlle
         setupConstraints()
         setupKeyboardObservers()
         setupGestureRecognizer()
+        addDoneButtonToKeyboard()
     }
  
     // MARK: - Setup Views
@@ -181,5 +182,19 @@ class CustomExerciseInputViewController: UIViewController, UINavigationControlle
         if let fpc = parent as? FloatingPanelController {
             fpc.move(to: .half, animated: true)
         }
+    }
+    
+    private func addDoneButtonToKeyboard() {
+        let toolbar = UIToolbar()
+        toolbar.sizeToFit()
+        
+        let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissKeyboard))
+        
+        toolbar.setItems([flexSpace, doneButton], animated: false)
+        
+        nameTextField.inputAccessoryView = toolbar
+        timeTextField.inputAccessoryView = toolbar
+        kcalTextField.inputAccessoryView = toolbar
     }
  }
