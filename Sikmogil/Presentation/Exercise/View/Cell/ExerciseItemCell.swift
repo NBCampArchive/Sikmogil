@@ -12,6 +12,8 @@ import Then
 class ExerciseItemCell: UITableViewCell {
 
     static let identifier = "ExerciseItemCell"
+    var exercise: ExerciseListModel?
+    weak var delegate: ExerciseItemCellDelegate?
     
     // MARK: - Components
     private let cardView = UIView().then {
@@ -31,6 +33,7 @@ class ExerciseItemCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupViews()
         setupConstraints()
+        plusButton.addTarget(self, action: #selector(plusButtonTapped), for: .touchUpInside)
     }
     
     required init?(coder: NSCoder) {
@@ -69,11 +72,13 @@ class ExerciseItemCell: UITableViewCell {
     }
 
     // MARK: - Action
-    func configure() {
-        
-    }
-    
     @objc private func plusButtonTapped() {
-      print("plusButtonTapped")
+        if let text = exerciseLabel.text {
+            delegate?.didTapPlusButton(with: text)
+        }
     }
+}
+
+protocol ExerciseItemCellDelegate: AnyObject {
+    func didTapPlusButton(with text: String)
 }
