@@ -206,7 +206,12 @@ class CustomExerciseInputViewController: UIViewController {
     @objc private func doneButtonTapped() {
         // 입력 값 저장
         viewModel.selectedExercise = nameTextField.text
-        viewModel.selectedTime = timeTextField.text
+        
+        if let timeText = timeTextField.text, !timeText.isEmpty {
+            viewModel.selectedTime = "\(timeText)분"
+        } else {
+            viewModel.selectedTime = "0분"
+        }
         
         if let kcalText = kcalTextField.text, let kcal = Int(kcalText) {
             viewModel.expectedCalories = kcal
