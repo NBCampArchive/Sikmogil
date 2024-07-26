@@ -21,7 +21,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(windowScene: windowScene)
         
         // MARK: - viewController = 부분을 수정하고 아래 코드를 주석 처리하고 진행해주세요 (간단한 UI 수정시에만 사용해주세요, 기본은 SplashViewController)
-        let viewController = SplashViewController()
+        let viewController = BoardDetailViewController()
         let navigationController = CustomNavigationController(rootViewController: viewController)
         
         window?.rootViewController = navigationController
