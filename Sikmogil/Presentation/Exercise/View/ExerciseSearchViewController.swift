@@ -133,13 +133,13 @@ class ExerciseSearchViewController: UIViewController, FloatingPanelControllerDel
     @objc override func dismissKeyboard() {
         view.endEditing(true)
         overlayView.isHidden = true
+        addDirectPanel.move(to: .hidden, animated: false)
     }
     
     @objc private func keyboardWillShow(_ notification: Notification) {
         if let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect {
             tableView.contentInset.bottom = keyboardFrame.height
         }
-        addDirectPanel.dismiss(animated: true, completion: nil)
     }
     
     @objc private func keyboardWillHide(_ notification: Notification) {
