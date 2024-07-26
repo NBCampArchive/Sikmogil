@@ -69,6 +69,7 @@ class ExerciseSearchViewController: UIViewController, FloatingPanelControllerDel
         setupGesture()
         filterExercises(searchText: "")
         setupOverlayView()
+        addDoneButtonToKeyboard(textFields: [searchBar.searchTextField])
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -138,6 +139,7 @@ class ExerciseSearchViewController: UIViewController, FloatingPanelControllerDel
         if let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect {
             tableView.contentInset.bottom = keyboardFrame.height
         }
+        addDirectPanel.dismiss(animated: true, completion: nil)
     }
     
     @objc private func keyboardWillHide(_ notification: Notification) {
@@ -147,7 +149,14 @@ class ExerciseSearchViewController: UIViewController, FloatingPanelControllerDel
     // MARK: - FloatingPanel
     @objc private func addDirectButtonTapped() {
         dismissKeyboard()
-        self.present(addDirectPanel, animated: true)
+        switch addDirectPanel.state {
+        case .hidden:
+            present(addDirectPanel, animated: true)
+        case .half, .tip:
+            addDirectPanel.dismiss(animated: true, completion: nil)
+        default:
+            break
+        }
     }
     
     func setupFloatingPanel() {
@@ -168,6 +177,7 @@ class ExerciseSearchViewController: UIViewController, FloatingPanelControllerDel
             self?.navigationController?.pushViewController(resultVC, animated: true)
         }
         
+        addDirectPanel.move(to: .hidden, animated: false)
     }
     
     // MARK: - Handle Tap Outside Panel
