@@ -56,6 +56,8 @@ class ExerciseSearchViewController: UIViewController, FloatingPanelControllerDel
         $0.register(ExerciseItemCell.self, forCellReuseIdentifier: ExerciseItemCell.identifier)
     }
     
+    var overlayView: UIView!
+    
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -66,6 +68,7 @@ class ExerciseSearchViewController: UIViewController, FloatingPanelControllerDel
         setupFloatingPanel()
         setupGesture()
         filterExercises(searchText: "")
+        setupOverlayView()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -84,6 +87,14 @@ class ExerciseSearchViewController: UIViewController, FloatingPanelControllerDel
         addDirectButton.addTarget(self, action: #selector(addDirectButtonTapped), for: .touchUpInside)
     }
 
+    private func setupOverlayView() {
+        overlayView = UIView(frame: self.view.bounds)
+        overlayView.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+        overlayView.isHidden = true
+        overlayView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard)))
+        view.addSubview(overlayView)
+    }
+    
     private func setupConstraints() {
         titleLabel.snp.makeConstraints{
             $0.top.equalToSuperview().offset(100)
@@ -120,6 +131,7 @@ class ExerciseSearchViewController: UIViewController, FloatingPanelControllerDel
     
     @objc override func dismissKeyboard() {
         view.endEditing(true)
+        overlayView.isHidden = true
     }
     
     @objc private func keyboardWillShow(_ notification: Notification) {
@@ -134,6 +146,7 @@ class ExerciseSearchViewController: UIViewController, FloatingPanelControllerDel
     
     // MARK: - FloatingPanel
     @objc private func addDirectButtonTapped() {
+        dismissKeyboard()
         self.present(addDirectPanel, animated: true)
     }
     
@@ -172,11 +185,19 @@ class ExerciseSearchViewController: UIViewController, FloatingPanelControllerDel
 }
 // MARK: - UISearchBar
 extension ExerciseSearchViewController: UISearchBarDelegate {
+    func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
+        // 키보드가 나타나도록 설정
+        searchBar.setShowsCancelButton(true, animated: true)
+        overlayView.isHidden = false
+        return true
+    }
+    
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         filterExercises(searchText: searchText)
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        overlayView.isHidden = true
         filterExercises(searchText: searchBar.text ?? "")
         dismissKeyboard()
     }
@@ -185,6 +206,7 @@ extension ExerciseSearchViewController: UISearchBarDelegate {
         searchBar.text = ""
         filterExercises(searchText: "")
         dismissKeyboard()
+        overlayView.isHidden = true
     }
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
