@@ -59,4 +59,20 @@ extension UIViewController {
 //        guard let tabBar = self.tabBarController?.tabBar else { return }
 //        tabBar.changeTabBar(hidden: hidden, animated: animated)
 //    }
+    
+    //MARK: - 키보드 완료 버튼
+    func addDoneButtonToKeyboard(textFields: [UITextField]) {
+        let toolbar = UIToolbar()
+        toolbar.sizeToFit()
+        
+        let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissKeyboard))
+        
+        toolbar.setItems([flexSpace, doneButton], animated: false)
+        toolbar.isUserInteractionEnabled = true
+        
+        for textField in textFields {
+            textField.inputAccessoryView = toolbar
+        }
+    }
 }

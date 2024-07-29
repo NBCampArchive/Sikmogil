@@ -142,7 +142,7 @@ extension ExerciseAlbumViewController: UICollectionViewDelegate {
         let date = exercisePicture.date
         let workoutId = exercisePicture.workoutListId
         
-        let imageVC = PhotoSelectViewController(
+        let imageVC = ExercisePhotoViewController(
             imageURL: imageURL,
             title: date,
             imageId: workoutId,

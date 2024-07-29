@@ -10,7 +10,7 @@ import SnapKit
 import Then
 import MobileCoreServices
 
-class PhotoRecordFloatingViewController: UIViewController, UINavigationControllerDelegate {
+class PhotoRecordViewController: UIViewController, UINavigationControllerDelegate {
 
     var selectedImage: UIImage?
     var viewModel: ExerciseSelectionViewModel?
@@ -164,7 +164,7 @@ class PhotoRecordFloatingViewController: UIViewController, UINavigationControlle
 }
 
 // MARK: - UIImagePickerControllerDelegate
-extension PhotoRecordFloatingViewController: UIImagePickerControllerDelegate {
+extension PhotoRecordViewController: UIImagePickerControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let image = info[.originalImage] as? UIImage {
             self.imageView.image = image

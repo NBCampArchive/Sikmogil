@@ -148,11 +148,17 @@ class ExerciseResultViewController: UIViewController, FloatingPanelControllerDel
         setupButtons()
         bindViewModel()
         setupFloatingPanel()
+        setupGesture()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         startProgressBarAnimation()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        recodingPhotoPanel.dismiss(animated: true, completion: nil)
     }
     
     private func startProgressBarAnimation() {
@@ -407,7 +413,7 @@ class ExerciseResultViewController: UIViewController, FloatingPanelControllerDel
         
         recodingPhotoPanel = FloatingPanelController()
         
-        let contentVC = PhotoRecordFloatingViewController()
+        let contentVC = PhotoRecordViewController()
         contentVC.viewModel = self.viewModel
 
         recodingPhotoPanel.set(contentViewController: contentVC)
@@ -416,5 +422,17 @@ class ExerciseResultViewController: UIViewController, FloatingPanelControllerDel
     
         recodingPhotoPanel.changePanelStyle()
         recodingPhotoPanel.delegate = self
+    }
+    // MARK: - Handle Tap Outside Panel
+    private func setupGesture() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTapOutsidePanel(_:)))
+        tapGesture.cancelsTouchesInView = false
+        view.addGestureRecognizer(tapGesture)
+    }
+    
+    @objc private func handleTapOutsidePanel(_ sender: UITapGestureRecognizer) {
+        if recodingPhotoPanel.state == .half || recodingPhotoPanel.state == .tip {
+            recodingPhotoPanel.dismiss(animated: true, completion: nil)
+        }
     }
 }
